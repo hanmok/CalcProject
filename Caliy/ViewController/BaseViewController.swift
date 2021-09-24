@@ -1,3 +1,4 @@
+
 import UIKit
 import AudioToolbox
 import RealmSwift
@@ -13,8 +14,12 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-//    self.localizedStrings.soundOff,
+    
+    
+    //self.localizedStrings.soundOff,
     //MARK: - Basic setup
+    
+    
     let childTableVC = HistoryRecordVC()
     let newTableVC = HistoryRecordVC()
     
@@ -29,9 +34,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let frameSize = FrameSizes()
     let reviewService = ReviewService.shared
     var lineSettingsum = 0
-//    var floatingPointNumberCount = 0
-//    var isFloatingNumberCountUnder10 = true
-//    var
     
     
     var iPressed = ""
@@ -39,6 +41,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let nf1 = NumberFormatter()
     let nf6 = NumberFormatter()
     let nf11 = NumberFormatter()
+    
+    
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.current.orientation.isLandscape {
@@ -87,6 +92,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
+        
+        
         isOrientationPortrait = screenHeight > screenWidth ? true : false
         
         childTableVC.FromTableToBaseVCdelegate = self
@@ -106,7 +113,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     func nfSetup(){
-//        let nf6 = NumberFormatter() // declared at the first
+        //        let nf6 = NumberFormatter() // declared at the first
         
         nf1.roundingMode = .down
         nf1.maximumFractionDigits = 1
@@ -136,7 +143,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             case "+", "-", "×","÷" : parenNeeded.toggle()
             case "(" : print("none")
             case ")" : plusNeeded.toggle()
-            parenNeeded.toggle()
+                parenNeeded.toggle()
             case "=" : manualClearNeeded.toggle()
             default:
                 plusNeeded.toggle()
@@ -168,7 +175,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             manualParenthesis(trueToOpen: false)
         }
         
-//        printLineSetterElements("pasteAns!!!!!")
+        //        printLineSetterElements("pasteAns!!!!!")
         
     }
     
@@ -176,7 +183,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     func inputNumberPressedAtOnce(numString : String){
-     
+        
         countingNumber += 1
         
         if isAnsPressed{
@@ -233,7 +240,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     
-  
+    
     
     var isSoundOn = true
     var isLightModeOn = false
@@ -246,14 +253,19 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     let tagToUnitSizeString : [String : Double] =  ["1" : 0.02857142857, "2" : 0.03703703704, "3" : 0.03846153846, "4" : 0.04, "5" : 0.03846153846, "6" : 0.04, "7" : 0.03571428571, "8" : 0.04, "9" : 0.04, "0" : 0.03846153846, "," : 0.01724137931, "." : 0.01724137931, ")" : 0.02272727273, "(" : 0.02272727273, "+" : 0.04, "×" : 0.04, "÷" : 0.04, "-" : 0.02777777778, "=" : 0.02777777778]
     
+    // make seperate constants file
+    // layer architecture
+    // 모듈을 만드는 느낌 ?? 유지보수 .
+    
     
     var setteroi : Int = 0
     var sumOfUnitSizes : [Double] = [0.0]
+    
     var pOfNumsAndOpers = [""]
     var pOfNumsAndOpersCount = 1
     var strForProcess = [""]
     
-//    var lastMovePP : [[Int]] = [[0],[0],[0]] // lastMove Process Position
+    //    var lastMovePP : [[Int]] = [[0],[0],[0]] // lastMove Process Position
     var lastMoveOP : [[Int]] = [[0],[0],[0]]
     
     
@@ -300,7 +312,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var saveResult : Double?
     var result : Double? // to be printed, one of the answer array.
     //    var isSaveResultInt : Bool?
-//    var floatingNumberDigits : Int?
+    //    var floatingNumberDigits : Int?
     var copypi = 0
     var copyni = [0]
     var copytempDigits = [[""]]
@@ -335,33 +347,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     @objc func numberPressed(sender : UIButton){
-//        isFloatingNumberCountUnder10 = true
-//        if tempDigits[pi][ni[pi]].count >= 12{ // 자릿수 합이 16 이상일 경우 Big Decimal 필요. 음..
-//            let tempDouble = Double(tempDigits[pi][ni[pi]])
-//            let tempDecimalCount = tempDouble!.decimalCount()
-//            if tempDecimalCount >= 10{
-//                isFloatingNumberCountUnder10 = false
-//            }
-//            print("tempDouble.count : \(tempDouble?.decimalCount())")
-//
-//        }
         
-//        if tempDigits[pi][ni[pi]].count >= 12{
-//            print("뭐가문제니?")
-//            let dummyStr1 = Double(tempDigits[pi][ni[pi]])
-//            let testStr1 = nf1.string(for: dummyStr1)
-//            let testStr2 = nf11.string(for: dummyStr1)
-//            print("testStr1 : \(testStr1), testStr2 : \(testStr2)")
-//            if testStr2!.count - testStr1!.count >= 9{
-//                isFloatingNumberCountUnder10 = false
-//                print("floatingNumber is too long! ")
-//            }
-//        }
-        
-        
-//        if isFloatingNumberCountUnder10{
-            
-            
         if let input = tagToString[sender.tag]{
             iPressed += input
             if isAnsPressed
@@ -372,12 +358,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             }
             addPOfNumsAndOpers()
             addStrForProcess()
-            // 이새끼..뭐지.. ? 만약 바로 전 입력이 '(' 이면, 이니까 괜찮.
+
             if pOfNumsAndOpers[setteroi] == "op"{
                 setteroi += 1
-//                printLineSetterElements("wwwwwtf")
             }
-            
             
             // if made number is not greater than it's limit
             if (DS[pi][ni[pi]] > -1e14  && DS[pi][ni[pi]] < 1e14) && !((DS[pi][ni[pi]] >= 1e13 || DS[pi][ni[pi]] <= -1e13) && input == "00") {
@@ -460,7 +444,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 }
             } // end if DS[pi][ni[pi]] <= 1e14{
             else if ((DS[pi][ni[pi]] >= 1e13 || DS[pi][ni[pi]] <= -1e13) && input == "00") && (DS[pi][ni[pi]] < 1e14  && DS[pi][ni[pi]] > -1e14){
-
+                
                 tempDigits[pi][ni[pi]] += "0"
                 process += "0"
                 sendNotification()
@@ -475,21 +459,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             else if ((DS[pi][ni[pi]] >= 1e14 || DS[pi][ni[pi]] <= -1e14) && tempDigits[pi][ni[pi]].contains(".")){
                 
                 if input == "."{
-                    //                    showToast(message: localizedStrings.modified, with: 1, for: 1,widthRatio: 0.4 , heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                    sendNotification()
                     
-                    self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-                    
-                    
-                    //                    process += "."
-                    //                    tempDigits[pi][ni[pi]] = "."
                 }else{
                     process += input
                     tempDigits[pi][ni[pi]] += input
                     
                     if let safeDigits = Double(tempDigits[pi][ni[pi]]){
                         DS[pi][ni[pi]] = safeDigits
-                       
-                        
                     }
                 }
                 
@@ -515,18 +492,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             showAnsAdvance()
             
             printProcess()
-        } // end of if let input = tagToString[sender.tag]{
-        //                pOfProperEnter
-        //        pOfNumsAndOpers.append("")
-//        }else{
-//            floatingExceedToast()
-//        }
-    } // @IBAction func numberPressed(_ sender: UIButton){
+        }
+    }
+    // @IBAction func numberPressed(_ sender: UIButton){
     
     
     
     func manualNumberPressed(inputStr : String){
-       
+        
         let input = inputStr
         
         if isAnsPressed
@@ -540,7 +513,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         if pOfNumsAndOpers[setteroi] == "op"{
             setteroi += 1
-//            printLineSetterElements("wwwwwtf")
+         
         }
         
         if (DS[pi][ni[pi]] > -1e14  && DS[pi][ni[pi]] < 1e14) && !((DS[pi][ni[pi]] > 1e13 || DS[pi][ni[pi]] < -1e13) && input == "00") {
@@ -557,7 +530,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 default : break
                 }
             }
-                
+            
             else if (input == ".") && (tempDigits[pi][ni[pi]] == "" || tempDigits[pi][ni[pi]] == "-" || tempDigits[pi][ni[pi]].contains(".")){//공백, - , . >> . : 모든 경우 수정됨.
                 switch tempDigits[pi][ni[pi]] {
                 case ""  :
@@ -570,7 +543,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 }
                 
             }
-                
+            
             else if (input != "0" && input != "00" && input != ".") && (tempDigits[pi][ni[pi]] == "0" || tempDigits[pi][ni[pi]] == "-0"){ // 0 , -0 >> 숫자 입력 : 모든 경우 수정됨.
                 tempDigits[pi][ni[pi]].removeLast()
                 tempDigits[pi][ni[pi]] += input
@@ -579,7 +552,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 process += input
                 
             }
-                // 괄호 닫고 바로 숫자 누른 경우.
+            // 괄호 닫고 바로 숫자 누른 경우.
             else if tempDigits[pi][ni[pi]].contains("parenclose") && operationStorage[pi][ni[pi]] == ""{
                 setteroi += 1
                 addSumOfUnitSizes()
@@ -609,7 +582,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 process += String(input)
                 sendNotification()
             }
-                
+            
             else { // usual case
                 tempDigits[pi][ni[pi]] += input
                 process += String(input)
@@ -640,9 +613,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
         
         addPOfNumsAndOpers()
-//        printLineSetterElements("왜죠1")
+      
         pOfNumsAndOpers[setteroi] = "n"
-//        printLineSetterElements("왜죠2")
+     
         
         addStrForProcess()
         showAnsAdvance()
@@ -657,8 +630,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     @objc func operationPressed(sender : UIButton){
-       
-        if let operInput = tagToString[sender.tag]{ // : String.
+        
+        if let operInput = tagToString[sender.tag]{ // : String
             iPressed += operInput
             
             if isAnsPressed{    // ans + - x /
@@ -668,22 +641,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 isAnsPressed = false
                 DS[0][0] = saveResult!
                 
-//                let nf6 = NumberFormatter()
-//                nf6.roundingMode = .down
-//                nf6.maximumFractionDigits = 6
-//                nfSetup()
                 tempDigits[0][0] = nf6.string(for: saveResult!)!
                 
                 
-                //                       var realAns = ans
-                //                       var dummyStrWithComma = ""
-                //
-//                       let dummyAnsString = nf6.string(for: ans)
-//                       let dummyAnsDouble = Double(dummyAnsString!)
-//                       realAns = dummyAnsDouble!
-//
-//                tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
-               
                 
                 if DS[0][0] < 0{
                     isNegativeSign = [[false,true]]
@@ -719,7 +679,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 addSumOfUnitSizes()
                 addStrForProcess()
             }
-                
+            
             else if isNegativePossible{ // true until number input.
                 if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == ""{// input negative Sign
                     
@@ -742,11 +702,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         sendNotification()
                     }
                 }
-                    
+                
                 else if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == "-"{ // for negative sign
                     if operInput == "-"{}// - >> - : ignore input.
                     else if operInput != "-"{ // - >> + * /
-//                        printLineSetterElements("operation modified3")
+                        //                        printLineSetterElements("operation modified3")
                         process.removeLast()
                         isNegativeSign[pi][numOfPossibleNegative[pi]] = false
                         tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] = ""
@@ -763,10 +723,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     sendNotification()// both cases are abnormal.
                 }
             }
-                
+            
             else if !isNegativePossible{ // modify Operation Input for duplicate case.
                 if tempDigits[pi][ni[pi]] == ""{
-//                    printLineSetterElements("operation modified")
+                    //                    printLineSetterElements("operation modified")
                     operInputSetup(operInput, ni[pi]-1)
                     process.removeLast()
                     process += operationStorage[pi][ni[pi]-1]
@@ -777,7 +737,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     dictionaryForLine[setteroi-1] = operInput
                     
                 }
-                    
+                
                 else{       //normal case
                     if process[process.index(before:process.endIndex)] == "."{ // 1.+ >> 1+ // 요깄당.
                         if tempDigits[pi][ni[pi]].contains("."){
@@ -789,7 +749,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                             strForProcess[setteroi].removeLast()
                         }
                     }
-//                    printLineSetterElements("operation modified2")
+                    //                    printLineSetterElements("operation modified2")
                     setteroi += 1
                     
                     
@@ -819,59 +779,59 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
     }
     
-    
+    // 동사 먼저 ( 명령문처럼)
     func manualOperationPressed(operSymbol : String){
         // ["+","-","×","÷","(",")"]
         let operInput = operSymbol
         //        showAnsAdvance()
         
-                if isAnsPressed{
-                    
-                    clear()
-                    process = ""
-                    isAnsPressed = false
-                    DS[0][0] = saveResult!
-                    
-//                    let nf6 = NumberFormatter()
-//                    nf6.roundingMode = .down
-//                    nf6.maximumFractionDigits = 6
-                    tempDigits[0][0] = nf6.string(for: saveResult!)!
-                    
-//                    tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
-        
-                    if DS[0][0] < 0{
-                        isNegativeSign = [[false,true]]
-                    }
-                    addPOfNumsAndOpers()
-                    pOfNumsAndOpers[setteroi] = "n"
-                    
-                    addStrForProcess()
-        
-                    isNegativePossible = false
-        
-                    printProcess()
-                    saveResult = nil
-                    freshDI[0][0] = 1
-                    setteroi += 1
-        
-                    operInputSetup(operInput, ni[0])
-                    
-                    addSumOfUnitSizes()
-                    sumOfUnitSizes[setteroi] = tagToUnitSizeString[operInput]!
-                    
-                    addPOfNumsAndOpers()
-                    pOfNumsAndOpers[setteroi] = "oper"
-                    dictionaryForLine[setteroi] = operInput
-                    
-                    addStrForProcess()
-                    strForProcess[setteroi] = operInput
-                    process += operationStorage[0][0]
-                    indexUpdate()
-                    setteroi += 1
-                    addPOfNumsAndOpers()
-                    addSumOfUnitSizes()
-                    addStrForProcess()
-                }
+        if isAnsPressed{
+            
+            clear()
+            process = ""
+            isAnsPressed = false
+            DS[0][0] = saveResult!
+            
+            //                    let nf6 = NumberFormatter()
+            //                    nf6.roundingMode = .down
+            //                    nf6.maximumFractionDigits = 6
+            tempDigits[0][0] = nf6.string(for: saveResult!)!
+            
+            //                    tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
+            
+            if DS[0][0] < 0{
+                isNegativeSign = [[false,true]]
+            }
+            addPOfNumsAndOpers()
+            pOfNumsAndOpers[setteroi] = "n"
+            
+            addStrForProcess()
+            
+            isNegativePossible = false // 이름 다시 짓기. (negativePossible) 변수는 명사, 함수명은 동사로 .
+            
+            printProcess()
+            saveResult = nil
+            freshDI[0][0] = 1
+            setteroi += 1
+            
+            operInputSetup(operInput, ni[0])
+            
+            addSumOfUnitSizes()
+            sumOfUnitSizes[setteroi] = tagToUnitSizeString[operInput]!
+            
+            addPOfNumsAndOpers()
+            pOfNumsAndOpers[setteroi] = "oper"
+            dictionaryForLine[setteroi] = operInput
+            
+            addStrForProcess()
+            strForProcess[setteroi] = operInput
+            process += operationStorage[0][0]
+            indexUpdate()
+            setteroi += 1
+            addPOfNumsAndOpers()
+            addSumOfUnitSizes()
+            addStrForProcess()
+        }
         //        else if isNegativePossible{ // true until number input.
         else if isNegativePossible{
             if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == ""{// input negative Sign
@@ -896,7 +856,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     sendNotification()
                 }
             }
-                
+            
             else if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == "-"{
                 if operInput == "-"{}// - >> - : ignore input.
                 else if operInput != "-"{ // - >> + * /
@@ -925,7 +885,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 strForProcess[setteroi-1] = operInput
                 dictionaryForLine[setteroi-1] = operInput
             }
-                
+            
             else{
                 if process[process.index(before:process.endIndex)] == "."{ // 1.+ >> 1+
                     if tempDigits[pi][ni[pi]].contains("."){
@@ -936,7 +896,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         
                         strForProcess[setteroi].removeLast()
                     }
-                }
+                } // && 조건으로 엮기.
                 setteroi += 1
                 
                 operInputSetup(operInput, ni[pi])
@@ -961,7 +921,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 addPOfNumsAndOpers()
                 addSumOfUnitSizes()
                 addStrForProcess()
-
+                
             }
         }
         printProcess()
@@ -970,14 +930,12 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func calculateAns() {
         
-        
         if process == ""{
             clear()
         }
         
         if !isAnsPressed {
-            copyCurrentStates() // 지울 때는 왜 copy 를 안하지? 이게 호출되는건 100% . 근데 왜?
-
+            copyCurrentStates()
             
             filterProcess()
             numParenCount = pi
@@ -999,19 +957,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         
                         addStrForProcess()
                         strForProcess[setteroi] = ")"
-                        
-//                        printLineSetterElements("line 1047")
-                        
-                        
-//                        printLineSetterElements("984")
-                        //                        dicForProcess[setteroi] = ")"
-                        
-                        
+        
                         numParenCount -= 1
                     }
                 }
-                
-                
+            
                 tempDigits[pi][ni[pi]] += "close"
                 if !showingAnsAdvance{
                     sendNotification()
@@ -1183,6 +1133,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             } // piLoop : while pi >= 0 {
         }
     }
+    
     func anslimitExceedToast(){
         if let languageCode = Locale.current.languageCode{
             if languageCode.contains("ko"){
@@ -1214,7 +1165,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         showingAnsAdvance = true
         calculateAns() // 이거 .. 하면 .. 정답 가능성이 보이면 바로 RealmData 에 추가되는거 아니냐?
-
+        
         resultTextView.textColor = isLightModeOn ? colorList.textColorForSemiResultBM : colorList.textColorForSemiResultDM
         isAnsPressed = false
         pasteStates()
@@ -1226,7 +1177,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func parenthesisPressed(sender : UIButton){
         if let input = tagToString[sender.tag]{
             iPressed += input
-          
+            
             if input == "("{
                 
                 if isAnsPressed{
@@ -1237,11 +1188,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     DS[0][0] = saveResult!
                     
                     freshDI[0][0] = 1
-//                    let nf6 = NumberFormatter()
-//                    nf6.roundingMode = .down
-//                    nf6.maximumFractionDigits = 6
+                    //                    let nf6 = NumberFormatter()
+                    //                    nf6.roundingMode = .down
+                    //                    nf6.maximumFractionDigits = 6
                     tempDigits[0][0] = nf6.string(for: saveResult!)!
-//                    tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
+                    //                    tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
                     
                     freshDI[0][0] = 1
                     if DS[0][0] < 0{
@@ -1316,7 +1267,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 
                 addSumOfUnitSizes()
                 
-                if sumOfUnitSizes[setteroi] != 0{// 이건 뭐야?
+                if sumOfUnitSizes[setteroi] != 0{
                     setteroi += 1
                 }
                 
@@ -1378,7 +1329,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 indexPivotHelper[pi] = true
                 isNegativePossible = true
             }
-                
+            
             else if (pi != 0) && input == ")"{
                 if process[process.index(before:process.endIndex)] != "(" &&  process[process.index(before:process.endIndex)] != "-" && process[process.index(before:process.endIndex)] != "×" && process[process.index(before:process.endIndex)] != "+" && process[process.index(before:process.endIndex)] != "÷" {
                     
@@ -1615,7 +1566,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         
                         break caseframe
                     } // usual case.
-                        
+                    
                     else if process.count > 1{
                         process.removeLast()
                         tempDigits[pi][ni[pi]].removeLast()
@@ -1682,7 +1633,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         muldiOperIndex[pi].removeLast()
                         muldiOperIndex[pi][ni[pi]] = false
                     }
-                        
+                    
                     else{ // 음수의 부호를 지운 경우 .
                         isNegativePossible = true
                         tempDigits[pi][ni[pi]].removeLast()
@@ -1726,7 +1677,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     isNegativeSign.removeLast()
                     positionOfParen.removeLast()
                 }
-                    
+                
                 else if numOfPossibleNegative[pi] > 1{
                     niStart[pi].removeLast()
                     numOfPossibleNegative[pi] -= 1
@@ -1789,9 +1740,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 break caseframe
             }
         } // end of caseframe
-            
+        
         else{
-            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+            sendNotification()
+//            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
             
         }
         
@@ -1813,7 +1765,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     process.remove(at: process.index(process.startIndex, offsetBy: lastEnterPosition, limitedBy: process.endIndex)!)
                 }
                 
-//                lastMovePP[eProcess].removeLast()
+                //                lastMovePP[eProcess].removeLast()
                 lastMoveOP[eProcess].removeLast()
                 numOfEnter[eProcess] -= 1
                 
@@ -1829,14 +1781,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         resultTextView.text = ""
         progressView.text = ""
         saveResult = nil
-//        floatingNumberDigits = nil
+        //        floatingNumberDigits = nil
         process = ""
     }
     
     func manualClear(){
         clear()
         saveResult = nil
-//        floatingNumberDigits = nil
+        //        floatingNumberDigits = nil
         process = ""
         progressView.text = process
     }
@@ -1899,7 +1851,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         sumOfUnitSizes = [0.0]
         pOfNumsAndOpers  = [""]
         
-//        lastMovePP = [[0],[0],[0]] // lastMove Process Position
+        //        lastMovePP = [[0],[0],[0]] // lastMove Process Position
         lastMoveOP = [[0],[0],[0]]
         numOfEnter = [0,0,0]
         dictionaryForLine = [Int : String]()
@@ -1945,7 +1897,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     }
                     continue processTillEmpty
                 }
-                    
+                
                 else if process[process.index(before:process.endIndex)] == "(" { // last char is "("
                     
                     process.removeLast()
@@ -1981,7 +1933,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         isNegativeSign.removeLast()
                         positionOfParen.removeLast()
                     }
-                        
+                    
                     else if numOfPossibleNegative[pi] > 1{
                         niStart[pi].removeLast()
                         numOfPossibleNegative[pi] -= 1
@@ -2008,7 +1960,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     sendNotification()
                     continue processTillEmpty
                 }
-                    
+                
                 else if process[process.index(before:process.endIndex)] == "+" || process[process.index(before:process.endIndex)] == "-" || process[process.index(before:process.endIndex)] == "×" || process[process.index(before:process.endIndex)] == "÷" { // "last char is + - * /"
                     
                     process.removeLast()
@@ -2081,13 +2033,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     func floatingNumberDecider(ans : Double) { // ans : result!
-//        let nf0 = NumberFormatter()
-//        nf0.roundingMode = .down
-//        nf0.maximumFractionDigits = 0
-        
-//        let nf6 = NumberFormatter()
-//        nf6.roundingMode = .down
-//        nf6.maximumFractionDigits = 6
+       
         
         var realAns = ans
         var dummyStrWithComma = ""
@@ -2192,11 +2138,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sumOfUnitSizes[setteroi] = sum
             }
         }
-        
-//        if pOfNumsAndOpers.count != pOfNumsAndOpersCount{
-            lineSetter()
-//            pOfNumsAndOpersCount = pOfNumsAndOpers.count
-//        }
+        lineSetter()
         
         progressView.text = process
         
@@ -2211,7 +2153,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         print("sumOfUnitSizes : \(sumOfUnitSizes)")
         print("pOfNumsAndOpers : \(pOfNumsAndOpers)")
         print("strForProcess : \(strForProcess)")
-//        print("positionOfLastMovePP : \(lastMovePP)")
+        //        print("positionOfLastMovePP : \(lastMovePP)")
         print("positionOfLastMoveOP : \(lastMoveOP)")
         
         print("numOfEnter : \(numOfEnter)")
@@ -2220,95 +2162,53 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
     }
     
-//    func lineSetter(){
-//        //        print("linesetter triggered!")
-//        var sumForEachProcess = 0.0
-//
-//        let eProcess = 0
-//        if setteroi >= 0{
-//
-//            if lastMoveOP[eProcess][numOfEnter[eProcess]] < setteroi{
-//                //잠시 막아둠(윗줄)
-//                oiLoop : for eODigit in lastMoveOP[eProcess][numOfEnter[eProcess]] ... setteroi{
-//
-//                    sumForEachProcess += sumOfUnitSizes[eODigit]// oi index
-//
-//                    if sumForEachProcess > 0.95 - 0.1{
-//                        let indexForpOfNumsAndOpers = pOfNumsAndOpers.lastIndex(of: "oper")! // 우선 이게 없을 수도 있는 수..
-//                        let lastOperator = (dictionaryForLine[indexForpOfNumsAndOpers]!)
-//                        var lastPositionToSave = process.lastIndexInt(of: Character(lastOperator))!
-//
-//                        small2 : for _ in 0 ... 5{
-//                            if String(process[lastPositionToSave - 1]) == "(" {
-//                                lastPositionToSave -= 2
-//                                if lastPositionToSave < 2 {break small2}
-//                            }else{break small2}
-//                        }
-//
-//                        process.insert("\n", at: process.index(process.startIndex, offsetBy: lastPositionToSave, limitedBy: process.endIndex)!)
-//
-//                        numOfEnter[eProcess] += 1
-//
-//                        if lastMoveOP[eProcess].count <= numOfEnter[eProcess]{
-//                            lastMoveOP[eProcess].append(0)
-//                        }
-//
-//                        lastMoveOP[eProcess][numOfEnter[eProcess]] =  indexForpOfNumsAndOpers + 1  //eODigit + 1
-//
-//                        sumForEachProcess = 0
-//                        break oiLoop
-//                    }
-//                }
-//            }
-//        }
-//    }
     
     func lineSetter(){
         var sumForEachProcess = 0.0
-
+        
         let eProcess = 0
         if setteroi >= 0{
-
+            
             if lastMoveOP[eProcess][numOfEnter[eProcess]] < setteroi{
-                //잠시 막아둠(윗줄)
+               
                 oiLoop : for eODigit in lastMoveOP[eProcess][numOfEnter[eProcess]] ... setteroi{
-
+                    
                     sumForEachProcess += sumOfUnitSizes[eODigit]// oi index
-
+                    
                     if sumForEachProcess > 0.95 - 0.1{
                         if let indexForpOfNumsAndOpers = pOfNumsAndOpers.lastIndex(of: "oper"){ // index of last operator
-print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
+                            print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                             let lastOperator = (dictionaryForLine[indexForpOfNumsAndOpers]!) // what is operator ?
                             var lastPositionToSave = process.lastIndexInt(of: Character(lastOperator))! //process의 index of that operator.
-
+                            
                             small2 : for _ in 0 ... 5{
                                 if String(process[lastPositionToSave - 1]) == "(" {
                                     lastPositionToSave -= 2
                                     if lastPositionToSave < 2 {break small2}
                                 }else{break small2}
                             }
-
-
+                            
+                            
                             numOfEnter[eProcess] += 1
-
+                            
                             if lastMoveOP[eProcess].count <= numOfEnter[eProcess]{
                                 lastMoveOP[eProcess].append(0)
                             }
-
+                            
                             if lastMoveOP[eProcess][numOfEnter[eProcess]-1] == indexForpOfNumsAndOpers + 1{
                                 lastMoveOP[eProcess].removeLast()
                                 numOfEnter[eProcess] -= 1
-//                                if indexForpOfNumsAndOpers + 2 <
-
+                                //                                if indexForpOfNumsAndOpers + 2 <
+                                
                                 break oiLoop
                             }
-
+                            
                             process.insert("\n", at: process.index(process.startIndex, offsetBy: lastPositionToSave, limitedBy: process.endIndex)!) // 그 위치에 \n 삽입.
-
+                            
                             lastMoveOP[eProcess][numOfEnter[eProcess]] = indexForpOfNumsAndOpers + 1
-
+                            
                             sumForEachProcess = 0
-
+                            
                             break oiLoop
                         }else{print("indexForpOfNumsAndOpers : nil")}
                     } // if sumForEachProcess > 0.95 - 0.1{
@@ -2353,14 +2253,14 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                     }
                     
                     if lastMoveOP[eProcess][numOfEnter[eProcess]-1] == lastOperatorPosition + 1{
-//                        lastMoveOP[eProcess].removeLast()
-//                        numOfEnter[eProcess] -= 1
+                        //                        lastMoveOP[eProcess].removeLast()
+                        //                        numOfEnter[eProcess] -= 1
                         if lastOperatorPosition + 2 < setteroi{
                             lastMoveOP[eProcess][numOfEnter[eProcess]] = lastOperatorPosition + 2
                         }else{
                             break startFor
                         }
-//                        break startFor
+                        //                        break startFor
                         continue startFor
                     }
                     
@@ -2369,9 +2269,9 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                     lastMoveOP[eProcess][numOfEnter[eProcess]] = lastOperatorPosition + 1
                     sumForEachProcess = 0
                     
-//                    if lastMoveOP[eProcess][numOfEnter[eProcess]] == lastMoveOP[eProcess][numOfEnter[eProcess]-1]{
-//                        break startFor
-//                    }
+                    //                    if lastMoveOP[eProcess][numOfEnter[eProcess]] == lastMoveOP[eProcess][numOfEnter[eProcess]-1]{
+                    //                        break startFor
+                    //                    }
                     
                     continue startFor
                 }
@@ -2455,7 +2355,7 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                     }
                 }
             }
-                
+            
             else { // -1000 < tempNum < 1000
                 mProcess = num2
             }
@@ -2671,6 +2571,8 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
         }
     }
     
+//    self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+    
     func defaultSetup(){
         if userDefaultSetup.getIsUserEverChanged(){
             isLightModeOn = userDefaultSetup.getIsLightModeOn()
@@ -2813,16 +2715,11 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
         }
         print("isAnsPressed : \(isAnsPressed)\n\n")
         
-        
-        //        print("process : \(process)")
         print("process : \(process)")
         print("oi : \(setteroi)")
         print("sumOfUnitSizes : \(sumOfUnitSizes)")
         print("pOfNumsAndOpers : \(pOfNumsAndOpers)")
-        //        print("dicForProcess : \(dicForProcess)")
         print("strForProcess : \(strForProcess)")
-        //        print("positionOfProperEnter : \(pOfProperEnter)")
-//        print("lastMovePP : \(lastMovePP)")
         print("lastMoveOP : \(lastMoveOP)")
         print("numOfEnter : \(numOfEnter)")
         print("dictionaryForLine : \(dictionaryForLine)")
@@ -2836,9 +2733,6 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
     }
     
     @objc func toHistory(sender : UIButton){
-        //print("toHistory baseVC")
-        //        let newController = HistoryRecordVC()
-        //        newTableVC
         let transition = CATransition()
         transition.duration = 0.3 // don't adjust it shorter. looks very weird!
         transition.type = CATransitionType.push
@@ -2849,214 +2743,70 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
     }
     
     
+    
     //MARK: - <# Main Functional Section Ends
     
     
     //MARK: - setup images transparent
-    var subHistory = UIImageView(image: #imageLiteral(resourceName: "transparent"))
+    var subHistory = transparentImage
     
-    var sub0 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub00 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub1 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub2 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub3 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub4 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub5 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub6 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub7 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub8 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var sub9 = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subDot = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    let subsubDot = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subPlus = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subMinus = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subMulti = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subDivide = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subClear = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subOpenpar = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subClosepar = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subEqual = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    
-    var subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subEx2Color = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subEx3Notification = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    var subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "transparent"))
+    var sub0 = transparentImage
+    var sub00 = transparentImage
+    var sub1 = transparentImage
+    var sub2 = transparentImage
+    var sub3 = transparentImage
+    var sub4 = transparentImage
+    var sub5 = transparentImage
+    var sub6 = transparentImage
+    var sub7 = transparentImage
+    var sub8 = transparentImage
+    var sub9 = transparentImage
+    var subDot = transparentImage
+    let subsubDot = transparentImage
+    var subPlus = transparentImage
+    var subMinus = transparentImage
+    var subMulti = transparentImage
+    var subDivide = transparentImage
+    var subClear = transparentImage
+    var subOpenpar = transparentImage
+    var subClosepar = transparentImage
+    var subEqual = transparentImage
+
+    var subEx1Sound = transparentImage
+    var subEx2Color = transparentImage
+    var subEx3Notification = transparentImage
+    var subEx4Feedback = transparentImage
     // those are all transparent!
     
     //MARK: - <#UI Section starts
     
-    let num0 : UIButton = {
-        let n0 = UIButton(type: .custom)
-        n0.translatesAutoresizingMaskIntoConstraints = false
-        n0.tag = 0
-        return n0
-    }()
     
-    let num1 : UIButton = {
-        let n1 = UIButton(type: .custom)
-        n1.translatesAutoresizingMaskIntoConstraints = false
-        n1.tag = 1
-        return n1
-    }()
-    
-    let num2 : UIButton = {
-        let n2 = UIButton(type: .custom)
-        
-        n2.translatesAutoresizingMaskIntoConstraints = false
-        n2.tag = 2
-        return n2
-    }()
-    
-    let num3 : UIButton = {
-        let n3 = UIButton(type: .custom)
-        n3.translatesAutoresizingMaskIntoConstraints = false
-        n3.tag = 3
-        return n3
-    }()
-    
-    let num4 : UIButton = {
-        let n4 = UIButton(type: .custom)
-        n4.translatesAutoresizingMaskIntoConstraints = false
-        n4.tag = 4
-        return n4
-    }()
-    
-    let num5 : UIButton = {
-        let n5 = UIButton(type: .custom)
-        n5.translatesAutoresizingMaskIntoConstraints = false
-        n5.tag = 5
-        return n5
-    }()
-    
-    let num6 : UIButton = {
-        let n6 = UIButton(type: .custom)
-        n6.translatesAutoresizingMaskIntoConstraints = false
-        n6.tag = 6
-        return n6
-    }()
-    
-    let num7 : UIButton = {
-        let n7 = UIButton(type: .custom)
-        n7.translatesAutoresizingMaskIntoConstraints = false
-        n7.tag = 7
-        return n7
-    }()
-    
-    let num8 : UIButton = {
-        let n8 = UIButton(type: .custom)
-        n8.translatesAutoresizingMaskIntoConstraints = false
-        n8.tag = 8
-        return n8
-    }()
-    
-    let num9 : UIButton = {
-        let n9 = UIButton(type: .custom)
-        n9.translatesAutoresizingMaskIntoConstraints = false
-        n9.tag = 9
-        return n9
-    }()
-    
-    let num00 : UIButton = {
-        let n00 = UIButton(type: .custom)
-        n00.translatesAutoresizingMaskIntoConstraints = false
-        n00.tag = -1
-        return n00
-    }()
-    
-    let numberDot : UIButton = {
-        let nDot = UIButton(type: .custom)
-        nDot.translatesAutoresizingMaskIntoConstraints = false
-        nDot.tag = -2
-        return nDot
-    }()
-    
-    let clearButton : UIButton = {
-        let clearbutton = UIButton(type: .custom)
-        clearbutton.translatesAutoresizingMaskIntoConstraints = false
-        clearbutton.tag = 11
-        return clearbutton
-    }()
-    
-    let openParenthesis : UIButton = {
-        let opar = UIButton(type: .custom)
-        opar.translatesAutoresizingMaskIntoConstraints = false
-        opar.tag = 12
-        return opar
-    }()
-    
-    let closeParenthesis : UIButton = {
-        let cpar = UIButton(type: .custom)
-        cpar.translatesAutoresizingMaskIntoConstraints = false
-        cpar.tag = 13
-        return cpar
-    }()
-    
-    let operationButtonDivide : UIButton = {
-        let divide = UIButton(type: .custom)
-        divide.translatesAutoresizingMaskIntoConstraints = false
-        divide.tag = 14
-        return divide
-    }()
-    
-    let operationButtonMultiply : UIButton = {
-        let multiply = UIButton(type: .custom)
-        multiply.translatesAutoresizingMaskIntoConstraints = false
-        multiply.tag = 15
-        return multiply
-    }()
-    
-    let operationButtonPlus : UIButton = {
-        let plus = UIButton(type: .custom)
-        plus.translatesAutoresizingMaskIntoConstraints = false
-        plus.tag = 16
-        return plus
-    }()
-    
-    let operationButtonMinus : UIButton = {
-        let minus = UIButton(type: .custom)
-        minus.translatesAutoresizingMaskIntoConstraints = false
-        minus.tag = 17
-        return minus
-    }()
-    
-    let equalButton : UIButton = {
-        let equal = UIButton(type: .custom)
-        equal.translatesAutoresizingMaskIntoConstraints = false
-        equal.tag = 18
-        return equal
-    }()
-    
-    // set numbers and operators layer borderWidth and Color on 2 lines.
+    let num0 = ButtonTag(withTag: 0)
+    let num1 = ButtonTag(withTag: 1)
+    let num2 = ButtonTag(withTag: 2)
+    let num3 = ButtonTag(withTag: 3)
+    let num4 = ButtonTag(withTag: 4)
+    let num5 = ButtonTag(withTag: 5)
+    let num6 = ButtonTag(withTag: 6)
+    let num7 = ButtonTag(withTag: 7)
+    let num8 = ButtonTag(withTag: 8)
+    let num9 = ButtonTag(withTag: 9)
+    let num00 = ButtonTag(withTag: -1)
     
     
-    let extra1 : UIButton = {
-        let ex1 = UIButton(type: .custom)
-        ex1.translatesAutoresizingMaskIntoConstraints = false
-        ex1.tag = 31
-        return ex1
-    }()
-    
-    let extra2 : UIButton = {
-        let ex2 = UIButton(type: .custom)
-        ex2.translatesAutoresizingMaskIntoConstraints = false
-        ex2.tag = 32
-        return ex2
-    }()
-    
-    let extra3 : UIButton = {
-        let ex3 = UIButton(type: .custom)
-        ex3.translatesAutoresizingMaskIntoConstraints = false
-        ex3.tag = 33
-        return ex3
-    }()
-    
-    let extra4 : UIButton = {
-        let ex4 = UIButton(type: .custom)
-        ex4.translatesAutoresizingMaskIntoConstraints = false
-        ex4.tag = 34
-        return ex4
-    }()
-    
+    let numberDot = ButtonTag(withTag: -2)
+    let clearButton = ButtonTag(withTag: 11)
+    let openParenthesis = ButtonTag(withTag: 12)
+    let closeParenthesis = ButtonTag(withTag: 13)
+    let operationButtonDivide = ButtonTag(withTag: 14)
+    let operationButtonMultiply = ButtonTag(withTag: 15)
+    let operationButtonPlus = ButtonTag(withTag: 16)
+    let operationButtonMinus = ButtonTag(withTag: 17)
+    let equalButton = ButtonTag(withTag: 18)
+    let extra1 = ButtonTag(withTag: 31)
+    let extra2 = ButtonTag(withTag: 32)
+    let extra3 = ButtonTag(withTag: 33)
+    let extra4 = ButtonTag(withTag: 34)
     let deleteButton : UIButton = {
         let del = UIButton(type: .custom)
         del.translatesAutoresizingMaskIntoConstraints = false
@@ -3065,10 +2815,7 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
         let sub = UIImageView(image: #imageLiteral(resourceName: "delD")) // delete Image.
         del.addSubview(sub)
         
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        sub.centerXAnchor.constraint(equalTo: del.centerXAnchor).isActive = true
-        sub.centerYAnchor.constraint(equalTo: del.centerYAnchor).isActive = true
-        //        sub.widthAnchor.constraint(equalTo: del.widthAnchor, multiplier: 0.5).isActive = true
+        sub.center(inView: del)
         sub.widthAnchor.constraint(equalTo: del.heightAnchor, multiplier: 0.5625).isActive = true
         sub.heightAnchor.constraint(equalTo: del.heightAnchor, multiplier: 0.5).isActive = true
         
@@ -3088,11 +2835,8 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
         result.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         result.adjustsFontForContentSizeCategory = true
         result.textContainer.maximumNumberOfLines = 1
-        //        result.sizeToFit()
-        //        result.zoomScale = 0.5
         result.isUserInteractionEnabled = true
         result.isEditable = false
-        //        result.sizeToFit()
         
         return result
     }()
@@ -3172,7 +2916,7 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
     //MARK: - <#UI Section Not Included Any Function End.
     
     func setupPositionLayout(){
-       
+        
         // frameView = UIView()
         for subview in frameView.subviews{
             subview.removeFromSuperview()
@@ -3203,14 +2947,12 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                 button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.108).isActive = true
             }
         }else if !isOrientationPortrait{ // LandScape Mode
-           
+            
             //right side (calculator)
             view.addSubview(rightSideForLandscapeMode)
-            rightSideForLandscapeMode.translatesAutoresizingMaskIntoConstraints = false
-            rightSideForLandscapeMode.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            
+            rightSideForLandscapeMode.anchor(top: view.topAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
             rightSideForLandscapeMode.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.562).isActive = true
-            rightSideForLandscapeMode.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            rightSideForLandscapeMode.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
             
             //what are these lines?
             frameView = rightSideForLandscapeMode as UIView
@@ -3218,12 +2960,11 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             
             //additional setup for tableView at the left side.
             view.addSubview(leftSideForLandscapeMode)
-            leftSideForLandscapeMode.translatesAutoresizingMaskIntoConstraints = false
-            leftSideForLandscapeMode.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+
+            leftSideForLandscapeMode.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor)
             leftSideForLandscapeMode.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.438).isActive = true
-            leftSideForLandscapeMode.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            leftSideForLandscapeMode.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
             
+
             
             addChild(childTableVC)
             //            adds the specified ViewController as a child of current view controller
@@ -3231,12 +2972,12 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             //            childTableVC.didMove(toParent: self)
             //            Called after the view controller is added or removed from a container view controller.
             
-            childTableVC.view.translatesAutoresizingMaskIntoConstraints = false
-            childTableVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            childTableVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            childTableVC.view.anchor(left: view.leftAnchor, bottom: view.bottomAnchor)
             childTableVC.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.438).isActive = true
             childTableVC.view.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
             //            childTableVC.backgroundColo
+            
+
         }
         
         
@@ -3271,11 +3012,12 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                 button.bottomAnchor.constraint(equalTo: extra1.topAnchor).isActive = true
             }
             
-            extra1.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
-            extra2.leftAnchor.constraint(equalTo: extra1.rightAnchor).isActive = true
-            extra3.leftAnchor.constraint(equalTo: extra2.rightAnchor).isActive = true
-            extra4.leftAnchor.constraint(equalTo: extra3.rightAnchor).isActive = true
-            extra4.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            extra1.anchor(left: frameView.leftAnchor)
+            extra2.anchor(left: extra1.rightAnchor)
+            extra3.anchor(left: extra2.rightAnchor)
+            extra4.anchor(left: extra3.rightAnchor, right: frameView.rightAnchor)
+            
+          
             
         }else {
             
@@ -3327,10 +3069,8 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
         frameView.addSubview(progressView)
         
         if isOrientationPortrait{
+            emptySpace.anchor(top: frameView.topAnchor, left: frameView.leftAnchor, right: frameView.rightAnchor)
             emptySpace.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.352).isActive = true
-            emptySpace.topAnchor.constraint(equalTo: frameView.topAnchor).isActive = true
-            emptySpace.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
-            emptySpace.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
             
             // only applied to portrait Mode
             
@@ -3378,19 +3118,14 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             // only applied to portrait Mode
             
             deleteWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
-            //            deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.122).isActive = true
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.032).isActive = true
             
             deleteHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
-            //            deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.20).isActive = true
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.0171*k)).isActive = true
             
-            //            deleteButton.centerXAnchor.constraint(equalTo: deleteWidthReference.leftAnchor).isActive = true
             deleteButton.rightAnchor.constraint(equalTo: deleteWidthReference.leftAnchor).isActive = true
-            //            deleteButton.centerYAnchor.constraint(equalTo: deleteHeightReference.topAnchor).isActive = true
             deleteButton.bottomAnchor.constraint(equalTo: deleteHeightReference.topAnchor).isActive = true
             deleteButton.widthAnchor.constraint(equalTo: emptySpace.widthAnchor, multiplier: 0.18).isActive = true
-            //            deleteButton.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.255).isActive = true
             deleteButton.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.386364*k)).isActive = true
             
             
@@ -3419,26 +3154,18 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             resultTextView.leftAnchor.constraint(equalTo: emptySpace.leftAnchor).isActive = true
             resultTextView.rightAnchor.constraint(equalTo: resultWidthReference.leftAnchor).isActive = true
             
-            
-            
         }
         
         if isOrientationPortrait{
             frameView.addSubview(historyDragButton)
             frameView.addSubview(historyClickButton)
-            historyClickButton.translatesAutoresizingMaskIntoConstraints = false
-            historyClickButton.bottomAnchor.constraint(equalTo: resultTextView.topAnchor).isActive = true
-            historyClickButton.topAnchor.constraint(equalTo:frameView.safeTopAnchor ).isActive = true // 요기
             
-            historyClickButton.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
-            historyClickButton.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
             
-            historyDragButton.translatesAutoresizingMaskIntoConstraints = false
-            historyDragButton.topAnchor.constraint(equalTo: frameView.safeTopAnchor).isActive = true
-            
-            historyDragButton.bottomAnchor.constraint(equalTo: resultTextView.bottomAnchor).isActive = true
-            historyDragButton.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
-            historyDragButton.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            historyClickButton.anchor(top: frameView.safeTopAnchor,left: view.leftAnchor, paddingTop: 5, paddingLeft: 30 )
+            historyClickButton.setDimensions(width: 40, height: 40)
+
+            historyDragButton.anchor(top: frameView.safeTopAnchor, left: view.leftAnchor, paddingLeft: 30)
+            historyDragButton.setDimensions(width: 40, height: 40)
         }
         
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!)
@@ -3490,20 +3217,208 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
     }
     
     
+    fileprivate func setButtonImageInLightMode() {
+        
+        
+        
+        sub0 = light0
+        sub1 = light1
+        
+        sub2 = light2
+        sub3 = light3
+        
+        sub4 = light4
+        sub5 = light5
+        sub6 = light6
+        sub7 = light7
+        sub8 = light8
+        sub9 = light9
+        sub00 = light00
+        subDot = lightDot
+        subClear = lightClear
+        subOpenpar = lightOpenParen
+        subClosepar = lightCloseParen
+        
+        subDivide = lightDivide
+        subMulti = lightTimes
+        subPlus = lightPlus
+        subMinus = lightSubtract
+        subEqual = lightEqual
+        
+        subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
+        subEx2Color = UIImageView(image: #imageLiteral(resourceName: "white_to_dark"))
+        subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "whitemode_review"))
+    }
+    
+    fileprivate func setButtonImageInDarkMode() {
+        
+        
+        sub0 = dark0
+        sub1 = dark1
+        
+        sub2 = dark2
+        sub3 = dark3
+        
+        sub4 = dark4
+        sub5 = dark5
+        sub6 = dark6
+        sub7 = dark7
+        sub8 = dark8
+        sub9 = dark9
+        sub00 = dark00
+        subDot = darkDot
+        subClear = darkClear
+        subOpenpar = darkOpenParen
+        subClosepar = darkCloseParen
+        
+        subDivide = darkDivide
+        subMulti = darkTimes
+        subPlus = darkPlus
+        subMinus = darkSubtract
+        subEqual = darkEqual
+        
+        subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
+        subEx2Color = UIImageView(image: #imageLiteral(resourceName: "dark_to_white"))
+        subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "darkmode_review"))
+    }
+    
+    fileprivate func setButtonPositionAndSize(_ modifiedWidth: inout [Double]) {
+        num0.addSubview(sub0)
+        sub0.center(inView: num0)
+        sub0.widthAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(modifiedWidth[0])).isActive = true
+        sub0.heightAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(heights[0])).isActive = true
+        
+        num1.addSubview(sub1)
+        sub1.center(inView: num1)
+        sub1.widthAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(modifiedWidth[1])).isActive = true
+        sub1.heightAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(heights[1])).isActive = true
+        
+        num2.addSubview(sub2)
+        sub2.center(inView: num2)
+        sub2.widthAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(modifiedWidth[2])).isActive = true
+        sub2.heightAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(heights[2])).isActive = true
+        
+        num3.addSubview(sub3)
+        sub3.center(inView: num3)
+        sub3.widthAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(modifiedWidth[3])).isActive = true
+        sub3.heightAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(heights[3])).isActive = true
+        
+        num4.addSubview(sub4)
+        sub4.center(inView: num4)
+        sub4.widthAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(modifiedWidth[4])).isActive = true
+        sub4.heightAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(heights[4])).isActive = true
+        
+        num5.addSubview(sub5)
+        sub5.center(inView: num5)
+        sub5.widthAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(modifiedWidth[5])).isActive = true
+        sub5.heightAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(heights[5])).isActive = true
+        
+        num6.addSubview(sub6)
+        sub6.center(inView: num6)
+        sub6.widthAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(modifiedWidth[6])).isActive = true
+        sub6.heightAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(heights[6])).isActive = true
+        
+        num7.addSubview(sub7)
+        sub7.center(inView: num7)
+        sub7.widthAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(modifiedWidth[7])).isActive = true
+        sub7.heightAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(heights[7])).isActive = true
+        
+        num8.addSubview(sub8)
+        sub8.center(inView: num8)
+        sub8.widthAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(modifiedWidth[8])).isActive = true
+        sub8.heightAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(heights[8])).isActive = true
+        
+        num9.addSubview(sub9)
+        sub9.center(inView: num9)
+        sub9.widthAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(modifiedWidth[9])).isActive = true
+        sub9.heightAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(heights[9])).isActive = true
+        
+        num00.addSubview(sub00)
+        sub00.center(inView: num00)
+        sub00.widthAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(modifiedWidth[10])).isActive = true
+        sub00.heightAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(heights[10])).isActive = true
+        
+        numberDot.addSubview(subsubDot)
+        subsubDot.anchor(left: numberDot.leftAnchor, bottom: numberDot.bottomAnchor, right: numberDot.rightAnchor)
+        subsubDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: 0.385).isActive = true
+        
+        
+        
+        numberDot.addSubview(subDot)
+        subDot.centerX(inView: numberDot)
+        subDot.anchor(bottom: subsubDot.topAnchor)
+        subDot.widthAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(modifiedWidth[11])).isActive = true
+        subDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(heights[11])).isActive = true
+        
+        
+        clearButton.addSubview(subClear)
+        subClear.center(inView: clearButton)
+        subClear.widthAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(modifiedWidth[12])).isActive = true
+        subClear.heightAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(heights[12])).isActive = true
+        
+        
+        openParenthesis.addSubview(subOpenpar)
+        subOpenpar.center(inView: openParenthesis)
+        subOpenpar.widthAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[13])).isActive = true
+        subOpenpar.heightAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(heights[13])).isActive = true
+        
+        closeParenthesis.addSubview(subClosepar)
+        subClosepar.center(inView: closeParenthesis)
+        subClosepar.widthAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[14])).isActive = true
+        subClosepar.heightAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(heights[14])).isActive = true
+        
+        operationButtonDivide.addSubview(subDivide)
+        subDivide.center(inView: operationButtonDivide)
+        subDivide.widthAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(modifiedWidth[15])).isActive = true
+        subDivide.heightAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(heights[15])).isActive = true
+        
+        operationButtonMultiply.addSubview(subMulti)
+        subMulti.center(inView: operationButtonMultiply)
+        subMulti.widthAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(modifiedWidth[16])).isActive = true
+        subMulti.heightAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(heights[16])).isActive = true
+        
+        operationButtonPlus.addSubview(subPlus)
+        subPlus.center(inView: operationButtonPlus)
+        subPlus.widthAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(modifiedWidth[17])).isActive = true
+        subPlus.heightAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(heights[17])).isActive = true
+        
+        operationButtonMinus.addSubview(subMinus)
+        subMinus.center(inView: operationButtonMinus)
+        subMinus.widthAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(modifiedWidth[18])).isActive = true
+        subMinus.heightAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(heights[18])).isActive = true
+        
+        equalButton.addSubview(subEqual)
+        subEqual.center(inView: equalButton)
+        subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
+        subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
+        
+        extra2.addSubview(subEx2Color)
+        subEx2Color.center(inView: extra2)
+        subEx2Color.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
+        subEx2Color.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        
+        extra4.addSubview(subEx4Feedback)
+        subEx4Feedback.center(inView: extra4)
+        subEx4Feedback.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
+        subEx4Feedback.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+    }
+    
     func colorAndImageSetup(){
         
-        let ratio = 1.3
+//        var ratio = 1.3
+//        ratio = 1.3 * 1.15 * 0.7
+//        let ratio = 1.0465
         
         let numsAndOpers = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num00,numberDot,clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply, operationButtonPlus,operationButtonMinus,equalButton]
-        
-        let widths = [0.12, 0.12*0.6, 0.12, 0.12, 0.12*1.05, 0.12*0.98,0.12,0.12,0.12,0.12,1.9*0.12,0.2*0.12,0.13*1.05, 0.12*0.5, 0.12*0.5,0.13*1.15,0.14*1.2,0.13,0.13,0.14 ] // for numsAndOpers.
         
         var modifiedWidth = [Double]()
         
         for widthElement in widths{
             modifiedWidth.append(widthElement * ratio)
         }
-        let heights =  [0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*0.3,0.13*1.9,0.12*2.45,0.12*2.45,0.13*1.5,0.14*1.9,0.13*1.3,0.13*0.2,0.14*0.8] // for numsAndOpers
+        
+
+        
         
         let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot,progressView,resultTextView,emptySpace]
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
@@ -3521,32 +3436,11 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             }
             deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
             
-            subHistory = UIImageView(image: #imageLiteral(resourceName: "historyC"))
+           
+
             
-            sub0 = UIImageView(image: #imageLiteral(resourceName: "0C"))
-            sub1 = UIImageView(image: #imageLiteral(resourceName: "1C"))
-            sub2 = UIImageView(image: #imageLiteral(resourceName: "2C"))
-            sub3 = UIImageView(image: #imageLiteral(resourceName: "3C"))
-            sub4 = UIImageView(image: #imageLiteral(resourceName: "4C"))
-            sub5 = UIImageView(image: #imageLiteral(resourceName: "5C"))
-            sub6 = UIImageView(image: #imageLiteral(resourceName: "6C"))
-            sub7 = UIImageView(image: #imageLiteral(resourceName: "7C"))
-            sub8 = UIImageView(image: #imageLiteral(resourceName: "8C"))
-            sub9 = UIImageView(image: #imageLiteral(resourceName: "9C"))
-            sub00 = UIImageView(image: #imageLiteral(resourceName: "00C"))
-            subDot = UIImageView(image: #imageLiteral(resourceName: "dotC"))
             
-            subClear = UIImageView(image: #imageLiteral(resourceName: "CC"))
-            subOpenpar = UIImageView(image: #imageLiteral(resourceName: "(C"))
-            subClosepar = UIImageView(image: #imageLiteral(resourceName: ")C"))
-            subDivide = UIImageView(image: #imageLiteral(resourceName: "÷C"))
-            subMulti = UIImageView(image: #imageLiteral(resourceName: "xC"))
-            subPlus = UIImageView(image: #imageLiteral(resourceName: "+C"))
-            subMinus = UIImageView(image: #imageLiteral(resourceName: "–C"))
-            subEqual = UIImageView(image: #imageLiteral(resourceName: "=C"))
-            
-            subEx2Color = UIImageView(image: #imageLiteral(resourceName: "etcColorModeChangeToDark"))
-            subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "etcFeedbackLight"))
+            setButtonImageInLightMode()
             
             
             for view in subHistory.subviews{
@@ -3565,215 +3459,14 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
                 }
             }
             historyClickButton.addSubview(subHistory)
-            subHistory.translatesAutoresizingMaskIntoConstraints = false
-            subHistory.centerXAnchor.constraint(equalTo: historyClickButton.centerXAnchor).isActive = true
-            subHistory.topAnchor.constraint(equalTo: historyClickButton.topAnchor).isActive = true
-            subHistory.widthAnchor.constraint(equalTo: historyClickButton.widthAnchor, multiplier: 0.6).isActive = true
-            subHistory.heightAnchor.constraint(equalToConstant: 15).isActive = true
+    
+            subHistory.fillSuperview()
             
-            num0.addSubview(sub0)
-            sub0.translatesAutoresizingMaskIntoConstraints = false
-            sub0.centerXAnchor.constraint(equalTo: num0.centerXAnchor).isActive = true
-            sub0.centerYAnchor.constraint(equalTo: num0.centerYAnchor).isActive = true
-            sub0.widthAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(modifiedWidth[0])).isActive = true
-            sub0.heightAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(heights[0])).isActive = true
+            setButtonPositionAndSize(&modifiedWidth)
             
-            num1.addSubview(sub1)
-            sub1.translatesAutoresizingMaskIntoConstraints = false
-            sub1.centerXAnchor.constraint(equalTo: num1.centerXAnchor).isActive = true
-            sub1.centerYAnchor.constraint(equalTo: num1.centerYAnchor).isActive = true
-            sub1.widthAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(modifiedWidth[1])).isActive = true
-            sub1.heightAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(heights[1])).isActive = true
+            subEx1Sound = isSoundOn ? ex1OnLight : ex1OffLight
+            subEx3Notification = isNotificationOn ? ex3OnLight : ex3OffLight
             
-            num2.addSubview(sub2)
-            sub2.translatesAutoresizingMaskIntoConstraints = false
-            sub2.centerXAnchor.constraint(equalTo: num2.centerXAnchor).isActive = true
-            sub2.centerYAnchor.constraint(equalTo: num2.centerYAnchor).isActive = true
-            sub2.widthAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(modifiedWidth[2])).isActive = true
-            sub2.heightAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(heights[2])).isActive = true
-            
-            num3.addSubview(sub3)
-            sub3.translatesAutoresizingMaskIntoConstraints = false
-            sub3.centerXAnchor.constraint(equalTo: num3.centerXAnchor).isActive = true
-            sub3.centerYAnchor.constraint(equalTo: num3.centerYAnchor).isActive = true
-            sub3.widthAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(modifiedWidth[3])).isActive = true
-            sub3.heightAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(heights[3])).isActive = true
-            //
-            num4.addSubview(sub4)
-            sub4.translatesAutoresizingMaskIntoConstraints = false
-            sub4.centerXAnchor.constraint(equalTo: num4.centerXAnchor).isActive = true
-            sub4.centerYAnchor.constraint(equalTo: num4.centerYAnchor).isActive = true
-            sub4.widthAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(modifiedWidth[4])).isActive = true
-            sub4.heightAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(heights[4])).isActive = true
-            //
-            num5.addSubview(sub5)
-            sub5.translatesAutoresizingMaskIntoConstraints = false
-            sub5.centerXAnchor.constraint(equalTo: num5.centerXAnchor).isActive = true
-            sub5.centerYAnchor.constraint(equalTo: num5.centerYAnchor).isActive = true
-            sub5.widthAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(modifiedWidth[5])).isActive = true
-            sub5.heightAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(heights[5])).isActive = true
-            //
-            num6.addSubview(sub6)
-            sub6.translatesAutoresizingMaskIntoConstraints = false
-            sub6.centerXAnchor.constraint(equalTo: num6.centerXAnchor).isActive = true
-            sub6.centerYAnchor.constraint(equalTo: num6.centerYAnchor).isActive = true
-            sub6.widthAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(modifiedWidth[6])).isActive = true
-            sub6.heightAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(heights[6])).isActive = true
-            
-            num7.addSubview(sub7)
-            sub7.translatesAutoresizingMaskIntoConstraints = false
-            sub7.centerXAnchor.constraint(equalTo: num7.centerXAnchor).isActive = true
-            sub7.centerYAnchor.constraint(equalTo: num7.centerYAnchor).isActive = true
-            sub7.widthAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(modifiedWidth[7])).isActive = true
-            sub7.heightAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(heights[7])).isActive = true
-            
-            num8.addSubview(sub8)
-            sub8.translatesAutoresizingMaskIntoConstraints = false
-            sub8.centerXAnchor.constraint(equalTo: num8.centerXAnchor).isActive = true
-            sub8.centerYAnchor.constraint(equalTo: num8.centerYAnchor).isActive = true
-            sub8.widthAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(modifiedWidth[8])).isActive = true
-            sub8.heightAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(heights[8])).isActive = true
-            
-            num9.addSubview(sub9)
-            sub9.translatesAutoresizingMaskIntoConstraints = false
-            sub9.centerXAnchor.constraint(equalTo: num9.centerXAnchor).isActive = true
-            sub9.centerYAnchor.constraint(equalTo: num9.centerYAnchor).isActive = true
-            sub9.widthAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(modifiedWidth[9])).isActive = true
-            sub9.heightAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(heights[9])).isActive = true
-            
-            num00.addSubview(sub00)
-            sub00.translatesAutoresizingMaskIntoConstraints = false
-            sub00.centerXAnchor.constraint(equalTo: num00.centerXAnchor).isActive = true
-            sub00.centerYAnchor.constraint(equalTo: num00.centerYAnchor).isActive = true
-            sub00.widthAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(modifiedWidth[10])).isActive = true
-            sub00.heightAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(heights[10])).isActive = true
-            
-            numberDot.addSubview(subsubDot)
-            subsubDot.translatesAutoresizingMaskIntoConstraints = false
-            subsubDot.bottomAnchor.constraint(equalTo: numberDot.bottomAnchor).isActive = true
-            subsubDot.leftAnchor.constraint(equalTo: numberDot.leftAnchor).isActive = true
-            subsubDot.rightAnchor.constraint(equalTo: numberDot.rightAnchor).isActive = true
-            subsubDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: 0.385).isActive = true
-            
-            
-            numberDot.addSubview(subDot)
-            subDot.translatesAutoresizingMaskIntoConstraints = false
-            subDot.centerXAnchor.constraint(equalTo: numberDot.centerXAnchor).isActive = true
-//            subDot.centerYAnchor.constraint(equalTo: numberDot.centerYAnchor).isActive = true
-            subDot.bottomAnchor.constraint(equalTo: subsubDot.topAnchor).isActive = true
-            subDot.widthAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(modifiedWidth[11])).isActive = true
-            subDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(heights[11])).isActive = true
-            
-            
-            clearButton.addSubview(subClear)
-            subClear.translatesAutoresizingMaskIntoConstraints = false
-            subClear.centerXAnchor.constraint(equalTo: clearButton.centerXAnchor).isActive = true
-            subClear.centerYAnchor.constraint(equalTo: clearButton.centerYAnchor).isActive = true
-            subClear.widthAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(modifiedWidth[12])).isActive = true
-            subClear.heightAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(heights[12])).isActive = true
-            
-            
-            openParenthesis.addSubview(subOpenpar)
-            subOpenpar.translatesAutoresizingMaskIntoConstraints = false
-            subOpenpar.centerXAnchor.constraint(equalTo: openParenthesis.centerXAnchor).isActive = true
-            subOpenpar.centerYAnchor.constraint(equalTo: openParenthesis.centerYAnchor).isActive = true
-            subOpenpar.widthAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[13])).isActive = true
-            subOpenpar.heightAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(heights[13])).isActive = true
-            
-            closeParenthesis.addSubview(subClosepar)
-            subClosepar.translatesAutoresizingMaskIntoConstraints = false
-            subClosepar.centerXAnchor.constraint(equalTo: closeParenthesis.centerXAnchor).isActive = true
-            subClosepar.centerYAnchor.constraint(equalTo: closeParenthesis.centerYAnchor).isActive = true
-            subClosepar.widthAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[14])).isActive = true
-            subClosepar.heightAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(heights[14])).isActive = true
-            
-            operationButtonDivide.addSubview(subDivide)
-            subDivide.translatesAutoresizingMaskIntoConstraints = false
-            subDivide.centerXAnchor.constraint(equalTo: operationButtonDivide.centerXAnchor).isActive = true
-            subDivide.centerYAnchor.constraint(equalTo: operationButtonDivide.centerYAnchor).isActive = true
-            subDivide.widthAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(modifiedWidth[15])).isActive = true
-            subDivide.heightAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(heights[15])).isActive = true
-            
-            operationButtonMultiply.addSubview(subMulti)
-            subMulti.translatesAutoresizingMaskIntoConstraints = false
-            subMulti.centerXAnchor.constraint(equalTo: operationButtonMultiply.centerXAnchor).isActive = true
-            subMulti.centerYAnchor.constraint(equalTo: operationButtonMultiply.centerYAnchor).isActive = true
-            subMulti.widthAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(modifiedWidth[16])).isActive = true
-            subMulti.heightAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(heights[16])).isActive = true
-            
-            operationButtonPlus.addSubview(subPlus)
-            subPlus.translatesAutoresizingMaskIntoConstraints = false
-            subPlus.centerXAnchor.constraint(equalTo: operationButtonPlus.centerXAnchor).isActive = true
-            subPlus.centerYAnchor.constraint(equalTo: operationButtonPlus.centerYAnchor).isActive = true
-            subPlus.widthAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(modifiedWidth[17])).isActive = true
-            subPlus.heightAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(heights[17])).isActive = true
-            
-            operationButtonMinus.addSubview(subMinus)
-            subMinus.translatesAutoresizingMaskIntoConstraints = false
-            subMinus.centerXAnchor.constraint(equalTo: operationButtonMinus.centerXAnchor).isActive = true
-            subMinus.centerYAnchor.constraint(equalTo: operationButtonMinus.centerYAnchor).isActive = true
-            subMinus.widthAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(modifiedWidth[18])).isActive = true
-            subMinus.heightAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(heights[18])).isActive = true
-            
-            equalButton.addSubview(subEqual)
-            subEqual.translatesAutoresizingMaskIntoConstraints = false
-            subEqual.centerXAnchor.constraint(equalTo: equalButton.centerXAnchor).isActive = true
-            subEqual.centerYAnchor.constraint(equalTo: equalButton.centerYAnchor).isActive = true
-            subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
-            subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
-            
-            extra2.addSubview(subEx2Color)
-            subEx2Color.translatesAutoresizingMaskIntoConstraints = false
-            subEx2Color.centerXAnchor.constraint(equalTo: extra2.centerXAnchor).isActive = true
-            subEx2Color.centerYAnchor.constraint(equalTo: extra2.centerYAnchor).isActive = true
-            subEx2Color.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
-            subEx2Color.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            
-            extra4.addSubview(subEx4Feedback)
-            subEx4Feedback.translatesAutoresizingMaskIntoConstraints = false
-            subEx4Feedback.centerXAnchor.constraint(equalTo: extra4.centerXAnchor).isActive = true
-            subEx4Feedback.centerYAnchor.constraint(equalTo: extra4.centerYAnchor).isActive = true
-            subEx4Feedback.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
-            subEx4Feedback.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            
-            
-            if isSoundOn{
-                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "etcSoundsOnLight"))// light and Sound On
-//                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "sampleSoundOn"))// light and Sound On
-                extra1.addSubview(subEx1Sound)
-                subEx1Sound.translatesAutoresizingMaskIntoConstraints = false
-                subEx1Sound.centerXAnchor.constraint(equalTo: extra1.centerXAnchor).isActive = true
-                subEx1Sound.centerYAnchor.constraint(equalTo: extra1.centerYAnchor).isActive = true
-                subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }else{
-                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "etcSoundsOffLight"))// light and Sound Off
-//                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "sampleSoundOff"))// light and Sound Off
-                extra1.addSubview(subEx1Sound)
-                subEx1Sound.translatesAutoresizingMaskIntoConstraints = false
-                subEx1Sound.centerXAnchor.constraint(equalTo: extra1.centerXAnchor).isActive = true
-                subEx1Sound.centerYAnchor.constraint(equalTo: extra1.centerYAnchor).isActive = true
-                subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }
-            
-            if isNotificationOn{
-                subEx3Notification = UIImageView(image: #imageLiteral(resourceName: "etcNotificationOnLight")) // light and Notification On
-                extra3.addSubview(subEx3Notification)
-                subEx3Notification.translatesAutoresizingMaskIntoConstraints = false
-                subEx3Notification.centerXAnchor.constraint(equalTo: extra3.centerXAnchor).isActive = true
-                subEx3Notification.centerYAnchor.constraint(equalTo: extra3.centerYAnchor).isActive = true
-                subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }else{
-                subEx3Notification = UIImageView(image: #imageLiteral(resourceName: "etcNotificationOffLight")) // light and Notification Off
-                extra3.addSubview(subEx3Notification)
-                subEx3Notification.translatesAutoresizingMaskIntoConstraints = false
-                subEx3Notification.centerXAnchor.constraint(equalTo: extra3.centerXAnchor).isActive = true
-                subEx3Notification.centerYAnchor.constraint(equalTo: extra3.centerYAnchor).isActive = true
-                subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }
             
             progressView.textColor = colorList.textColorForProcessBM
             if isAnsPressed{
@@ -3781,7 +3474,6 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             }
             
             resultTextView.textColor = isAnsPressed ? colorList.textColorForResultBM : colorList.textColorForSemiResultBM
-            //             resultTextView.textColor = isLightModeOn ? colorList.textColorForSemiResultBM : colorList.textColorForSemiResultDM
             
         }else{ // darkMode
             for num in numButtons{
@@ -3795,33 +3487,7 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             }
             deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
             
-            subHistory = UIImageView(image: #imageLiteral(resourceName: "historyD"))
-            
-            sub0 = UIImageView(image: #imageLiteral(resourceName: "0D"))
-            sub1 = UIImageView(image: #imageLiteral(resourceName: "1D"))
-            sub2 = UIImageView(image: #imageLiteral(resourceName: "2D"))
-            sub3 = UIImageView(image: #imageLiteral(resourceName: "3D"))
-            sub4 = UIImageView(image: #imageLiteral(resourceName: "4D"))
-            sub5 = UIImageView(image: #imageLiteral(resourceName: "5D"))
-            
-            sub6 = UIImageView(image: #imageLiteral(resourceName: "6D"))
-            sub7 = UIImageView(image: #imageLiteral(resourceName: "7D"))
-            sub8 = UIImageView(image: #imageLiteral(resourceName: "8D"))
-            sub9 = UIImageView(image: #imageLiteral(resourceName: "9D"))
-            sub00 = UIImageView(image: #imageLiteral(resourceName: "00D"))
-            subDot = UIImageView(image: #imageLiteral(resourceName: "dotD"))
-            
-            subClear = UIImageView(image: #imageLiteral(resourceName: "CD"))
-            subOpenpar = UIImageView(image: #imageLiteral(resourceName: "(D"))
-            subClosepar = UIImageView(image: #imageLiteral(resourceName: ")D"))
-            subDivide = UIImageView(image: #imageLiteral(resourceName: "÷D"))
-            subMulti = UIImageView(image: #imageLiteral(resourceName: "xD"))
-            subPlus = UIImageView(image: #imageLiteral(resourceName: "+D"))
-            subMinus = UIImageView(image: #imageLiteral(resourceName: "–D"))
-            subEqual = UIImageView(image: #imageLiteral(resourceName: "=D"))
-            
-            subEx2Color = UIImageView(image: #imageLiteral(resourceName: "etcColorModeChangeToLight"))
-            subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "etcFeedbackDark"))
+            setButtonImageInDarkMode()
             
             for view in historyClickButton.subviews{
                 view.removeFromSuperview()
@@ -3840,270 +3506,28 @@ print("indexForpOfNumsAndOpers : \(indexForpOfNumsAndOpers)")
             }
             
             historyClickButton.addSubview(subHistory)
-            subHistory.translatesAutoresizingMaskIntoConstraints = false
-            subHistory.centerXAnchor.constraint(equalTo: historyClickButton.centerXAnchor).isActive = true
-            subHistory.topAnchor.constraint(equalTo: historyClickButton.topAnchor).isActive = true
-            subHistory.widthAnchor.constraint(equalTo: historyClickButton.widthAnchor, multiplier: 0.6).isActive = true
-            subHistory.heightAnchor.constraint(equalToConstant: 15).isActive = true
             
-            num0.addSubview(sub0)
-            sub0.translatesAutoresizingMaskIntoConstraints = false
-            sub0.centerXAnchor.constraint(equalTo: num0.centerXAnchor).isActive = true
-            sub0.centerYAnchor.constraint(equalTo: num0.centerYAnchor).isActive = true
-            sub0.widthAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(modifiedWidth[0])).isActive = true
-            sub0.heightAnchor.constraint(equalTo: num0.heightAnchor, multiplier: CGFloat(heights[0])).isActive = true
+            subHistory.fillSuperview()
             
-            num1.addSubview(sub1)
-            sub1.translatesAutoresizingMaskIntoConstraints = false
-            sub1.centerXAnchor.constraint(equalTo: num1.centerXAnchor).isActive = true
-            sub1.centerYAnchor.constraint(equalTo: num1.centerYAnchor).isActive = true
-            sub1.widthAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(modifiedWidth[1])).isActive = true
-            sub1.heightAnchor.constraint(equalTo: num1.heightAnchor, multiplier: CGFloat(heights[1])).isActive = true
-            
-            num2.addSubview(sub2)
-            sub2.translatesAutoresizingMaskIntoConstraints = false
-            sub2.centerXAnchor.constraint(equalTo: num2.centerXAnchor).isActive = true
-            sub2.centerYAnchor.constraint(equalTo: num2.centerYAnchor).isActive = true
-            sub2.widthAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(modifiedWidth[2])).isActive = true
-            sub2.heightAnchor.constraint(equalTo: num2.heightAnchor, multiplier: CGFloat(heights[2])).isActive = true
-            
-            num3.addSubview(sub3)
-            sub3.translatesAutoresizingMaskIntoConstraints = false
-            sub3.centerXAnchor.constraint(equalTo: num3.centerXAnchor).isActive = true
-            sub3.centerYAnchor.constraint(equalTo: num3.centerYAnchor).isActive = true
-            sub3.widthAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(modifiedWidth[3])).isActive = true
-            sub3.heightAnchor.constraint(equalTo: num3.heightAnchor, multiplier: CGFloat(heights[3])).isActive = true
-            
-            num4.addSubview(sub4)
-            sub4.translatesAutoresizingMaskIntoConstraints = false
-            sub4.centerXAnchor.constraint(equalTo: num4.centerXAnchor).isActive = true
-            sub4.centerYAnchor.constraint(equalTo: num4.centerYAnchor).isActive = true
-            sub4.widthAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(modifiedWidth[4])).isActive = true
-            sub4.heightAnchor.constraint(equalTo: num4.heightAnchor, multiplier: CGFloat(heights[4])).isActive = true
-            
-            num5.addSubview(sub5)
-            sub5.translatesAutoresizingMaskIntoConstraints = false
-            sub5.centerXAnchor.constraint(equalTo: num5.centerXAnchor).isActive = true
-            sub5.centerYAnchor.constraint(equalTo: num5.centerYAnchor).isActive = true
-            sub5.widthAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(modifiedWidth[5])).isActive = true
-            sub5.heightAnchor.constraint(equalTo: num5.heightAnchor, multiplier: CGFloat(heights[5])).isActive = true
-            //
-            num6.addSubview(sub6)
-            sub6.translatesAutoresizingMaskIntoConstraints = false
-            sub6.centerXAnchor.constraint(equalTo: num6.centerXAnchor).isActive = true
-            sub6.centerYAnchor.constraint(equalTo: num6.centerYAnchor).isActive = true
-            sub6.widthAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(modifiedWidth[6])).isActive = true
-            sub6.heightAnchor.constraint(equalTo: num6.heightAnchor, multiplier: CGFloat(heights[6])).isActive = true
-            
-            num7.addSubview(sub7)
-            sub7.translatesAutoresizingMaskIntoConstraints = false
-            sub7.centerXAnchor.constraint(equalTo: num7.centerXAnchor).isActive = true
-            sub7.centerYAnchor.constraint(equalTo: num7.centerYAnchor).isActive = true
-            sub7.widthAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(modifiedWidth[7])).isActive = true
-            sub7.heightAnchor.constraint(equalTo: num7.heightAnchor, multiplier: CGFloat(heights[7])).isActive = true
-            
-            num8.addSubview(sub8)
-            sub8.translatesAutoresizingMaskIntoConstraints = false
-            sub8.centerXAnchor.constraint(equalTo: num8.centerXAnchor).isActive = true
-            sub8.centerYAnchor.constraint(equalTo: num8.centerYAnchor).isActive = true
-            sub8.widthAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(modifiedWidth[8])).isActive = true
-            sub8.heightAnchor.constraint(equalTo: num8.heightAnchor, multiplier: CGFloat(heights[8])).isActive = true
-            
-            num9.addSubview(sub9)
-            sub9.translatesAutoresizingMaskIntoConstraints = false
-            sub9.centerXAnchor.constraint(equalTo: num9.centerXAnchor).isActive = true
-            sub9.centerYAnchor.constraint(equalTo: num9.centerYAnchor).isActive = true
-            sub9.widthAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(modifiedWidth[9])).isActive = true
-            sub9.heightAnchor.constraint(equalTo: num9.heightAnchor, multiplier: CGFloat(heights[9])).isActive = true
-            
-            num00.addSubview(sub00)
-            sub00.translatesAutoresizingMaskIntoConstraints = false
-            sub00.centerXAnchor.constraint(equalTo: num00.centerXAnchor).isActive = true
-            sub00.centerYAnchor.constraint(equalTo: num00.centerYAnchor).isActive = true
-            sub00.widthAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(modifiedWidth[10])).isActive = true
-            sub00.heightAnchor.constraint(equalTo: num00.heightAnchor, multiplier: CGFloat(heights[10])).isActive = true
-            
-            numberDot.addSubview(subsubDot)
-            subsubDot.translatesAutoresizingMaskIntoConstraints = false
-            subsubDot.bottomAnchor.constraint(equalTo: numberDot.bottomAnchor).isActive = true
-            subsubDot.leftAnchor.constraint(equalTo: numberDot.leftAnchor).isActive = true
-            subsubDot.rightAnchor.constraint(equalTo: numberDot.rightAnchor).isActive = true
-            subsubDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: 0.385).isActive = true
-            
-            numberDot.addSubview(subDot)
-            subDot.translatesAutoresizingMaskIntoConstraints = false
-            subDot.centerXAnchor.constraint(equalTo: numberDot.centerXAnchor).isActive = true
-//            subDot.centerYAnchor.constraint(equalTo: numberDot.centerYAnchor).isActive = true
-            subDot.bottomAnchor.constraint(equalTo: subsubDot.topAnchor).isActive = true
-            subDot.widthAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(modifiedWidth[11])).isActive = true
-            subDot.heightAnchor.constraint(equalTo: numberDot.heightAnchor, multiplier: CGFloat(heights[11])).isActive = true
-            
-            
-            clearButton.addSubview(subClear)
-            subClear.translatesAutoresizingMaskIntoConstraints = false
-            subClear.centerXAnchor.constraint(equalTo: clearButton.centerXAnchor).isActive = true
-            subClear.centerYAnchor.constraint(equalTo: clearButton.centerYAnchor).isActive = true
-            subClear.widthAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(modifiedWidth[12])).isActive = true
-            subClear.heightAnchor.constraint(equalTo: clearButton.heightAnchor, multiplier: CGFloat(heights[12])).isActive = true
-            
-            
-            openParenthesis.addSubview(subOpenpar)
-            subOpenpar.translatesAutoresizingMaskIntoConstraints = false
-            subOpenpar.centerXAnchor.constraint(equalTo: openParenthesis.centerXAnchor).isActive = true
-            subOpenpar.centerYAnchor.constraint(equalTo: openParenthesis.centerYAnchor).isActive = true
-            subOpenpar.widthAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[13])).isActive = true
-            subOpenpar.heightAnchor.constraint(equalTo: openParenthesis.heightAnchor, multiplier: CGFloat(heights[13])).isActive = true
-            
-            closeParenthesis.addSubview(subClosepar)
-            subClosepar.translatesAutoresizingMaskIntoConstraints = false
-            subClosepar.centerXAnchor.constraint(equalTo: closeParenthesis.centerXAnchor).isActive = true
-            subClosepar.centerYAnchor.constraint(equalTo: closeParenthesis.centerYAnchor).isActive = true
-            subClosepar.widthAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(modifiedWidth[14])).isActive = true
-            subClosepar.heightAnchor.constraint(equalTo: closeParenthesis.heightAnchor, multiplier: CGFloat(heights[14])).isActive = true
-            
-            operationButtonDivide.addSubview(subDivide)
-            subDivide.translatesAutoresizingMaskIntoConstraints = false
-            subDivide.centerXAnchor.constraint(equalTo: operationButtonDivide.centerXAnchor).isActive = true
-            subDivide.centerYAnchor.constraint(equalTo: operationButtonDivide.centerYAnchor).isActive = true
-            subDivide.widthAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(modifiedWidth[15])).isActive = true
-            subDivide.heightAnchor.constraint(equalTo: operationButtonDivide.heightAnchor, multiplier: CGFloat(heights[15])).isActive = true
-            
-            
-            operationButtonMultiply.addSubview(subMulti)
-            subMulti.translatesAutoresizingMaskIntoConstraints = false
-            subMulti.centerXAnchor.constraint(equalTo: operationButtonMultiply.centerXAnchor).isActive = true
-            subMulti.centerYAnchor.constraint(equalTo: operationButtonMultiply.centerYAnchor).isActive = true
-            subMulti.widthAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(modifiedWidth[16])).isActive = true
-            subMulti.heightAnchor.constraint(equalTo: operationButtonMultiply.heightAnchor, multiplier: CGFloat(heights[16])).isActive = true
-            
-            operationButtonPlus.addSubview(subPlus)
-            subPlus.translatesAutoresizingMaskIntoConstraints = false
-            subPlus.centerXAnchor.constraint(equalTo: operationButtonPlus.centerXAnchor).isActive = true
-            subPlus.centerYAnchor.constraint(equalTo: operationButtonPlus.centerYAnchor).isActive = true
-            subPlus.widthAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(modifiedWidth[17])).isActive = true
-            subPlus.heightAnchor.constraint(equalTo: operationButtonPlus.heightAnchor, multiplier: CGFloat(heights[17])).isActive = true
-            
-            operationButtonMinus.addSubview(subMinus)
-            subMinus.translatesAutoresizingMaskIntoConstraints = false
-            subMinus.centerXAnchor.constraint(equalTo: operationButtonMinus.centerXAnchor).isActive = true
-            subMinus.centerYAnchor.constraint(equalTo: operationButtonMinus.centerYAnchor).isActive = true
-            subMinus.widthAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(modifiedWidth[18])).isActive = true
-            subMinus.heightAnchor.constraint(equalTo: operationButtonMinus.heightAnchor, multiplier: CGFloat(heights[18])).isActive = true
-            
-            equalButton.addSubview(subEqual)
-            subEqual.translatesAutoresizingMaskIntoConstraints = false
-            subEqual.centerXAnchor.constraint(equalTo: equalButton.centerXAnchor).isActive = true
-            subEqual.centerYAnchor.constraint(equalTo: equalButton.centerYAnchor).isActive = true
-            subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
-            subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
-            
-            extra2.addSubview(subEx2Color)
-            subEx2Color.translatesAutoresizingMaskIntoConstraints = false
-            subEx2Color.centerXAnchor.constraint(equalTo: extra2.centerXAnchor).isActive = true
-            subEx2Color.centerYAnchor.constraint(equalTo: extra2.centerYAnchor).isActive = true
-            subEx2Color.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-            subEx2Color.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            
-            extra4.addSubview(subEx4Feedback)
-            subEx4Feedback.translatesAutoresizingMaskIntoConstraints = false
-            subEx4Feedback.centerXAnchor.constraint(equalTo: extra4.centerXAnchor).isActive = true
-            subEx4Feedback.centerYAnchor.constraint(equalTo: extra4.centerYAnchor).isActive = true
-            subEx4Feedback.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-            subEx4Feedback.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            
-            
-            if isSoundOn{
-                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "etcSoundsOnDark"))// dark and Sound On
-//                                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "sampleSoundOn"))// dark and Sound On
-                extra1.addSubview(subEx1Sound)
-                subEx1Sound.translatesAutoresizingMaskIntoConstraints = false
-                subEx1Sound.centerXAnchor.constraint(equalTo: extra1.centerXAnchor).isActive = true
-                subEx1Sound.centerYAnchor.constraint(equalTo: extra1.centerYAnchor).isActive = true
-                subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }else{
-                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "etcSoundsOffDark"))// dark and Sound Off
-//                subEx1Sound = UIImageView(image: #imageLiteral(resourceName: "sampleSoundOff"))// dark and Sound Off
-                extra1.addSubview(subEx1Sound)
-                subEx1Sound.translatesAutoresizingMaskIntoConstraints = false
-                subEx1Sound.centerXAnchor.constraint(equalTo: extra1.centerXAnchor).isActive = true
-                subEx1Sound.centerYAnchor.constraint(equalTo: extra1.centerYAnchor).isActive = true
-                subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }
-            
-            if isNotificationOn{
-                subEx3Notification = UIImageView(image: #imageLiteral(resourceName: "etcNotificationOnDark")) // dark and Notification On
-                extra3.addSubview(subEx3Notification)
-                subEx3Notification.translatesAutoresizingMaskIntoConstraints = false
-                subEx3Notification.centerXAnchor.constraint(equalTo: extra3.centerXAnchor).isActive = true
-                subEx3Notification.centerYAnchor.constraint(equalTo: extra3.centerYAnchor).isActive = true
-                subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }else{
-                subEx3Notification = UIImageView(image: #imageLiteral(resourceName: "etcNotificationOffDark")) // dark and Notification Off
-                extra3.addSubview(subEx3Notification)
-                subEx3Notification.translatesAutoresizingMaskIntoConstraints = false
-                subEx3Notification.centerXAnchor.constraint(equalTo: extra3.centerXAnchor).isActive = true
-                subEx3Notification.centerYAnchor.constraint(equalTo: extra3.centerYAnchor).isActive = true
-                subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-                subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-            }
+            setButtonPositionAndSize(&modifiedWidth)
+
+            subEx1Sound = isSoundOn ? ex1OnDark : ex1OffDark
+            subEx3Notification = isNotificationOn ? ex3OnDark : ex3OffDark
             
             progressView.textColor = colorList.textColorForProcessDM
             resultTextView.textColor = isAnsPressed ? colorList.textColorForResultDM : colorList.textColorForSemiResultDM
         }
-    }
-}
-
-extension Date {
-    func getFormattedDate(format: String) -> String {
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = format
-        return dateformat.string(from: self)
-    }
-}
-
-
-public extension String {
-    func firstIndexInt(of char: Character) -> Int? {
-        return firstIndex(of: char)?.utf16Offset(in: self)
-    }
+        
+        extra1.addSubview(subEx1Sound)
+        subEx1Sound.center(inView: extra1)
     
-    func lastIndexInt(of char : Character) -> Int? {
-        return lastIndex(of: char)?.utf16Offset(in: self)
-    }
-}
-
-
-
-extension StringProtocol {
-    subscript(offset: Int) -> Character { self[index(startIndex, offsetBy: offset)] }
-    subscript(range: Range<Int>) -> SubSequence {
-        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
-        return self[startIndex..<index(startIndex, offsetBy: range.count)]
-    }
-    subscript(range: ClosedRange<Int>) -> SubSequence {
-        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
-        return self[startIndex..<index(startIndex, offsetBy: range.count)]
-    }
-    subscript(range: PartialRangeFrom<Int>) -> SubSequence { self[index(startIndex, offsetBy: range.lowerBound)...] }
-    subscript(range: PartialRangeThrough<Int>) -> SubSequence { self[...index(startIndex, offsetBy: range.upperBound)] }
-    subscript(range: PartialRangeUpTo<Int>) -> SubSequence { self[..<index(startIndex, offsetBy: range.upperBound)] }
-}
-
-extension FloatingPoint{}
-
-extension Double {
-    func decimalCount() -> Int {
-        if self == Double(Int(self)) {
-            return 0
-        }
-
-        let integerString = String(Int(self))
-        let doubleString = String(Double(self))
-        let decimalCount = doubleString.count - integerString.count - 1
-
-        return decimalCount
+        subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        
+        extra3.addSubview(subEx3Notification)
+        subEx3Notification.center(inView: extra3)
+        subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        
     }
 }

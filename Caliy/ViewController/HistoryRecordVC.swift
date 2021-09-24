@@ -51,17 +51,16 @@ class HistoryRecordVC: UIViewController {
     let trashbinHelper = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
     var isOrientationPortrait = true
-   
+    
     var willbasicVCdisappear = false
     
     var FromTableToBaseVCdelegate : FromTableToBaseVC?
     
-    var testCounter = 1
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
         
-//        isOrientationPortrait
+        //        isOrientationPortrait
         if UIDevice.current.orientation.isLandscape {
             isOrientationPortrait = false
             print("Landscape viewWillTransition baseVC")
@@ -73,11 +72,11 @@ class HistoryRecordVC: UIViewController {
         }
         
         
-
+        
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
-
+        
         isOrientationPortrait = screenWidth > screenHeight ? true : false
         
         
@@ -87,20 +86,14 @@ class HistoryRecordVC: UIViewController {
         tableView.dataSource = self
         tableView.register(HistoryRecordCell.self, forCellReuseIdentifier: "HistoryRecordReuseIdentifier")
         tableView.reloadData()
-//        print("end of viewWillTransition , willbasicVCdisappear : \(willbasicVCdisappear)")
     }
-    // 왜 그런데 .. 두번씩 실행돼?
-    //ipod 의 경우에도 새로운 사이즈가 필요함.
-    // 20 정도 줄이면 될 것 같은데?
-    // X 이후 버전은 20정도 늘리면 될 것 같고.
+    
     override func viewDidLoad() {
         print("viewDidLoad table")
-//        let modifiedDeviceInfo = deviceInfo.removeFirst()
         if deviceInfo.first == " "{
-        deviceInfo.removeFirst()
+            deviceInfo.removeFirst()
         }
-//        userDefaultSetup.getUserDeviceVersionInfo()
-//        userDefaultSetup.getIsLightModeOn()
+        
         print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getUserDeviceVersionInfo())")
         
         if userDefaultSetup.getUserDeviceVersionInfo() == "ND"{ // Not Determined
@@ -130,7 +123,7 @@ class HistoryRecordVC: UIViewController {
         // P : Popular, MP : Most Popular, LP : Least Popular
         
         print("modelName : \(deviceInfo)")
-//        print("deviceType : \(type(of: deviceInfo))")
+        //        print("deviceType : \(type(of: deviceInfo))")
         
         
         let screenRect = UIScreen.main.bounds
@@ -149,22 +142,23 @@ class HistoryRecordVC: UIViewController {
         }
         
         returnLightMode()
-
+        
         setupLayout()
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HistoryRecordCell.self, forCellReuseIdentifier: "HistoryRecordReuseIdentifier")
         historyRecords = realm.objects(HistoryRecord.self)
-
+        
         tableView.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: false)
         
         self.tableView.reloadData()
         addTargetSetup()
+        
         tableView.setContentOffset(.zero, animated: false)
-       
-//        print("end of viewDidLoad, willbasicVCdisappear : \(willbasicVCdisappear)")
-     }
+        
+        
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         print("viewDidAppear table")
@@ -180,7 +174,7 @@ class HistoryRecordVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear table")
-//        print("viewWillDisappear called in table, willbasicVCdisappear : \(willbasicVCdisappear)")
+        //        print("viewWillDisappear called in table, willbasicVCdisappear : \(willbasicVCdisappear)")
     }
     
     func createObservers(){
@@ -203,7 +197,7 @@ class HistoryRecordVC: UIViewController {
     
     @objc func viewWillAppearBasicVC(notification : NSNotification){
         print("viewWillAppearBasicVC table")
-       if willbasicVCdisappear{
+        if willbasicVCdisappear{
             willbasicVCdisappear.toggle()
         }
     }
@@ -219,9 +213,9 @@ class HistoryRecordVC: UIViewController {
         guard let newPortrait = notification.userInfo?["orientation"] as? Bool else {
             print("there's an error in tableView transitionOccured function")
             return }
-
+        
         isOrientationPortrait = newPortrait // 현재 아무런 역할도 안함
-   }
+    }
     
     func loadData(){
         print("loadData table")
@@ -240,66 +234,63 @@ class HistoryRecordVC: UIViewController {
         for subview in tableView.subviews{
             subview.removeFromSuperview()
         }
-
+        
         for subview in view.subviews{
             subview.removeFromSuperview()
         }
         
         view.addSubview(tableView)
-
+        
         if isOrientationPortrait{
             tableView.pinWithSpace2(to: view, type : userDefaultSetup.getUserDeviceVersionTypeInfo())
-//            tableView.pinWithSpace2(to: view)
+            //            tableView.pinWithSpace2(to: view)
             
             
             
             
             view.addSubview(infoView)
-            infoView.translatesAutoresizingMaskIntoConstraints = false
-            infoView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-            infoView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-            infoView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
+            
+            
             
             switch userDefaultSetup.getUserDeviceVersionTypeInfo() {
-//            case "MP" : infoView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-            case "MP" : infoView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-            case "LP" : infoView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            //  MP : Most popular, P : Popular, LP : Least Popular
+            //            case "MP" : infoView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+            case "MP" : //infoView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+                infoView.setHeight(80)
+            case "LP" : //infoView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+                infoView.setHeight(50)
             default:
-                infoView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+                //                infoView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+                infoView.setHeight(60)
             }
-            
+            // no constraints for infoLabel width
             infoView.addSubview(infoLabel)
             infoLabel.translatesAutoresizingMaskIntoConstraints = false
             
-            infoLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor).isActive = true
             
-            
+            infoLabel.centerX(inView: infoView)
             infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -7).isActive = true
             
+            
+            
             infoView.addSubview(trashButton)
-            trashButton.translatesAutoresizingMaskIntoConstraints = false
-            trashButton.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: 0).isActive = true
             
-            trashButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-            trashButton.bottomAnchor.constraint(equalTo: infoView.bottomAnchor).isActive = true
-            trashButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+            trashButton.anchor(bottom: infoView.bottomAnchor, right: infoView.rightAnchor)
+            trashButton.setDimensions(width: 50, height: 35)
             
-//            trashButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
             trashButton.addSubview(trashbinImage)
             trashButton.addSubview(trashbinHelper)
-            trashbinHelper.translatesAutoresizingMaskIntoConstraints = false
-            trashbinHelper.topAnchor.constraint(equalTo: trashButton.topAnchor).isActive = true
-            trashbinHelper.bottomAnchor.constraint(equalTo: trashButton.bottomAnchor).isActive = true
-            trashbinHelper.leftAnchor.constraint(equalTo: trashButton.leftAnchor).isActive = true
+            
+            trashbinHelper.anchor(top: trashButton.topAnchor, left: trashButton.leftAnchor, bottom: trashButton.bottomAnchor)
             trashbinHelper.widthAnchor.constraint(equalTo: trashButton.widthAnchor, multiplier: 0.1).isActive = true
-
-            trashbinImage.translatesAutoresizingMaskIntoConstraints = false
+            
+            
+            trashbinImage.anchor(left: trashbinHelper.rightAnchor, bottom: trashButton.bottomAnchor)
             trashbinImage.heightAnchor.constraint(equalTo: trashButton.heightAnchor, multiplier: 0.9).isActive = true
-            trashbinImage.bottomAnchor.constraint(equalTo: trashButton.bottomAnchor).isActive = true
-            trashbinImage.leftAnchor.constraint(equalTo: trashbinHelper.rightAnchor).isActive =  true
             trashbinImage.widthAnchor.constraint(equalTo: trashButton.widthAnchor, multiplier: 0.55).isActive = true
-
-    
+            
+            
             if isLightModeOn{
                 infoView.backgroundColor = colorList.bgColorForExtrasBM
                 
@@ -307,22 +298,9 @@ class HistoryRecordVC: UIViewController {
                 
                 
                 view.addSubview(subHistoryLight)
-                subHistoryLight.translatesAutoresizingMaskIntoConstraints = false
-                subHistoryLight.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive
-                    = true
                 
-//                if userDefaultSetup.getUserDeviceVersionTypeInfo() == "LP"{
-////                    subhis
-//                    subHistoryLight.heightAnchor.constraint(equalToConstant: 10).isActive = true
-//                }else{
-                    subHistoryLight.heightAnchor.constraint(equalToConstant: 15).isActive = true
-//                }
-//                subHistoryLight.heightAnchor.constraint(equalToConstant: 15).isActive = true
-                
-                subHistoryLight.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 0.6).isActive = true
-                subHistoryLight.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-                
-                
+                subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+                subHistoryLight.setDimensions(width: 40, height: 40)
                 
             }else{
                 infoView.backgroundColor = colorList.bgColorForExtrasDM
@@ -331,25 +309,20 @@ class HistoryRecordVC: UIViewController {
                 tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
                 
                 view.addSubview(subHistoryDark)
-                subHistoryDark.translatesAutoresizingMaskIntoConstraints = false
-                subHistoryDark.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive
-                    = true
-                subHistoryDark.heightAnchor.constraint(equalToConstant: 15).isActive = true
                 
-                subHistoryDark.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 0.6).isActive = true
-                subHistoryDark.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+                subHistoryDark.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+                subHistoryDark.setDimensions(width: 40, height: 40)
                 
             }
             
             view.addSubview(historyClickButton)
-            historyClickButton.translatesAutoresizingMaskIntoConstraints = false
-            historyClickButton.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive = true
-            historyClickButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            historyClickButton.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 0.6).isActive = true
-            historyClickButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            
+            historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+            historyClickButton.setDimensions(width: 40, height: 40)
+            
+            
         }else{
             tableView.pin(to: view) // 이거같은데?
-            tableView.backgroundColor = .blue
             
             tableView.backgroundColor = isLightModeOn ? colorList.bgColorForEmptyAndNumbersBM : colorList.bgColorForEmptyAndNumbersDM
         }
@@ -360,7 +333,7 @@ class HistoryRecordVC: UIViewController {
         if willbasicVCdisappear{
             willbasicVCdisappear.toggle()
         }
-         
+        
         let transition = CATransition()
         transition.duration = 0.3
         transition.type = CATransitionType.push
@@ -375,7 +348,6 @@ class HistoryRecordVC: UIViewController {
         print("addTargetSetup table")
         historyClickButton.addTarget(self, action: #selector(backToBaseController), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(backToBaseController), for: .touchDragExit)
-        
         trashButton.addTarget(self, action: #selector(removeAllAlert), for: .touchUpInside)
     }
     
@@ -383,7 +355,7 @@ class HistoryRecordVC: UIViewController {
         print("removeAllAlert table")
         showAlert(title: "Clear History", message: localizedStrings.removeAll,
                   handlerA: { actionA in
-        },
+                  },
                   handlerB: { actionB in
                     
                     for element in self.historyRecords{
@@ -392,7 +364,7 @@ class HistoryRecordVC: UIViewController {
                     self.tableView.reloadData()
                     
                     self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-        })
+                  })
     }
     
     @objc func backToOriginalColor(sender : UITableViewCell){
@@ -430,6 +402,7 @@ class HistoryRecordVC: UIViewController {
         return sub
     }()
     
+    
     let fillBottom : UIView = {
         let sub = UIView()
         sub.translatesAutoresizingMaskIntoConstraints = false
@@ -437,13 +410,13 @@ class HistoryRecordVC: UIViewController {
     }()
     
     let subHistoryLight : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "historyUpwardLight"))
+        let sub = UIImageView(image: #imageLiteral(resourceName: "light_up"))
         sub.translatesAutoresizingMaskIntoConstraints = false
         return sub
     }()
     
     let subHistoryDark : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "historyUpwardDark"))
+        let sub = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
         sub.translatesAutoresizingMaskIntoConstraints = false
         return sub
     }()
@@ -456,161 +429,136 @@ class HistoryRecordVC: UIViewController {
 // MARK: - Table view data source.
 extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("numberOfRowsInSection table")
+        print("section : \(section)")
         return historyRecords.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cellForRowAt table")
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryRecordReuseIdentifier") as? HistoryRecordCell else{ return UITableViewCell()}
         
-//reverse mode
+        //reverse mode,  top the latest
         let maxNumber = historyRecords.count
-        let historyRecord = historyRecords[maxNumber - indexPath.row - 1]
-//original mode
-//        let historyRecord = historyRecords[indexPath.row]
+        let historyIndex = maxNumber - indexPath.row - 1
+        
+        let historyRecord = historyRecords[historyIndex]
         
         cell.configure(with: historyRecord, orientationPortrait : isOrientationPortrait, willbasicVCdisappear : willbasicVCdisappear)
         cell.colorSetup(isLightModeOn: isLightModeOn)
-       return cell
+        return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("didSelectRowAt table")
+        
+        let maxNumber = historyRecords.count
+        let historyIndex = maxNumber - indexPath.row - 1
+        
+        
+        FromTableToBaseVCdelegate?.copyAndPasteAns(ansString: historyRecords[historyIndex].resultString ?? "nothing transmitted")
+        
+        loadData()
+        
+        if !(!UIDevice.current.orientation.isPortrait && !willbasicVCdisappear){
+            backToBaseController()
+        }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        print("trailingSwipeActionConfigurationForRowAt table")
+        
+        let delete = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
-
-    //        let dataToSend = [ "ansString" : historyRecords[indexPath.row].resultString ]
-            //reverse mode
-            let maxNumber = historyRecords.count
-//            let dataToSend = [ "ansString" : historyRecords[maxNumber - indexPath.row - 1].resultString ]
-            //original mode
-//            let dataToSend = [ "ansString" : historyRecords[indexPath.row].resultString ]
-        FromTableToBaseVCdelegate?.copyAndPasteAns(ansString: historyRecords[maxNumber - indexPath.row - 1].resultString ?? "nothing transmitted")
-        print("save!")
-        print("testCounter : \(testCounter)")
-        testCounter += 1
-        
-//            let name = Notification.Name(rawValue: answerFromTableNotificationKey)
-//            NotificationCenter.default.post(name: name, object: nil, userInfo:  dataToSend as [AnyHashable : Any])
+            let maxNumber = self.historyRecords.count
+            let historyIndex = maxNumber - indexPath.row - 1
             
-        
-        
-    //        tableView.deselectRow(at: indexPath, animated: false)
-
-            loadData() // 아.. 이게.. 알았다.. 모드 두개 비교를 해봐야겠다.
-            if !(!UIDevice.current.orientation.isPortrait && !willbasicVCdisappear){
-                backToBaseController()
+            if let record = self.historyRecords?[historyIndex]{
+                RealmService.shared.delete(record)
             }
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+            
+            
+            completionHandler(true)
+            
+        }
+        delete.image = UIImage(systemName: "trash.fill")
+        delete.backgroundColor = .red
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        return rightSwipe
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        print("leadingSwipeActionsConfigurationForRowAt table")
+        let copyAction = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
+            
+            let maxNumber = self.historyRecords.count
+            let historyIndex = maxNumber - indexPath.row - 1
+            
+            if self.isOrientationPortrait{
+                if let record = self.historyRecords?[historyIndex]{
+                    let toBeSaved = record.processStringHis! + "=" + record.resultString!
+                    UIPasteboard.general.string = toBeSaved
+                }
+            }else{
+                if let record = self.historyRecords?[historyIndex]{
+                    let toBeSaved = record.processStringCalc! + "=" + record.resultString!
+                    UIPasteboard.general.string = toBeSaved
+                }
+            }
+            
+            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+            
+            completionHandler(true)
         }
         
-        
-        func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            print("trailingSwipeActionConfigurationForRowAt table")
+        let shareAction = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
-            let delete = UIContextualAction(style: .normal, title: localizedStrings.delete) { (action, view, completionHandler) in
-                
-                //reverse Mode
-                let maxNumber = self.historyRecords.count
-                if let record = self.historyRecords?[maxNumber - indexPath.row - 1]{
-                    RealmService.shared.delete(record)
+            let maxNumber = self.historyRecords.count
+            let historyIndex = maxNumber - indexPath.row - 1
+            
+            if self.isOrientationPortrait{
+                if let record = self.historyRecords?[historyIndex]{
+                    let toBeSaved = record.processStringHis! + "=" + record.resultString!
+                    
+                    UIPasteboard.general.string = toBeSaved
+                    let activityController = UIActivityViewController(activityItems: [toBeSaved], applicationActivities: nil)
+                    
+                    self.present(activityController, animated: true, completion: nil)
+                    
                 }
-                //original Mode
-//                if let record = self.historyRecords?[indexPath.row]{
-//                    RealmService.shared.delete(record)
-//                }
-                
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                
-//                self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, widthRatio: 0.4 , heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-
-                self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-                
-                
-                completionHandler(true)
-                
+            }else{
+                if let record = self.historyRecords?[historyIndex]{
+                    let toBeSaved = record.processStringCalc! + "=" + record.resultString!
+                    let activityController = UIActivityViewController(activityItems: [toBeSaved], applicationActivities: nil)
+                    
+                    self.present(activityController, animated: true, completion: nil)
+                    
+                    UIPasteboard.general.string = toBeSaved
+                }
             }
             
-            delete.image = UIImage(systemName: "trash.fill")
-            delete.backgroundColor = .red
             
-            let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
-            return rightSwipe
+            completionHandler(true)
         }
         
-        func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            print("leadingSwipeActionsConfigurationForRowAt table")
-            
-            let copyAction = UIContextualAction(style: .normal, title: localizedStrings.copy) { (action, view, completionHandler) in
-                
-                //original Mode
-    //            if let record = self.historyRecords?[indexPath.row]{
-    //                let toBeSaved = record.processString! + "=" + record.resultString!
-    //                UIPasteboard.general.string = toBeSaved
-    //            }
-                
-                //reverse Mode
-                let maxNumber = self.historyRecords.count
-
-                if self.isOrientationPortrait{
-                    if let record = self.historyRecords?[maxNumber - indexPath.row - 1]{
-                        let toBeSaved = record.processStringHis! + "=" + record.resultString!
-                        UIPasteboard.general.string = toBeSaved
-                    }
-                }else{
-                    if let record = self.historyRecords?[maxNumber - indexPath.row - 1]{
-                        let toBeSaved = record.processStringCalc! + "=" + record.resultString!
-                       UIPasteboard.general.string = toBeSaved
-                    }
-                }
-//                self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, widthRatio: 0.5 , heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-                
-                self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-                
-                completionHandler(true)
-            }
-            
-            let shareAction = UIContextualAction(style: .normal, title: localizedStrings.share) { (action, view, completionHandler) in
-                
-                //reverse Mode
-                //            let maxNumber = self.historyRecords.count
-                //            if let record = self.historyRecords?[maxNumber - indexPath.row - 1]{
-                
-                //original Mode
-                if self.isOrientationPortrait{
-                    if let record = self.historyRecords?[indexPath.row]{
-                        let toBeSaved = record.processStringHis! + "=" + record.resultString!
-                        
-                        UIPasteboard.general.string = toBeSaved
-                        let activityController = UIActivityViewController(activityItems: [toBeSaved], applicationActivities: nil)
-                        
-                        self.present(activityController, animated: true, completion: nil)
-                        
-                    }
-                }else{
-                    if let record = self.historyRecords?[indexPath.row]{
-                        let toBeSaved = record.processStringCalc! + "=" + record.resultString!
-                        let activityController = UIActivityViewController(activityItems: [toBeSaved], applicationActivities: nil)
-                        
-                        self.present(activityController, animated: true, completion: nil)
-                        
-                        UIPasteboard.general.string = toBeSaved
-                    }
-                }
-                
-                
-                completionHandler(true)
-            }
-            
-            copyAction.image = UIImage(systemName: "doc.on.doc.fill")
-            copyAction.backgroundColor = colorList.bgColorForExtrasDM
-            
-            shareAction.image = UIImage(systemName: "square.and.arrow.up")
-            shareAction.backgroundColor = colorList.bgColorForExtrasMiddle
-            
-            let leftSwipe = UISwipeActionsConfiguration(actions: [copyAction, shareAction])
-            return leftSwipe
-        }
+        copyAction.image = UIImage(systemName: "doc.on.doc.fill")
+        copyAction.backgroundColor = colorList.bgColorForExtrasDM
+        
+        shareAction.image = UIImage(systemName: "square.and.arrow.up")
+        shareAction.backgroundColor = colorList.bgColorForExtrasMiddle
+        
+        let leftSwipe = UISwipeActionsConfiguration(actions: [copyAction, shareAction])
+        return leftSwipe
+    }
 }

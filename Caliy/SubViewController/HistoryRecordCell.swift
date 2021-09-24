@@ -71,128 +71,122 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
     func configure(with historyRecord : HistoryRecord, orientationPortrait : Bool, willbasicVCdisappear : Bool){
         print("configure in cell controller called")
         
-        if let processHisLongValid = historyRecord.processStringHisLong{
-            if let processHisValid = historyRecord.processStringHis{
-                if let processCalcValid = historyRecord.processStringCalc{
-                    if let resultValid = historyRecord.resultString{
-                        if let dateValid = historyRecord.dateString{
-                            print("TF Detector orientation, didbasicVCdisappeared : \(orientationPortrait), \(willbasicVCdisappear)")
-                            
-                            let styleRight = NSMutableParagraphStyle()
-                            styleRight.alignment = NSTextAlignment.right
-                            
-                            let styleLeft = NSMutableParagraphStyle()
-                            styleLeft.alignment = NSTextAlignment.left
-                            
-                            let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 1)])
-                            
-                            let isLightMode = userDefaultSetup.getIsLightModeOn()
-                            
-                            if isLightMode{//LightMode
-                                
-                                //date
-                                
-                                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleLeft, NSAttributedString.Key.foregroundColor: colorList.textColorForDateBM] ))
-                                
-                                
-                                //\n
-                                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                
-                                //process
-                                if orientationPortrait && willbasicVCdisappear{
-                                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    //result
-                                    
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
-                                    
-                                }else if !orientationPortrait && willbasicVCdisappear{
-                                    
-                                    //HistoryLandscape
-                                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    
-                                    //result
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
-                                }else {
-                                    
-                                    //HistoryPortrait
-                                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    //result
-                                    
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
-                                    
-                                    
-                                }
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                            }else{ // DarkMode
-                                
-                                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleLeft, NSAttributedString.Key.foregroundColor: colorList.textColorForDateDM] ))
-                                
-                                //\n
-                                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                
-                                
-                                //process
-                                if orientationPortrait && willbasicVCdisappear{
-                                    
-                                    //HistoryPortrait
-                                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    
-                                    //result
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
-                                    
-                                }else if !orientationPortrait && willbasicVCdisappear{
-                                    
-                                    //HistoryLandscape
-                                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    
-                                    //result
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
-                                    
-                                }else {
-                                    
-                                    //calc
-                                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
-                                    
-                                    //\n
-                                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
-                                    
-                                    //result
-                                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
-                                }
-                            }
-                            stringLabel.attributedText = attributedText
-                            stringLabel.numberOfLines = 0
-                        }
-                    }
+        if let processHisLongValid = historyRecord.processStringHisLong,
+           let processHisValid = historyRecord.processStringHis,
+           let processCalcValid = historyRecord.processStringCalc,
+           let resultValid = historyRecord.resultString,
+           let dateValid = historyRecord.dateString{
+            print("TF Detector orientation, didbasicVCdisappeared : \(orientationPortrait), \(willbasicVCdisappear)")
+            
+            let styleRight = NSMutableParagraphStyle()
+            styleRight.alignment = NSTextAlignment.right
+            
+            let styleLeft = NSMutableParagraphStyle()
+            styleLeft.alignment = NSTextAlignment.left
+            
+            let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 1)])
+            
+            let isLightMode = userDefaultSetup.getIsLightModeOn()
+            
+            if isLightMode{//LightMode
+                
+                //date
+                
+                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleLeft, NSAttributedString.Key.foregroundColor: colorList.textColorForDateBM] ))
+                
+                
+                //\n
+                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                
+                //process
+                if orientationPortrait && willbasicVCdisappear{
+                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    //result
+                    
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
+                    
+                }else if !orientationPortrait && willbasicVCdisappear{
+                    
+                    //HistoryLandscape
+                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    
+                    //result
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
+                }else {
+                    
+                    //HistoryPortrait
+                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessBM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    //result
+                    
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultBM]))
+                }
+                
+                
+                
+                
+                
+                
+                
+            }else{ // DarkMode
+                
+                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleLeft, NSAttributedString.Key.foregroundColor: colorList.textColorForDateDM] ))
+                
+                //\n
+                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                
+                
+                //process
+                if orientationPortrait && willbasicVCdisappear{
+                    
+                    //HistoryPortrait
+                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    
+                    //result
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
+                    
+                }else if !orientationPortrait && willbasicVCdisappear{
+                    
+                    //HistoryLandscape
+                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    
+                    //result
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
+                    
+                }else {
+                    
+                    //calc
+                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForProcessDM] ))
+                    
+                    //\n
+                    attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 5), NSAttributedString.Key.paragraphStyle : styleRight]))
+                    
+                    //result
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getUserDeviceSizeInfo()]!), NSAttributedString.Key.paragraphStyle : styleRight, NSAttributedString.Key.foregroundColor: colorList.textColorForResultDM]))
                 }
             }
+            stringLabel.attributedText = attributedText
+            stringLabel.numberOfLines = 0
         }
     }
     
     func colorSetup(isLightModeOn : Bool){
         print("colorSetup in cell controller called")
-
+        
         if isLightModeOn{
             backgroundColor = colorList.bgColorForEmptyAndNumbersBM
             layer.borderColor = CGColor(srgbRed: 0.7, green: 0.7, blue: 0.7, alpha: 0.1)

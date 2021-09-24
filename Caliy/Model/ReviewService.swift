@@ -15,6 +15,8 @@ class ReviewService{
     static let shared = ReviewService()
     
     func requestReview(){
-        SKStoreReviewController.requestReview()
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
+        }
     }
 }
