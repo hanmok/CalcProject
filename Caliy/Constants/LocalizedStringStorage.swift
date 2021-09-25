@@ -34,4 +34,3 @@ struct LocalizedStringStorage{
     let savedToHistory = NSLocalizedString("saved to history", comment: "기록되었습니다.")
 
 }
-

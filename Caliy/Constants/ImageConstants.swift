@@ -1,15 +1,14 @@
 //
-//  Constants.swift
+//  ImageConstants.swift
 //  Caliy
 //
-//  Created by Mac mini on 2021/07/21.
+//  Created by Mac mini on 2021/09/25.
 //  Copyright © 2021 Mac mini. All rights reserved.
 //
 
 import UIKit
 
 
-// MARK: - imageConstants
 let transparentImage = UIImageView(image: UIImage(named: "transparent"))
 
 let dark00 = UIImageView(image: UIImage(named: "D00opReg"))
@@ -75,24 +74,3 @@ let ex1OffLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_soun
 
 let ex3OnLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_on"))
 let ex3OffLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_off"))
-
-
-
-// MARK: - Ratio Constants
-
-let ratio = 1.0465
-
-let widths = [0.12, 0.12*0.6, 0.12, 0.12, 0.12*1.05, 0.12*0.98,0.12,0.12,0.12,0.12,1.9*0.12,0.2*0.12,0.13*1.05, 0.12*0.5, 0.12*0.5,0.13*1.15,0.10,0.13,0.13,0.14 ]
-
-let heights =  [0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*1.9,0.12*0.3,0.13*1.9,0.12*2.45,0.12*2.45,0.13*1.5,0.10*1.9,0.13*1.3,0.13*0.2,0.14*0.8] // for numsAndOpers
-
-/// button Tag
-let tagToString = [1 : "1", 2 : "2", 3 : "3", 4 : "4", 5 : "5", 6 : "6", 7 : "7", 8 : "8", 9 : "9", 0 : "0", -1 : "00", -2 : ".", 11 : "Clear", 12 : "(", 13 : ")", 14 : "÷", 15 : "×", 16 : "+", 17 : "-", 18 : "=", 21 : "del", 31 : "etc1", 32 : "etc2", 33 : "etc3", 34 : "etc4" ]
-
-// maybe.. i can chage it using generic .
-// two constants ( tagToUnitSize and tagToUnitSizeString) are identical
-/// size for each digits including operators and dot (.)
-
-let tagToUnitSize : [Character : Double] =  ["1" : 0.02857142857, "2" : 0.03703703704, "3" : 0.03846153846, "4" : 0.04, "5" : 0.03846153846, "6" : 0.04, "7" : 0.03571428571, "8" : 0.04, "9" : 0.04, "0" : 0.03846153846, "," : 0.01724137931, "." : 0.01724137931, ")" : 0.02272727273, "(" : 0.02272727273, "+" : 0.04, "×" : 0.04, "÷" : 0.04, "-" : 0.02777777778, "=" : 0.02777777778]
-
-let tagToUnitSizeString : [String : Double] =  ["1" : 0.02857142857, "2" : 0.03703703704, "3" : 0.03846153846, "4" : 0.04, "5" : 0.03846153846, "6" : 0.04, "7" : 0.03571428571, "8" : 0.04, "9" : 0.04, "0" : 0.03846153846, "," : 0.01724137931, "." : 0.01724137931, ")" : 0.02272727273, "(" : 0.02272727273, "+" : 0.04, "×" : 0.04, "÷" : 0.04, "-" : 0.02777777778, "=" : 0.02777777778]

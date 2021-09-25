@@ -3,10 +3,13 @@
 1. 함수명은 동사, 명령문 처럼
 2. 변수 명은 명사
 
-inputNumberPressedAtOnce ?
 
 
-
+    
+    // make seperate constants file
+    // layer architecture
+    // 모듈을 만드는 느낌 ?? 유지보수 .
+    
 애매한 변수 명에는 Summary 에 설명을 달아주자. 
 
 
@@ -60,3 +63,255 @@ View 도 따로따로 . (mode 바꾸는게 조금 까다롭겠다.. 어떻게 �
 |   BasicCalculator |
 |                   |
 ---------------------
+
+
+
+
+
+
+
+
+Variables and Functions
+
+1. Variables
+
+    let ansFromTableNotification = Notification.Name(rawValue: answerFromTableNotificationKey)
+    
+    let childTableVC = HistoryRecordVC()
+    let newTableVC = HistoryRecordVC()
+    
+    let colorList = ColorList()
+    var historyRecords : Results<HistoryRecord>!
+    var userDefaultSetup = UserDefaultSetup()
+    
+
+    
+    let localizedStrings = LocalizedStringStorage()
+
+    let fontSize = FontSizes()
+    let frameSize = FrameSizes()
+    let reviewService = ReviewService.shared
+    
+    var frameView = UIView()
+    
+    var isOrientationPortrait = true
+    
+    var iPressed = ""
+
+    
+    let nf1 = NumberFormatter() // what is this for?
+    let nf6 = NumberFormatter()
+    let nf11 = NumberFormatter() // what is this for?
+    
+    
+    var isSoundOn = true
+    var isLightModeOn = false
+    var isNotificationOn = false
+    var numberReviewClicked = 0
+    
+    
+    var setteroi : Int = 0
+    var sumOfUnitSizes : [Double] = [0.0]
+    
+    var pOfNumsAndOpers = [""]
+    var pOfNumsAndOpersCount = 1
+    var strForProcess = [""]
+    
+    var lastMoveOP : [[Int]] = [[0],[0],[0]]
+        
+    var numOfEnter = [0,0,0]
+    var dictionaryForLine = [Int : String]()
+    
+    var numParenCount = 0
+    
+    //MARK: - MAIN FUNCTIONS
+    let numbers : [Character] = ["0","1","2","3","4","5","6","7","8","9","."]
+    let operators : [Character] = ["+","×","-","÷"]
+    let parenthesis : [Character] = ["(",")"]
+    let notToDeleteList : [Character] = ["+","-","×","÷","(",")"]
+    
+    var negativePossible = true
+    var isAnsPressed = false
+    
+    var pi = 0 // index for parenthesis.
+    var ni = [0] // increase after pressing operation button.
+    var tempDigits = [[""]] // save all digits to make a number
+    var DS = [[0.0]] // Double Numbers Storage
+    var answer : [[Double]] = [[100]] // the default value
+    
+    var operationStorage = [[""]]
+    var muldiOperIndex = [[false]] // true if it is x or / .
+    
+    var freshDI = [[0]] // 0 : newly made, 1: got UserInput, 2 : used
+    var freshAI = [[0]] // 0 :newly made, 1 : calculated, 2 : used
+    
+    var niStart = [[0,0]] // remember the indexes to calculate (within parenthesis)
+    var niEnd = [[0]]
+    
+    var piMax = 0
+    var indexPivotHelper = [false]
+    var numOfPossibleNegative = [1] // 123 x (1 + 2) x (3 + 4 :  -> [1,2,0]
+    var positionOfParen = [[0]] // remember the position of empty DS
+    var isNegativeSign = [[false, false]]
+    
+    
+    var process = ""
+    // if you want operate after press ans button, this value will come up and used.
+    var saveResult : Double?
+    var result : Double? // to be printed, one of the answer array.
+    //    var isSaveResultInt : Bool?
+    //    var floatingNumberDigits : Int?
+    
+    
+    // copy*** -> copied***
+    
+    var copypi = 0
+    var copyni = [0]
+    var copytempDigits = [[""]]
+    var copyDS = [[0.0]]
+    var copyanswer : [[Double]] = [[100]]
+    var copyoperationStorage = [[""]]
+    var copymuldiOperIndex = [[false]]
+    var copyfreshDI = [[0]]
+    var copyfreshAI = [[0]]
+    var copyniStart = [[0,0]]
+    var copyniEnd = [[0]]
+    var copypiMax = 0
+    var copyindexPivotHelper = [false]
+    var copynumOfPossibleNegative = [1]
+    var copypositionOfParen = [[0]]
+    var copyisNegativeSign = [[false, false]]
+    var copyisNegativePossible = true
+    var copyisAnsPressed = false
+    var copyprocess = ""
+    var copyresult : Double? // to be printed, one of the answer array.
+    var copysaveResult : Double?
+    
+    // delete** -> deletion**
+    
+    var deleteTimer = Timer()
+    var deleteTimer2 = Timer()
+    var deleteTimerInitialSetup = Timer()
+    var deleteTimerPause = Timer()
+    var deleteSpeed = 0.5
+    let deletePause = 2.35
+    let deleteInitialSetup = 2.5
+    
+    var showingAnsAdvance = false
+
+isOrientationPortrait -> portraitMode
+
+2. Functions
+
+    viewWillTransition
+    viewWillAppear
+    viewWillDisappear
+    viewDidLoad
+
+    setupNumberFormatter
+    copyAndPasteAns(ansString: String)
+    insertAnsFromHistory(numString : String)
+    removeMinusCommaDotZero(from stringValue : String )
+    @objc func handleNumberTapped(sender : UIButton)
+    @objc func operationPressed(sender : UIButton) -> handleOperationTapped
+    manualOperationPressed(operSymbol : String)
+    @objc func calculateAns()
+    
+    anslimitExceedToast -> toastAnsLimitExceed
+    floatingExceedToast -> toastFloatingDigitLimitExceed // not used
+    showAnsAdvance
+    @objc func parenthesisPressed(sender : UIButton) -> handlePerenthesisTapped
+    manualParenthesis(trueToOpen: Bool) // used in .. copyAndPastsAns from History
+    -> insertParentheWithHistory(openParen: Bool)
+        deleteExecute -> handleDeleteAction
+    clearPressed -> handleClearTapped
+    manualClear -> .. executed when ans from history fetched..
+    -> clearWithFetchingAns
+    @objc func clear() -> func clear()
+    indexUpdate() -> updateIndexes
+    operInputSetup -> setupOperVariables
+    floatingNumberDecider ??? what is this function for ??
+    ansPressed -> handleAnsTapped// line 1918
+    addPOfNumsAndOpers // ??
+    addSumOfUnitSizes // okay.
+    addStrForProcess // um... ?
+
+    printProcess()
+    printLineSetterElements()
+    lineSetter() -> align
+    ..? name is inappropriate.. line setter..? nope.
+    lineSettingOtherProcess -> alignForHistory
+    
+    removeNumberInProcess -> remove last number (not digit!)
+    numStrToNumWithComma -> addCommasToString
+    copyCurrentStates() // variable names need to be changed.
+    pateStates()
+    @objc func initialSetup() -> setupInitialState
+    // remove all processes after 2.5s if delete button pressed
+    deleteTimerInitialSetup
+    // handleLongDeleteAction
+    backToOriginalColor -> turnIntoOriginalColor
+    deleteDragOut -> handleDeleteDragOutAction
+    soundOnOff1 -> toggleSoundMode
+    backgroundColorChanger2 -> toggleDarkMode
+    notificationOnOff3 -> toggleNotificationAlart
+    gotoFeedbackPage4 -> navigateToReviewSite
+    sendNotification()
+    defaultSetup() -> setupUserDefaults
+    playSound()
+    deletePressedDown -> handleDeleteTapped -> handleDeletePressedDown
+    deleteFaster
+    pauseDelete
+    deletePressedUp() -> handleDeleteTapped
+    
+    // same functionality.
+    numberPressedDown() ->
+    otherPressedDown() ->
+    
+    ==> converted it separate functions
+    with handleSoundAction,
+    and  handleColorChangeAction
+    
+       printLineSetterElements -> printAlineElements
+    
+    returnLightModeSetup()  - > getLightModeSetup // but it is not used.
+    
+    // line 2580
+    
+    
+    
+    
+// it is.. timeconsuming process.. ?
+        func setupOperVariables( _ tempOperInput : String, _ tempi : Int){
+        switch tempOperInput{
+        case "+" :  operationStorage[pi][tempi] = "+"
+        case "×" :  operationStorage[pi][tempi] = "×"
+        case "-" :  operationStorage[pi][tempi] = "-"
+        case "÷" :  operationStorage[pi][tempi] = "÷"
+        default: break
+        }
+        if  operationStorage[pi][tempi] == "×" ||  operationStorage[pi][tempi] == "÷"{
+            muldiOperIndex[pi][tempi] = true}
+        else {
+            muldiOperIndex[pi][tempi] = false}
+    }
+    
+    how about make tempOperInput with protocol or enum with only four operations?
+
+
+
+// from line 2580
+// UI Part Starts
+
+func setupPositionLayout
+    addTargetSetup -> setupAddTargets
+
+setButtonImageInLightMode -> setup...
+
+
+
+
+to change
+iPressed
+
+

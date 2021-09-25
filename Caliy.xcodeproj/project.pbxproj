@@ -32,13 +32,15 @@
 		9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */; };
 		9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FFF24CCDF6A001057D2 /* Localizable.strings */; };
 		9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */; };
-		9A4FD3BD26A7A00500593358 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BC26A7A00500593358 /* Constants.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
 		9AF62EE426FF251900E183AB /* Memo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* Memo */; };
+		9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EE726FF660B00E183AB /* ImageConstants.swift */; };
+		9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EE926FF665800E183AB /* RatioConstants.swift */; };
+		9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EEB26FF668A00E183AB /* TagConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +98,6 @@
 		9A083FFE24CCDF6A001057D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9A08400024CCDF6E001057D2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameSizes.swift; sourceTree = "<group>"; };
-		9A4FD3BC26A7A00500593358 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -104,6 +105,9 @@
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF62EE326FF251900E183AB /* Memo */ = {isa = PBXFileReference; lastKnownFileType = text; path = Memo; sourceTree = "<group>"; };
+		9AF62EE726FF660B00E183AB /* ImageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConstants.swift; sourceTree = "<group>"; };
+		9AF62EE926FF665800E183AB /* RatioConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioConstants.swift; sourceTree = "<group>"; };
+		9AF62EEB26FF668A00E183AB /* TagConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagConstants.swift; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy_CaliyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -180,12 +184,14 @@
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF424CCDDEE001057D2 /* SubViewController */,
 				9A083FB124CCD55E001057D2 /* Assets.xcassets */,
-				9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */,
 				9A083FF524CCDE04001057D2 /* Model */,
-				9A083FFF24CCDF6A001057D2 /* Localizable.strings */,
 				9A083FF624CCDE0D001057D2 /* Extension */,
-				9A083FB624CCD55E001057D2 /* Info.plist */,
+				9AF62EE526FF65CC00E183AB /* Services */,
+				9AF62EE626FF65ED00E183AB /* Constants */,
 				9AF62EE326FF251900E183AB /* Memo */,
+				9A083FFF24CCDF6A001057D2 /* Localizable.strings */,
+				9A083FB624CCD55E001057D2 /* Info.plist */,
+				9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */,
 				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
 			);
 			path = Caliy;
@@ -238,15 +244,8 @@
 		9A083FF524CCDE04001057D2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9A083FE024CCDC72001057D2 /* LocalizedStringStorage.swift */,
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
-				9A083FE624CCDC90001057D2 /* ColorList.swift */,
-				9A083FE824CCDC99001057D2 /* Notification.swift */,
-				9A083FEA24CCDCA2001057D2 /* FontSizes.swift */,
-				9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */,
-				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
-				9A5FFE5924DF101500681717 /* ReviewService.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,11 +256,34 @@
 				9A083FEC24CCDCAB001057D2 /* UIViewController+Ext.swift */,
 				9A4FD3BE26A7A86300593358 /* ButtonTag.swift */,
 				9A4FD3C026A7AD9800593358 /* Extensions.swift */,
-				9A4FD3BC26A7A00500593358 /* Constants.swift */,
 				9A083FEE24CCDCB4001057D2 /* UIView+Ext.swift */,
 				9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		9AF62EE526FF65CC00E183AB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
+				9A5FFE5924DF101500681717 /* ReviewService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9AF62EE626FF65ED00E183AB /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				9A083FEA24CCDCA2001057D2 /* FontSizes.swift */,
+				9AF62EE726FF660B00E183AB /* ImageConstants.swift */,
+				9A083FE624CCDC90001057D2 /* ColorList.swift */,
+				9AF62EE926FF665800E183AB /* RatioConstants.swift */,
+				9AF62EEB26FF668A00E183AB /* TagConstants.swift */,
+				9A083FE024CCDC72001057D2 /* LocalizedStringStorage.swift */,
+				9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */,
+				9A083FE824CCDC99001057D2 /* Notification.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		E626D36DB9E65AF30BED8735 /* Pods */ = {
@@ -519,12 +541,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
-				9A4FD3BD26A7A00500593358 /* Constants.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */,
+				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
 				9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */,
@@ -533,11 +555,13 @@
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
+				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A083FE924CCDC99001057D2 /* Notification.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
+				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

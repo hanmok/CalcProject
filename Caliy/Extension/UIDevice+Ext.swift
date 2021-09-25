@@ -77,23 +77,13 @@ public extension UIDevice {
             case "iPad7,1", "iPad7,2":                      return "iPad Pro (12.9-inch) (2nd generation)"
             case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8":return "iPad Pro (12.9-inch) (3rd generation)"
             case "iPad8,11", "iPad8,12":                    return "iPad Pro (12.9-inch) (4th generation)"
-            case "AppleTV5,3":                              return "Apple TV"
-            case "AppleTV6,2":                              return "Apple TV 4K"
-            case "AudioAccessory1,1":                       return "HomePod"
-//            case "i386", "x86_64":                          return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
+            
             case "i386", "x86_64":                          return " \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
             default:                                        return identifier
             }
-            #elseif os(tvOS)
-            switch identifier {
-            case "AppleTV5,3": return "Apple TV 4"
-            case "AppleTV6,2": return "Apple TV 4K"
-            case "i386", "x86_64": return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "tvOS"))"
-            default: return identifier
-            }
+            
             #endif
         }
-        
         return mapToDevice(identifier: identifier)
     }()
 }
