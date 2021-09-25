@@ -3,10 +3,6 @@ import UIKit
 import AudioToolbox
 import RealmSwift
 
-//let answerToTableNotificationKey = "com.hanmok.Neat-Calc.ansToTable"
-//let answerFromTableNotificationKey = "com.hanmok.Neat-Calc.ansFromTable"
-//let viewWilltransitionNotificationKey = "com.hanmok.Neat-Calc.transitionAlert"
-
 class BaseViewController: UIViewController, FromTableToBaseVC {
     
     let ansFromTableNotification = Notification.Name(rawValue: answerFromTableNotificationKey)
@@ -15,10 +11,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
-    //self.localizedStrings.soundOff,
     //MARK: - Basic setup
-    
     
     let childTableVC = HistoryRecordVC()
     let newTableVC = HistoryRecordVC()
@@ -26,23 +19,30 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let colorList = ColorList()
     var historyRecords : Results<HistoryRecord>!
     var userDefaultSetup = UserDefaultSetup()
-    var frameView = UIView()
+    
+
+    
     let localizedStrings = LocalizedStringStorage()
-    var deviceName : String?
-    var isOrientationPortrait = true
+//    var deviceName : String?
+
     let fontSize = FontSizes()
     let frameSize = FrameSizes()
     let reviewService = ReviewService.shared
-    var lineSettingsum = 0
     
+//    var lineSettingsum = 0
+    
+    var frameView = UIView()
+    
+    var isOrientationPortrait = true
     
     var iPressed = ""
     var countingNumber = 1
+    
     let nf1 = NumberFormatter()
     let nf6 = NumberFormatter()
     let nf11 = NumberFormatter()
     
-    
+    // MARK: - LifeCycles
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -59,7 +59,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         printProcess()
         
-        nfSetup()
+        setupNumberFormatter()
         
         let isPortrait = ["orientation" : isOrientationPortrait]
         let name = Notification.Name(rawValue: viewWilltransitionNotificationKey)
@@ -68,16 +68,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         let name = Notification.Name(rawValue: viewWillAppearbasicViewControllerKey)
         NotificationCenter.default.post(name : name, object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         let name = Notification.Name(rawValue: viewWillDisappearbasicViewControllerKey)
@@ -87,18 +82,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     override func viewDidLoad() {
         
-        
-        
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
-        
         
         isOrientationPortrait = screenHeight > screenWidth ? true : false
         
         childTableVC.FromTableToBaseVCdelegate = self
         newTableVC.FromTableToBaseVCdelegate = self
-        
         
         super.viewDidLoad()
         
@@ -109,12 +100,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         colorAndImageSetup()
         addTargetSetup()
         
-        nfSetup()
+        setupNumberFormatter()
     }
     
-    func nfSetup(){
-        //        let nf6 = NumberFormatter() // declared at the first
-        
+    
+    
+    // MARK: - Helpers
+    
+    func setupNumberFormatter(){
+       
         nf1.roundingMode = .down
         nf1.maximumFractionDigits = 1
         
@@ -123,10 +117,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         nf11.roundingMode = .down
         nf11.maximumFractionDigits = 10
-        
-        
     }
     
+    // MARK: - from History
     
     func copyAndPasteAns(ansString: String) {
         print("copyAndPasteAns called")
@@ -149,8 +142,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 plusNeeded.toggle()
                 parenNeeded.toggle()
             }
-            
-        }else if process == ""{
         }
         
         if valueFromTable.contains("-") && manualClearNeeded{
@@ -169,20 +160,17 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             manualOperationPressed(operSymbol: "-")
         }
         
-        inputNumberPressedAtOnce(numString : valueFromTable)
+        insertAnsFromHistory(numString : valueFromTable)
         
         if parenNeeded && valueFromTable.contains("-"){
             manualParenthesis(trueToOpen: false)
         }
-        
-        //        printLineSetterElements("pasteAns!!!!!")
-        
     }
     
     
     
     
-    func inputNumberPressedAtOnce(numString : String){
+    func insertAnsFromHistory(numString : String){
         
         countingNumber += 1
         
@@ -197,7 +185,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         if pOfNumsAndOpers[setteroi] == "op"{
             setteroi += 1
         }
-        isNegativePossible = false
+        negativePossible = false
         let freshString = removeMinusCommaDot0(from: numString)
         
         tempDigits[pi][ni[pi]] += freshString
@@ -210,14 +198,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 DS[pi][ni[pi]] *= -1
             }
         }
-        //        checkIndexes(saySomething: "inputNumberPressedAtOnce")
         addPOfNumsAndOpers()
         pOfNumsAndOpers[setteroi] = "n"
         addStrForProcess()
         showAnsAdvance()
         printProcess() // 이거 없애면 숫자들 사이 , 가 없어짐.
     }
-    
+    /// remove - , . 0
     func removeMinusCommaDot0(from stringValue : String ) -> String{
         var stringToReturn = stringValue
         if stringValue.hasPrefix("-"){
@@ -247,11 +234,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var isNotificationOn = false
     var numberReviewClicked = 0
     
-    let tagToString = [1 : "1", 2 : "2", 3 : "3", 4 : "4", 5 : "5", 6 : "6", 7 : "7", 8 : "8", 9 : "9", 0 : "0", -1 : "00", -2 : ".", 11 : "Clear", 12 : "(", 13 : ")", 14 : "÷", 15 : "×", 16 : "+", 17 : "-", 18 : "=", 21 : "del", 31 : "etc1", 32 : "etc2", 33 : "etc3", 34 : "etc4" ]
     
-    let tagToUnitSize : [Character : Double] =  ["1" : 0.02857142857, "2" : 0.03703703704, "3" : 0.03846153846, "4" : 0.04, "5" : 0.03846153846, "6" : 0.04, "7" : 0.03571428571, "8" : 0.04, "9" : 0.04, "0" : 0.03846153846, "," : 0.01724137931, "." : 0.01724137931, ")" : 0.02272727273, "(" : 0.02272727273, "+" : 0.04, "×" : 0.04, "÷" : 0.04, "-" : 0.02777777778, "=" : 0.02777777778]
-    
-    let tagToUnitSizeString : [String : Double] =  ["1" : 0.02857142857, "2" : 0.03703703704, "3" : 0.03846153846, "4" : 0.04, "5" : 0.03846153846, "6" : 0.04, "7" : 0.03571428571, "8" : 0.04, "9" : 0.04, "0" : 0.03846153846, "," : 0.01724137931, "." : 0.01724137931, ")" : 0.02272727273, "(" : 0.02272727273, "+" : 0.04, "×" : 0.04, "÷" : 0.04, "-" : 0.02777777778, "=" : 0.02777777778]
     
     // make seperate constants file
     // layer architecture
@@ -265,24 +248,20 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var pOfNumsAndOpersCount = 1
     var strForProcess = [""]
     
-    //    var lastMovePP : [[Int]] = [[0],[0],[0]] // lastMove Process Position
     var lastMoveOP : [[Int]] = [[0],[0],[0]]
-    
-    
-    //    var criteriaForProcesses = [0.9, 1.4, 1.8]
+        
     var numOfEnter = [0,0,0]
     var dictionaryForLine = [Int : String]()
     
-    //    var dicForProcess = [Int : String]()
-    
     var numParenCount = 0
+    
     //MARK: - MAIN FUNCTIONS
     let numbers : [Character] = ["0","1","2","3","4","5","6","7","8","9","."]
     let operators : [Character] = ["+","×","-","÷"]
     let parenthesis : [Character] = ["(",")"]
     let notToDeleteList : [Character] = ["+","-","×","÷","(",")"]
     
-    var isNegativePossible = true
+    var negativePossible = true
     var isAnsPressed = false
     
     var pi = 0 // index for parenthesis.
@@ -346,7 +325,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var showingAnsAdvance = false
     
     
-    @objc func numberPressed(sender : UIButton){
+    @objc func handleNumberTapped(sender : UIButton){
         
         if let input = tagToString[sender.tag]{
             iPressed += input
@@ -440,7 +419,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 if let safeDigits = Double(tempDigits[pi][ni[pi]]){
                     DS[pi][ni[pi]] = safeDigits
                     freshDI[pi][ni[pi]] = 1
-                    isNegativePossible = false
+                    negativePossible = false
                 }
             } // end if DS[pi][ni[pi]] <= 1e14{
             else if ((DS[pi][ni[pi]] >= 1e13 || DS[pi][ni[pi]] <= -1e13) && input == "00") && (DS[pi][ni[pi]] < 1e14  && DS[pi][ni[pi]] > -1e14){
@@ -452,7 +431,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 if let safeDigits = Double(tempDigits[pi][ni[pi]]){
                     DS[pi][ni[pi]] = safeDigits
                     freshDI[pi][ni[pi]] = 1
-                    isNegativePossible = false
+                    negativePossible = false
                 }
                 
             }// 15자리에서 .이 이미 있는 경우
@@ -591,7 +570,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             if let safeDigits = Double(tempDigits[pi][ni[pi]]){
                 DS[pi][ni[pi]] = safeDigits
                 freshDI[pi][ni[pi]] = 1
-                isNegativePossible = false
+                negativePossible = false
             }
         }
         else if ((DS[pi][ni[pi]] > 1e14 || DS[pi][ni[pi]] < -1e14) && tempDigits[pi][ni[pi]].contains(".")){
@@ -602,7 +581,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             if let safeDigits = Double(tempDigits[pi][ni[pi]]){
                 DS[pi][ni[pi]] = safeDigits
                 freshDI[pi][ni[pi]] = 1
-                isNegativePossible = false
+                negativePossible = false
             }
         }// 15자리에서 . 없는 경우
         else if ((DS[pi][ni[pi]] > 1e14 || DS[pi][ni[pi]] < -1e14) && !tempDigits[pi][ni[pi]].contains(".")){
@@ -653,7 +632,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 
                 addStrForProcess()
                 
-                isNegativePossible = false
+                negativePossible = false
                 
                 printProcess()
                 saveResult = nil
@@ -680,7 +659,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 addStrForProcess()
             }
             
-            else if isNegativePossible{ // true until number input.
+            else if negativePossible{ // true until number input.
                 if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == ""{// input negative Sign
                     
                     if operInput == "-"{
@@ -724,7 +703,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 }
             }
             
-            else if !isNegativePossible{ // modify Operation Input for duplicate case.
+            else if !negativePossible{ // modify Operation Input for duplicate case.
                 if tempDigits[pi][ni[pi]] == ""{
                     //                    printLineSetterElements("operation modified")
                     operInputSetup(operInput, ni[pi]-1)
@@ -779,7 +758,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
     }
     
-    // 동사 먼저 ( 명령문처럼)
+
     func manualOperationPressed(operSymbol : String){
         // ["+","-","×","÷","(",")"]
         let operInput = operSymbol
@@ -792,12 +771,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             isAnsPressed = false
             DS[0][0] = saveResult!
             
-            //                    let nf6 = NumberFormatter()
-            //                    nf6.roundingMode = .down
-            //                    nf6.maximumFractionDigits = 6
             tempDigits[0][0] = nf6.string(for: saveResult!)!
             
-            //                    tempDigits[0][0] = "\(String(format : "%.\(floatingNumberDigits ?? 0)f", saveResult!))"
             
             if DS[0][0] < 0{
                 isNegativeSign = [[false,true]]
@@ -807,7 +782,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             addStrForProcess()
             
-            isNegativePossible = false // 이름 다시 짓기. (negativePossible) 변수는 명사, 함수명은 동사로 .
+            negativePossible = false // 이름 다시 짓기. (negativePossible) 변수는 명사, 함수명은 동사로 .
             
             printProcess()
             saveResult = nil
@@ -833,7 +808,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             addStrForProcess()
         }
         //        else if isNegativePossible{ // true until number input.
-        else if isNegativePossible{
+        else if negativePossible{
             if tempDigits[pi][niStart[pi][numOfPossibleNegative[pi]]] == ""{// input negative Sign
                 
                 if operInput == "-"{
@@ -875,7 +850,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sendNotification()// both cases are abnormal.
             }
         }
-        else if !isNegativePossible{ // modify Operation Input
+        else if !negativePossible{ // modify Operation Input
             if tempDigits[pi][ni[pi]] == ""{
                 operInputSetup(operInput, ni[pi]-1)
                 process.removeLast()
@@ -1198,7 +1173,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     if DS[0][0] < 0{
                         isNegativeSign = [[false,true]]
                     }
-                    isNegativePossible = false
+                    negativePossible = false
                     
                     printProcess() // duplicate printProcess ??
                     addPOfNumsAndOpers()
@@ -1327,7 +1302,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 
                 niStart[pi].append(ni[pi])
                 indexPivotHelper[pi] = true
-                isNegativePossible = true
+                negativePossible = true
             }
             
             else if (pi != 0) && input == ")"{
@@ -1357,7 +1332,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     pi -= 1
                     process += input
                     tempDigits[pi][ni[pi]] += "close"
-                    isNegativePossible = false
+                    negativePossible = false
                 }
                 else{sendNotification() } // input is ) and end of process is ( + - × ÷ >> ignore !
             }
@@ -1478,7 +1453,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             niStart[pi].append(ni[pi])
             indexPivotHelper[pi] = true
-            isNegativePossible = true
+            negativePossible = true
         }
         else if (pi != 0) && input == ")"{
             if process[process.index(before:process.endIndex)] != "(" &&  process[process.index(before:process.endIndex)] != "-" && process[process.index(before:process.endIndex)] != "×" && process[process.index(before:process.endIndex)] != "+" && process[process.index(before:process.endIndex)] != "÷" {
@@ -1508,7 +1483,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 pi -= 1
                 process += input
                 tempDigits[pi][ni[pi]] += "close"
-                isNegativePossible = false
+                negativePossible = false
             }
             else{sendNotification() } // input is ) and end of process is ( + - × ÷ >> ignore !
         }
@@ -1560,7 +1535,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         DS[pi][ni[pi]] = 0 // 이상해. 지우면 없는 수가 되어야 하는데 0 이 됨. ?? 보류.
                         freshDI[pi][ni[pi]] = 0
                         process = ""
-                        isNegativePossible = true // 이게 문제야. 왜 true 라고 했을까?
+                        negativePossible = true // 이게 문제야. 왜 true 라고 했을까?
                         printProcess()
                         sumOfUnitSizes[setteroi] = 0
                         
@@ -1584,7 +1559,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         }
                         
                         if tempDigits[pi][ni[pi]] == "-"{
-                            isNegativePossible = true
+                            negativePossible = true
                         }
                         
                         // if cannot find number leftover
@@ -1635,7 +1610,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     }
                     
                     else{ // 음수의 부호를 지운 경우 .
-                        isNegativePossible = true
+                        negativePossible = true
                         tempDigits[pi][ni[pi]].removeLast()
                         isNegativeSign[pi][numOfPossibleNegative[pi]] = false
                         sumOfUnitSizes[setteroi] = 0
@@ -1655,9 +1630,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 
                 if process != ""{
                     if process[process.index(before:process.endIndex)] == "("{
-                        isNegativePossible = true
+                        negativePossible = true
                     }else{
-                        isNegativePossible = false
+                        negativePossible = false
                     }
                 }
                 
@@ -1726,7 +1701,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 pi += 1
                 niEnd[pi].removeLast()
                 
-                isNegativePossible = false
+                negativePossible = false
                 for i in 0 ... numOfPossibleNegative.count-1{
                     if numOfPossibleNegative[i] != 0{
                         piMax = i
@@ -1743,8 +1718,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         else{
             sendNotification()
-//            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-            
         }
         
         
@@ -1796,7 +1769,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func clear(){
         iPressed = ""
-        isNegativePossible = true
+        negativePossible = true
         isAnsPressed = false
         
         pi = 0
@@ -1911,9 +1884,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     }
                     if process != ""{
                         if process[process.index(before:process.endIndex)] == "("{
-                            isNegativePossible = true
+                            negativePossible = true
                         }else{
-                            isNegativePossible = false
+                            negativePossible = false
                         }
                     }
                     
@@ -1993,7 +1966,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                         }
                     }
                     else{ // 음수의 부호를 지운 경우 .
-                        isNegativePossible = true
+                        negativePossible = true
                         tempDigits[pi][ni[pi]].removeLast()
                         isNegativeSign[pi][numOfPossibleNegative[pi]] = false
                         if !showingAnsAdvance{
@@ -2380,7 +2353,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func copyCurrentStates(){
         print("copyCurrentStates called")
-        copyisNegativePossible = isNegativePossible
+        copyisNegativePossible = negativePossible
         copyisAnsPressed = isAnsPressed
         copypi = pi
         copyni = ni
@@ -2405,7 +2378,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func pasteStates(){
         print("pasteStates baseVC")
-        isNegativePossible = copyisNegativePossible
+        negativePossible = copyisNegativePossible
         isAnsPressed = copyisAnsPressed
         pi = copypi
         ni = copyni
@@ -2571,7 +2544,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
     }
     
-//    self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
     
     func defaultSetup(){
         if userDefaultSetup.getIsUserEverChanged(){
@@ -2703,7 +2675,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         print("5.")
         print("numOfPossibleNegative : \(numOfPossibleNegative)")
         print("isNegativeSign : \(isNegativeSign)")
-        print("isNegativePossible : \(isNegativePossible)")
+        print("isNegativePossible : \(negativePossible)")
         print("6.")
         print("answer : \(answer)")
         print("freshAI : \(freshAI)")
@@ -2807,6 +2779,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let extra2 = ButtonTag(withTag: 32)
     let extra3 = ButtonTag(withTag: 33)
     let extra4 = ButtonTag(withTag: 34)
+    
     let deleteButton : UIButton = {
         let del = UIButton(type: .custom)
         del.translatesAutoresizingMaskIntoConstraints = false
@@ -2822,15 +2795,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         return del
     }()
     
-    let emptySpace : UIImageView = {
-        let empty = UIImageView(image: #imageLiteral(resourceName: "transparent")) // transparent
-        empty.translatesAutoresizingMaskIntoConstraints = false
-        return empty
-    }()
+    
+    let emptySpace = UIImageView(image: #imageLiteral(resourceName: "transparent"))
+    
+    
+    
     
     let resultTextView : UITextView = {
         let result = UITextView()
-        result.translatesAutoresizingMaskIntoConstraints = false
         result.textAlignment = .right
         result.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         result.adjustsFontForContentSizeCategory = true
@@ -2853,65 +2825,30 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         return progress
     }()
     
-    let deleteWidthReference : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "transparent")) // transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
     
-    let deleteHeightReference : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "transparent")) // transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let deleteWidthReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    let resultWidthReference : UIImageView = {
-        let sub = UIImageView(image:  #imageLiteral(resourceName: "transparent"))// transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
     
-    let resultHeightReference : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "transparent"))// transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let deleteHeightReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    let progressWidthReference : UIImageView = {
-        let sub = UIImageView(image:  #imageLiteral(resourceName: "transparent"))// transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
     
-    let progressHeightReference : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "transparent"))// transparent
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let resultWidthReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    let historyClickButton : UIButton = {
-        let sub = UIButton(type: .custom)
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
     
-    let historyDragButton : UIButton = {
-        let sub = UIButton(type: .custom)
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let resultHeightReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    let rightSideForLandscapeMode : UIView = {
-        let sub = UIView()
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let progressWidthReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
+
+    let progressHeightReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    let leftSideForLandscapeMode : UIView = {
-        let sub = UIView()
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let historyClickButton = UIButton()
+    
+    let historyDragButton = UIButton()
+    
+    let rightSideForLandscapeMode = UIView()
+    
+    
+    let leftSideForLandscapeMode = UIView()
     
     //MARK: - <#UI Section Not Included Any Function End.
     
@@ -2975,9 +2912,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             childTableVC.view.anchor(left: view.leftAnchor, bottom: view.bottomAnchor)
             childTableVC.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.438).isActive = true
             childTableVC.view.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-            //            childTableVC.backgroundColo
-            
-
         }
         
         
@@ -3003,13 +2937,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         if isOrientationPortrait{
             for button in horStackView0{
                 button.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.25).isActive = true
-                button.bottomAnchor.constraint(equalTo: frameView.bottomAnchor).isActive = true
+                button.anchor(bottom: frameView.bottomAnchor)
                 button.layer.borderWidth = 0.23
                 button.layer.borderColor = CGColor(genericGrayGamma2_2Gray: 0, alpha: 0.15)
             }
             
             for button in horStackView1{
-                button.bottomAnchor.constraint(equalTo: extra1.topAnchor).isActive = true
+                button.anchor(bottom: extra1.topAnchor)
             }
             
             extra1.anchor(left: frameView.leftAnchor)
@@ -3022,36 +2956,35 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }else {
             
             for button in horStackView1{
-                button.bottomAnchor.constraint(equalTo: frameView.bottomAnchor).isActive = true
+                button.anchor(bottom: frameView.bottomAnchor)
             }
         }
         
         
         for button in horStackView2{
-            button.bottomAnchor.constraint(equalTo: num0.topAnchor).isActive = true
+            button.anchor(bottom: num0.topAnchor)
         }
         for button in horStackView3{
-            button.bottomAnchor.constraint(equalTo: num1.topAnchor).isActive = true
+            button.anchor(bottom: num1.topAnchor)
         }
         for button in horStackView4{
-            button.bottomAnchor.constraint(equalTo: num4.topAnchor).isActive = true
+            button.anchor(bottom: num4.topAnchor)
         }
         for button in horStackView5{
-            button.bottomAnchor.constraint(equalTo: num7.topAnchor).isActive = true
+            button.anchor(bottom: num7.topAnchor)
         }
         
         for button in verStackView0{
-            button.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
+            button.anchor(left: frameView.leftAnchor)
         }
         for button in verStackView1{
-            button.leftAnchor.constraint(equalTo: num0.rightAnchor).isActive = true
+            button.anchor(left: num0.rightAnchor)
         }
         for button in verStackView2{
-            button.leftAnchor.constraint(equalTo: num00.rightAnchor).isActive = true
+            button.anchor(left: num00.rightAnchor)
         }
         for button in verStackView3{
-            button.leftAnchor.constraint(equalTo: numberDot.rightAnchor).isActive = true
-            button.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            button.anchor(left: numberDot.rightAnchor, right: view.rightAnchor)
         }
         
         frameView.addSubview(emptySpace)
@@ -3074,10 +3007,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             // only applied to portrait Mode
             
-            deleteWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.122).isActive = true
             
-            deleteHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
+            deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.1446010638).isActive = true
             
             deleteButton.centerXAnchor.constraint(equalTo: deleteWidthReference.leftAnchor).isActive = true
@@ -3086,73 +3019,65 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             deleteButton.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.255).isActive = true
             
             
-            resultWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            resultWidthReference.anchor(right: frameView.rightAnchor)
             resultWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.01).isActive = true
             
-            resultHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
+            resultHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             resultHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.2978723404).isActive = true
             
-            resultTextView.bottomAnchor.constraint(equalTo: resultHeightReference.topAnchor).isActive = true
             resultTextView.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.27).isActive = true
-            resultTextView.leftAnchor.constraint(equalTo: emptySpace.leftAnchor).isActive = true
-            resultTextView.rightAnchor.constraint(equalTo: resultWidthReference.leftAnchor).isActive = true
+            resultTextView.anchor(left: emptySpace.leftAnchor, bottom: resultHeightReference.topAnchor, right: resultWidthReference.leftAnchor)
             
             
-            progressWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            progressWidthReference.anchor(right: frameView.rightAnchor)
             progressWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.248).isActive = true
             
-            progressHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
+            progressHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             progressHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.02).isActive = true
             
-            progressView.bottomAnchor.constraint(equalTo: progressHeightReference.topAnchor).isActive = true
+            
             progressView.widthAnchor.constraint(equalTo: emptySpace.widthAnchor, multiplier: 0.6906666667).isActive = true
-            progressView.rightAnchor.constraint(equalTo: progressWidthReference.leftAnchor).isActive = true
+            progressView.anchor(bottom: progressHeightReference.topAnchor, right: progressWidthReference.leftAnchor)
             progressView.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.264).isActive = true
         }else{
             let k = 1.307
             emptySpace.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.352).isActive = true
-            emptySpace.topAnchor.constraint(equalTo: frameView.topAnchor).isActive = true
-            emptySpace.leftAnchor.constraint(equalTo: frameView.leftAnchor).isActive = true
-            emptySpace.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
-            
+            emptySpace.anchor(top: frameView.topAnchor, left: frameView.leftAnchor, right: frameView.rightAnchor)
             // only applied to portrait Mode
             
-            deleteWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.032).isActive = true
             
-            deleteHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
+            deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.0171*k)).isActive = true
             
-            deleteButton.rightAnchor.constraint(equalTo: deleteWidthReference.leftAnchor).isActive = true
-            deleteButton.bottomAnchor.constraint(equalTo: deleteHeightReference.topAnchor).isActive = true
+            deleteButton.anchor(bottom: deleteHeightReference.topAnchor, right: deleteWidthReference.leftAnchor)
             deleteButton.widthAnchor.constraint(equalTo: emptySpace.widthAnchor, multiplier: 0.18).isActive = true
             deleteButton.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.386364*k)).isActive = true
             
             
-            
-            progressWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            progressWidthReference.anchor(right: frameView.rightAnchor)
             progressWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.248).isActive = true
             
-            progressHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
-            //            progressHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.02).isActive = true
+            progressHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             progressHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.02*k)).isActive = true
             
-            progressView.bottomAnchor.constraint(equalTo: progressHeightReference.topAnchor).isActive = true
+            
             progressView.widthAnchor.constraint(equalTo: emptySpace.widthAnchor, multiplier: 0.6906666667).isActive = true
-            progressView.rightAnchor.constraint(equalTo: progressWidthReference.leftAnchor).isActive = true
             progressView.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.35*k)).isActive = true
+            progressView.anchor(bottom: progressHeightReference.topAnchor, right: progressWidthReference.leftAnchor)
             
             
-            
-            resultWidthReference.rightAnchor.constraint(equalTo: frameView.rightAnchor).isActive = true
+            resultWidthReference.anchor(right: frameView.rightAnchor)
             resultWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.01).isActive = true
             
-            resultHeightReference.bottomAnchor.constraint(equalTo: emptySpace.bottomAnchor).isActive = true
+            
+            resultHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             resultHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.385 * k)).isActive = true
-            resultTextView.bottomAnchor.constraint(equalTo: resultHeightReference.topAnchor).isActive = true
+            
+            
             resultTextView.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.30*k)).isActive = true
-            resultTextView.leftAnchor.constraint(equalTo: emptySpace.leftAnchor).isActive = true
-            resultTextView.rightAnchor.constraint(equalTo: resultWidthReference.leftAnchor).isActive = true
+            resultTextView.anchor(left: emptySpace.leftAnchor, bottom: resultHeightReference.topAnchor, right: resultWidthReference.leftAnchor)
             
         }
         
@@ -3173,12 +3098,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     func addTargetSetup(){
+        
         let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot]
         let operButtons = [operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus]
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
         
         for aButton in numButtons {
-            aButton.addTarget(self, action: #selector( numberPressed), for: .touchUpInside)
+            aButton.addTarget(self, action: #selector( handleNumberTapped), for: .touchUpInside)
             aButton.addTarget(self, action: #selector(numberPressedDown), for: .touchDown)
             aButton.addTarget(self, action: #selector(backToOriginalColor), for: .touchUpInside) // does nothing.
             aButton.addTarget(self, action: #selector(backToOriginalColor), for: .touchDragExit)
@@ -3213,13 +3139,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         historyClickButton.addTarget(self, action: #selector(toHistory), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(toHistory), for: .touchDragExit)
         historyDragButton.addTarget(self, action: #selector(toHistory), for: .touchDragExit)
-        //        historyClickButton
     }
     
     
     fileprivate func setButtonImageInLightMode() {
-        
-        
         
         sub0 = light0
         sub1 = light1
@@ -3401,6 +3324,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEx4Feedback.center(inView: extra4)
         subEx4Feedback.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
         subEx4Feedback.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        
     }
     
     func colorAndImageSetup(){
@@ -3416,12 +3340,12 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         for widthElement in widths{
             modifiedWidth.append(widthElement * ratio)
         }
-        
 
-        
-        
+
         let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot,progressView,resultTextView,emptySpace]
+        
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
+        
         let extras = [extra1, extra2, extra3, extra4]
         
         if isLightModeOn{
@@ -3435,10 +3359,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 extra.backgroundColor =  colorList.bgColorForExtrasBM
             }
             deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
-            
-           
-
-            
             
             setButtonImageInLightMode()
             
@@ -3528,6 +3448,5 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEx3Notification.center(inView: extra3)
         subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
         subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-        
     }
 }

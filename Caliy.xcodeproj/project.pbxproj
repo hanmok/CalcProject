@@ -38,6 +38,7 @@
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
+		9AF62EE426FF251900E183AB /* Memo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* Memo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AF62EE326FF251900E183AB /* Memo */ = {isa = PBXFileReference; lastKnownFileType = text; path = Memo; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy_CaliyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -183,6 +185,7 @@
 				9A083FFF24CCDF6A001057D2 /* Localizable.strings */,
 				9A083FF624CCDE0D001057D2 /* Extension */,
 				9A083FB624CCD55E001057D2 /* Info.plist */,
+				9AF62EE326FF251900E183AB /* Memo */,
 				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
 			);
 			path = Caliy;
@@ -386,6 +389,7 @@
 			files = (
 				9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */,
 				9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */,
+				9AF62EE426FF251900E183AB /* Memo in Resources */,
 				9A083FB224CCD55E001057D2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

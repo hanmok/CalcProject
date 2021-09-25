@@ -7,7 +7,9 @@
 //
 import UIKit
 import Foundation
+
 struct FrameSizes{
+    
     let showToastWidthSize : [String : CGFloat] = ["A" : 375, "B" : 375, "C" : 600, "D" : 800]
     
     let showToastHeightSize : [String : CGFloat] = ["A" : 667, "B" : 667, "C" : 1000, "D" : 1200]
