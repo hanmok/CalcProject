@@ -14,7 +14,10 @@ struct FrameSizes{
     
     let showToastHeightSize : [String : CGFloat] = ["A" : 667, "B" : 667, "C" : 1000, "D" : 1200]
 }
-
+// A -> smallest
+// B -> small
+// C -> medium
+// D -> Large
 
 //frameSize:self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375)
 

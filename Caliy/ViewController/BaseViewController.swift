@@ -5,7 +5,7 @@ import RealmSwift
 
 class BaseViewController: UIViewController, FromTableToBaseVC {
     
-    let ansFromTableNotification = Notification.Name(rawValue: answerFromTableNotificationKey)
+    let ansFromTableNotification = Notification.Name(rawValue: NotificationKey.ansFromTableNotification.rawValue)
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -157,20 +157,20 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         setupNumberFormatter()
         
         let isPortrait = ["orientation" : portraitMode]
-        let name = Notification.Name(rawValue: viewWilltransitionNotificationKey)
+        let name = Notification.Name(rawValue: NotificationKey.viewWilltransitionNotification.rawValue)
         
         NotificationCenter.default.post(name: name, object: nil, userInfo: isPortrait as [AnyHashable : Any])
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        let name = Notification.Name(rawValue: viewWillAppearbasicViewControllerKey)
+        let name = Notification.Name(rawValue: NotificationKey.viewWillAppearbasicViewController.rawValue)
         NotificationCenter.default.post(name : name, object: nil)
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        let name = Notification.Name(rawValue: viewWillDisappearbasicViewControllerKey)
+        let name = Notification.Name(rawValue: NotificationKey.viewWillDisappearbasicViewController.rawValue)
         NotificationCenter.default.post(name: name, object: nil)
     }
     
@@ -456,7 +456,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     tempDigits[pi][ni[pi]] += "."
                     
                 }else{ // 숫자 초과!!
-                    self.showToast(message: self.localizedStrings.numberLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.8, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                    self.showToast(message: self.localizedStrings.numberLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.8, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 }
             }
             addPOfNumsAndOpers()
@@ -966,7 +966,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     }
                     //                            historyIndex += 1
                 }
-                let name = Notification.Name(rawValue: answerToTableNotificationKey)
+                let name = Notification.Name(rawValue: NotificationKey.answerToTableNotification.rawValue)
                 NotificationCenter.default.post(name: name, object: nil)
                 break piLoop
             } // piLoop : while pi >= 0 {
@@ -976,11 +976,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     func toastAnsLimitExceed(){
         if let languageCode = Locale.current.languageCode{
             if languageCode.contains("ko"){
-                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 
             }else{
                 
-                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 
             }
         }
@@ -989,11 +989,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     func toastFloatingDigitLimitExceed(){
         if let languageCode = Locale.current.languageCode{
             if languageCode.contains("ko"){
-                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 
             }else{
                 
-                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 
             }
         }
@@ -1884,7 +1884,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             if !showingAnsAdvance{
                 
-                self.showToast(message: self.localizedStrings.savedToHistory, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+                self.showToast(message: self.localizedStrings.savedToHistory, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
                 
                 let newHistoryRecord = HistoryRecord(processOrigin : process, processStringHis : alignForHistory(1.4),processStringHisLong: alignForHistory(1.8), processStringCalc: process, resultString: dummyStrWithComma, resultValue : realAns, dateString: dateString)
                 lastMoveOP[1] = [0]
@@ -2302,7 +2302,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         soundModeOn = userDefaultSetup.getIsSoundOn()
         
         
-        soundModeOn ? self.showToast(message: self.localizedStrings.soundOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13) : self.showToast(message: self.localizedStrings.soundOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+        soundModeOn ? self.showToast(message: self.localizedStrings.soundOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) : self.showToast(message: self.localizedStrings.soundOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
         
         
         soundModeOn.toggle()
@@ -2319,7 +2319,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         lightModeOn = userDefaultSetup.getIsLightModeOn()
         
-        lightModeOn ? self.showToast(message: self.localizedStrings.darkMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13) : self.showToast(message: self.localizedStrings.lightMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+        lightModeOn ? self.showToast(message: self.localizedStrings.darkMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) : self.showToast(message: self.localizedStrings.lightMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
         
         lightModeOn.toggle()
         
@@ -2333,7 +2333,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         notificationOn = userDefaultSetup.getIsNotificationOn()
         
-        notificationOn ? self.showToast(message: self.localizedStrings.notificationOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13) : self.showToast(message: self.localizedStrings.notificationOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+        notificationOn ? self.showToast(message: self.localizedStrings.notificationOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) : self.showToast(message: self.localizedStrings.notificationOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
         
         notificationOn.toggle()
         
@@ -2374,7 +2374,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     func sendNotification(){
         if notificationOn{
             
-            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
             
         }
     }
@@ -2610,10 +2610,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var subClosepar = transparentImage
     var subEqual = transparentImage
 
-    var subEx1Sound = transparentImage
-    var subEx2Color = transparentImage
-    var subEx3Notification = transparentImage
-    var subEx4Feedback = transparentImage
+    var soundBtnImg = transparentImage
+    var colorBtnImg = transparentImage
+    var notificationBtnImg = transparentImage
+    var feedbackBtnImg = transparentImage
     // those are all transparent!
     
     //MARK: - <#UI Section starts
@@ -2959,8 +2959,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             historyDragButton.setDimensions(width: 40, height: 40)
         }
         
-        resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!)
-        progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[userDefaultSetup.getUserDeviceSizeInfo()]!)
+        resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[userDefaultSetup.getDeviceSize()]!)
+        progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[userDefaultSetup.getDeviceSize()]!)
     }
     
     func setupAddTargets(){
@@ -3039,8 +3039,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual = lightEqual
         
         subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
-        subEx2Color = UIImageView(image: #imageLiteral(resourceName: "white_to_dark"))
-        subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "whitemode_review"))
+        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "white_to_dark"))
+        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_review"))
     }
     
     fileprivate func setupButtonImageInDarkMode() {
@@ -3070,8 +3070,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual = darkEqual
         
         subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
-        subEx2Color = UIImageView(image: #imageLiteral(resourceName: "dark_to_white"))
-        subEx4Feedback = UIImageView(image: #imageLiteral(resourceName: "darkmode_review"))
+        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "dark_to_white"))
+        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_review"))
     }
     
     fileprivate func setupButtonPositionAndSize(_ modifiedWidth: inout [Double]) {
@@ -3184,15 +3184,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
         subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
         
-        extra2.addSubview(subEx2Color)
-        subEx2Color.center(inView: extra2)
-        subEx2Color.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
-        subEx2Color.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        extra2.addSubview(colorBtnImg)
+        colorBtnImg.center(inView: extra2)
+        colorBtnImg.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
+        colorBtnImg.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
-        extra4.addSubview(subEx4Feedback)
-        subEx4Feedback.center(inView: extra4)
-        subEx4Feedback.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
-        subEx4Feedback.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        extra4.addSubview(feedbackBtnImg)
+        feedbackBtnImg.center(inView: extra4)
+        feedbackBtnImg.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
+        feedbackBtnImg.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
     }
     
@@ -3253,8 +3253,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             setupButtonPositionAndSize(&modifiedWidth)
             
-            subEx1Sound = soundModeOn ? ex1OnLight : ex1OffLight
-            subEx3Notification = notificationOn ? ex3OnLight : ex3OffLight
+            soundBtnImg = soundModeOn ? soundOnLightImg : soundOffLightImg
+            notificationBtnImg = notificationOn ? alarmOnLightImg : alarmOffLightImg
             
             
             progressView.textColor = colorList.textColorForProcessLM
@@ -3300,22 +3300,22 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             setupButtonPositionAndSize(&modifiedWidth)
 
-            subEx1Sound = soundModeOn ? ex1OnDark : ex1OffDark
-            subEx3Notification = notificationOn ? ex3OnDark : ex3OffDark
+            soundBtnImg = soundModeOn ? soundOnDarkImg : soundOffDarkImg
+            notificationBtnImg = notificationOn ? alarmOnDarkImg : alarmOffDarkImg
             
             progressView.textColor = colorList.textColorForProcessDM
             resultTextView.textColor = ansPressed ? colorList.textColorForResultDM : colorList.textColorForSemiResultDM
         }
         
-        extra1.addSubview(subEx1Sound)
-        subEx1Sound.center(inView: extra1)
+        extra1.addSubview(soundBtnImg)
+        soundBtnImg.center(inView: extra1)
     
-        subEx1Sound.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        subEx1Sound.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        soundBtnImg.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        soundBtnImg.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
-        extra3.addSubview(subEx3Notification)
-        subEx3Notification.center(inView: extra3)
-        subEx3Notification.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        subEx3Notification.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        extra3.addSubview(notificationBtnImg)
+        notificationBtnImg.center(inView: extra3)
+        notificationBtnImg.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        notificationBtnImg.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
     }
 }
