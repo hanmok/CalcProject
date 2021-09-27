@@ -3,7 +3,23 @@ import UIKit
 import AudioToolbox
 import RealmSwift
 
+//extension BaseViewController: BasicCalculatorDelegate {
+//    func sendProcess(_ calc: BasicCalculator, _ process: String) {
+//        <#code#>
+//    }
+//    
+//    func sendResult(_ calc: BasicCalculator, _ result: String) {
+//        <#code#>
+//    }
+//    
+//    func showAlert(_ calc: BasicCalculator, _ isShowing: Bool) {
+//        <#code#>
+//    }
+//}
+
 class BaseViewController: UIViewController, FromTableToBaseVC {
+    
+    var calcDelegate: BasicCalculatorDelegate?
     
     let ansFromTableNotification = Notification.Name(rawValue: NotificationKey.ansFromTableNotification.rawValue)
     
@@ -13,41 +29,42 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     //MARK: - Basic setup
     /// declared to use realmSwift to save data
-    var historyRecords : Results<HistoryRecord>!
+    var historyRecords : Results<HistoryRecord>! // model
     
     /// used to place HistoryRecordVC on the left side in landscape mode
-    let childTableVC = HistoryRecordVC()
+    let childTableVC = HistoryRecordVC()        // view
     /// used to navigate to historyRecordVC
-    let newTableVC = HistoryRecordVC()
+    let newTableVC = HistoryRecordVC()      // view
     
-    var userDefaultSetup = UserDefaultSetup()
-    let reviewService = ReviewService.shared
+    var userDefaultSetup = UserDefaultSetup() // model, view
+    let reviewService = ReviewService.shared    //model
     /// entire view for basic calculator (not HistoryRecordVC)
-    var frameView = UIView()
+    var frameView = UIView()        //view
     
-    let colorList = ColorList()
-    let localizedStrings = LocalizedStringStorage()
-    let fontSize = FontSizes()
-    let frameSize = FrameSizes()
+    let colorList = ColorList()     //view
+    let localizedStrings = LocalizedStringStorage()     // show Toast
+    let fontSize = FontSizes()      // view, show Toast
+    let frameSize = FrameSizes()    // view
 
     
+    /// belong to view
+    var portraitMode = true     // view
     
-    var portraitMode = true
-    /// pressedButtons joined into string
-    var pressedButtons = "" // need to be changed!
+    /// pressedButtons joined into string, but not used at all.
+//    var pressedButtons = "" // need to be changed!
 
 //    let nf1 = NumberFormatter() // what is this for?
     /// 6 digis for floating numbers
-    let nf6 = NumberFormatter()
+    let nf6 = NumberFormatter()     // model
 //    let nf11 = NumberFormatter() // what is this for?
     
     
-    var soundModeOn = true
-    var lightModeOn = false
-    var notificationOn = false
-    var numberReviewClicked = 0
+    var soundModeOn = true// settings
+    var lightModeOn = false// settings
+    var notificationOn = false// settings, model
+    var numOfReviewClicked = 0 // settings
     
-    // whtat is o..?
+    // what does o represent ??
     var setteroi : Int = 0
     /// sum of unit sizes for characters in a line
     var sumOfUnitSizes : [Double] = [0.0]
@@ -63,40 +80,59 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     var numParenCount = 0
     
-    //MARK: - MAIN FUNCTIONS
+    //MARK: - MAIN Variables
     let numbers : [Character] = ["0","1","2","3","4","5","6","7","8","9","."]
-    let operators : [Character] = ["+","×","-","÷"]
-    let parenthesis : [Character] = ["(",")"]
-    let notToDeleteList : [Character] = ["+","-","×","÷","(",")"]
+    let operators : [Character] = ["+","×","-","÷"] // used once
+    let parenthesis : [Character] = ["(",")"] // not used
+    let notToDeleteList : [Character] = ["+","-","×","÷","(",")"] // not used
     
     /// whether specific position can be negative or not
     var negativePossible = true
+    /// indicate whether ans button has pressed
     var ansPressed = false
     /// Index for parenthesis
-    var pi = 0 // index for parenthesis.
-    var ni = [0] // increase after pressing operation button.
-    var tempDigits = [[""]] // save all digits to make a number
-    var DS = [[0.0]] // Double Numbers Storage
-    var answer : [[Double]] = [[100]] // the default value
+    var pi = 0
+    /// increase after pressing operation button.
+    var ni = [0]
+    /// save all digits to make a number
+    var tempDigits = [[""]]
+    /// Double Numbers Storage
+    var DS = [[0.0]]
+    var answer : [[Double]] = [[100]] // the default value // what the hell is this answer?
+    
     
     var operationStorage = [[""]]
-    var muldiOperIndex = [[false]] // true if it is x or / .
     
-    var freshDI = [[0]] // 0 : newly made, 1: got UserInput, 2 : used
-    var freshAI = [[0]] // 0 :newly made, 1 : calculated, 2 : used
+    /// true if it is × or ÷
+    var muldiOperIndex = [[false]]
     
-    var niStart = [[0,0]] // remember the indexes to calculate (within parenthesis)
+    /// 0 : newly made, 1: got UserInput, 2 : used
+    var freshDI = [[0]]
+    
+    // 0 :newly made, 1 : calculated, 2 : used
+    var freshAI = [[0]]
+    
+    /// remember the start indexes of number to calculate (within parenthesis)
+    var niStart = [[0,0]]
+    
+    /// remember the end indexes of number to calculate (within parenthesis)
     var niEnd = [[0]]
     /// used to measure duplicate parenthesis level
     var piMax = 0
+    
+    
     var indexPivotHelper = [false]
-    var numOfPossibleNegative = [1] // 123 x (1 + 2) x (3 + 4 :  -> [1,2,0]
-    var positionOfParen = [[0]] // remember the position of empty DS
+    /// 123 x (1 + 2) x (3 + 4 :  -> [1,2,0]
+    var numOfPossibleNegative = [1]
+    
+    /// remember the position of empty DS
+    var positionOfParen = [[0]]
+    
     var negativeSign = [[false, false]]
     
     
     var process = ""
-    // if you want operate after press ans button, this value will come up and used.
+    /// if you want operate after press ans button, this value will come up and used.
     var savedResult : Double?
     var result : Double? // to be printed, one of the answer array.
     //    var isSaveResultInt : Bool?
@@ -216,7 +252,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     // MARK: - from History
     
-    func pasteAnsFromHistory(ansString: String) { // protocol
+    func pasteAnsFromHistory(ansString: String) { // protocol dd..
         print("copyAndPasteAns called")
         
         var plusNeeded = false
@@ -279,19 +315,21 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         if pOfNumsAndOpers[setteroi] == "op"{
             setteroi += 1
         }
+        
         negativePossible = false
-        let freshString = removeMinusCommaDotZero(from: numString)
+        let freshString = extractPositiveNumber(from: numString)
         
         tempDigits[pi][ni[pi]] += freshString
         process += freshString
+        
         if let doubleNumber = Double(freshString){
-            
             DS[pi][ni[pi]] = doubleNumber
             freshDI[pi][ni[pi]] = 1
             if tempDigits[pi][ni[pi]].contains("-"){
                 DS[pi][ni[pi]] *= -1
             }
         }
+        
         addPOfNumsAndOpers()
         pOfNumsAndOpers[setteroi] = "n"
         addStrForProcess()
@@ -299,17 +337,19 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         printProcess() // 이거 없애면 숫자들 사이 , 가 없어짐.
     }
     
-    /// remove - , . 0
-    func removeMinusCommaDotZero(from stringValue : String ) -> String{
+    /// remove - , . 0, extract Positive Number
+    func extractPositiveNumber(from stringValue : String ) -> String{
         var stringToReturn = stringValue
+        // remove - at the front
         if stringValue.hasPrefix("-"){
             stringToReturn = String(stringValue.dropFirst())
         }
-        
+        // remove comma
         if stringValue.contains(","){
             stringToReturn = stringToReturn.components(separatedBy: ",").joined()
         }
         
+        // remove dot if it contains at the end
         if stringToReturn.contains("."){
             if let double = Double(stringValue){
                 let int = Int(double)
@@ -327,7 +367,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func handleNumberTapped(sender : UIButton){
         
         if let input = tagToString[sender.tag]{
-            pressedButtons += input
+//            pressedButtons += input
             if ansPressed
             {
                 clear()
@@ -476,7 +516,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func handleOperationTapped(sender : UIButton){
         
         if let operInput = tagToString[sender.tag]{ // : String
-            pressedButtons += operInput
+//            pressedButtons += operInput
             
             if ansPressed{    // ans + - x /
                 
@@ -646,7 +686,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             addStrForProcess()
             
-            negativePossible = false // 이름 다시 짓기. (negativePossible) 변수는 명사, 함수명은 동사로 .
+            negativePossible = false
             
             printProcess()
             savedResult = nil
@@ -753,8 +793,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 
                 dictionaryForLine[setteroi] = operInput
                 
-                
-                
                 //                    ["+","-","×","÷","(",")"]
                 setteroi += 1
                 addPOfNumsAndOpers()
@@ -784,7 +822,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 process += ")"
                 //                numParenCount += 1
                 if !showingAnsAdvance{
-                    pressedButtons += "="
+//                    pressedButtons += "="
                     while(numParenCount != 0){
                         
                         setteroi += 1
@@ -1015,7 +1053,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func handlePerenthesisTapped(sender : UIButton){
         if let input = tagToString[sender.tag]{
-            pressedButtons += input
+//            pressedButtons += input
             
             if input == "("{
                 
@@ -1347,7 +1385,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     @objc func handleDeleteAction(){
-        pressedButtons += "del"
+//        pressedButtons += "del"
         
         playSound()
         
@@ -1618,7 +1656,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
      func clear(){
-        pressedButtons = ""
+//        pressedButtons = ""
         negativePossible = true
         ansPressed = false
         
@@ -2029,7 +2067,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     
-    //2300
     func alignForHistory( _ length : Double) -> String{
         var processToBeReturn = ""
         var sumForEachProcess = 0.0
@@ -2313,7 +2350,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func toggleDarkMode(sender : UIButton){
         print("tempDigits : \(tempDigits)")
         printAlignElements("changer")
-        print("iPressed : \(pressedButtons)")
+//        print("iPressed : \(pressedButtons)")
         userDefaultSetup.setIsUserEverChanged(isUserEverChanged: true)
         checkIndexes(with: "fdsa")
         
@@ -2345,10 +2382,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func navigateToReviewSite(sender : UIButton){
         userDefaultSetup.setIsUserEverChanged(isUserEverChanged: true)
-        numberReviewClicked = userDefaultSetup.getNumberReviewClicked()
-        userDefaultSetup.setNumberReviewClicked(numberReviewClicked: numberReviewClicked+1)
+        numOfReviewClicked = userDefaultSetup.getNumberReviewClicked()
+        userDefaultSetup.setNumberReviewClicked(numberReviewClicked: numOfReviewClicked+1)
         
-        if (numberReviewClicked < 3){
+        if (numOfReviewClicked < 3){
             reviewService.requestReview()
         }else{
             if let languageCode = Locale.current.languageCode{
@@ -2373,9 +2410,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func sendNotification(){
         if notificationOn{
-            
             self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-            
         }
     }
     
@@ -2385,7 +2420,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             lightModeOn = userDefaultSetup.getIsLightModeOn()
             soundModeOn = userDefaultSetup.getIsSoundOn()
             notificationOn = userDefaultSetup.getIsNotificationOn()
-            numberReviewClicked = userDefaultSetup.getNumberReviewClicked()
+            numOfReviewClicked = userDefaultSetup.getNumberReviewClicked()
         }
         else{ // initial value . when a user first downloaded.
             userDefaultSetup.setIsLightModeOn(isLightModeOn: false)
@@ -2396,9 +2431,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             lightModeOn = false
             notificationOn = false
             soundModeOn = true
-            numberReviewClicked = 0
-            //            numberReview
-            
+            numOfReviewClicked = 0
+
         }
         
         
@@ -2465,27 +2499,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         deletionTimerInitialSetup.invalidate()
         deletionSpeed = 0.5
     }
-    
-    /// color change and sound play when touched
-//    @objc func numberPressedDown(sender : UIButton){
-//        if isLightModeOn{
-//            sender.backgroundColor =  colorList.bgColorForExtrasBM
-//        }else{
-//            sender.backgroundColor =  colorList.bgColorForExtrasDM
-//        }
-//        playSound()
-//    }
-    
-    //delete not included
-//    @objc func otherPressedDown(sender : UIButton){
-//
-//        if isLightModeOn{
-//            sender.backgroundColor =  colorList.bgColorForExtrasBM
-//        }else{
-//            sender.backgroundColor =  colorList.bgColorForExtrasDM
-//        }
-//        playSound()
-//    }
+
     
     @objc func handleSoundAction(sender: UIButton) {
         playSound()
@@ -2565,10 +2579,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
     }
     
-//    func returnLightModeSetup() -> Bool{
-//        return isLightModeOn
-//    }
-    
     @objc func moveToHistoryTable(sender : UIButton){
         let transition = CATransition()
         transition.duration = 0.3
@@ -2630,9 +2640,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let num8 = ButtonTag(withTag: 8)
     let num9 = ButtonTag(withTag: 9)
     let num00 = ButtonTag(withTag: -1)
-    
-    
     let numberDot = ButtonTag(withTag: -2)
+    
     let clearButton = ButtonTag(withTag: 11)
     let openParenthesis = ButtonTag(withTag: 12)
     let closeParenthesis = ButtonTag(withTag: 13)
@@ -2664,9 +2673,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     let emptySpace = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    
-    
-    
     let resultTextView : UITextView = {
         let result = UITextView()
         result.textAlignment = .right
@@ -2694,12 +2700,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     let deleteWidthReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    
     let deleteHeightReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    
     let resultWidthReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
-    
     
     let resultHeightReference = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
@@ -2712,7 +2715,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let historyDragButton = UIButton()
     
     let rightSideForLandscapeMode = UIView()
-    
     
     let leftSideForLandscapeMode = UIView()
     
@@ -2985,7 +2987,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
 //            aButton.addTarget(self, action: #selector( otherPressedDown), for: .touchDown)
             aButton.addTarget(self, action: #selector(handleSoundAction), for: .touchDown)
             aButton.addTarget(self, action: #selector(handleColorChangeAction), for: .touchDown)
-            aButton.addTarget(self, action: #selector( turnIntoOriginalColor(sender:)), for: .touchUpInside)//does nothing
+            aButton.addTarget(self, action: #selector(turnIntoOriginalColor(sender:)), for: .touchUpInside)//does nothing
             aButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         }
         
@@ -3000,6 +3002,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         deleteButton.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
         deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         //sound, backgroundColor, notification, feedback
         extra1.addTarget(self, action: #selector(toggleSoundMode), for: .touchUpInside)
         extra2.addTarget(self, action: #selector(toggleDarkMode(sender:)), for: .touchUpInside)
@@ -3258,9 +3261,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             
             progressView.textColor = colorList.textColorForProcessLM
-            if ansPressed{
-                resultTextView.textColor = colorList.textColorForResultLM
-            }
             
             resultTextView.textColor = ansPressed ? colorList.textColorForResultLM : colorList.textColorForSemiResultLM
             

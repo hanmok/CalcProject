@@ -43,6 +43,7 @@
 		9AF62EEE2701385D00E183AB /* HistoryRecordMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EED2701385D00E183AB /* HistoryRecordMemo */; };
 		9AF62EF02701BFBF00E183AB /* overallMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EEF2701BFBF00E183AB /* overallMemo */; };
 		9AF62EF32701C22D00E183AB /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF22701C22D00E183AB /* NotificationKey.swift */; };
+		9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF62702051B00E183AB /* BasicCalculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		9AF62EED2701385D00E183AB /* HistoryRecordMemo */ = {isa = PBXFileReference; lastKnownFileType = text; name = HistoryRecordMemo; path = ../../../SwiftTest/HistoryRecordMemo; sourceTree = "<group>"; };
 		9AF62EEF2701BFBF00E183AB /* overallMemo */ = {isa = PBXFileReference; lastKnownFileType = text; name = overallMemo; path = ../../../SwiftTest/overallMemo; sourceTree = "<group>"; };
 		9AF62EF22701C22D00E183AB /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationKey.swift; path = ../../../../SwiftTest/NotificationKey.swift; sourceTree = "<group>"; };
+		9AF62EF62702051B00E183AB /* BasicCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCalculator.swift; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy_CaliyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
+				9AF62EF62702051B00E183AB /* BasicCalculator.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
 			);
 			path = Model;
@@ -568,6 +571,7 @@
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
+				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
