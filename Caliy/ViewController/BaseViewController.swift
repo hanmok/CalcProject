@@ -216,13 +216,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     // MARK: - from History
     
-    func copyAndPasteAns(ansString: String) { // protocol 
+    func pasteAnsFromHistory(ansString: String) { // protocol
         print("copyAndPasteAns called")
         
         var plusNeeded = false
         var parenNeeded = false
         var manualClearNeeded = false
-        let valueFromTable = ansString
+//        let valueFromTable = ansString
         
         if process != ""{
             let lastChar = process[process.index(before:process.endIndex)]
@@ -239,7 +239,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             }
         }
         
-        if valueFromTable.contains("-") && manualClearNeeded{
+        if ansString.contains("-") && manualClearNeeded{
             clearWithFetchingAns()
         }
         
@@ -247,32 +247,32 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             manualOperationPressed(operSymbol: "+")
         }
         
-        if parenNeeded && valueFromTable.contains("-"){
+        if parenNeeded && ansString.contains("-"){
             insertParentheWithHistory(openParen: true)
         }
         
-        if valueFromTable.contains("-"){
+        if ansString.contains("-"){
             manualOperationPressed(operSymbol: "-")
         }
         
-        insertAnsFromHistory(numString : valueFromTable)
+        insertAnsFromHistory(numString : ansString)
         
-        if parenNeeded && valueFromTable.contains("-"){
+        if parenNeeded && ansString.contains("-"){
             insertParentheWithHistory(openParen: false)
         }
     }
     
     
     
-    
+    // should be change..
     func insertAnsFromHistory(numString : String){
-        
         
         if ansPressed{
             clear()
             process = ""
             ansPressed = false
         }
+        
         addPOfNumsAndOpers()
         addStrForProcess()
         
@@ -456,8 +456,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     tempDigits[pi][ni[pi]] += "."
                     
                 }else{ // 숫자 초과!!
-                    
-                    
                     self.showToast(message: self.localizedStrings.numberLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.8, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
                 }
             }
@@ -1007,7 +1005,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         showingAnsAdvance = true
         calculateAns() // 이거 .. 하면 .. 정답 가능성이 보이면 바로 RealmData 에 추가되는거 아니냐?
         
-        resultTextView.textColor = lightModeOn ? colorList.textColorForSemiResultBM : colorList.textColorForSemiResultDM
+        resultTextView.textColor = lightModeOn ? colorList.textColorForSemiResultLM : colorList.textColorForSemiResultDM
         ansPressed = false
         pasteStates()
         showingAnsAdvance = false
@@ -1882,7 +1880,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             dummyStrWithComma = addCommasToString(num: dummyAnsString!)
             
             resultTextView.text = dummyStrWithComma
-            resultTextView.textColor = lightModeOn ? colorList.textColorForResultBM : colorList.textColorForResultDM
+            resultTextView.textColor = lightModeOn ? colorList.textColorForResultLM : colorList.textColorForResultDM
             
             if !showingAnsAdvance{
                 
@@ -2255,13 +2253,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         if lightModeOn{
             switch sender.tag {
             case -2 ... 9:
-                sender.backgroundColor = colorList.bgColorForEmptyAndNumbersBM
+                sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
             case 10 ... 20 :
-                sender.backgroundColor =  colorList.bgColorForOperatorsBM
+                sender.backgroundColor =  colorList.bgColorForOperatorsLM
             case 31 ... 40:
-                sender.backgroundColor =  colorList.bgColorForExtrasBM
+                sender.backgroundColor =  colorList.bgColorForExtrasLM
             case 21 ... 30 :
-                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
+                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
                 deletionTimer.invalidate()
                 deletionTimer2.invalidate()
                 deletionTimerPause.invalidate()
@@ -2435,7 +2433,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func handleDeletePressedDown(sender : UIButton){
         if lightModeOn{
-            sender.backgroundColor =  colorList.bgColorForExtrasBM
+            sender.backgroundColor =  colorList.bgColorForExtrasLM
         }else{
             sender.backgroundColor =  colorList.bgColorForExtrasDM
         }
@@ -2460,7 +2458,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     }
     
     @objc func handleDeleteTapped(sender : UIButton){
-        sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
+        sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
         deletionTimer.invalidate()
         deletionTimer2.invalidate()
         deletionTimerPause.invalidate()
@@ -2495,7 +2493,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func handleColorChangeAction(sender: UIButton) {
         if lightModeOn{
-            sender.backgroundColor =  colorList.bgColorForExtrasBM
+            sender.backgroundColor =  colorList.bgColorForExtrasLM
         }else{
             sender.backgroundColor =  colorList.bgColorForExtrasDM
         }
@@ -3221,15 +3219,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         if lightModeOn{
             for num in numButtons{
-                num.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
+                num.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
             }
             for other in otherButtons{
-                other.backgroundColor =  colorList.bgColorForOperatorsBM
+                other.backgroundColor =  colorList.bgColorForOperatorsLM
             }
             for extra in extras{
-                extra.backgroundColor =  colorList.bgColorForExtrasBM
+                extra.backgroundColor =  colorList.bgColorForExtrasLM
             }
-            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersBM
+            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
             
             setupButtonImageInLightMode()
             
@@ -3259,12 +3257,12 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             subEx3Notification = notificationOn ? ex3OnLight : ex3OffLight
             
             
-            progressView.textColor = colorList.textColorForProcessBM
+            progressView.textColor = colorList.textColorForProcessLM
             if ansPressed{
-                resultTextView.textColor = colorList.textColorForResultBM
+                resultTextView.textColor = colorList.textColorForResultLM
             }
             
-            resultTextView.textColor = ansPressed ? colorList.textColorForResultBM : colorList.textColorForSemiResultBM
+            resultTextView.textColor = ansPressed ? colorList.textColorForResultLM : colorList.textColorForSemiResultLM
             
         }else{ // darkMode
             for num in numButtons{

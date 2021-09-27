@@ -13,58 +13,6 @@
 애매한 변수 명에는 Summary 에 설명을 달아주자. 
 
 
-Refactoring
-Architecture
-MVC Pattern 으로 하자
-
-Model 은 Struct or Class
-
-View 도 따로따로 . (mode 바꾸는게 조금 까다롭겠다.. 어떻게 하지 ? )
-
-
-
-
-
-
-    
-                        ---------------------
-                        |                   |
-        User Action     |    Controller     |   Update
-        --------------> |                   |  --------------
-        |               |                   |               |
-        |               ---------------------               |
-        |                      |      ▲                     ▼
----------------------          |      |          ---------------------
-|       View        |          |      |          |       Model       |
---------------------- <---------      ---------  ---------------------
-|                   |    Update        Notify    |                   |
-|                   |                            |                   |
----------------------                            ---------------------
-    
-
----------------------
-|   Controller      |
----------------------
-|    |
-|                   |
----------------------
-
----------------------
-|       View        |
----------------------
-|                   |
-|                   |
----------------------
-
-
----------------------
-|       Model       |
----------------------
-|   BasicCalculator |
-|                   |
----------------------
-
-
 
 
 
@@ -250,7 +198,7 @@ isOrientationPortrait -> portraitMode
     // remove all processes after 2.5s if delete button pressed
     deleteTimerInitialSetup
     // handleLongDeleteAction
-    backToOriginalColor -> turnIntoOriginalColor
+    backToOriginalColor -> turnIntoOriginalColor -> changeColorToOriginal
     deleteDragOut -> handleDeleteDragOutAction
     soundOnOff1 -> toggleSoundMode
     backgroundColorChanger2 -> toggleDarkMode
@@ -312,6 +260,9 @@ setButtonImageInLightMode -> setup...
 
 
 to change
-iPressed
 
+comments and more names for line alignments. 
+brightMode -> Light Mode
+BaseViewController 외 다른 파일들에 있는 var, func names 바꿔주기. 하..... ㄹ 거 많다..
+insertAnsFromHistory ..> ??
 

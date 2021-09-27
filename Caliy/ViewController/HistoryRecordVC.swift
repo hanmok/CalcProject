@@ -17,7 +17,7 @@ import UIKit
 import RealmSwift
 
 protocol FromTableToBaseVC{
-    func copyAndPasteAns(ansString : String)
+    func pasteAnsFromHistory(ansString : String)
 }
 
 class HistoryRecordVC: UIViewController {
@@ -28,6 +28,7 @@ class HistoryRecordVC: UIViewController {
     let viewWillTransitionNotification = Notification.Name(rawValue: viewWilltransitionNotificationKey)
     let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: viewWillDisappearbasicViewControllerKey)
     let viewWillAppearBasicVCNotification = Notification.Name(rawValue: viewWillAppearbasicViewControllerKey)
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -43,16 +44,16 @@ class HistoryRecordVC: UIViewController {
     let colorList = ColorList()
     
     var userDefaultSetup = UserDefaultSetup()
-    var isLightModeOn = false
+    var lightModeOn = false
     
     let realm = RealmService.shared.realm
     
     let trashbinImage = UIImageView(image: #imageLiteral(resourceName: "trashBinSample"))
     let trashbinHelper = UIImageView(image: #imageLiteral(resourceName: "transparent"))
     
-    var isOrientationPortrait = true
+    var portraitMode = true
     
-    var willbasicVCdisappear = false
+    var basicVCWillDisappear = false
     
     var FromTableToBaseVCdelegate : FromTableToBaseVC?
     
@@ -62,11 +63,11 @@ class HistoryRecordVC: UIViewController {
         
         //        isOrientationPortrait
         if UIDevice.current.orientation.isLandscape {
-            isOrientationPortrait = false
+            portraitMode = false
             print("Landscape viewWillTransition baseVC")
         } else if UIDevice.current.orientation.isPortrait {
             print("Portrait viewWillTransition baseVC")
-            isOrientationPortrait = true
+            portraitMode = true
         }else{
             print("Neither Landscape nor Portrait mode viewWillTransition baseVC ")
         }
@@ -77,10 +78,7 @@ class HistoryRecordVC: UIViewController {
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
         
-        isOrientationPortrait = screenWidth > screenHeight ? true : false
-        
-        
-        
+        portraitMode = screenWidth > screenHeight ? true : false
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -88,6 +86,7 @@ class HistoryRecordVC: UIViewController {
         tableView.reloadData()
     }
     
+    // P : Popular, MP : Most Popular, LP : Least Popular
     override func viewDidLoad() {
         print("viewDidLoad table")
         if deviceInfo.first == " "{
@@ -100,48 +99,37 @@ class HistoryRecordVC: UIViewController {
             userDefaultSetup.setUserDeviceVersionInfo(userDeviceVersionInfo: deviceInfo)
             
             if userDefaultSetup.getUserDeviceVersionInfo().contains("iPh"){
-                print("iPh 포함")
+               // iPh 포함
                 switch userDefaultSetup.getUserDeviceVersionInfo().first {
                 case "4","5","6","7","8","S":
                     userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "P")
-                    print("first Name : \(String(describing: userDefaultSetup.getUserDeviceVersionInfo().first))")
                 default:
                     userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "MP")
-                    print("first Name : \(String(describing: userDefaultSetup.getUserDeviceVersionInfo().first))")
-                    print("what was the version ?:\(userDefaultSetup.getUserDeviceVersionInfo())")
                 }
-            }
+            } // "iPod touch model."
             else if userDefaultSetup.getUserDeviceVersionInfo().contains("iPo"){
                 userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "LP")
-                print("iPod touch model.")
+               
             }
-        }else{
-            print("modelName : \(deviceInfo)")
         }
-        print("userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getUserDeviceVersionInfo())")
-        print("deviceType : \(userDefaultSetup.getUserDeviceVersionTypeInfo())")
-        // P : Popular, MP : Most Popular, LP : Least Popular
-        
-        print("modelName : \(deviceInfo)")
-        //        print("deviceType : \(type(of: deviceInfo))")
-        
-        
+
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
-        isOrientationPortrait = screenHeight > screenWidth ? true : false
+        
+        portraitMode = screenHeight > screenWidth ? true : false
         
         super.viewDidLoad()
         
         createObservers()
         
         if UIDevice.current.orientation.isLandscape {
-            isOrientationPortrait = false
+            portraitMode = false
         } else if UIDevice.current.orientation.isPortrait {
-            isOrientationPortrait = true
+            portraitMode = true
         }
         
-        returnLightMode()
+        lightModeOn = userDefaultSetup.getIsLightModeOn()
         
         setupLayout()
         
@@ -153,29 +141,28 @@ class HistoryRecordVC: UIViewController {
         tableView.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: false)
         
         self.tableView.reloadData()
-        addTargetSetup()
+        setupAddTargets()
         
         tableView.setContentOffset(.zero, animated: false)
-        
-        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("viewDidAppear table")
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        print("viewDidAppear table")
+//    }
+    
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear table")
         viewDidLoad()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        print("viewDidDisappear table")
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        print("viewDidDisappear table")
+//    }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        print("viewWillDisappear table")
-        //        print("viewWillDisappear called in table, willbasicVCdisappear : \(willbasicVCdisappear)")
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        print("viewWillDisappear table")
+//        //        print("viewWillDisappear called in table, willbasicVCdisappear : \(willbasicVCdisappear)")
+//    }
     
     func createObservers(){
         print("createObservers table")
@@ -189,44 +176,35 @@ class HistoryRecordVC: UIViewController {
     }
     
     @objc func viewWillDisappearBasicVC(notification : NSNotification){
-        print("viewWillDisappearBasicVC table")
-        if !willbasicVCdisappear{
-            willbasicVCdisappear.toggle()
+        if !basicVCWillDisappear{
+            basicVCWillDisappear.toggle()
         }
     }
     
     @objc func viewWillAppearBasicVC(notification : NSNotification){
-        print("viewWillAppearBasicVC table")
-        if willbasicVCdisappear{
-            willbasicVCdisappear.toggle()
+        if basicVCWillDisappear{
+            basicVCWillDisappear.toggle()
         }
     }
     
     
     @objc func answerToTable(notification: NSNotification) {
-        print("answerToTable table")
         loadData()
     }
     
     @objc func transitionOccured(notification: NSNotification){
-        print("transitionOccured table")
+       
         guard let newPortrait = notification.userInfo?["orientation"] as? Bool else {
             print("there's an error in tableView transitionOccured function")
             return }
         
-        isOrientationPortrait = newPortrait // 현재 아무런 역할도 안함
+        portraitMode = newPortrait // 현재 아무런 역할도 안함
     }
     
     func loadData(){
         print("loadData table")
         historyRecords = realm.objects(HistoryRecord.self)
         tableView.reloadData()
-    }
-    
-    
-    func returnLightMode(){
-        print("returnLightMode table")
-        isLightModeOn = userDefaultSetup.getIsLightModeOn()
     }
     
     func setupLayout(){
@@ -241,12 +219,8 @@ class HistoryRecordVC: UIViewController {
         
         view.addSubview(tableView)
         
-        if isOrientationPortrait{
+        if portraitMode{
             tableView.pinWithSpace2(to: view, type : userDefaultSetup.getUserDeviceVersionTypeInfo())
-            //            tableView.pinWithSpace2(to: view)
-            
-            
-            
             
             view.addSubview(infoView)
             infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
@@ -254,24 +228,22 @@ class HistoryRecordVC: UIViewController {
             
             
             switch userDefaultSetup.getUserDeviceVersionTypeInfo() {
-            //  MP : Most popular, P : Popular, LP : Least Popular
-            //            case "MP" : infoView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-            case "MP" : //infoView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            
+            case "MP" :
                 infoView.setHeight(80)
-            case "LP" : //infoView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            case "LP" :
                 infoView.setHeight(50)
             default:
-                //                infoView.heightAnchor.constraint(equalToConstant: 60).isActive = true
                 infoView.setHeight(60)
             }
+            
             // no constraints for infoLabel width
             infoView.addSubview(infoLabel)
             infoLabel.translatesAutoresizingMaskIntoConstraints = false
             
-            
             infoLabel.centerX(inView: infoView)
-            infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -7).isActive = true
-            
+//            infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -7).isActive = true
+            infoLabel.anchor(bottom: infoView.bottomAnchor, paddingBottom: 7)
             
             
             infoView.addSubview(trashButton)
@@ -291,11 +263,10 @@ class HistoryRecordVC: UIViewController {
             trashbinImage.widthAnchor.constraint(equalTo: trashButton.widthAnchor, multiplier: 0.55).isActive = true
             
             
-            if isLightModeOn{
-                infoView.backgroundColor = colorList.bgColorForExtrasBM
-                
-                tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersBM // 들췄을 때 color.
-                
+            if lightModeOn{
+                infoView.backgroundColor = colorList.bgColorForExtrasLM
+                // 들췄을 때 color
+                tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
                 
                 view.addSubview(subHistoryLight)
                 
@@ -320,18 +291,16 @@ class HistoryRecordVC: UIViewController {
             historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
             historyClickButton.setDimensions(width: 40, height: 40)
             
-            
         }else{
             tableView.pin(to: view) // 이거같은데?
             
-            tableView.backgroundColor = isLightModeOn ? colorList.bgColorForEmptyAndNumbersBM : colorList.bgColorForEmptyAndNumbersDM
+            tableView.backgroundColor = lightModeOn ? colorList.bgColorForEmptyAndNumbersLM : colorList.bgColorForEmptyAndNumbersDM
         }
     }
     
-    @objc func backToBaseController(){
-        print("backToBaseController table")
-        if willbasicVCdisappear{
-            willbasicVCdisappear.toggle()
+    @objc func moveToBaseVC(){
+        if basicVCWillDisappear{
+            basicVCWillDisappear.toggle()
         }
         
         let transition = CATransition()
@@ -344,15 +313,13 @@ class HistoryRecordVC: UIViewController {
     }
     
     
-    func addTargetSetup(){
-        print("addTargetSetup table")
-        historyClickButton.addTarget(self, action: #selector(backToBaseController), for: .touchUpInside)
-        historyClickButton.addTarget(self, action: #selector(backToBaseController), for: .touchDragExit)
+    func setupAddTargets(){
+        historyClickButton.addTarget(self, action: #selector(moveToBaseVC), for: .touchUpInside)
+        historyClickButton.addTarget(self, action: #selector(moveToBaseVC), for: .touchDragExit)
         trashButton.addTarget(self, action: #selector(removeAllAlert), for: .touchUpInside)
     }
     
     @objc func removeAllAlert(){
-        print("removeAllAlert table")
         showAlert(title: "Clear History", message: localizedStrings.removeAll,
                   handlerA: { actionA in
                   },
@@ -367,59 +334,58 @@ class HistoryRecordVC: UIViewController {
                   })
     }
     
-    @objc func backToOriginalColor(sender : UITableViewCell){
+    @objc func changeColorToOriginal(sender : UITableViewCell){
         print("backToOriginalColor table")
-        if isLightModeOn{
-            sender.backgroundColor = colorList.bgColorForEmptyAndNumbersBM
+        if lightModeOn{
+            sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
         }else{
             sender.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
         }
     }
     
-    let infoView : UIView = {
-        let sub = UIView()
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+    let infoView = UIView()
     
     let infoLabel : UILabel = {
         let label = UILabel()
         label.text = "History"
         label.font = .boldSystemFont(ofSize: 20)
-        
         return label
     }()
     
-    let trashButton : UIButton = {
-        let sub = UIButton(type: .custom)
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+//    let trashButton : UIButton = {
+//        let sub = UIButton(type: .custom)
+//        sub.translatesAutoresizingMaskIntoConstraints = false
+//        return sub
+//    }()
+    let trashButton = UIButton()
     
-    let historyClickButton : UIButton = {
-        let sub = UIButton(type: .custom)
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+//    let historyClickButton : UIButton = {
+//        let sub = UIButton(type: .custom)
+//        sub.translatesAutoresizingMaskIntoConstraints = false
+//        return sub
+//    }()
+    let historyClickButton = UIButton()
     
     
-    let fillBottom : UIView = {
-        let sub = UIView()
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+//    let fillBottom : UIView = {
+//        let sub = UIView()
+//        sub.translatesAutoresizingMaskIntoConstraints = false
+//        return sub
+//    }()
     
-    let subHistoryLight : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "light_up"))
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+//    let subHistoryLight : UIImageView = {
+//        let sub = UIImageView(image: #imageLiteral(resourceName: "light_up"))
+//        sub.translatesAutoresizingMaskIntoConstraints = false
+//        return sub
+//    }()
+    let subHistoryLight = UIImageView(image: #imageLiteral(resourceName: "light_up"))
     
-    let subHistoryDark : UIImageView = {
-        let sub = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        return sub
-    }()
+//    let subHistoryDark : UIImageView = {
+//        let sub = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
+//        sub.translatesAutoresizingMaskIntoConstraints = false
+//        return sub
+//    }()
+    let subHistoryDark = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
 }
 
 
@@ -429,16 +395,11 @@ class HistoryRecordVC: UIViewController {
 // MARK: - Table view data source.
 extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection table")
-        print("section : \(section)")
         return historyRecords.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cellForRowAt table")
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryRecordReuseIdentifier") as? HistoryRecordCell else{ return UITableViewCell()}
         
@@ -448,31 +409,29 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
         
         let historyRecord = historyRecords[historyIndex]
         
-        cell.configure(with: historyRecord, orientationPortrait : isOrientationPortrait, willbasicVCdisappear : willbasicVCdisappear)
-        cell.colorSetup(isLightModeOn: isLightModeOn)
+        cell.configure(with: historyRecord, orientationPortrait : portraitMode, willbasicVCdisappear : basicVCWillDisappear)
+        cell.setupColor(isLightModeOn: lightModeOn)
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didSelectRowAt table")
         
         let maxNumber = historyRecords.count
         let historyIndex = maxNumber - indexPath.row - 1
         
         
-        FromTableToBaseVCdelegate?.copyAndPasteAns(ansString: historyRecords[historyIndex].resultString ?? "nothing transmitted")
+        FromTableToBaseVCdelegate?.pasteAnsFromHistory(ansString: historyRecords[historyIndex].resultString ?? "nothing transmitted")
         
         loadData()
         
-        if !(!UIDevice.current.orientation.isPortrait && !willbasicVCdisappear){
-            backToBaseController()
+        if !(!UIDevice.current.orientation.isPortrait && !basicVCWillDisappear){
+            moveToBaseVC()
         }
     }
     
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        print("trailingSwipeActionConfigurationForRowAt table")
         
         let delete = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
@@ -499,13 +458,13 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        print("leadingSwipeActionsConfigurationForRowAt table")
+    
         let copyAction = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
             let maxNumber = self.historyRecords.count
             let historyIndex = maxNumber - indexPath.row - 1
             
-            if self.isOrientationPortrait{
+            if self.portraitMode{
                 if let record = self.historyRecords?[historyIndex]{
                     let toBeSaved = record.processStringHis! + "=" + record.resultString!
                     UIPasteboard.general.string = toBeSaved
@@ -527,7 +486,7 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             let maxNumber = self.historyRecords.count
             let historyIndex = maxNumber - indexPath.row - 1
             
-            if self.isOrientationPortrait{
+            if self.portraitMode{
                 if let record = self.historyRecords?[historyIndex]{
                     let toBeSaved = record.processStringHis! + "=" + record.resultString!
                     
