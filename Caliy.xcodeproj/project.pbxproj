@@ -44,6 +44,8 @@
 		9AF62EF02701BFBF00E183AB /* overallMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EEF2701BFBF00E183AB /* overallMemo */; };
 		9AF62EF32701C22D00E183AB /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF22701C22D00E183AB /* NotificationKey.swift */; };
 		9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF62702051B00E183AB /* BasicCalculator.swift */; };
+		9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF827020C1A00E183AB /* ToastMessage.swift */; };
+		9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EFA2702145A00E183AB /* InputEnums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,8 @@
 		9AF62EEF2701BFBF00E183AB /* overallMemo */ = {isa = PBXFileReference; lastKnownFileType = text; name = overallMemo; path = ../../../SwiftTest/overallMemo; sourceTree = "<group>"; };
 		9AF62EF22701C22D00E183AB /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationKey.swift; path = ../../../../SwiftTest/NotificationKey.swift; sourceTree = "<group>"; };
 		9AF62EF62702051B00E183AB /* BasicCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCalculator.swift; sourceTree = "<group>"; };
+		9AF62EF827020C1A00E183AB /* ToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessage.swift; sourceTree = "<group>"; };
+		9AF62EFA2702145A00E183AB /* InputEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEnums.swift; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy_CaliyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -188,8 +192,8 @@
 			children = (
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
-				9AF62EF12701C16A00E183AB /* Views */,
 				9A083FF524CCDE04001057D2 /* Model */,
+				9AF62EF12701C16A00E183AB /* Views */,
 				9A083FF624CCDE0D001057D2 /* Extension */,
 				9AF62EE526FF65CC00E183AB /* Services */,
 				9AF62EE626FF65ED00E183AB /* Constants */,
@@ -244,8 +248,8 @@
 		9A083FF524CCDE04001057D2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9AF62EF62702051B00E183AB /* BasicCalculator.swift */,
+				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
 			);
 			path = Model;
@@ -276,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				9A083FEA24CCDCA2001057D2 /* FontSizes.swift */,
+				9AF62EFA2702145A00E183AB /* InputEnums.swift */,
 				9AF62EF22701C22D00E183AB /* NotificationKey.swift */,
 				9AF62EE726FF660B00E183AB /* ImageConstants.swift */,
 				9A083FE624CCDC90001057D2 /* ColorList.swift */,
@@ -283,6 +288,7 @@
 				9AF62EEB26FF668A00E183AB /* TagConstants.swift */,
 				9A083FE024CCDC72001057D2 /* LocalizedStringStorage.swift */,
 				9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */,
+				9AF62EF827020C1A00E183AB /* ToastMessage.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -556,6 +562,7 @@
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
+				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
 				9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
@@ -574,6 +581,7 @@
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
+				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

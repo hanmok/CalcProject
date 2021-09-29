@@ -26,8 +26,8 @@ class HistoryRecordVC: UIViewController {
     
     let ansToTableNotification = Notification.Name(rawValue: NotificationKey.answerToTableNotification.rawValue)
     let viewWillTransitionNotification = Notification.Name(rawValue: NotificationKey.viewWilltransitionNotification.rawValue)
-    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillDisappearbasicViewController.rawValue)
-    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillAppearbasicViewController.rawValue)
+    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillDisappearbaseViewController.rawValue)
+    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillAppearbaseViewController.rawValue)
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -330,7 +330,9 @@ class HistoryRecordVC: UIViewController {
                     }
                     self.tableView.reloadData()
                     
-                    self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//                    self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+                    
+                    self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.6, hRatio: 0.4)
                   })
     }
     
@@ -341,6 +343,14 @@ class HistoryRecordVC: UIViewController {
         }else{
             sender.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
         }
+    }
+    
+    func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
+        showToast(message: msg,
+                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  widthRatio: wRatio, heightRatio: hRatio,
+                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
     }
     
     let infoView = UIView()
@@ -444,8 +454,8 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-            
+//            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+            self.toastHelper(msg: self.localizedStrings.deleteComplete, wRatio: 0.4, hRatio: 0.04)
             
             completionHandler(true)
             
@@ -476,8 +486,8 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
                 }
             }
             
-            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-            
+//            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+            self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.5, hRatio: 0.04)
             completionHandler(true)
         }
         
