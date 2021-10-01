@@ -81,15 +81,14 @@ struct UserDefaultSetup{
         return defaults.string(forKey: UserDefaultKey.deviceVersionType.rawValue) ?? "What"
     }
     
-    //ND stands for Not Determined.
-    // MP : Most popular, P : Popular, LP : Least Popular
+    // MP : Most popular, P : Popular, LP : Least Popular, ND: Not Determined
     
     
     func setIsUserEverChanged(isUserEverChanged : Bool){
         defaults.set(isUserEverChanged, forKey: UserDefaultKey.everChanged.rawValue)
     }
     
-    func getIsUserEverChanged() -> Bool{
+    func getWhetherUserEverChanged() -> Bool{
         return defaults.bool(forKey: UserDefaultKey.everChanged.rawValue)
     }
 }

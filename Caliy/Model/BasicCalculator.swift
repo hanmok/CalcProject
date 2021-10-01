@@ -130,13 +130,21 @@ class BasicCalculator {
     var copiedresult : Double? // to be printed, one of the answer array.
     var copiedsaveResult : Double?
     
-    var deletionTimer = Timer()
-    var deletionTimer2 = Timer()
-    var deletionTimerInitialSetup = Timer()
-    var deletionTimerPause = Timer()
-    var deletionSpeed = 0.5
-    let deletionPause = 2.35
-    let deletionInitialSetup = 2.5
+    /// make deleteFaster function called after 0.5 s (deafult deletionTerm)
+    var deletionForFasterTrigger = Timer()
+    /// perform delete every 0.1s (chagned deletionTerm)
+    var deletionTimerForFaster = Timer()
+    /// call pauseDelete (invalidate deletion timers) after 2.35 s (deletionPausedAt)
+    var deletionTimerForPause = Timer()
+    /// call didPressedDeleteLong, which calls clear()  and invalidate all timers  after 2.5 s (deletionTimeForInitialState)
+    var deletionTimerForInitialSetup = Timer()
+    
+    /// little term before deletion getting faster ( 5 times ), default = 0.5 s
+    var deletionTerm = 0.5
+    /// pause delete after button has been being pressed for 2.35s
+    let deletionPausedAt = 2.35
+    /// delete all digits after button has been being pressed for 2.5s
+    let deletionTimeForInitialState = 2.5
     
     var showingAnsAdvance = false
     
@@ -623,6 +631,7 @@ class BasicCalculator {
     // MARK: -  ANS INPUT
     public func didReceiveAns() {
         calculateAns()
+        
     }
     
     @objc public func calculateAns() {
@@ -1137,7 +1146,7 @@ class BasicCalculator {
     // MARK: - DELETE
     
     @objc public func didReceiveDelete() { // deleteExecute(), deleteFaster 에 사용
-        
+        print(#file, #function)
         playSound()
         
         caseframe : if process != ""{ // caseframe is not appropriate name..
@@ -1393,54 +1402,62 @@ class BasicCalculator {
         clear()
         sendProcessNotification(receivedProcess: "")
         sendResultNotification(receivedResult: "")
-        deletionSpeed = 0.5
-        deletionTimer.invalidate()
-        deletionTimer2.invalidate()
-        deletionTimerInitialSetup.invalidate()
+        
+        deletionTerm = 0.5
+        
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
+        deletionTimerForInitialSetup.invalidate()
     }
     
     public func didDragOutDelete() {
-        deletionTimer.invalidate()
-        deletionTimer2.invalidate()
-        deletionTimerPause.invalidate()
-        deletionTimerInitialSetup.invalidate()
+//        deletionForFasterTrigger.invalidate()
+//        deletionTimerForFaster.invalidate()
+//        deletionTimerForPause.invalidate()
+//        deletionTimerForInitialSetup.invalidate()
+        invalidateAllTimers()
     }
     
     public func didPressedDownDelete() {
-        if deletionSpeed == 0.5 {
+        if deletionTerm == 0.5 {
             didReceiveDelete()
         }
-        // deleteFaster
-        deletionTimer = Timer.scheduledTimer(timeInterval: deletionSpeed, target: self, selector: #selector(deleteFaster), userInfo: nil, repeats: false)
+        // after 0.5s, make deleteSpeed 0.1 (5times faster)
+        deletionForFasterTrigger = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(deleteFaster), userInfo: nil, repeats: false)
         // pauseDelete
-        deletionTimerPause = Timer.scheduledTimer(timeInterval: deletionPause, target: self, selector: #selector(pauseDelete), userInfo: nil, repeats: false)
+        deletionTimerForPause = Timer.scheduledTimer(timeInterval: deletionPausedAt, target: self, selector: #selector(pauseDelete), userInfo: nil, repeats: false)
         //initialSetup
-        deletionTimerInitialSetup = Timer.scheduledTimer(timeInterval: deletionInitialSetup, target: self, selector: #selector(didPressedDeleteLong), userInfo: nil, repeats: false)
+        deletionTimerForInitialSetup = Timer.scheduledTimer(timeInterval: deletionTimeForInitialState, target: self, selector: #selector(didPressedDeleteLong), userInfo: nil, repeats: false)
         
     }
-    
+    /// change delete delay to 0.1s, and delete each digit every 0.1s
     @objc func deleteFaster() {
-        deletionSpeed = 0.1
-        deletionTimer2 = Timer.scheduledTimer(timeInterval: deletionSpeed, target: self, selector: #selector(didReceiveDelete), userInfo: nil, repeats: true)
+        deletionTerm = 0.1
+        deletionTimerForFaster = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(didReceiveDelete), userInfo: nil, repeats: true)
     }
+    /// pause delete for a while, if pressed down longer, set all variables to initial state
     @objc func pauseDelete(){
-        deletionTimer.invalidate()
-        deletionTimer2.invalidate()
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
     }
     
     @objc public func handleDeleteTapped() {
-        deletionTimer.invalidate()
-        deletionTimer2.invalidate()
-        deletionTimerPause.invalidate()
-        deletionTimerInitialSetup.invalidate()
-        deletionSpeed = 0.5
+//        deletionFasterTriggerTimer.invalidate()
+//        deletionFasterTimer.invalidate()
+//        deletionTimerPause.invalidate()
+//        deletionTimerInitialSetup.invalidate()
+        
+        //for testing
+        print(#file, #function)
+        invalidateAllTimers()
+        deletionTerm = 0.5
     }
     
-    public func invalidateTimer() {
-        deletionTimer.invalidate()
-        deletionTimer2.invalidate()
-        deletionTimerPause.invalidate()
-        deletionTimerInitialSetup.invalidate()
+    public func invalidateAllTimers() {
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
+        deletionTimerForPause.invalidate()
+        deletionTimerForInitialSetup.invalidate()
     }
     
     // MARK: - PROCESS

@@ -285,21 +285,26 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             print("there's an error in receiving message from basicCalculator")
             return
         }
-         let languageCode = Locale.current.languageCode
-        let korean : Bool = ((languageCode?.contains("ko")) != nil)
+        var isKorean = true
+        if let languageCode = Locale.current.languageCode{
+            if !languageCode.contains("ko"){
+                isKorean = false
+            }
+        }
+        
+        print("isKorean: \(isKorean)")
+        
         switch toastCase {
         case .answerLimit:
-            if korean {
+            if isKorean {
                 self.toastHelper(msg: localizedStrings.answerLimit, wRatio: 0.7, hRatio: 0.04)
             } else {
                 self.toastHelper(msg: localizedStrings.answerLimit, wRatio: 0.6, hRatio: 0.08)
-                // WTF ... 
-//                self.showToast2(message: localizedStrings.answerLimit, with: 2, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
             }
         case .numberLimit:
             self.toastHelper(msg: localizedStrings.numberLimit, wRatio: 0.8, hRatio: 0.04)
         case .floatingLimit:
-            if korean {
+            if isKorean {
                 self.toastHelper(msg: localizedStrings.floatingLimit, wRatio: 0.7, hRatio: 0.04)
             } else {
                 self.toastHelper(msg: localizedStrings.floatingLimit, wRatio: 0.6, hRatio: 0.08)
@@ -309,10 +314,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         case .saved:
             self.toastHelper(msg: localizedStrings.savedToHistory, wRatio: 0.4, hRatio: 0.04)
         }
-        
-        
-        
-//        showToast(message: message, with: <#T##Int#>, for: <#T##Double#>, defaultWidthSize: <#T##CGFloat#>, defaultHeightSize: <#T##CGFloat#>, widthRatio: <#T##Float#>, heightRatio: <#T##Float#>, fontsize: <#T##CGFloat#>)
     }
     // MARK: - Helpers
     
@@ -323,16 +324,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         basicCalc.didReceiveAnsFromTable(receivedValue: ansString)
     }
     
-    
-    
-    
     @objc func handleNumberTapped(sender : UIButton){
         basicCalc.didReceiveNumber(sender.tag)
-        basicCalc.checkIndexes(with: "\(#file)  \(#line)")
     }
-    
-    
-    
     
     @objc func handleOperationTapped(sender : UIButton){
         basicCalc.didReceiveOper(senderTag: sender.tag)
@@ -340,33 +334,31 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     /// view area
-    func toastAnsLimitExceed(){
-        if let languageCode = Locale.current.languageCode{
-            if languageCode.contains("ko"){
-//                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-                
-            }else{
-                
-//                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-                
-            }
-        }
-    }
+//    func toastAnsLimitExceed(){
+//        if let languageCode = Locale.current.languageCode{
+//            if languageCode.contains("ko"){
+////                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//
+//            }else{
+//
+////                self.showToast(message: self.localizedStrings.answerLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//
+//            }
+//        }
+//    }
     /// view area
-    func toastFloatingDigitLimitExceed(){
-        if let languageCode = Locale.current.languageCode{
-            if languageCode.contains("ko"){
-//                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-                
-            }else{
-                
-//                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-                
-            }
-        }
-    }
-    
-    
+//    func toastFloatingDigitLimitExceed(){
+//        if let languageCode = Locale.current.languageCode{
+//            if languageCode.contains("ko"){
+////                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.7, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//
+//            }else{
+//
+////                self.showToast(message: self.localizedStrings.floatingLimit, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.08, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//
+//            }
+//        }
+//    }
     
     @objc func handlePerenthesisTapped(sender : UIButton){
         basicCalc.didReceiveParen(sender.tag)
@@ -374,6 +366,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     @objc func handleDeleteAction(){
         basicCalc.didReceiveDelete()
+        print(#file, #function)
     }
     
     @objc func handleClearTapped(sender : UIButton){
@@ -404,7 +397,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForExtrasLM
             case 21 ... 30 :
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-                basicCalc.invalidateTimer()
+                basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
             }
@@ -418,7 +411,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForExtrasDM
             case 21 ... 30 :
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-                basicCalc.invalidateTimer()
+                basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
             }
@@ -435,30 +428,20 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         basicCalc.checkIndexes(with: "test from \(#line)")
         userDefaultSetup.setIsUserEverChanged(isUserEverChanged: true)
-//        basicC
+        
         soundModeOn = userDefaultSetup.getIsSoundOn()
-        
-        
-//        soundModeOn ?
-//            self.showToast(message: self.localizedStrings.soundOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) :
-            
-//            self.showToast(message: self.localizedStrings.soundOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-        
         
         soundModeOn.toggle()
         userDefaultSetup.setIsSoundOn(isSoundOn: soundModeOn)
         setupColorAndImage()
     }
+    
     /// 보류 settings
     @objc func toggleDarkMode(sender : UIButton){
        
         userDefaultSetup.setIsUserEverChanged(isUserEverChanged: true)
         
         lightModeOn = userDefaultSetup.getIsLightModeOn()
-        
-//        lightModeOn ?
-//            self.showToast(message: self.localizedStrings.darkMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) :
-//            self.showToast(message: self.localizedStrings.lightMode, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
         
         lightModeOn.toggle()
         
@@ -472,15 +455,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         notificationOn = userDefaultSetup.getIsNotificationOn()
         
-//        notificationOn ?
-//            self.showToast(message: self.localizedStrings.notificationOff, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13) :
-//            self.showToast(message: self.localizedStrings.notificationOn, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.65, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-        
         notificationOn.toggle()
         
         userDefaultSetup.setIsNotificationOn(isNotificationOn: notificationOn)
         setupColorAndImage()
-        
     }
     
     /// 보류 settings
@@ -512,15 +490,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     //google for eng : https://docs.google.com/forms/d/e/1FAIpQLSeuMqhwdEI29WrZxAmhxQNdnNfSjlsl_l5ELvWJFze6QHG3pA/viewform?usp=sf_link
     
     
-    func sendNotification(){
-        if notificationOn{
-//            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-        }
-    }
+//    func sendNotification(){
+//        if notificationOn{
+////            self.showToast(message: self.localizedStrings.modified, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+//        }
+//    }
     
     /// 보류 settings
     func setupUserDefaults(){
-        if userDefaultSetup.getIsUserEverChanged(){
+        if userDefaultSetup.getWhetherUserEverChanged(){
             lightModeOn = userDefaultSetup.getIsLightModeOn()
             soundModeOn = userDefaultSetup.getIsSoundOn()
             notificationOn = userDefaultSetup.getIsNotificationOn()
@@ -536,9 +514,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             notificationOn = false
             soundModeOn = true
             numOfReviewClicked = 0
-
         }
-        
         
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
@@ -570,6 +546,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     // deletePressedDown
     @objc func handleDeletePressedDown(sender : UIButton){
+        print(#file, #function)
         if lightModeOn{
             sender.backgroundColor =  colorList.bgColorForExtrasLM
         }else{
@@ -613,7 +590,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
         showToast(message: msg,
-                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375,
                   defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
                   widthRatio: wRatio, heightRatio: hRatio,
                   fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
@@ -680,10 +657,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let operationButtonPlus = ButtonTag(withTag: 16)
     let operationButtonMinus = ButtonTag(withTag: 17)
     let equalButton = ButtonTag(withTag: 18)
-    let extra1 = ButtonTag(withTag: 31)
-    let extra2 = ButtonTag(withTag: 32)
-    let extra3 = ButtonTag(withTag: 33)
-    let extra4 = ButtonTag(withTag: 34)
+    let soundButton = ButtonTag(withTag: 31)
+    let displayThemeButton = ButtonTag(withTag: 32)
+    let notificationButton = ButtonTag(withTag: 33)
+    let reviewButton = ButtonTag(withTag: 34)
     
     let deleteButton : UIButton = {
         let del = UIButton(type: .custom)
@@ -761,7 +738,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             subview.removeFromSuperview()
         }
         
-        let horStackView0 : [UIButton] = [extra1, extra2, extra3, extra4]
+        let horStackView0 : [UIButton] = [soundButton, displayThemeButton, notificationButton, reviewButton]
         let horStackView1 : [UIButton] = [num0, num00, numberDot, equalButton]
         let horStackView2 : [UIButton] = [num1, num2, num3, operationButtonPlus]
         let horStackView3 : [UIButton] = [num4, num5, num6, operationButtonMinus]
@@ -842,13 +819,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             }
             
             for button in horStackView1{
-                button.anchor(bottom: extra1.topAnchor)
+                button.anchor(bottom: soundButton.topAnchor)
             }
             
-            extra1.anchor(left: frameView.leftAnchor)
-            extra2.anchor(left: extra1.rightAnchor)
-            extra3.anchor(left: extra2.rightAnchor)
-            extra4.anchor(left: extra3.rightAnchor, right: frameView.rightAnchor)
+            soundButton.anchor(left: frameView.leftAnchor)
+            displayThemeButton.anchor(left: soundButton.rightAnchor)
+            notificationButton.anchor(left: displayThemeButton.rightAnchor)
+            reviewButton.anchor(left: notificationButton.rightAnchor, right: frameView.rightAnchor)
             
           
             
@@ -1035,10 +1012,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         //sound, backgroundColor, notification, feedback
-        extra1.addTarget(self, action: #selector(toggleSoundMode), for: .touchUpInside)
-        extra2.addTarget(self, action: #selector(toggleDarkMode(sender:)), for: .touchUpInside)
-        extra3.addTarget(self, action: #selector(toggleNotificationAlert), for: .touchUpInside)
-        extra4.addTarget(self, action: #selector(navigateToReviewSite), for: .touchUpInside)
+        soundButton.addTarget(self, action: #selector(toggleSoundMode), for: .touchUpInside)
+        displayThemeButton.addTarget(self, action: #selector(toggleDarkMode(sender:)), for: .touchUpInside)
+        notificationButton.addTarget(self, action: #selector(toggleNotificationAlert), for: .touchUpInside)
+        reviewButton.addTarget(self, action: #selector(navigateToReviewSite), for: .touchUpInside)
         
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
@@ -1218,15 +1195,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
         subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
         
-        extra2.addSubview(colorBtnImg)
-        colorBtnImg.center(inView: extra2)
-        colorBtnImg.widthAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
-        colorBtnImg.heightAnchor.constraint(equalTo: extra2.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        displayThemeButton.addSubview(colorBtnImg)
+        colorBtnImg.center(inView: displayThemeButton)
+        colorBtnImg.widthAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
+        colorBtnImg.heightAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
-        extra4.addSubview(feedbackBtnImg)
-        feedbackBtnImg.center(inView: extra4)
-        feedbackBtnImg.widthAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
-        feedbackBtnImg.heightAnchor.constraint(equalTo: extra4.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        reviewButton.addSubview(feedbackBtnImg)
+        feedbackBtnImg.center(inView: reviewButton)
+        feedbackBtnImg.widthAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
+        feedbackBtnImg.heightAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
     }
     
@@ -1249,7 +1226,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
         
-        let extras = [extra1, extra2, extra3, extra4]
+        let extras = [soundButton, displayThemeButton, notificationButton, reviewButton]
         
         if lightModeOn{
             for num in numButtons{
@@ -1338,15 +1315,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             resultTextView.textColor = ansPressed ? colorList.textColorForResultDM : colorList.textColorForSemiResultDM
         }
         
-        extra1.addSubview(soundBtnImg)
-        soundBtnImg.center(inView: extra1)
+        soundButton.addSubview(soundBtnImg)
+        soundBtnImg.center(inView: soundButton)
     
-        soundBtnImg.widthAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        soundBtnImg.heightAnchor.constraint(equalTo: extra1.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        soundBtnImg.widthAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        soundBtnImg.heightAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
-        extra3.addSubview(notificationBtnImg)
-        notificationBtnImg.center(inView: extra3)
-        notificationBtnImg.widthAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        notificationBtnImg.heightAnchor.constraint(equalTo: extra3.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+        notificationButton.addSubview(notificationBtnImg)
+        notificationBtnImg.center(inView: notificationButton)
+        notificationBtnImg.widthAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+        notificationBtnImg.heightAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
     }
 }

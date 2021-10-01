@@ -292,7 +292,8 @@ class HistoryRecordVC: UIViewController {
             historyClickButton.setDimensions(width: 40, height: 40)
             
         }else{
-            tableView.pin(to: view) // 이거같은데?
+//            tableView.pin(to: view) // 이거같은데?
+            tableView.fillSuperview()
             
             tableView.backgroundColor = lightModeOn ? colorList.bgColorForEmptyAndNumbersLM : colorList.bgColorForEmptyAndNumbersDM
         }
