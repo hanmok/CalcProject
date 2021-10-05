@@ -16,6 +16,9 @@ class RealmService{
     static let shared = RealmService()
     
     var realm = try! Realm()
+//    lazy var realm: Realm = {
+//        return try! Realm()
+//    }()
     
     func create<T : Object>(_ object : T){
         do{

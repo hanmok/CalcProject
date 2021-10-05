@@ -6,6 +6,9 @@
 //  Copyright © 2020 hanmok. All rights reserved.
 //
 
+// migration error solution
+//https://www.selmanalpdundar.com/solution-of-realm-migration-error-code-10.html
+//  https://www.youtube.com/watch?v=hC6dLLbfUXc
 import Foundation
 import RealmSwift
 
@@ -17,6 +20,7 @@ import RealmSwift
     dynamic var resultString : String?
     dynamic var resultValue : Double?
     dynamic var dateString : String?
+    dynamic var titleLabel: String? = ""
     
     convenience init(processOrigin : String?, processStringHis : String?,processStringHisLong : String?, processStringCalc : String?, resultString : String?, resultValue : Double?, dateString : String?){
         self.init()
@@ -27,6 +31,7 @@ import RealmSwift
         self.resultString = resultString
         self.resultValue = resultValue
         self.dateString = dateString
+        
     }
     
 }

@@ -33,7 +33,6 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
     @objc func detectOrientation(notification : NSNotification){
         guard let orientationCheck = notification.userInfo?["orientation"] as? Bool? else{ print("there's an error in detectOrientation form cell")
             
-            
             return
         }
         
