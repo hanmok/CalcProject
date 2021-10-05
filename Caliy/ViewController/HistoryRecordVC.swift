@@ -442,7 +442,85 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     }
     
     
+//    func showEditTitleAlert(handler:(UIAlertAction) -> Void) {
+//        let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
+//
+//        alertController.addTextField { (textField : UITextField!) -> Void in
+//            textField.placeholder = "Name value!"
+//        }
+//
+//        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+//            let textFieldInput = alertController.textFields![0] as UITextField
+//            print("input: \(textFieldInput.text)")
+//        })
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+//                                            (action : UIAlertAction!) -> Void in })
+//
+//        alertController.addAction(saveAction)
+//        alertController.addAction(cancelAction)
+//
+//        self.present(alertController, animated: true, completion: nil)
+//    }
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let editName = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
+            let maxNumber = self.historyRecords.count
+            let historyIndex = maxNumber - indexPath.row - 1
+            
+            var userInput = ""
+            
+            if self.historyRecords[historyIndex].titleLabel != nil {
+                userInput = self.historyRecords[historyIndex].titleLabel!
+            }
+            // alert
+            let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
+            
+            alertController.addTextField { (textField : UITextField!) -> Void in
+                textField.placeholder = userInput
+            }
+            
+            let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                let textFieldInput = alertController.textFields![0] as UITextField
+                print("placeholder: \(textFieldInput.placeholder)")
+                print("textInput: \(textFieldInput.text)")
+                
+                if textFieldInput.placeholder != "" && textFieldInput.text == "" {
+                    userInput = textFieldInput.placeholder!
+                } else {
+                    userInput = textFieldInput.text!
+                }
+                
+                if let record = self.historyRecords?[historyIndex]{
+                    let dictionary : [String : Any?] = ["processOrigin": record.processOrigin,
+                                                        "processStringHis": record.processStringHis,
+                                                        "processStringHisLong": record.processStringHisLong,
+                                                        "processStringCalc": record.processStringCalc,
+                                                        "resultString": record.resultString,
+                                                        //"resultValue": record.resultValue,
+                                                        "dateString": record.dateString,
+                                                        "titleLabel": userInput
+                    ]
+                    
+                    RealmService.shared.update(record, with: dictionary)
+                    tableView.reloadData()
+                }
+            })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+                                                (action : UIAlertAction!) -> Void in })
+            
+            alertController.addAction(saveAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+            
+            
+            
+            completionHandler(true)
+        }
         
         let delete = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
@@ -451,20 +529,24 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             
             if let record = self.historyRecords?[historyIndex]{
                 RealmService.shared.delete(record)
+//                RealmService.shared.delete(<#T##object: T##T#>)
             }
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             
 //            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
             self.toastHelper(msg: self.localizedStrings.deleteComplete, wRatio: 0.4, hRatio: 0.04)
-            
+            tableView.reloadData()
             completionHandler(true)
             
         }
+        editName.image = UIImage(systemName: "pencil")
+        editName.backgroundColor = colorList.textColorForSemiResultDM
+        
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = .red
         
-        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete, editName])
         return rightSwipe
     }
     
