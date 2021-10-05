@@ -12,84 +12,83 @@ struct UserDefaultSetup{
     let defaults = UserDefaults.standard
     
     enum UserDefaultKey : String{
-        case isSoundOnKey
-        case isLightModeOnKey
-        case isNotificationOnKey
-        case isUserEverChangedKey
-        case userDeviceSizeInfoKey
-        case numberReviewClickedKey
-        case userDeviceVersionInfoKey
-        case userDeviceVersionTypeInfoKey
+        case soundOn
+        case lightModeOn
+        case notificationOn
+        case everChanged
+        case deviceSize
+        case numOfReviewClicked
+        case deviceVersion
+        case deviceVersionType
     }
     
     
     func setIsSoundOn(isSoundOn : Bool){
         
-        defaults.set(isSoundOn,forKey: UserDefaultKey.isSoundOnKey.rawValue)
+        defaults.set(isSoundOn,forKey: UserDefaultKey.soundOn.rawValue)
     }
     
     func setIsLightModeOn(isLightModeOn : Bool){
         
-        defaults.set(isLightModeOn,forKey: UserDefaultKey.isLightModeOnKey.rawValue)
+        defaults.set(isLightModeOn,forKey: UserDefaultKey.lightModeOn.rawValue)
     }
     
     func setIsNotificationOn(isNotificationOn : Bool){
         
-        defaults.set(isNotificationOn,forKey: UserDefaultKey.isNotificationOnKey.rawValue)
+        defaults.set(isNotificationOn,forKey: UserDefaultKey.notificationOn.rawValue)
     }
     
     func setNumberReviewClicked(numberReviewClicked : Int){
-        defaults.set(numberReviewClicked, forKey: UserDefaultKey.numberReviewClickedKey.rawValue)
+        defaults.set(numberReviewClicked, forKey: UserDefaultKey.numOfReviewClicked.rawValue)
     }
     
     func setUserDeviceSizeInfo(userDeviceSizeInfo : String){
-        defaults.set(userDeviceSizeInfo, forKey: UserDefaultKey.userDeviceSizeInfoKey.rawValue)
+        defaults.set(userDeviceSizeInfo, forKey: UserDefaultKey.deviceSize.rawValue)
     }
     
     func setUserDeviceVersionInfo(userDeviceVersionInfo : String){
-        defaults.set(userDeviceVersionInfo, forKey: UserDefaultKey.userDeviceVersionInfoKey.rawValue)
+        defaults.set(userDeviceVersionInfo, forKey: UserDefaultKey.deviceVersion.rawValue)
     }
     func setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo : String){
-        defaults.set(userDeviceVersionTypeInfo, forKey: UserDefaultKey.userDeviceVersionTypeInfoKey.rawValue)
+        defaults.set(userDeviceVersionTypeInfo, forKey: UserDefaultKey.deviceVersionType.rawValue)
     }
     
     
     
     func getIsSoundOn() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.isSoundOnKey.rawValue)
+        return defaults.bool(forKey: UserDefaultKey.soundOn.rawValue)
     }
     
     func getIsLightModeOn() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.isLightModeOnKey.rawValue)
+        return defaults.bool(forKey: UserDefaultKey.lightModeOn.rawValue)
     }
     
     func getIsNotificationOn() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.isNotificationOnKey.rawValue)
+        return defaults.bool(forKey: UserDefaultKey.notificationOn.rawValue)
     }
     
     func getNumberReviewClicked() -> Int{
-        return defaults.integer(forKey: UserDefaultKey.numberReviewClickedKey.rawValue)
+        return defaults.integer(forKey: UserDefaultKey.numOfReviewClicked.rawValue)
     }
     
-    func getUserDeviceSizeInfo() -> String{
-        return defaults.string(forKey: UserDefaultKey.userDeviceSizeInfoKey.rawValue) ?? "A"
+    func getDeviceSize() -> String{
+        return defaults.string(forKey: UserDefaultKey.deviceSize.rawValue) ?? "A"
     }
-    func getUserDeviceVersionInfo() -> String{
-        return defaults.string(forKey: UserDefaultKey.userDeviceVersionInfoKey.rawValue) ?? "ND"
+    func getDeviceVersion() -> String{
+        return defaults.string(forKey: UserDefaultKey.deviceVersion.rawValue) ?? "ND"
     }
-    func getUserDeviceVersionTypeInfo() -> String{
-        return defaults.string(forKey: UserDefaultKey.userDeviceVersionTypeInfoKey.rawValue) ?? "What"
+    func getDeviceVersionType() -> String{
+        return defaults.string(forKey: UserDefaultKey.deviceVersionType.rawValue) ?? "What"
     }
     
-    //ND stands for Not Determined.
-    // MP : Most popular, P : Popular, LP : Least Popular
+    // MP : Most popular, P : Popular, LP : Least Popular, ND: Not Determined
     
     
     func setIsUserEverChanged(isUserEverChanged : Bool){
-        defaults.set(isUserEverChanged, forKey: UserDefaultKey.isUserEverChangedKey.rawValue)
+        defaults.set(isUserEverChanged, forKey: UserDefaultKey.everChanged.rawValue)
     }
     
-    func getIsUserEverChanged() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.isUserEverChangedKey.rawValue)
+    func getWhetherUserEverChanged() -> Bool{
+        return defaults.bool(forKey: UserDefaultKey.everChanged.rawValue)
     }
 }

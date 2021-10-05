@@ -26,7 +26,4 @@ struct FontSizes{
     
     let showToastTextSize : [String : CGFloat] = ["A" : 13, "B" : 13, "C" : 20, "D" : 25]
     
-    
-    
-//    let
 }

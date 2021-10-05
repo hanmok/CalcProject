@@ -24,10 +24,10 @@ class HistoryRecordVC: UIViewController {
     
     let localizedStrings = LocalizedStringStorage()
     
-    let ansToTableNotification = Notification.Name(rawValue: answerToTableNotificationKey)
-    let viewWillTransitionNotification = Notification.Name(rawValue: viewWilltransitionNotificationKey)
-    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: viewWillDisappearbasicViewControllerKey)
-    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: viewWillAppearbasicViewControllerKey)
+    let ansToTableNotification = Notification.Name(rawValue: NotificationKey.answerToTableNotification.rawValue)
+    let viewWillTransitionNotification = Notification.Name(rawValue: NotificationKey.viewWilltransitionNotification.rawValue)
+    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillDisappearbaseViewController.rawValue)
+    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillAppearbaseViewController.rawValue)
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -93,21 +93,21 @@ class HistoryRecordVC: UIViewController {
             deviceInfo.removeFirst()
         }
         
-        print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getUserDeviceVersionInfo())")
+        print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getDeviceVersion())")
         
-        if userDefaultSetup.getUserDeviceVersionInfo() == "ND"{ // Not Determined
+        if userDefaultSetup.getDeviceVersion() == "ND"{ // Not Determined
             userDefaultSetup.setUserDeviceVersionInfo(userDeviceVersionInfo: deviceInfo)
             
-            if userDefaultSetup.getUserDeviceVersionInfo().contains("iPh"){
+            if userDefaultSetup.getDeviceVersion().contains("iPh"){
                // iPh 포함
-                switch userDefaultSetup.getUserDeviceVersionInfo().first {
+                switch userDefaultSetup.getDeviceVersion().first {
                 case "4","5","6","7","8","S":
                     userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "P")
                 default:
                     userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "MP")
                 }
             } // "iPod touch model."
-            else if userDefaultSetup.getUserDeviceVersionInfo().contains("iPo"){
+            else if userDefaultSetup.getDeviceVersion().contains("iPo"){
                 userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "LP")
                
             }
@@ -220,14 +220,14 @@ class HistoryRecordVC: UIViewController {
         view.addSubview(tableView)
         
         if portraitMode{
-            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getUserDeviceVersionTypeInfo())
+            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getDeviceVersionType())
             
             view.addSubview(infoView)
             infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
             
             
             
-            switch userDefaultSetup.getUserDeviceVersionTypeInfo() {
+            switch userDefaultSetup.getDeviceVersionType() {
             
             case "MP" :
                 infoView.setHeight(80)
@@ -292,7 +292,8 @@ class HistoryRecordVC: UIViewController {
             historyClickButton.setDimensions(width: 40, height: 40)
             
         }else{
-            tableView.pin(to: view) // 이거같은데?
+//            tableView.pin(to: view) // 이거같은데?
+            tableView.fillSuperview()
             
             tableView.backgroundColor = lightModeOn ? colorList.bgColorForEmptyAndNumbersLM : colorList.bgColorForEmptyAndNumbersDM
         }
@@ -330,7 +331,9 @@ class HistoryRecordVC: UIViewController {
                     }
                     self.tableView.reloadData()
                     
-                    self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
+//                    self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+                    
+                    self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.6, hRatio: 0.4)
                   })
     }
     
@@ -341,6 +344,14 @@ class HistoryRecordVC: UIViewController {
         }else{
             sender.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
         }
+    }
+    
+    func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
+        showToast(message: msg,
+                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  widthRatio: wRatio, heightRatio: hRatio,
+                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
     }
     
     let infoView = UIView()
@@ -444,8 +455,8 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-            
+//            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+            self.toastHelper(msg: self.localizedStrings.deleteComplete, wRatio: 0.4, hRatio: 0.04)
             
             completionHandler(true)
             
@@ -476,8 +487,8 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
                 }
             }
             
-            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getUserDeviceSizeInfo()] ?? 13)
-            
+//            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+            self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.5, hRatio: 0.04)
             completionHandler(true)
         }
         

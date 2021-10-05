@@ -5,6 +5,7 @@
 //  Created by hanmok on 2020/05/20.
 //  Copyright © 2020 hanmok. All rights reserved.
 //
+//https://www.youtube.com/watch?v=hC6dLLbfUXc // realmSwift
 
 // migration error solution
 //https://www.selmanalpdundar.com/solution-of-realm-migration-error-code-10.html

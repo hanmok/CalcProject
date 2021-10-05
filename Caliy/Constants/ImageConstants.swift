@@ -63,14 +63,14 @@ let lightDivide = UIImageView(image: UIImage(named: "LDivideopReg"))
 
 let lightEqual = UIImageView(image: UIImage(named: "LEqualopReg"))
 
-let ex1OnDark = UIImageView(image: #imageLiteral(resourceName: "darkmode_sound_on"))
-let ex1OffDark = UIImageView(image: #imageLiteral(resourceName: "darkmode_sound_off"))
+let soundOnDarkImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_sound_on"))
+let soundOffDarkImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_sound_off"))
 
-let ex3OnDark = UIImageView(image: #imageLiteral(resourceName: "darkmode_alarm_on"))
-let ex3OffDark = UIImageView(image: #imageLiteral(resourceName: "darkmode_alarm_off"))
+let alarmOnDarkImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_alarm_on"))
+let alarmOffDarkImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_alarm_off"))
 
-let ex1OnLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_sound_on"))
-let ex1OffLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_sound_off"))
+let soundOnLightImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_sound_on"))
+let soundOffLightImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_sound_off"))
 
-let ex3OnLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_on"))
-let ex3OffLight = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_off"))
+let alarmOnLightImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_on"))
+let alarmOffLightImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_alarm_off"))
