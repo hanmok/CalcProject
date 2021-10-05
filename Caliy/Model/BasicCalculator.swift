@@ -1037,6 +1037,8 @@ class BasicCalculator {
                 
                 
                 RealmService.shared.create(newHistoryRecord)
+//                RealmService.shared.update(newHistoryRecord, with: dict)
+                
                 savedResult = realAns // what is the difference?
                 
             }
