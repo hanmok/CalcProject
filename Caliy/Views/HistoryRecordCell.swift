@@ -76,12 +76,20 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                 
                 //date
                 
-                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
-//                attributedText.append(customAttributedString(string: dateValid + "\n", fontSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!, alignment: styleLeft, foregroundColor: colorList.textColorForDateLM))
+                // original
+//                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
+                
+                // modified
+                attributedText.append(NSAttributedString(string: dateValid + "\n" , attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
                
                 
                 //\n
-                attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
+                // original
+//                attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
+                
+                // modified
+//                attributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "asmdk\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
+                attributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "ask" + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForDateLM] ))
                 
                 //process
                 if orientationPortrait && willbasicVCdisappear{
