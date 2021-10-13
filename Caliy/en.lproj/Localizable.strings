@@ -30,6 +30,9 @@
 "delete" = "Delete";
 "cancel" = "Cancel";
 
+"save" = "Save";
+
+"edit name" = "Edit name";
 ////
 //
 //"A numberLength Limit" = "최대 15 자릿수까지 입력이 가능합니다.";

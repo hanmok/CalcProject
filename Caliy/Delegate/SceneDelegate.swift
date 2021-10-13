@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = BaseViewController()
+//        window?.rootViewController = BaseViewController()
+        window?.rootViewController = MainTabController()
 //                window?.rootViewController = HistoryViewController()
         window?.makeKeyAndVisible()
     }

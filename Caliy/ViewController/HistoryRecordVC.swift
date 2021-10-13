@@ -442,26 +442,6 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     }
     
     
-//    func showEditTitleAlert(handler:(UIAlertAction) -> Void) {
-//        let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
-//
-//        alertController.addTextField { (textField : UITextField!) -> Void in
-//            textField.placeholder = "Name value!"
-//        }
-//
-//        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
-//            let textFieldInput = alertController.textFields![0] as UITextField
-//            print("input: \(textFieldInput.text)")
-//        })
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
-//                                            (action : UIAlertAction!) -> Void in })
-//
-//        alertController.addAction(saveAction)
-//        alertController.addAction(cancelAction)
-//
-//        self.present(alertController, animated: true, completion: nil)
-//    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
@@ -475,20 +455,28 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
                 userInput = self.historyRecords[historyIndex].titleLabel!
             }
             // alert
-            let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
+            let alertController = UIAlertController(title: self.localizedStrings.editName, message: "", preferredStyle: UIAlertController.Style.alert)
+            
+            
             
             alertController.addTextField { (textField : UITextField!) -> Void in
                 textField.placeholder = userInput
             }
             
-            let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            let saveAction = UIAlertAction(title: self.localizedStrings.save, style: UIAlertAction.Style.default, handler: { alert -> Void in
                 let textFieldInput = alertController.textFields![0] as UITextField
-                print("placeholder: \(textFieldInput.placeholder)")
-                print("textInput: \(textFieldInput.text)")
+//                textFieldInput.delegate = self
+                
+                textFieldInput.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+                
+                if textFieldInput.text!.count >= 20 {
+                    textFieldInput.deleteBackward()
+                }
                 
                 if textFieldInput.placeholder != "" && textFieldInput.text == "" {
                     userInput = textFieldInput.placeholder!
                 } else {
+                    
                     userInput = textFieldInput.text!
                 }
                 
@@ -508,7 +496,7 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
                 }
             })
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            let cancelAction = UIAlertAction(title: self.localizedStrings.cancel, style: UIAlertAction.Style.destructive, handler: {
                                                 (action : UIAlertAction!) -> Void in })
             
             alertController.addAction(saveAction)
@@ -549,6 +537,12 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
         let rightSwipe = UISwipeActionsConfiguration(actions: [delete, editName])
         return rightSwipe
     }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+//        print("sender.text : \(sender.text)")
+        print("sender.text: \(textField.text)")
+        
+        }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     
@@ -613,4 +607,12 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
         let leftSwipe = UISwipeActionsConfiguration(actions: [copyAction, shareAction])
         return leftSwipe
     }
+
 }
+
+//extension HistoryRecordVC: UITextFieldDelegate {
+////    textdidchan
+//    textfield
+//}
+
+

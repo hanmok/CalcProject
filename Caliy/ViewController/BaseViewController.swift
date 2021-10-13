@@ -231,6 +231,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         setupAddTargets()
         
         createObservers()
+        
+        navigationController?.navigationBar.isHidden = true
     }
     
     func createObservers() {
@@ -752,6 +754,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         
         if portraitMode{ // Portrait Mode
+            tabBarController?.tabBar.isHidden = false
             frameView = view
             
             for button in horStackView0{ //extras 1,2,3,4
@@ -760,6 +763,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.108).isActive = true
             }
         }else if !portraitMode{ // LandScape Mode
+            tabBarController?.tabBar.isHidden = true
             
             //right side (calculator)
             view.addSubview(rightSideForLandscapeMode)

@@ -34,6 +34,10 @@
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
+		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
+		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
+		9AA5C432271701190021975C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsCell.swift */; };
+		9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C433271701FD0021975C /* SettingsSection.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
 		9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* BaseVCMemo */; };
@@ -105,6 +109,10 @@
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
+		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
+		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9AA5C431271701190021975C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		9AA5C433271701FD0021975C /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,7 +247,9 @@
 		9A083FF324CCDDE4001057D2 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9AA5C42D2716FDB20021975C /* MainTabController.swift */,
 				9A083FD824CCDBDE001057D2 /* BaseViewController.swift */,
+				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
 			);
 			path = ViewController;
@@ -250,6 +260,7 @@
 			children = (
 				9AF62EF62702051B00E183AB /* BasicCalculator.swift */,
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
+				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
 			);
 			path = Model;
@@ -297,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				9A083FDC24CCDC3B001057D2 /* HistoryRecordCell.swift */,
+				9AA5C431271701190021975C /* SettingsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -574,12 +586,16 @@
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
+				9AA5C432271701190021975C /* SettingsCell.swift in Sources */,
+				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
+				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
+				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
