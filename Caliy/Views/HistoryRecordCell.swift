@@ -29,6 +29,7 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
     
     
     func createObservers(){
+
         NotificationCenter.default.addObserver(self, selector : #selector(HistoryRecordCell.detectOrientation(notification:)), name : viewWillTransitionNotification, object: nil)
     }
     

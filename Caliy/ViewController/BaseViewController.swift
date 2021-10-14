@@ -10,6 +10,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     let basicCalc = BasicCalculator()
     
+    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
+    
     //receiver
     let ansFromTableNotification = Notification.Name(rawValue: NotificationKey.ansFromTableNotification.rawValue)
     
@@ -23,6 +25,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let resultTextColorChangeNotification = Notification.Name(rawValue: NotificationKey.resultTextColorChangeNotification.rawValue)
     
     let sendingToastNotification = Notification.Name(rawValue: NotificationKey.sendingToastNotification.rawValue)
+    
+    lazy var multiplier = 1 - 0.108*5 - tabbarheight/frameView.frame.height
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -211,7 +215,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     
     override func viewDidLoad() {
-        
+        print(#function, #file)
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
@@ -629,10 +633,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     var subClosepar = transparentImage
     var subEqual = transparentImage
 
-    var soundBtnImg = transparentImage
-    var colorBtnImg = transparentImage
-    var notificationBtnImg = transparentImage
-    var feedbackBtnImg = transparentImage
+//    var soundBtnImg = transparentImage
+//    var colorBtnImg = transparentImage
+//    var notificationBtnImg = transparentImage
+//    var feedbackBtnImg = transparentImage
+    
     // those are all transparent!
     
     //MARK: - <#UI Section starts
@@ -659,10 +664,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     let operationButtonPlus = ButtonTag(withTag: 16)
     let operationButtonMinus = ButtonTag(withTag: 17)
     let equalButton = ButtonTag(withTag: 18)
-    let soundButton = ButtonTag(withTag: 31)
-    let displayThemeButton = ButtonTag(withTag: 32)
-    let notificationButton = ButtonTag(withTag: 33)
-    let reviewButton = ButtonTag(withTag: 34)
+//    let soundButton = ButtonTag(withTag: 31)
+//    let displayThemeButton = ButtonTag(withTag: 32)
+//    let notificationButton = ButtonTag(withTag: 33)
+//    let reviewButton = ButtonTag(withTag: 34)
     
     let deleteButton : UIButton = {
         let del = UIButton(type: .custom)
@@ -671,7 +676,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         let sub = UIImageView(image: #imageLiteral(resourceName: "delD")) // delete Image.
         del.addSubview(sub)
-        
+//        del.backgroundColor = .magenta
         sub.center(inView: del)
         sub.widthAnchor.constraint(equalTo: del.heightAnchor, multiplier: 0.5625).isActive = true
         sub.heightAnchor.constraint(equalTo: del.heightAnchor, multiplier: 0.5).isActive = true
@@ -690,7 +695,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         result.textContainer.maximumNumberOfLines = 1
         result.isUserInteractionEnabled = true
         result.isEditable = false
-        result.backgroundColor = .magenta
+//        result.backgroundColor = .magenta
         
         return result
     }()
@@ -731,7 +736,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     //MARK: - <#UI Section Not Included Any Function End.
     
     func setupPositionLayout(){
-        
+        print(#function)
         // frameView = UIView()
         for subview in frameView.subviews{
             subview.removeFromSuperview()
@@ -739,14 +744,16 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         for subview in view.subviews{
             subview.removeFromSuperview()
         }
-        
-        let horStackView0 : [UIButton] = [soundButton, displayThemeButton, notificationButton, reviewButton]
+//        print("tabBarHeight : \(tabBarController?.tabBar.bounds.size.height)")
+//        let horStackView0 : [UIButton] = [soundButton, displayThemeButton, notificationButton, reviewButton]
         let horStackView1 : [UIButton] = [num0, num00, numberDot, equalButton]
         let horStackView2 : [UIButton] = [num1, num2, num3, operationButtonPlus]
         let horStackView3 : [UIButton] = [num4, num5, num6, operationButtonMinus]
         let horStackView4 : [UIButton] = [num7, num8, num9, operationButtonMultiply]
         let horStackView5 : [UIButton] = [clearButton, openParenthesis, closeParenthesis, operationButtonDivide]
+        
         let numAndOper : [UIButton] = horStackView1 + horStackView2 + horStackView3 + horStackView4 + horStackView5
+        
         let verStackView0 : [UIButton] = [clearButton, num7, num4, num1, num0]
         let verStackView1 : [UIButton] = [openParenthesis, num8, num5, num2, num00]
         let verStackView2 : [UIButton] = [closeParenthesis, num9, num6, num3, numberDot]
@@ -757,11 +764,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             tabBarController?.tabBar.isHidden = false
             frameView = view
             
-            for button in horStackView0{ //extras 1,2,3,4
-                frameView.addSubview(button)
-                button.translatesAutoresizingMaskIntoConstraints = false
-                button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.108).isActive = true
-            }
+//            for button in horStackView0{ //extras 1,2,3,4
+//                frameView.addSubview(button)
+//                button.translatesAutoresizingMaskIntoConstraints = false
+//                button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.108).isActive = true
+//            }
         }else if !portraitMode{ // LandScape Mode
             tabBarController?.tabBar.isHidden = true
             
@@ -802,6 +809,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             button.translatesAutoresizingMaskIntoConstraints = false
             if portraitMode{
                 button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.108).isActive = true
+//                button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.10).isActive = true
             }else{
                 button.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: CGFloat(0.108*1.2)).isActive = true
             }
@@ -813,23 +821,25 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             //frameView : view or rightSideForLandscapeMode view (UIView)
         }
         
-        //again? yeap. don't touch it . (already tried ..)
+        
         if portraitMode{
-            for button in horStackView0{
-                button.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.25).isActive = true
-                button.anchor(bottom: frameView.bottomAnchor)
-                button.layer.borderWidth = 0.23
-                button.layer.borderColor = CGColor(genericGrayGamma2_2Gray: 0, alpha: 0.15)
-            }
+//            for button in horStackView0{
+//                button.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.25).isActive = true
+//                button.anchor(bottom: frameView.bottomAnchor)
+//                button.layer.borderWidth = 0.23
+//                button.layer.borderColor = CGColor(genericGrayGamma2_2Gray: 0, alpha: 0.15)
+//            }
             
             for button in horStackView1{
-                button.anchor(bottom: soundButton.topAnchor)
+//                button.anchor(bottom: soundButton.topAnchor)
+//                button.anchor(bottom: view.safeBottomAnchor, paddingBottom: tabbarheight)
+                button.anchor(bottom: view.safeBottomAnchor)
             }
             
-            soundButton.anchor(left: frameView.leftAnchor)
-            displayThemeButton.anchor(left: soundButton.rightAnchor)
-            notificationButton.anchor(left: displayThemeButton.rightAnchor)
-            reviewButton.anchor(left: notificationButton.rightAnchor, right: frameView.rightAnchor)
+//            soundButton.anchor(left: frameView.leftAnchor)
+//            displayThemeButton.anchor(left: soundButton.rightAnchor)
+//            notificationButton.anchor(left: displayThemeButton.rightAnchor)
+//            reviewButton.anchor(left: notificationButton.rightAnchor, right: frameView.rightAnchor)
             
           
             
@@ -882,14 +892,23 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         frameView.addSubview(progressView)
         
         if portraitMode{
+            
+            /// used for emptySpace. because of tabbar, its ratio has changed a little
+//            let multiplier = 1 - 0.108*5 - tabbarheight/frameView.frame.height
+            // this value change.. i don't know why..
+//            let multiplier = CGFloat(0.36736607142857136)
+            print("valueOfMultiplier: \(multiplier)")
+//            let multiplier = 1 - 0.108*5 - 80/frameView.frame.height
+            
             emptySpace.anchor(top: frameView.topAnchor, left: frameView.leftAnchor, right: frameView.rightAnchor)
-            emptySpace.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.352).isActive = true
+//            emptySpace.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: 0.352).isActive = true // this is.. problematic..
+            emptySpace.heightAnchor.constraint(equalTo: frameView.heightAnchor, multiplier: multiplier).isActive = true // this is.. problematic..
             
             // only applied to portrait Mode
             
             deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.122).isActive = true
-            
+            print(#line, #function)
             deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.1446010638).isActive = true
             
@@ -927,7 +946,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.032).isActive = true
-            
+            print(#line, #function)
             deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.0171*k)).isActive = true
             
@@ -975,6 +994,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[userDefaultSetup.getDeviceSize()]!)
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[userDefaultSetup.getDeviceSize()]!)
+        
+//        view.backgroundColor = .magenta
+        view.backgroundColor = colorList.bgColorForExtrasDM
+        view.backgroundColor = colorList.bgColorForExtrasLM
     }
     
     func setupAddTargets(){
@@ -1016,10 +1039,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         //sound, backgroundColor, notification, feedback
-        soundButton.addTarget(self, action: #selector(toggleSoundMode), for: .touchUpInside)
-        displayThemeButton.addTarget(self, action: #selector(toggleDarkMode(sender:)), for: .touchUpInside)
-        notificationButton.addTarget(self, action: #selector(toggleNotificationAlert), for: .touchUpInside)
-        reviewButton.addTarget(self, action: #selector(navigateToReviewSite), for: .touchUpInside)
+//        soundButton.addTarget(self, action: #selector(toggleSoundMode), for: .touchUpInside)
+//        displayThemeButton.addTarget(self, action: #selector(toggleDarkMode(sender:)), for: .touchUpInside)
+//        notificationButton.addTarget(self, action: #selector(toggleNotificationAlert), for: .touchUpInside)
+//        reviewButton.addTarget(self, action: #selector(navigateToReviewSite), for: .touchUpInside)
         
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
@@ -1054,8 +1077,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual = lightEqual
         
         subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
-        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "white_to_dark"))
-        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_review"))
+//        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "white_to_dark"))
+//        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "whitemode_review"))
     }
     
     fileprivate func setupButtonImageInDarkMode() {
@@ -1085,8 +1108,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual = darkEqual
         
         subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
-        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "dark_to_white"))
-        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_review"))
+//        colorBtnImg = UIImageView(image: #imageLiteral(resourceName: "dark_to_white"))
+//        feedbackBtnImg = UIImageView(image: #imageLiteral(resourceName: "darkmode_review"))
     }
     
     fileprivate func setupButtonPositionAndSize(_ modifiedWidth: inout [Double]) {
@@ -1199,15 +1222,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subEqual.widthAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(modifiedWidth[19])).isActive = true
         subEqual.heightAnchor.constraint(equalTo: equalButton.heightAnchor, multiplier: CGFloat(heights[19])).isActive = true
         
-        displayThemeButton.addSubview(colorBtnImg)
-        colorBtnImg.center(inView: displayThemeButton)
-        colorBtnImg.widthAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
-        colorBtnImg.heightAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-        
-        reviewButton.addSubview(feedbackBtnImg)
-        feedbackBtnImg.center(inView: reviewButton)
-        feedbackBtnImg.widthAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
-        feedbackBtnImg.heightAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+//        displayThemeButton.addSubview(colorBtnImg)
+//        colorBtnImg.center(inView: displayThemeButton)
+//        colorBtnImg.widthAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288) * CGFloat(ratio)).isActive = true
+//        colorBtnImg.heightAnchor.constraint(equalTo: displayThemeButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+//
+//        reviewButton.addSubview(feedbackBtnImg)
+//        feedbackBtnImg.center(inView: reviewButton)
+//        feedbackBtnImg.widthAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288 * ratio) ).isActive = true
+//        feedbackBtnImg.heightAnchor.constraint(equalTo: reviewButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
         
     }
     
@@ -1230,7 +1253,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
         
-        let extras = [soundButton, displayThemeButton, notificationButton, reviewButton]
+//        let extras = [soundButton, displayThemeButton, notificationButton, reviewButton]
         
         if lightModeOn{
             for num in numButtons{
@@ -1239,11 +1262,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             for other in otherButtons{
                 other.backgroundColor =  colorList.bgColorForOperatorsLM
             }
-            for extra in extras{
-                extra.backgroundColor =  colorList.bgColorForExtrasLM
-            }
+//            for extra in extras{
+//                extra.backgroundColor =  colorList.bgColorForExtrasLM
+//            }
             deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-            
+//            deleteButton.backgroundColor = .magenta
             setupButtonImageInLightMode()
             
             
@@ -1257,19 +1280,19 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 }
             }
             
-            for i in 0 ..< extras.count{
-                for view in extras[i].subviews{
-                    view.removeFromSuperview()
-                }
-            }
+//            for i in 0 ..< extras.count{
+//                for view in extras[i].subviews{
+//                    view.removeFromSuperview()
+//                }
+//            }
             historyClickButton.addSubview(subHistory)
     
             subHistory.fillSuperview()
             
             setupButtonPositionAndSize(&modifiedWidth)
             
-            soundBtnImg = soundModeOn ? soundOnLightImg : soundOffLightImg
-            notificationBtnImg = notificationOn ? alarmOnLightImg : alarmOffLightImg
+//            soundBtnImg = soundModeOn ? soundOnLightImg : soundOffLightImg
+//            notificationBtnImg = notificationOn ? alarmOnLightImg : alarmOffLightImg
             
             
             progressView.textColor = colorList.textColorForProcessLM
@@ -1283,11 +1306,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             for other in otherButtons{
                 other.backgroundColor =  colorList.bgColorForOperatorsDM
             }
-            for extra in extras{
-                extra.backgroundColor =  colorList.bgColorForExtrasDM
-            }
+//            for extra in extras{
+//                extra.backgroundColor =  colorList.bgColorForExtrasDM
+//            }
             deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-            
+//            deleteButton.backgroundColor = .magenta
             setupButtonImageInDarkMode()
             
             for view in historyClickButton.subviews{
@@ -1300,11 +1323,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 }
             }
             
-            for i in 0 ..< extras.count{
-                for view in extras[i].subviews { // It works !!! whow!!
-                    view.removeFromSuperview()
-                }
-            }
+//            for i in 0 ..< extras.count{
+//                for view in extras[i].subviews { // It works !!! whow!!
+//                    view.removeFromSuperview()
+//                }
+//            }
             
             historyClickButton.addSubview(subHistory)
             
@@ -1312,22 +1335,22 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             setupButtonPositionAndSize(&modifiedWidth)
 
-            soundBtnImg = soundModeOn ? soundOnDarkImg : soundOffDarkImg
-            notificationBtnImg = notificationOn ? alarmOnDarkImg : alarmOffDarkImg
+//            soundBtnImg = soundModeOn ? soundOnDarkImg : soundOffDarkImg
+//            notificationBtnImg = notificationOn ? alarmOnDarkImg : alarmOffDarkImg
             
             progressView.textColor = colorList.textColorForProcessDM
             resultTextView.textColor = ansPressed ? colorList.textColorForResultDM : colorList.textColorForSemiResultDM
         }
         
-        soundButton.addSubview(soundBtnImg)
-        soundBtnImg.center(inView: soundButton)
-    
-        soundBtnImg.widthAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        soundBtnImg.heightAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
-        
-        notificationButton.addSubview(notificationBtnImg)
-        notificationBtnImg.center(inView: notificationButton)
-        notificationBtnImg.widthAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
-        notificationBtnImg.heightAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+//        soundButton.addSubview(soundBtnImg)
+//        soundBtnImg.center(inView: soundButton)
+//
+//        soundBtnImg.widthAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+//        soundBtnImg.heightAnchor.constraint(equalTo: soundButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
+//
+//        notificationButton.addSubview(notificationBtnImg)
+//        notificationBtnImg.center(inView: notificationButton)
+//        notificationBtnImg.widthAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288 * ratio)).isActive = true
+//        notificationBtnImg.heightAnchor.constraint(equalTo: notificationButton.heightAnchor, multiplier: CGFloat(0.288*1.3)).isActive = true
     }
 }

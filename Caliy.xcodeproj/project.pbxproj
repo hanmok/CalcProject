@@ -38,6 +38,8 @@
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
 		9AA5C432271701190021975C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsCell.swift */; };
 		9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C433271701FD0021975C /* SettingsSection.swift */; };
+		9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43527186A9D0021975C /* MVCSampleCode.swift */; };
+		9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43727186F5F0021975C /* AppUtility.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
 		9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* BaseVCMemo */; };
@@ -113,6 +115,8 @@
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9AA5C431271701190021975C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		9AA5C433271701FD0021975C /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
+		9AA5C43527186A9D0021975C /* MVCSampleCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVCSampleCode.swift; sourceTree = "<group>"; };
+		9AA5C43727186F5F0021975C /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,8 +253,9 @@
 			children = (
 				9AA5C42D2716FDB20021975C /* MainTabController.swift */,
 				9A083FD824CCDBDE001057D2 /* BaseViewController.swift */,
-				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
+				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
+				9AA5C43527186A9D0021975C /* MVCSampleCode.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -282,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
+				9AA5C43727186F5F0021975C /* AppUtility.swift */,
 				9A5FFE5924DF101500681717 /* ReviewService.swift */,
 			);
 			path = Services;
@@ -569,6 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
@@ -579,6 +586,7 @@
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AF62EF32701C22D00E183AB /* NotificationKey.swift in Sources */,
+				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
 				9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,

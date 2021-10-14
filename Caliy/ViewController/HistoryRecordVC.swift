@@ -469,7 +469,7 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
                 
                 textFieldInput.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
                 
-                if textFieldInput.text!.count >= 20 {
+                if textFieldInput.text!.count >= 30 {
                     textFieldInput.deleteBackward()
                 }
                 

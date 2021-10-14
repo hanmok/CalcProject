@@ -1587,7 +1587,7 @@ class BasicCalculator {
         let sendingProcess = ["process": receivedProcess]
         
         let name = Notification.Name(rawValue: NotificationKey.processToBaseVCNotification.rawValue)
-        NotificationCenter.default.post(name: name, object: nil, userInfo: sendingProcess as [AnyHashable: Any])
+//        NotificationCenter.default.post(name: name, object: nil, userInfo: sendingProcess as [AnyHashable: Any])
         print("sending process from sender: \(receivedProcess)")
     }
     

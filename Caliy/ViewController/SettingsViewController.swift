@@ -18,14 +18,14 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(#function, #file)
         configureUI()
         
     }
     
-    override var shouldAutorotate: Bool {
-        return true
-    }
+//    override var shouldAutorotate: Bool {
+//        return true
+//    }
     
     func configureTableView() {
         tableView = UITableView()
@@ -41,6 +41,22 @@ class SettingsViewController: UIViewController {
     func configureUI() {
         configureTableView()
         
+        navigationItem.title = "Settings"
+        navigationItem.largeTitleDisplayMode = .always
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.portrait)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        AppUtility.lockOrientation(.all)
     }
 }
 
@@ -100,12 +116,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return }
-        
+
         switch section {
         case .Social:
             print(SocialOptions(rawValue: indexPath.row)?.description)
         case .Communications:
             print(CommunicationOptions(rawValue: indexPath.row)?.description)
         }
+        tableView.deselectRow(at: indexPath, animated: false)
+
     }
 }
