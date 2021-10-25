@@ -13,82 +13,92 @@ struct UserDefaultSetup{
     
     enum UserDefaultKey : String{
         case soundOn
-        case lightModeOn
+        case darkModeOn
         case notificationOn
         case everChanged
         case deviceSize
-        case numOfReviewClicked
         case deviceVersion
-        case deviceVersionType
+//        case deviceVersionType
     }
     
+    // MARK: - Set
     
-    func setIsSoundOn(isSoundOn : Bool){
+    func setSoundMode(isSoundOn : Bool){
         
         defaults.set(isSoundOn,forKey: UserDefaultKey.soundOn.rawValue)
     }
     
-    func setIsLightModeOn(isLightModeOn : Bool){
+    func setDarkMode(isDarkMode : Bool){
         
-        defaults.set(isLightModeOn,forKey: UserDefaultKey.lightModeOn.rawValue)
+        defaults.set(isDarkMode,forKey: UserDefaultKey.darkModeOn.rawValue)
     }
     
-    func setIsNotificationOn(isNotificationOn : Bool){
+    func setNotificationMode(isNotificationOn : Bool){
         
         defaults.set(isNotificationOn,forKey: UserDefaultKey.notificationOn.rawValue)
     }
     
-    func setNumberReviewClicked(numberReviewClicked : Int){
-        defaults.set(numberReviewClicked, forKey: UserDefaultKey.numOfReviewClicked.rawValue)
+    func setDeviceSize(size : String){
+        defaults.set(size, forKey: UserDefaultKey.deviceSize.rawValue)
     }
     
-    func setUserDeviceSizeInfo(userDeviceSizeInfo : String){
-        defaults.set(userDeviceSizeInfo, forKey: UserDefaultKey.deviceSize.rawValue)
-    }
-    
-    func setUserDeviceVersionInfo(userDeviceVersionInfo : String){
+    func setDeviceVersion(userDeviceVersionInfo : String){
         defaults.set(userDeviceVersionInfo, forKey: UserDefaultKey.deviceVersion.rawValue)
     }
-    func setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo : String){
-        defaults.set(userDeviceVersionTypeInfo, forKey: UserDefaultKey.deviceVersionType.rawValue)
+    
+//    func setDeviceVersionType(userDeviceVersionTypeInfo : String){
+//        defaults.set(userDeviceVersionTypeInfo, forKey: UserDefaultKey.deviceVersionType.rawValue)
+//    }
+    
+    
+    func setHasEverChanged(hasEverChanged : Bool){
+        defaults.set(hasEverChanged, forKey: UserDefaultKey.everChanged.rawValue)
     }
     
     
     
-    func getIsSoundOn() -> Bool{
+    // MARK: - Get
+    func getSoundMode() -> Bool{
         return defaults.bool(forKey: UserDefaultKey.soundOn.rawValue)
     }
     
-    func getIsLightModeOn() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.lightModeOn.rawValue)
+    func getDarkMode() -> Bool{
+        return defaults.bool(forKey: UserDefaultKey.darkModeOn.rawValue)
     }
     
-    func getIsNotificationOn() -> Bool{
+    func getNotificationMode() -> Bool{
         return defaults.bool(forKey: UserDefaultKey.notificationOn.rawValue)
     }
     
-    func getNumberReviewClicked() -> Int{
-        return defaults.integer(forKey: UserDefaultKey.numOfReviewClicked.rawValue)
-    }
-    
     func getDeviceSize() -> String{
-        return defaults.string(forKey: UserDefaultKey.deviceSize.rawValue) ?? "A"
+        return defaults.string(forKey: UserDefaultKey.deviceSize.rawValue) ?? DeviceSize.smallest.rawValue
     }
+    // version -> versionTypeInfo
     func getDeviceVersion() -> String{
-        return defaults.string(forKey: UserDefaultKey.deviceVersion.rawValue) ?? "ND"
+        return defaults.string(forKey: UserDefaultKey.deviceVersion.rawValue) ?? "iPhone"
     }
-    func getDeviceVersionType() -> String{
-        return defaults.string(forKey: UserDefaultKey.deviceVersionType.rawValue) ?? "What"
-    }
+    /// used at adjusting infoview's height in historyVC
+//    func getDeviceVersionType() -> String{
+//        return defaults.string(forKey: UserDefaultKey.deviceVersionType.rawValue) ?? DeviceVersionType.recentPhones.rawValue
+//    }
     
-    // MP : Most popular, P : Popular, LP : Least Popular, ND: Not Determined
-    
-    
-    func setIsUserEverChanged(isUserEverChanged : Bool){
-        defaults.set(isUserEverChanged, forKey: UserDefaultKey.everChanged.rawValue)
-    }
-    
-    func getWhetherUserEverChanged() -> Bool{
+    func getHasEverChanged() -> Bool{
         return defaults.bool(forKey: UserDefaultKey.everChanged.rawValue)
     }
 }
+
+
+
+enum DeviceSize: String {
+    case smallest
+    case small
+    case medium
+    case large
+}
+
+// why iPads are not contained ??
+//enum DeviceVersionType: String {
+//    case oldPhones
+//    case recentPhones
+//    case iPod
+//}

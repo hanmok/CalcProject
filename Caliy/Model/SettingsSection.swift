@@ -13,52 +13,56 @@ protocol SectionType: CustomStringConvertible {
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
-    case Social
-    case Communications
+    case Mode
+    case General
     
     var description: String {
         switch self {
-        case .Social: return "Social"
-        case .Communications: return "Communications"
+        case .Mode: return "Mode"
+        case .General: return "General"
+        
         }
     }
 }
 
-enum SocialOptions: Int, CaseIterable, SectionType {
-    case editProfile
-    case logout
+enum ModeOptions: Int, CaseIterable, SectionType {
+    case darkMode
+    case sound
+    case notification
+//    case changingOrientation
     
     var containsSwitch: Bool {
-        return false
+        return true
     }
     
     var description: String {
         switch self {
-        case .editProfile: return "editProfile"
-        case .logout: return "logout"
+        case .darkMode: return "DarkMode"
+        case .sound: return "SoundMode"
+        case .notification: return "Notification"
+//        case .changingOrientation: return "changingOrientation"
         }
     }
 }
 
 
-enum CommunicationOptions: Int, CaseIterable, SectionType {
-    case notifications
-    case email
-    case reportCrashes
+enum GeneralOptions: Int, CaseIterable, SectionType {
+    case rate
+    case feedback
     
     var containsSwitch: Bool {
         switch self {
-        case .notifications: return true
-        case .email: return true
-        case .reportCrashes: return false
+        case .rate: return false
+        case .feedback: return false
+       
         }
     }
     
     var description: String {
         switch self {
-        case .notifications: return "notifications"
-        case .email: return "email"
-        case .reportCrashes: return "reportCrashes"
+        case .rate: return "Rate"
+        case .feedback: return "Feedback"
+        
         }
     }
 }

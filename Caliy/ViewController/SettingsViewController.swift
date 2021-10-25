@@ -8,44 +8,84 @@
 
 import UIKit
 
-private let reuseIdentifier = "SettingsCell"
+//private let reuseIdentifier = "SettingsCell"
+//private let myCollectionIdentifer = "CollectionCell"
+
+// sender for notification of updating UserDefaut
+
+protocol SettingsViewControllerDelegate: AnyObject {
+    func updateUserdefault()
+}
+
 
 class SettingsViewController: UIViewController {
-
+    
     // MARK: - Properties
     
-    var tableView: UITableView!
-
+    var hasLoaded = false
+    
+    
+    lazy var isDarkMode = userDefaultSetup.getDarkMode()
+    
+    let colorList = ColorList()
+    weak var delegate: SettingsViewControllerDelegate?
+    weak var settingsDelegate: SettingsViewControllerDelegate?
+    var userDefaultSetup = UserDefaultSetup()
+    
+    
+    //    var tableView: UITableView!
+//    var tableView: UITableView = {
+//        let tableView = UITableView()
+//        tableView.separatorColor = .white // why is it not working ?
+//        //        tableView.backgroundColor = .magenta
+//        return tableView
+//    }()
+    let tableView = UITableView()
+    
+//    private lazy var footerView: UIView = {
+//        let uiView = UIView()
+//        uiView.backgroundColor = .green
+//        return uiView
+//    }()
+    private let footerView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, #file)
+        print("darkMode: \(isDarkMode)")
+        print("userDefault : \(userDefaultSetup.getDarkMode())")
+        
         configureUI()
+//        var footerView2 = UIView()
+//        footerView2.backgroundColor = .magenta
+//        footerView2.tintColor = .magenta
+//        tableView.tableFooterView = footerView2
+        tableView.tableFooterView = footerView
+        
+        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
         
     }
     
-//    override var shouldAutorotate: Bool {
-//        return true
-//    }
+    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     func configureTableView() {
-        tableView = UITableView()
+        print("configureTableView triggered!")
+//        tableView = UITableView()
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
-        
-        tableView.register(SettingsCell.self, forCellReuseIdentifier: reuseIdentifier)
+         
+        tableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
         view.addSubview(tableView)
         tableView.frame = view.frame
+        
+//        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
     }
     
     func configureUI() {
         configureTableView()
         
-        navigationItem.title = "Settings"
-        navigationItem.largeTitleDisplayMode = .always
-        
-        
-        
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,9 +98,30 @@ class SettingsViewController: UIViewController {
         
         AppUtility.lockOrientation(.all)
     }
+    
+    // triggered each time switch has toggled
+    func sendUpdatingUserDefault() {
+        print("sendUPdatingUserDefault has triggered")
+        let userDefaultInfo = ["isDarkOn": userDefaultSetup.getDarkMode(),
+                               "isSoundOn": userDefaultSetup.getSoundMode(),
+                               "isNotificationOn": userDefaultSetup.getNotificationMode()]
+        
+        let name = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
+        
+        NotificationCenter.default.post(name: name, object: nil, userInfo: userDefaultInfo as [AnyHashable : Any])
+        print("sending updateUserdefault from SettingsVC")
+        
+        // 이거 두개.. screen Mode 가 바뀔 때에만 호출할 수는 없나 ?
+        isDarkMode = userDefaultSetup.getDarkMode()
+        
+        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
+        }
 }
 
 
+
+
+// MARK: - UITableViewDataSource, UITabViewDelegate
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,59 +132,145 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         guard let section = SettingsSection(rawValue: section) else { return 0 }
         
         switch section {
-        case .Social:return SocialOptions.allCases.count
-        case .Communications: return CommunicationOptions.allCases.count
+        case .Mode:return ModeOptions.allCases.count
+        case .General: return GeneralOptions.allCases.count
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
+        print("viewForheaderInSection, hasLoaded : \(hasLoaded), ")
+        // has changed displayMode
+        
+        if hasLoaded {
+            UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
+                
+//                view.backgroundColor = self.isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
+                
+            }
+        } else {
+//            view.backgroundColor = isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
+        }
         
         let title = UILabel()
         title.font = UIFont.boldSystemFont(ofSize: 16)
-        title.textColor = .white
+        title.textColor = isDarkMode ? .white : colorList.textColorForResultLM
+        
         title.text = SettingsSection(rawValue: section)?.description
         
         view.addSubview(title)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
+        
+        title.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 16, paddingBottom: 10)
         
         return view
     }
     
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+                return 70
+//        return 60
     }
     
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
+        print("cellForRowAt triggered")
+        let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableCell.identifier, for: indexPath) as! SettingsTableCell
+        print("line 150, cellForRowAt called")
+        //        cell.switchControl.addTarget(self, action: #selector(funcInSettingsVC), for: .touchUpInside)
         
+        cell.delegate = self
+        cell.hasLoaded = hasLoaded
         guard let section = SettingsSection(rawValue: indexPath.section) else { return UITableViewCell() }
+        
         switch section {
-        case .Social:
-            let social = SocialOptions(rawValue: indexPath.row)
-            cell.sectionType = social
-        case .Communications:
-            let communication = CommunicationOptions(rawValue: indexPath.row)
-            cell.sectionType = communication
+        case .Mode:
+            let mode = ModeOptions(rawValue: indexPath.row)
+            cell.sectionType = mode
+            
+            switch mode {
+            case .darkMode:
+                cell.switchControl.isOn = userDefaultSetup.getDarkMode()
+                print("getIsDarkModeOn: \(userDefaultSetup.getDarkMode())")
+                cell.switchControl.tag = indexPath.row
+                
+            case .sound:
+                cell.switchControl.isOn = userDefaultSetup.getSoundMode()
+                cell.switchControl.tag = indexPath.row
+                
+            case .notification:
+                cell.switchControl.isOn = userDefaultSetup.getNotificationMode()
+                cell.switchControl.tag = indexPath.row
+            
+            case .none:
+                print("none")
+            }
+        case .General:
+            let general = GeneralOptions(rawValue: indexPath.row)
+            cell.sectionType = general
         }
+        cell.configureCellColor(hasLoaded: hasLoaded)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return }
-
+        
         switch section {
-        case .Social:
-            print(SocialOptions(rawValue: indexPath.row)?.description)
-        case .Communications:
-            print(CommunicationOptions(rawValue: indexPath.row)?.description)
+        case .General:
+            print(String(describing:GeneralOptions(rawValue: indexPath.row)?.description))
+            
+            // rate
+            if GeneralOptions(rawValue: indexPath.row)?.description == "Rate" {ReviewService.shared.requestReview() }
+            //              Feedback
+            
+            if GeneralOptions(rawValue: indexPath.row)?.description == "Feedback" {
+                
+                if let languageCode = Locale.current.languageCode{
+                    if languageCode.contains("ko"){ //
+                        if let url = URL(string: "https://apps.apple.com/kr/app/%EC%B9%BC%EB%A6%AC/id1525102227") { //\\
+                            UIApplication.shared.open(url, options: [:])
+                        }
+                    }else{// english google question page.
+                        if let url = URL(string: "https://apps.apple.com/us/app/calie/id1525102227?l=en") {
+                            UIApplication.shared.open(url, options: [:])
+                        }
+                    }
+                }
+            }
+            
+        case .Mode:
+            print(String(describing: ModeOptions(rawValue: indexPath.row)?.description))
         }
-        tableView.deselectRow(at: indexPath, animated: false)
-
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 }
+
+// handleSwitchAction -> handleSwitchChanged
+extension SettingsViewController: SettingsTableCellDelegate {
+    func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool) {
+        print("hihihihi")
+        switch tag {
+        case 0:
+            userDefaultSetup.setDarkMode(isDarkMode: isOn)
+           
+            hasLoaded = true
+            self.tableView.reloadData()
+            
+        case 1:
+            userDefaultSetup.setSoundMode(isSoundOn: isOn)
+            print("soundMode has changed to \(userDefaultSetup.getSoundMode())")
+        case 2:
+            userDefaultSetup.setNotificationMode(isNotificationOn: isOn)
+            print("notification has changed to \(userDefaultSetup.getNotificationMode())")
+            
+            
+        default:
+            print("wrong tag has pressed")
+        }
+        delegate?.updateUserdefault()
+        sendUpdatingUserDefault() // broadcast update !
+    }
+}
+

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+/// Screen related service Utility, which enables separate orientation Mode
 struct AppUtility {
 
     static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {

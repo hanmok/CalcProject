@@ -22,16 +22,6 @@ protocol FromTableToBaseVC{
 
 class HistoryRecordVC: UIViewController {
     
-    let localizedStrings = LocalizedStringStorage()
-    
-    let ansToTableNotification = Notification.Name(rawValue: NotificationKey.answerToTableNotification.rawValue)
-    let viewWillTransitionNotification = Notification.Name(rawValue: NotificationKey.viewWilltransitionNotification.rawValue)
-    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillDisappearbaseViewController.rawValue)
-    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillAppearbaseViewController.rawValue)
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
     
     var deviceInfo = UIDevice.modelName
     
@@ -44,7 +34,8 @@ class HistoryRecordVC: UIViewController {
     let colorList = ColorList()
     
     var userDefaultSetup = UserDefaultSetup()
-    var lightModeOn = false
+//    var darkModeOn = false // what the hell is that ?
+    lazy var darkModeOn = userDefaultSetup.getDarkMode()
     
     let realm = RealmService.shared.realm
     
@@ -56,6 +47,21 @@ class HistoryRecordVC: UIViewController {
     var basicVCWillDisappear = false
     
     var FromTableToBaseVCdelegate : FromTableToBaseVC?
+    
+    let localizedStrings = LocalizedStringStorage()
+    
+    
+    
+    let ansToTableNotification = Notification.Name(rawValue: NotificationKey.answerToTableNotification.rawValue)
+    let viewWillTransitionNotification = Notification.Name(rawValue: NotificationKey.viewWilltransitionNotification.rawValue)
+    let viewWillDisappearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillDisappearbaseViewController.rawValue)
+    let viewWillAppearBasicVCNotification = Notification.Name(rawValue: NotificationKey.viewWillAppearbaseViewController.rawValue)
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        print("HistoryRecordVC has been deinitialized")
+    }
+    
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -71,8 +77,6 @@ class HistoryRecordVC: UIViewController {
         }else{
             print("Neither Landscape nor Portrait mode viewWillTransition baseVC ")
         }
-        
-        
         
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
@@ -93,25 +97,25 @@ class HistoryRecordVC: UIViewController {
             deviceInfo.removeFirst()
         }
         
-        print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getDeviceVersion())")
+//        print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getDeviceVersion())")
         
-        if userDefaultSetup.getDeviceVersion() == "ND"{ // Not Determined
-            userDefaultSetup.setUserDeviceVersionInfo(userDeviceVersionInfo: deviceInfo)
-            
-            if userDefaultSetup.getDeviceVersion().contains("iPh"){
-               // iPh 포함
-                switch userDefaultSetup.getDeviceVersion().first {
-                case "4","5","6","7","8","S":
-                    userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "P")
-                default:
-                    userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "MP")
-                }
-            } // "iPod touch model."
-            else if userDefaultSetup.getDeviceVersion().contains("iPo"){
-                userDefaultSetup.setUserDeviceVersionTypeInfo(userDeviceVersionTypeInfo: "LP")
-               
-            }
-        }
+//        if userDefaultSetup.getDeviceVersion() == ""{ // Not Determined
+//            userDefaultSetup.setDeviceVersion(userDeviceVersionInfo: deviceInfo)
+//
+//            if userDefaultSetup.getDeviceVersion().contains("iPh"){
+//               // iPh 포함
+//                switch userDefaultSetup.getDeviceVersion().first {
+//                case "4","5","6","7","8","S":
+//                    userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.oldPhones.rawValue)
+//                default:
+//                    userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.recentPhones.rawValue)
+//                }
+//            } // "iPod touch model."
+//            else if userDefaultSetup.getDeviceVersion().contains("iPod"){
+//                userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.iPod.rawValue)
+//
+//            }
+//        }
 
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
@@ -129,7 +133,7 @@ class HistoryRecordVC: UIViewController {
             portraitMode = true
         }
         
-        lightModeOn = userDefaultSetup.getIsLightModeOn()
+        darkModeOn = userDefaultSetup.getDarkMode()
         
         setupLayout()
         
@@ -145,24 +149,12 @@ class HistoryRecordVC: UIViewController {
         
         tableView.setContentOffset(.zero, animated: false)
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        print("viewDidAppear table")
-//    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear table")
         viewDidLoad()
     }
     
-//    override func viewDidDisappear(_ animated: Bool) {
-//        print("viewDidDisappear table")
-//    }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        print("viewWillDisappear table")
-//        //        print("viewWillDisappear called in table, willbasicVCdisappear : \(willbasicVCdisappear)")
-//    }
     
     func createObservers(){
         print("createObservers table")
@@ -220,21 +212,21 @@ class HistoryRecordVC: UIViewController {
         view.addSubview(tableView)
         
         if portraitMode{
-            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getDeviceVersionType())
+            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getDeviceSize())
             
             view.addSubview(infoView)
             infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
             
             
             
-            switch userDefaultSetup.getDeviceVersionType() {
-            
-            case "MP" :
-                infoView.setHeight(80)
-            case "LP" :
-                infoView.setHeight(50)
-            default:
-                infoView.setHeight(60)
+            print("size: \(userDefaultSetup.getDeviceSize())")
+            // Phone12 : Small
+            switch userDefaultSetup.getDeviceSize() {
+            case DeviceSize.smallest.rawValue:  infoView.setHeight(50)
+            case DeviceSize.small.rawValue:  infoView.setHeight(80)
+            case DeviceSize.medium.rawValue:  infoView.setHeight(80)
+            case DeviceSize.large.rawValue:  infoView.setHeight(70)
+            default:infoView.setHeight(80)
             }
             
             // no constraints for infoLabel width
@@ -242,7 +234,6 @@ class HistoryRecordVC: UIViewController {
             infoLabel.translatesAutoresizingMaskIntoConstraints = false
             
             infoLabel.centerX(inView: infoView)
-//            infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -7).isActive = true
             infoLabel.anchor(bottom: infoView.bottomAnchor, paddingBottom: 7)
             
             
@@ -263,17 +254,7 @@ class HistoryRecordVC: UIViewController {
             trashbinImage.widthAnchor.constraint(equalTo: trashButton.widthAnchor, multiplier: 0.55).isActive = true
             
             
-            if lightModeOn{
-                infoView.backgroundColor = colorList.bgColorForExtrasLM
-                // 들췄을 때 color
-                tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
-                
-                view.addSubview(subHistoryLight)
-                
-                subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
-                subHistoryLight.setDimensions(width: 40, height: 40)
-                
-            }else{
+            if darkModeOn{
                 infoView.backgroundColor = colorList.bgColorForExtrasDM
                 infoLabel.textColor = .white
                 
@@ -284,18 +265,44 @@ class HistoryRecordVC: UIViewController {
                 subHistoryDark.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
                 subHistoryDark.setDimensions(width: 40, height: 40)
                 
+                if UIDevice.hasNotch {
+                   
+                } else {
+                    
+                }
+                
+                if UIApplication.shared.windows.first?.safeAreaInsets.bottom == 0 {
+                    print("it doesn't have Notch")
+                    
+                } else {
+                    print("it has Notch")
+                }
+                print("hasNotch:\(UIDevice.hasNotch)")
+                
+                
+            }else{
+                infoView.backgroundColor = colorList.bgColorForExtrasLM
+                // 들췄을 때 color
+                tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
+                
+                view.addSubview(subHistoryLight)
+                
+                subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+                subHistoryLight.setDimensions(width: 40, height: 40)
+                
             }
             
             view.addSubview(historyClickButton)
             
             historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+
             historyClickButton.setDimensions(width: 40, height: 40)
             
         }else{
 //            tableView.pin(to: view) // 이거같은데?
             tableView.fillSuperview()
             
-            tableView.backgroundColor = lightModeOn ? colorList.bgColorForEmptyAndNumbersLM : colorList.bgColorForEmptyAndNumbersDM
+            tableView.backgroundColor = darkModeOn ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
         }
     }
     
@@ -339,10 +346,10 @@ class HistoryRecordVC: UIViewController {
     
     @objc func changeColorToOriginal(sender : UITableViewCell){
         print("backToOriginalColor table")
-        if lightModeOn{
-            sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
-        }else{
+        if darkModeOn{
             sender.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
+        }else{
+            sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
         }
     }
     
@@ -363,48 +370,24 @@ class HistoryRecordVC: UIViewController {
         return label
     }()
     
-//    let trashButton : UIButton = {
-//        let sub = UIButton(type: .custom)
-//        sub.translatesAutoresizingMaskIntoConstraints = false
-//        return sub
-//    }()
     let trashButton = UIButton()
     
-//    let historyClickButton : UIButton = {
-//        let sub = UIButton(type: .custom)
-//        sub.translatesAutoresizingMaskIntoConstraints = false
-//        return sub
-//    }()
     let historyClickButton = UIButton()
     
+    let subHistoryLight = UIImageView(image: #imageLiteral(resourceName: "light_up")) // history Button Image
     
-//    let fillBottom : UIView = {
-//        let sub = UIView()
-//        sub.translatesAutoresizingMaskIntoConstraints = false
-//        return sub
-//    }()
-    
-//    let subHistoryLight : UIImageView = {
-//        let sub = UIImageView(image: #imageLiteral(resourceName: "light_up"))
-//        sub.translatesAutoresizingMaskIntoConstraints = false
-//        return sub
-//    }()
-    let subHistoryLight = UIImageView(image: #imageLiteral(resourceName: "light_up"))
-    
-//    let subHistoryDark : UIImageView = {
-//        let sub = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
-//        sub.translatesAutoresizingMaskIntoConstraints = false
-//        return sub
-//    }()
-    let subHistoryDark = UIImageView(image: #imageLiteral(resourceName: "dark_up"))
+    let subHistoryDark = UIImageView(image: #imageLiteral(resourceName: "dark_up")) // history Button Image
 }
 
 
 
 
 
+
+
 // MARK: - Table view data source.
-extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
+//extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
+extension HistoryRecordVC : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyRecords.count
@@ -421,7 +404,7 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
         let historyRecord = historyRecords[historyIndex]
         
         cell.configure(with: historyRecord, orientationPortrait : portraitMode, willbasicVCdisappear : basicVCWillDisappear)
-        cell.setupColor(isLightModeOn: lightModeOn)
+        cell.setupColor(isDarkModeOn: darkModeOn)
         return cell
     }
     
@@ -504,9 +487,6 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             
             self.present(alertController, animated: true, completion: nil)
             
-            
-            
-            
             completionHandler(true)
         }
         
@@ -517,7 +497,6 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
             
             if let record = self.historyRecords?[historyIndex]{
                 RealmService.shared.delete(record)
-//                RealmService.shared.delete(<#T##object: T##T#>)
             }
             
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -539,8 +518,7 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-//        print("sender.text : \(sender.text)")
-        print("sender.text: \(textField.text)")
+        print("sender.text: \(textField.text!)")
         
         }
     
@@ -610,9 +588,6 @@ extension HistoryRecordVC : UITableViewDataSource, UITableViewDelegate{
 
 }
 
-//extension HistoryRecordVC: UITextFieldDelegate {
-////    textdidchan
-//    textfield
-//}
-
-
+extension HistoryRecordVC : UITableViewDelegate {
+    
+}

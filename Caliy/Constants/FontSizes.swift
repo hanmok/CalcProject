@@ -10,20 +10,64 @@ import UIKit
 struct FontSizes{
     
     
-    let processBasicPortrait : [String : CGFloat] = ["A" : 18, "B" : 18, "C" : 27, "D" : 30]
-    let resultBasicPortrait : [String : CGFloat] = ["A" : 33, "B" : 33, "C" : 50, "D" : 55]
+    let processBasicPortrait : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 18,
+         DeviceSize.small.rawValue : 18,
+         DeviceSize.medium.rawValue : 27,
+         DeviceSize.large.rawValue : 30]
     
-    let dateHistory : [String : CGFloat] = ["A" : 10, "B" : 10, "C" : 15, "D" : 15]
+    let resultBasicPortrait : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 33,
+         DeviceSize.small.rawValue : 33,
+         DeviceSize.medium.rawValue : 50,
+         DeviceSize.large.rawValue : 55]
     
-    let processBasicLandscape : [String : CGFloat] = ["A" : 15, "B" : 19, "C" : 27, "D" : 30]
-    let resultBasicLandscape : [String : CGFloat] = ["A" : 18, "B" : 22, "C" : 33, "D" : 34]
+    let dateHistory : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 10,
+         DeviceSize.small.rawValue : 10,
+         DeviceSize.medium.rawValue : 15,
+         DeviceSize.large.rawValue : 15]
     
-    let processHistoryPortrait : [String : CGFloat] = ["A" : 16, "B" : 16, "C" : 27, "D" : 30]
-    let resultHistoryPortrait : [String : CGFloat] = ["A" : 20, "B" : 20, "C" : 34, "D" : 39]
+    let processBasicLandscape : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 15,
+         DeviceSize.small.rawValue : 19,
+         DeviceSize.medium.rawValue : 27,
+         DeviceSize.large.rawValue : 30]
     
-    let processHistoryLandscape : [String : CGFloat] = ["A" : 16, "B" : 16, "C" : 27, "D" : 30]
-    let resultHistoryLandscape : [String : CGFloat] = ["A" : 20, "B" : 20, "C" : 34, "D" : 39]
+    let resultBasicLandscape : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 18,
+         DeviceSize.small.rawValue : 22,
+         DeviceSize.medium.rawValue : 33,
+         DeviceSize.large.rawValue : 34]
     
-    let showToastTextSize : [String : CGFloat] = ["A" : 13, "B" : 13, "C" : 20, "D" : 25]
+    let processHistoryPortrait : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 16,
+         DeviceSize.small.rawValue : 16,
+         DeviceSize.medium.rawValue : 27,
+         DeviceSize.large.rawValue : 30]
+    
+    let resultHistoryPortrait : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 20,
+         DeviceSize.small.rawValue : 20,
+         DeviceSize.medium.rawValue : 34,
+         DeviceSize.large.rawValue : 39]
+    
+    let processHistoryLandscape : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 16,
+         DeviceSize.small.rawValue : 16,
+         DeviceSize.medium.rawValue : 27,
+         DeviceSize.large.rawValue : 30]
+    
+    let resultHistoryLandscape : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 20,
+         DeviceSize.small.rawValue : 20,
+         DeviceSize.medium.rawValue : 34,
+         DeviceSize.large.rawValue : 39]
+    
+    let showToastTextSize : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 13,
+         DeviceSize.small.rawValue : 13,
+         DeviceSize.medium.rawValue : 20,
+         DeviceSize.large.rawValue : 25]
     
 }

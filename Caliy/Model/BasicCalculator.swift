@@ -1148,8 +1148,8 @@ class BasicCalculator {
     // MARK: - DELETE
     
     @objc public func didReceiveDelete() { // deleteExecute(), deleteFaster 에 사용
-        print(#file, #function)
-        playSound()
+//        print(#file, #function)
+//        playSound()
         
         caseframe : if process != ""{ // caseframe is not appropriate name..
             
@@ -1450,7 +1450,7 @@ class BasicCalculator {
 //        deletionTimerInitialSetup.invalidate()
         
         //for testing
-        print(#file, #function)
+//        print(#file, #function)
         invalidateAllTimers()
         deletionTerm = 0.5
     }
@@ -1583,11 +1583,15 @@ class BasicCalculator {
    
     // MARK: - NOTIFICATIONS
     // newNotification, sender
+    
+    // this one is not posing any.. why ??
     func sendProcessNotification(receivedProcess: String) {
         let sendingProcess = ["process": receivedProcess]
         
         let name = Notification.Name(rawValue: NotificationKey.processToBaseVCNotification.rawValue)
-//        NotificationCenter.default.post(name: name, object: nil, userInfo: sendingProcess as [AnyHashable: Any])
+        
+        NotificationCenter.default.post(name: name, object: nil, userInfo: sendingProcess as [AnyHashable: Any])
+        
         print("sending process from sender: \(receivedProcess)")
     }
     
@@ -1651,12 +1655,14 @@ class BasicCalculator {
     }
     
     
-    func playSound(){
-//        if soundModeOn{ // change it to userDefault
-            AudioServicesPlaySystemSound(1104)
+//    func playSound(){
+////        if soundModeOn{ // change it to userDefault
+//        if userDefaultSetup.getIsSoundOn() {
+//            AudioServicesPlaySystemSound(1104)
 //        }
-        print("soundModeOn: \(userDefaultSetup.getIsSoundOn())")
-    }
+////        }
+//        print("soundModeOn: \(userDefaultSetup.getIsSoundOn())")
+//    }
     
     
     

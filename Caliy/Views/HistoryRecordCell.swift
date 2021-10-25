@@ -24,7 +24,7 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
         addSubview(titleLabel)
         
         setupProcessAndResultLabelConstraints()
-        setupColor(isLightModeOn: userDefaultSetup.getIsLightModeOn())
+        setupColor(isDarkModeOn: userDefaultSetup.getDarkMode())
     }
     
     
@@ -76,9 +76,9 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
             let attributedText = NSMutableAttributedString(string: "", attributes: [ .font: UIFont.systemFont(ofSize: 1)])
             let titleAttributedText = NSMutableAttributedString(string: "", attributes: [ .font: UIFont.systemFont(ofSize: 1)])
             
-            let isLightMode = userDefaultSetup.getIsLightModeOn()
+            let isDarkMode = userDefaultSetup.getDarkMode()
             
-            if isLightMode{//LightMode
+            if !isDarkMode{//LightMode
                 
                 // date
                 attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
@@ -207,14 +207,14 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
         }
     }
     
-    func setupColor(isLightModeOn : Bool){
+    func setupColor(isDarkModeOn : Bool){
         print("colorSetup in cell controller called")
         
-        if isLightModeOn{
-            backgroundColor = colorList.bgColorForEmptyAndNumbersLM
+        if isDarkModeOn{
+            backgroundColor = colorList.bgColorForEmptyAndNumbersDM
             layer.borderColor = CGColor(srgbRed: 0.7, green: 0.7, blue: 0.7, alpha: 0.1)
         }else{
-            backgroundColor = colorList.bgColorForEmptyAndNumbersDM
+            backgroundColor = colorList.bgColorForEmptyAndNumbersLM
             layer.borderColor = CGColor(srgbRed: 0.7, green: 0.7, blue: 0.7, alpha: 0.5)
         }
         layer.borderWidth = 0.23

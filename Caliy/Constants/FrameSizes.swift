@@ -10,10 +10,19 @@ import Foundation
 
 struct FrameSizes{
     
-    let showToastWidthSize : [String : CGFloat] = ["A" : 375, "B" : 375, "C" : 600, "D" : 800]
+    let showToastWidthSize : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 375,
+         DeviceSize.small.rawValue : 375,
+         DeviceSize.medium.rawValue : 600,
+         DeviceSize.large.rawValue : 800]
     
-    let showToastHeightSize : [String : CGFloat] = ["A" : 667, "B" : 667, "C" : 1000, "D" : 1200]
+    let showToastHeightSize : [String : CGFloat] =
+        [DeviceSize.smallest.rawValue : 667,
+         DeviceSize.small.rawValue : 667,
+         DeviceSize.medium.rawValue : 1000,
+         DeviceSize.large.rawValue : 1200]
 }
+
 // A -> smallest
 // B -> small
 // C -> medium

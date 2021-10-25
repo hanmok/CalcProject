@@ -118,19 +118,33 @@ extension UIView{
     
     func pinWithSpace2(to superView : UIView, type : String){
         var sizeForType : CGFloat?
+//        switch type {
+//        case DeviceVersionType.recentPhones.rawValue : sizeForType = 80
+//        case DeviceVersionType.iPod.rawValue : sizeForType = 50
+//        default   : sizeForType = 60
+//        }
+        
+
         switch type {
-        //        case "MP" : sizeForType = 70
-        case "MP" : sizeForType = 80
-        case "LP" : sizeForType = 50
-        default   : sizeForType = 60
+        case DeviceSize.smallest.rawValue: sizeForType = 50
+        case DeviceSize.small.rawValue:sizeForType = 80
+        case DeviceSize.medium.rawValue:sizeForType = 80
+        case DeviceSize.large.rawValue:sizeForType = 70
+        default:sizeForType = 80
         }
+    
+
+
         translatesAutoresizingMaskIntoConstraints = false
-        //        topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
         topAnchor.constraint(equalTo: superView.topAnchor, constant: sizeForType!).isActive = true
-        //        bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
+
         bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
+        
+//        superView.addSubview(self)
+//        anchor(top:superView.topAnchor, left: superView.leadingAnchor, bottom: superView.bottomAnchor, right: superView.trailingAnchor, paddingTop: sizeForType!)
+        
     }
     
     var safeTopAnchor: NSLayoutYAxisAnchor {
@@ -161,4 +175,8 @@ extension UIView{
         return self.bottomAnchor
     }
     
+    
+    func transitionColor(sender: UIView, closure: @escaping () -> Void) {
+        UIView.transition(with: sender, duration: 0.5, options: .transitionCrossDissolve, animations: closure)
+    }
 }

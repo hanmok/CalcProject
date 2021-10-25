@@ -34,9 +34,11 @@
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
+		9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */; };
+		9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */; };
 		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
-		9AA5C432271701190021975C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsCell.swift */; };
+		9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsTableCell.swift */; };
 		9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C433271701FD0021975C /* SettingsSection.swift */; };
 		9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43527186A9D0021975C /* MVCSampleCode.swift */; };
 		9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43727186F5F0021975C /* AppUtility.swift */; };
@@ -111,9 +113,11 @@
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
+		9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionCell.swift; sourceTree = "<group>"; };
+		9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		9AA5C431271701190021975C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		9AA5C431271701190021975C /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
 		9AA5C433271701FD0021975C /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		9AA5C43527186A9D0021975C /* MVCSampleCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVCSampleCode.swift; sourceTree = "<group>"; };
 		9AA5C43727186F5F0021975C /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				9A083FB624CCD55E001057D2 /* Info.plist */,
 				9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */,
 				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
+				9AA5C43527186A9D0021975C /* MVCSampleCode.swift */,
 				9A083FB124CCD55E001057D2 /* Assets.xcassets */,
 			);
 			path = Caliy;
@@ -255,7 +260,6 @@
 				9A083FD824CCDBDE001057D2 /* BaseViewController.swift */,
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
 				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
-				9AA5C43527186A9D0021975C /* MVCSampleCode.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -287,8 +291,8 @@
 			isa = PBXGroup;
 			children = (
 				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
-				9AA5C43727186F5F0021975C /* AppUtility.swift */,
 				9A5FFE5924DF101500681717 /* ReviewService.swift */,
+				9AA5C43727186F5F0021975C /* AppUtility.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -314,7 +318,9 @@
 			isa = PBXGroup;
 			children = (
 				9A083FDC24CCDC3B001057D2 /* HistoryRecordCell.swift */,
-				9AA5C431271701190021975C /* SettingsCell.swift */,
+				9AA5C431271701190021975C /* SettingsTableCell.swift */,
+				9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */,
+				9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -594,16 +600,18 @@
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
-				9AA5C432271701190021975C /* SettingsCell.swift in Sources */,
+				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
+				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
+				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,

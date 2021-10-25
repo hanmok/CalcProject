@@ -12,6 +12,11 @@ import UIKit
 
 public extension UIDevice {
     
+    static var hasNotch: Bool {
+        return UIApplication.shared.windows.first?.safeAreaInsets.bottom != 0
+        }
+    
+    
     static let modelName: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
