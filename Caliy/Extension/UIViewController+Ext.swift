@@ -7,7 +7,7 @@
 //
 //
 import UIKit
-//let localizedStrings = LocalizedStringStorage()
+
 let localizedStrings = LocalizedStringStorage()
 extension UIViewController{
     func showAlert(title : String, message : String, handlerA : ((UIAlertAction) -> Void)?, handlerB : ((UIAlertAction) -> Void)?){

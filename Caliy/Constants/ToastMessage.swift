@@ -26,11 +26,6 @@ enum ToastMessage: String {
     case deleteComplete
     case copyComplete
     
-    
-    
-//    func getLocalizedMsg() -> String {
-//        return LocalizedStringStorage
-//    }
 }
 
 // self.localizedStrings.numberLimit

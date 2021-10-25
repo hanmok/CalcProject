@@ -30,7 +30,6 @@ class BasicCalculator {
         historyRecords = realm.objects(HistoryRecord.self)
         
     }
-    let localizedStrings = LocalizedStringStorage()
     
     var historyRecords : Results<HistoryRecord>!
     var userDefaultSetup = UserDefaultSetup()

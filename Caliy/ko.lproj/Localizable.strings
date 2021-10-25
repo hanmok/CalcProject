@@ -10,8 +10,8 @@
 
 "Modification" = "수정되었습니다.";
 
-"darkMode" = "다크 모드";
-"lightMode" = "라이트 모드";
+//"darkMode" = "다크 모드";
+//"lightMode" = "라이트 모드";
 
 "removeAlertMessage" = "모든 데이터를 지우시겠어요?";
 
@@ -30,3 +30,12 @@
 
 "edit name" = "이름 편집";
 
+
+"mode" = "설정";
+"darkMode" = "다크 모드";
+"soundMode" = "소리";
+"notificationMode" = "자동수정 알림";
+
+"general" = "일반";
+"rate" = "평가하러 가기";
+"review" = "리뷰하러 가기";

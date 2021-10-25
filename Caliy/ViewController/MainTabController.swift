@@ -78,7 +78,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             
 //            self.view.backgroundColor = .red
 //                      self.tabBar.barTintColor = colorList.bgColorForExtrasDM
-            UIView.transition(with: self.tabBar, duration: 0.5, options: .transitionCrossDissolve) {
+            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
                 
             }
@@ -92,7 +92,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         // original code !!
 //                        self.tabBar.barTintColor = colorList.bgColorForExtrasLM
         
-        UIView.transition(with: self.tabBar, duration: 0.5, options: .transitionCrossDissolve) {
+        UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
             self.tabBar.barTintColor = self.colorList.bgColorForExtrasLM
 //                self.tabBar.unselectedItemTintColor =
             }

@@ -5,8 +5,8 @@
 "Sound On" = "Sound On";
 "Sound Off" = "Sound Off";
 
-"darkMode" = "Dark Mode";
-"lightMode" = "Light Mode";
+//"darkMode" = "Dark Mode";
+//"lightMode" = "Light Mode";
 
 "Noti On" = "Automodification Alert On";
 "Noti Off" = "Automodification Alert Off";
@@ -33,6 +33,19 @@
 "save" = "Save";
 
 "edit name" = "Edit name";
+
+
+"mode" = "Mode";
+"darkMode" = "Dark Mode";
+"soundMode" = "Sound Mode";
+"notificationMode" = "Notification Mode";
+
+"general" = "General";
+"rate" = "Rate";
+"review" = "Review";
+
+
+
 ////
 //
 //"A numberLength Limit" = "최대 15 자릿수까지 입력이 가능합니다.";

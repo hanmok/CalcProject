@@ -32,33 +32,14 @@ class SettingsViewController: UIViewController {
     weak var settingsDelegate: SettingsViewControllerDelegate?
     var userDefaultSetup = UserDefaultSetup()
     
-    
-    //    var tableView: UITableView!
-//    var tableView: UITableView = {
-//        let tableView = UITableView()
-//        tableView.separatorColor = .white // why is it not working ?
-//        //        tableView.backgroundColor = .magenta
-//        return tableView
-//    }()
     let tableView = UITableView()
     
-//    private lazy var footerView: UIView = {
-//        let uiView = UIView()
-//        uiView.backgroundColor = .green
-//        return uiView
-//    }()
     private let footerView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("darkMode: \(isDarkMode)")
-        print("userDefault : \(userDefaultSetup.getDarkMode())")
         
         configureUI()
-//        var footerView2 = UIView()
-//        footerView2.backgroundColor = .magenta
-//        footerView2.tintColor = .magenta
-//        tableView.tableFooterView = footerView2
         tableView.tableFooterView = footerView
         
         tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
@@ -142,14 +123,15 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         print("viewForheaderInSection, hasLoaded : \(hasLoaded), ")
         // has changed displayMode
         
+        // give animation
         if hasLoaded {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
-                
-//                view.backgroundColor = self.isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
-                
+
+                view.backgroundColor = self.isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
+
             }
         } else {
-//            view.backgroundColor = isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
+            view.backgroundColor = isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
         }
         
         let title = UILabel()
@@ -168,7 +150,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
                 return 70
-//        return 60
     }
     
     
@@ -176,8 +157,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cellForRowAt triggered")
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableCell.identifier, for: indexPath) as! SettingsTableCell
-        print("line 150, cellForRowAt called")
-        //        cell.switchControl.addTarget(self, action: #selector(funcInSettingsVC), for: .touchUpInside)
+      
         
         cell.delegate = self
         cell.hasLoaded = hasLoaded
@@ -221,11 +201,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             print(String(describing:GeneralOptions(rawValue: indexPath.row)?.description))
             
             // rate
-            if GeneralOptions(rawValue: indexPath.row)?.description == "Rate" {ReviewService.shared.requestReview() }
-            //              Feedback
+            if indexPath.row == 0 {
+                ReviewService.shared.requestReview()
+            }
             
-            if GeneralOptions(rawValue: indexPath.row)?.description == "Feedback" {
-                
+            // review
+            if indexPath.row == 1 {
                 if let languageCode = Locale.current.languageCode{
                     if languageCode.contains("ko"){ //
                         if let url = URL(string: "https://apps.apple.com/kr/app/%EC%B9%BC%EB%A6%AC/id1525102227") { //\\
@@ -240,7 +221,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
         case .Mode:
-            print(String(describing: ModeOptions(rawValue: indexPath.row)?.description))
+            print("nothing")
         }
         tableView.deselectRow(at: indexPath, animated: true)
         
