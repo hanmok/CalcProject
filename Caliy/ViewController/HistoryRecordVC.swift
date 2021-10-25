@@ -34,7 +34,7 @@ class HistoryRecordVC: UIViewController {
     let colorList = ColorList()
     
     var userDefaultSetup = UserDefaultSetup()
-//    var darkModeOn = false // what the hell is that ?
+
     lazy var darkModeOn = userDefaultSetup.getDarkMode()
     
     let realm = RealmService.shared.realm
@@ -90,32 +90,12 @@ class HistoryRecordVC: UIViewController {
         tableView.reloadData()
     }
     
-    // P : Popular, MP : Most Popular, LP : Least Popular
     override func viewDidLoad() {
         print("viewDidLoad table")
         if deviceInfo.first == " "{
             deviceInfo.removeFirst()
         }
         
-//        print("type of userDefaultSetup.getUserDeviceVersionInfo() : \(userDefaultSetup.getDeviceVersion())")
-        
-//        if userDefaultSetup.getDeviceVersion() == ""{ // Not Determined
-//            userDefaultSetup.setDeviceVersion(userDeviceVersionInfo: deviceInfo)
-//
-//            if userDefaultSetup.getDeviceVersion().contains("iPh"){
-//               // iPh 포함
-//                switch userDefaultSetup.getDeviceVersion().first {
-//                case "4","5","6","7","8","S":
-//                    userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.oldPhones.rawValue)
-//                default:
-//                    userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.recentPhones.rawValue)
-//                }
-//            } // "iPod touch model."
-//            else if userDefaultSetup.getDeviceVersion().contains("iPod"){
-//                userDefaultSetup.setDeviceVersionType(userDeviceVersionTypeInfo: DeviceVersionType.iPod.rawValue)
-//
-//            }
-//        }
 
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
@@ -200,6 +180,8 @@ class HistoryRecordVC: UIViewController {
     }
     
     func setupLayout(){
+        let paddingForNotch : CGFloat = UIDevice.hasNotch ? 0 : 34
+        
         print("setupLayout table")
         for subview in tableView.subviews{
             subview.removeFromSuperview()
@@ -218,9 +200,6 @@ class HistoryRecordVC: UIViewController {
             infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
             
             
-            
-            print("size: \(userDefaultSetup.getDeviceSize())")
-            // Phone12 : Small
             switch userDefaultSetup.getDeviceSize() {
             case DeviceSize.smallest.rawValue:  infoView.setHeight(50)
             case DeviceSize.small.rawValue:  infoView.setHeight(80)
@@ -262,22 +241,12 @@ class HistoryRecordVC: UIViewController {
                 
                 view.addSubview(subHistoryDark)
                 
-                subHistoryDark.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+                
+                
+                subHistoryDark.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
+                
                 subHistoryDark.setDimensions(width: 40, height: 40)
                 
-                if UIDevice.hasNotch {
-                   
-                } else {
-                    
-                }
-                
-                if UIApplication.shared.windows.first?.safeAreaInsets.bottom == 0 {
-                    print("it doesn't have Notch")
-                    
-                } else {
-                    print("it has Notch")
-                }
-                print("hasNotch:\(UIDevice.hasNotch)")
                 
                 
             }else{
@@ -288,13 +257,24 @@ class HistoryRecordVC: UIViewController {
                 view.addSubview(subHistoryLight)
                 
                 subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+                                
+                
+                
+                subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
+                
+                
+                
                 subHistoryLight.setDimensions(width: 40, height: 40)
                 
             }
             
             view.addSubview(historyClickButton)
             
-            historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
+
+            
+            
+            historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
+            
 
             historyClickButton.setDimensions(width: 40, height: 40)
             
@@ -338,9 +318,7 @@ class HistoryRecordVC: UIViewController {
                     }
                     self.tableView.reloadData()
                     
-//                    self.showToast(message: self.localizedStrings.deleteAllComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.6, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-                    
-                    self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.6, hRatio: 0.4)
+                    self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.3, hRatio: 0.04)
                   })
     }
     
@@ -501,8 +479,7 @@ extension HistoryRecordVC : UITableViewDataSource{
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-//            self.showToast(message: self.localizedStrings.deleteComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.4, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-            self.toastHelper(msg: self.localizedStrings.deleteComplete, wRatio: 0.4, hRatio: 0.04)
+            self.toastHelper(msg: self.localizedStrings.deleteComplete, wRatio: 0.2, hRatio: 0.04)
             tableView.reloadData()
             completionHandler(true)
             
@@ -541,8 +518,7 @@ extension HistoryRecordVC : UITableViewDataSource{
                 }
             }
             
-//            self.showToast(message: self.localizedStrings.copyComplete, with: 1, for: 1, defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.getDeviceSize()] ?? 375, defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667, widthRatio: 0.5, heightRatio: 0.04, fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
-            self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.5, hRatio: 0.04)
+            self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.25, hRatio: 0.04)
             completionHandler(true)
         }
         
