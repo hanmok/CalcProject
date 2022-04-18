@@ -647,6 +647,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             for button in horStackView1{
                 button.anchor(bottom: view.safeBottomAnchor)
+//                button.anchor(bottom: view.bottomAnchor)
             }
             
         }else {
@@ -794,8 +795,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[deviceSize]!)
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
         
-        view.backgroundColor = colorList.bgColorForExtrasDM
-        view.backgroundColor = colorList.bgColorForExtrasLM
+//        view.backgroundColor = colorList.bgColorForExtrasDM
+        // 왜 색상이 바뀌지 않지 ?? 
+        view.backgroundColor = colorList.bgColorForExtrasLM // ?????
+//        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     func setupAddTargets(){

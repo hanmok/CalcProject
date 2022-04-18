@@ -110,7 +110,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
 //        self.tabBar.tintColor = .black
         if isDarkMode {
-            self.tabBar.tintColor = .white
+//            self.tabBar.tintColor = .white
+            self.tabBar.tintColor = .black
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.65, alpha: 1)
             
             

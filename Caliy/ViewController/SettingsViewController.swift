@@ -33,17 +33,13 @@ class SettingsViewController: UIViewController {
     var userDefaultSetup = UserDefaultSetup()
     
     let tableView = UITableView()
-    
-    private let footerView = UIView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
-        tableView.tableFooterView = footerView
         
-        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
-        
+        tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
     }
     
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
@@ -57,10 +53,17 @@ class SettingsViewController: UIViewController {
         tableView.rowHeight = 60
          
         tableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
-        view.addSubview(tableView)
-        tableView.frame = view.frame
         
-//        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive = true
+        
+//        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+//        view.backgroundColor = .magenta
+        view.backgroundColor = colorList.bgColorForExtrasLM
     }
     
     func configureUI() {
@@ -95,7 +98,10 @@ class SettingsViewController: UIViewController {
         // 이거 두개.. screen Mode 가 바뀔 때에만 호출할 수는 없나 ?
         isDarkMode = userDefaultSetup.getDarkMode()
         
-        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
+//        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
+        tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
+//        tableView.backgroundColor = .magenta
+        
         }
 }
 
@@ -127,11 +133,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         if hasLoaded {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
 
-                view.backgroundColor = self.isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
-
+                view.backgroundColor = self.isDarkMode ? self.colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
+//                view.backgroundColor = .orange
             }
         } else {
-            view.backgroundColor = isDarkMode ? .black : UIColor(white: 242 / 255, alpha: 1)
+            
+            view.backgroundColor = self.isDarkMode ? self.colorList.bgColorForEmptyAndNumbersDM : self.colorList.bgColorForEmptyAndNumbersLM
         }
         
         let title = UILabel()
