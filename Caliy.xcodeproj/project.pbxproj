@@ -10,6 +10,7 @@
 		3D7F45A9112293F8474D06D4 /* Pods_Caliy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1BE52393F5BA4FD1ED3E2 /* Pods_Caliy.framework */; };
 		53FA256CB2892A0F3E90CB87 /* Pods_Caliy_CaliyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */; };
 		72E0B38604C70E034BD72AEF /* Pods_CaliyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51AB6320738546AF2F3C9FDD /* Pods_CaliyTests.framework */; };
+		9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */; };
 		9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA524CCD55D001057D2 /* AppDelegate.swift */; };
 		9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA724CCD55D001057D2 /* SceneDelegate.swift */; };
 		9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */; };
@@ -79,6 +80,7 @@
 		74E815B644FB9288D8FD3A96 /* Pods-Caliy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy.debug.xcconfig"; path = "Target Support Files/Pods-Caliy/Pods-Caliy.debug.xcconfig"; sourceTree = "<group>"; };
 		817EBCDE9E6DD8F3CC12E86E /* Pods-CaliyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.debug.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8FEA1691EE216580305789D6 /* Pods-Caliy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy.release.xcconfig"; path = "Target Support Files/Pods-Caliy/Pods-Caliy.release.xcconfig"; sourceTree = "<group>"; };
+		9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayController.swift; sourceTree = "<group>"; };
 		9A083FA224CCD55D001057D2 /* Caliy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Caliy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A083FA524CCD55D001057D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A083FA724CCD55D001057D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -213,7 +215,6 @@
 				9A083FFF24CCDF6A001057D2 /* Localizable.strings */,
 				9A083FB624CCD55E001057D2 /* Info.plist */,
 				9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */,
-				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
 				9AA5C43527186A9D0021975C /* MVCSampleCode.swift */,
 				9A083FB124CCD55E001057D2 /* Assets.xcassets */,
 			);
@@ -254,6 +255,7 @@
 				9A083FD824CCDBDE001057D2 /* BaseViewController.swift */,
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
 				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
+				9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -265,6 +267,7 @@
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
+				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
 				9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */,
+				9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,

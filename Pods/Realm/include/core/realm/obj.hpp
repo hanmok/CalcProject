@@ -208,6 +208,7 @@ protected:
     std::vector<ObjKey> get_all_backlinks(ColKey backlink_col) const;
 };
 
+std::ostream& operator<<(std::ostream&, const ConstObj& obj);
 
 class Obj : public ConstObj {
 public:
@@ -296,6 +297,7 @@ private:
     Obj& _set(size_t col_ndx, Head v, Tail... tail);
     ColKey spec_ndx2colkey(size_t col_ndx);
     bool ensure_writeable();
+    void sync(Array& arr);
     void bump_content_version();
     void bump_both_versions();
     template <class T>
@@ -306,15 +308,14 @@ private:
     bool remove_one_backlink(ColKey backlink_col, ObjKey origin_key);
     void nullify_link(ColKey origin_col, ObjKey target_key);
     // Used when inserting a new link. You will not remove existing links in this process
-    void set_backlink(ColKey col_key, ObjKey new_key);
+    void set_backlink(ColKey col_key, ObjKey new_key) const;
     // Used when replacing a link, return true if CascadeState contains objects to remove
-    bool replace_backlink(ColKey col_key, ObjKey old_key, ObjKey new_key, CascadeState& state);
+    bool replace_backlink(ColKey col_key, ObjKey old_key, ObjKey new_key, CascadeState& state) const;
     // Used when removing a backlink, return true if CascadeState contains objects to remove
-    bool remove_backlink(ColKey col_key, ObjKey old_key, CascadeState& state);
+    bool remove_backlink(ColKey col_key, ObjKey old_key, CascadeState& state) const;
     template <class T>
     inline void set_spec(T&, ColKey);
 };
-
 
 inline Obj Obj::get_linked_object(ColKey link_col_key)
 {
@@ -397,9 +398,20 @@ Obj& Obj::set_list_values(ColKey col_key, const std::vector<U>& values)
 {
     size_t sz = values.size();
     auto list = get_list<U>(col_key);
-    list.resize(sz);
-    for (size_t i = 0; i < sz; i++)
+    size_t list_sz = list.size();
+    if (sz < list_sz) {
+        list.resize(sz);
+        list_sz = sz;
+    }
+    size_t i = 0;
+    while (i < list_sz) {
         list.set(i, values[i]);
+        i++;
+    }
+    while (i < sz) {
+        list.add(values[i]);
+        i++;
+    }
 
     return *this;
 }

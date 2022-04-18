@@ -57,18 +57,29 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     func configureViewControllers() {
 //        self.delegate = self
         
-        let calculator = templateNavigationController(unselectedImage: UIImage(systemName: "plus.slash.minus")!, selectedImage: UIImage(systemName: "plus.slash.minus")!, rootViewController: BaseViewController())
+        let calculator = templateNavigationController(
+            unselectedImage: UIImage(systemName: "plus.slash.minus")!,
+            selectedImage: UIImage(systemName: "plus.slash.minus")!,
+            rootViewController: BaseViewController())
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
-        let settings = templateNavigationController(unselectedImage: UIImage(systemName: "gear")!, selectedImage: UIImage(systemName: "gear")!, rootViewController: settingsVC)
+        
+        let settings = templateNavigationController(
+            unselectedImage: UIImage(systemName: "gear")!,
+            selectedImage: UIImage(systemName: "gear")!,
+            rootViewController: settingsVC)
         
 //        settings.delegate = self
 
+        let dutch = templateNavigationController(
+            unselectedImage: UIImage(systemName: "divide.circle")!,
+            selectedImage: UIImage(systemName: "divide.circle")!,
+            rootViewController: DutchpayController())
         
-        viewControllers = [calculator, settings]
-      
-    
+        viewControllers = [calculator, dutch, settings]
+        
+        
     }
     func configureColors() {
         
@@ -85,32 +96,12 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         } else {
             
-//            self.view.backgroundColor = .cyan
-        //            self.tabBar.tintColor = .magenta
-        //            tabBar.barTintColor = .magenta
-        
-        // original code !!
-//                        self.tabBar.barTintColor = colorList.bgColorForExtrasLM
-        
         UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
             self.tabBar.barTintColor = self.colorList.bgColorForExtrasLM
-//                self.tabBar.unselectedItemTintColor =
             }
         }
         
-        
-//        tabBarController.color
-//        tabBar.barTintColor = .darkGray
-//        tabBarItem.badgeColor = .brown
-        
-//        tabBar.tintColor = .darkGray
-
-//        tabBar.selectedItem?.badgeColor = UIColor(white: 1, alpha: 1)
-        
-        
-//        self.tabBar.tintColor = .black
         if isDarkMode {
-//            self.tabBar.tintColor = .white
             self.tabBar.tintColor = .black
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.65, alpha: 1)
             

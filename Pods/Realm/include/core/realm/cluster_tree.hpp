@@ -57,7 +57,7 @@ public:
 
     void init_from_ref(ref_type ref);
     void init_from_parent();
-    bool update_from_parent(size_t old_baseline) noexcept;
+    void update_from_parent() noexcept;
 
     size_t size() const noexcept
     {
@@ -76,6 +76,10 @@ public:
     MemRef ensure_writeable(ObjKey k)
     {
         return m_root->ensure_writeable(k);
+    }
+    void update_ref_in_parent(ObjKey k, ref_type ref)
+    {
+        m_root->update_ref_in_parent(k, ref);
     }
     Array& get_fields_accessor(Array& fallback, MemRef mem) const
     {

@@ -179,7 +179,7 @@ class HistoryRecordVC: UIViewController {
         tableView.reloadData()
     }
     
-    func setupLayout(){
+    private func setupLayout(){
         let paddingForNotch : CGFloat = UIDevice.hasNotch ? 0 : 34
         
         print("setupLayout table")

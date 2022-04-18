@@ -1,4 +1,4 @@
- platform :ios, '9.0'
+platform :ios, '10.0'
 
 target 'Caliy' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -7,7 +7,8 @@ target 'Caliy' do
   # Pods for Caliy
 
 
-pod 'RealmSwift'
+pod 'RealmSwift', '~> 5.0'
+pod 'SnapKit', '~> 5.6.0'
 
   target 'CaliyTests' do
     inherit! :search_paths

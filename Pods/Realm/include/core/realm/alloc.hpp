@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
  *
  * Copyright 2016 Realm Inc.
  *
@@ -31,6 +31,14 @@
 #include <realm/util/safe_int_ops.hpp>
 #include <realm/node_header.hpp>
 #include <realm/util/file_mapper.hpp>
+
+// Temporary workaround for
+// https://developercommunity.visualstudio.com/content/problem/994075/64-bit-atomic-load-ices-cl-1924-with-o2-ob1.html
+#if defined REALM_ARCHITECTURE_X86_32 && defined REALM_WINDOWS
+#define REALM_WORKAROUND_MSVC_BUG REALM_NOINLINE
+#else
+#define REALM_WORKAROUND_MSVC_BUG
+#endif
 
 namespace realm {
 
@@ -236,7 +244,7 @@ protected:
         m_storage_versioning_counter.fetch_add(1, std::memory_order_acq_rel);
     }
 
-    inline uint_fast64_t get_content_version() noexcept
+    REALM_WORKAROUND_MSVC_BUG inline uint_fast64_t get_content_version() noexcept
     {
         return m_content_versioning_counter.load(std::memory_order_acquire);
     }
@@ -246,7 +254,7 @@ protected:
         return m_content_versioning_counter.fetch_add(1, std::memory_order_acq_rel) + 1;
     }
 
-    inline uint_fast64_t get_instance_version() noexcept
+    REALM_WORKAROUND_MSVC_BUG inline uint_fast64_t get_instance_version() noexcept
     {
         return m_instance_versioning_counter.load(std::memory_order_relaxed);
     }
@@ -288,13 +296,18 @@ public:
         m_alloc = &underlying_allocator;
         m_baseline.store(m_alloc->m_baseline, std::memory_order_relaxed);
         m_debug_watch = 0;
-        m_ref_translation_ptr.store(m_alloc->m_ref_translation_ptr);
+        refresh_ref_translation();
     }
 
     void update_from_underlying_allocator(bool writable)
     {
         switch_underlying_allocator(*m_alloc);
         set_read_only(!writable);
+    }
+
+    void refresh_ref_translation()
+    {
+        m_ref_translation_ptr.store(m_alloc->m_ref_translation_ptr);
     }
 
 private:

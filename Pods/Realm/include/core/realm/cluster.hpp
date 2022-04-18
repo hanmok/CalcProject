@@ -96,7 +96,7 @@ public:
         return m_keys.get(ndx);
     }
 
-    virtual bool update_from_parent(size_t old_baseline) noexcept = 0;
+    virtual void update_from_parent() noexcept = 0;
     virtual bool is_leaf() const = 0;
     virtual int get_sub_tree_depth() const = 0;
     virtual size_t node_size() const = 0;
@@ -111,6 +111,9 @@ public:
     /// Descend the tree from the root and copy-on-write the leaf
     /// This will update all parents accordingly
     virtual MemRef ensure_writeable(ObjKey k) = 0;
+    /// A leaf cluster has got a new ref. Descend the tree from the root,
+    /// find the leaf and update the ref in the parent node
+    virtual void update_ref_in_parent(ObjKey k, ref_type ref) = 0;
 
     /// Init and potentially Insert a column
     virtual void insert_column(ColKey col) = 0;
@@ -180,12 +183,13 @@ public:
 
     void create(size_t nb_leaf_columns); // Note: leaf columns - may include holes
     void init(MemRef mem) override;
-    bool update_from_parent(size_t old_baseline) noexcept override;
+    void update_from_parent() noexcept override;
     bool is_writeable() const
     {
         return !Array::is_read_only();
     }
     MemRef ensure_writeable(ObjKey k) override;
+    void update_ref_in_parent(ObjKey, ref_type ref) override;
 
     bool is_leaf() const override
     {

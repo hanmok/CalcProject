@@ -127,7 +127,7 @@ private:
     /// note that this works only for non-transactional commits. Table
     /// accessors obtained during a transaction are always detached
     /// when the transaction ends.
-    bool update_from_parent(size_t old_baseline) noexcept;
+    void update_from_parent() noexcept;
 
     void set_parent(ArrayParent*, size_t ndx_in_parent) noexcept;
 
@@ -136,6 +136,7 @@ private:
     // Migration
     bool convert_column_attributes();
     bool convert_column_keys(TableKey table_key);
+    void fix_column_keys(TableKey table_key);
     bool has_subspec()
     {
         return m_oldsubspecs.is_attached();
@@ -151,7 +152,7 @@ private:
 
 
     // Generate a column key only from state in the spec.
-    ColKey generate_converted_colkey(size_t column_ndx, TableKey table_key);
+    ColKey update_colkey(ColKey existing_key, size_t spec_ndx, TableKey table_key);
     /// Construct an empty spec and return just the reference to the
     /// underlying memory.
     static MemRef create_empty_spec(Allocator&);

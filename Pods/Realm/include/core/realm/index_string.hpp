@@ -80,8 +80,6 @@ public:
     }
 
     ObjKey index_string_find_first(StringData value, const ClusterColumn& column) const;
-    void index_string_find_all(IntegerColumn& result, StringData value, const ClusterColumn& column,
-                               bool case_insensitive = false) const;
     void index_string_find_all(std::vector<ObjKey>& result, StringData value, const ClusterColumn& column,
                                bool case_insensitive = false) const;
     FindRes index_string_find_all_no_copy(StringData value, const ClusterColumn& column,
@@ -184,7 +182,7 @@ public:
     void set_parent(ArrayParent* parent, size_t ndx_in_parent) noexcept;
     size_t get_ndx_in_parent() const noexcept;
     void set_ndx_in_parent(size_t ndx_in_parent) noexcept;
-    void update_from_parent(size_t old_baseline) noexcept;
+    void update_from_parent() noexcept;
     void refresh_accessor_tree(const ClusterColumn& target_column);
     ref_type get_ref() const noexcept;
 
@@ -640,9 +638,9 @@ inline void StringIndex::set_ndx_in_parent(size_t ndx_in_parent) noexcept
     m_array->set_ndx_in_parent(ndx_in_parent);
 }
 
-inline void StringIndex::update_from_parent(size_t old_baseline) noexcept
+inline void StringIndex::update_from_parent() noexcept
 {
-    m_array->update_from_parent(old_baseline);
+    m_array->update_from_parent();
 }
 
 } // namespace realm

@@ -710,7 +710,7 @@ private:
     /// that exists across Group::commit() will remain valid. This
     /// function is not appropriate for use in conjunction with
     /// commits via shared group.
-    void update_refs(ref_type top_ref, size_t old_baseline) noexcept;
+    void update_refs(ref_type top_ref) noexcept;
 
     // Overriding method in ArrayParent
     void update_child_ref(size_t, ref_type) override;
@@ -747,7 +747,9 @@ private:
     void set_metrics(std::shared_ptr<metrics::Metrics> other) noexcept;
     void update_num_objects();
     class TransactAdvancer;
-    void advance_transact(ref_type new_top_ref, size_t new_file_size, _impl::NoCopyInputStream&, bool writable);
+    /// Memory mappings must have been updated to reflect any growth in filesize before
+    /// calling advance_transact()
+    void advance_transact(ref_type new_top_ref, _impl::NoCopyInputStream&, bool writable);
     void refresh_dirty_accessors();
     void flush_accessors_for_commit();
 
@@ -810,8 +812,11 @@ private:
     ///
     ///   9 Replication instruction values shuffled, instr_MoveRow added.
     ///
-    ///  10 Memory mapping changes which require special treatment of large files
-    ///     of preceeding versions.
+    ///  10 Cluster based table layout. Memory mapping changes which require
+    ///     special treatment of large files of preceeding versions.
+    ///
+    ///  11 Same as 10, but version 10 files will have search index added on
+    ///     string primary key columns.
     ///
     /// IMPORTANT: When introducing a new file format version, be sure to review
     /// the file validity checks in Group::open() and SharedGroup::do_open, the file
@@ -991,7 +996,7 @@ inline ConstTableRef Group::get_table(TableKey key) const
     return ConstTableRef(table, table ? table->m_alloc.get_instance_version() : 0);
 }
 
-REALM_NOINLINE inline TableRef Group::get_table(StringData name)
+inline TableRef Group::get_table(StringData name)
 {
     if (!is_attached())
         throw LogicError(LogicError::detached_accessor);

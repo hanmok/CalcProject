@@ -29,7 +29,7 @@ class SettingsCollectionCell: UICollectionViewCell {
     
     private var clearFullButton: UIButton = {
         let button = UIButton()
-        button.addTarget(self, action: #selector(handleFullButtonPressed), for: .touchUpInside)
+        button.addTarget(SettingsCollectionCell.self, action: #selector(handleFullButtonPressed), for: .touchUpInside)
         return button
     }()
     
