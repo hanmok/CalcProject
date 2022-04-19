@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SnapKit
 //private let reuseIdentifier = "SettingsCell"
 //private let myCollectionIdentifer = "CollectionCell"
 
@@ -40,6 +40,14 @@ class SettingsViewController: UIViewController {
         configureUI()
         
         tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
+        
+        if userDefaultSetup.getDarkMode() {
+            view.backgroundColor = colorList.bgColorForExtrasDM
+        } else {
+            view.backgroundColor = colorList.bgColorForExtrasLM
+        }
+        
+        
     }
     
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
@@ -55,15 +63,26 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
         
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive = true
+
+        tableView.snp.makeConstraints { make in
+            make.top.left.right.equalTo(view)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
         
 //        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
 //        view.backgroundColor = .magenta
-        view.backgroundColor = colorList.bgColorForExtrasLM
+//        view.backgroundColor = colorList.bgColorForExtrasLM
+        // main tab bar below
+//        isDarkMode = userDefaultSetup.getDarkMode()
+//        let mode = userDefaultSetup.getDarkMode()
+//        if mode {
+//            view.backgroundColor = colorList.bgColorForExtrasDM
+//        } else {
+//            view.backgroundColor = colorList.bgColorForExtrasLM
+//        }
+        
+        
+       
     }
     
     func configureUI() {
@@ -238,13 +257,18 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 // handleSwitchAction -> handleSwitchChanged
 extension SettingsViewController: SettingsTableCellDelegate {
     func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool) {
-        print("hihihihi")
         switch tag {
         case 0:
             userDefaultSetup.setDarkMode(isDarkMode: isOn)
            
             hasLoaded = true
             self.tableView.reloadData()
+            
+            if userDefaultSetup.getDarkMode() {
+                view.backgroundColor = colorList.bgColorForExtrasDM
+            } else {
+                view.backgroundColor = colorList.bgColorForExtrasLM
+            }
             
         case 1:
             userDefaultSetup.setSoundMode(isSoundOn: isOn)
@@ -261,4 +285,3 @@ extension SettingsViewController: SettingsTableCellDelegate {
         sendUpdatingUserDefault() // broadcast update !
     }
 }
-

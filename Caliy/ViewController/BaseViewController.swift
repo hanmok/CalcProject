@@ -17,7 +17,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     /// used to navigate to historyRecordVC
     let newTableVC = HistoryRecordVC()
     
-    
+    var colorIndex = 0
     let colorList = ColorList()
     let localizedStrings = LocalizedStringStorage()     // show Toast
     let fontSize = FontSizes()      // view, show Toast
@@ -33,6 +33,49 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     /// entire view for basic calculator (not HistoryRecordVC)
     var frameView = UIView()
     
+    // MARK: - For Color Testing
+    var isShowing = true
+    
+    let upButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitleColor(.black, for: .normal)
+        btn.setTitle("+1", for: .normal)
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 5
+        return btn
+    }()
+    
+    let downButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("-1", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 5
+        return btn
+    }()
+    
+    let colorIndexLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textColor = .black
+        return label
+    }()
+    
+    let colorDescLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Title"
+        label.textColor = .black
+        return label
+    }()
+    
+    let testToggleButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("hide", for: .normal)
+        btn.setTitleColor(UIColor(red: 0.537, green: 0.541, blue: 0.454, alpha: 0.3), for: .normal)
+        return btn
+    }()
     
   
     /// belong to view
@@ -254,10 +297,22 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
         // both of these updates each time
         isDarkMode = darkModeInfo
+        
         isSoundOn = soundModeInfo
         isNotificationOn = notificationModeInfo
         
         setupColorAndImage()
+        
+//        if isDarkMode {
+//            view.backgroundColor = colorList.bgColorForExtrasDM
+//
+//        } else {
+//            view.backgroundColor = colorList.bgColorForExtrasLM
+//        }
+        view.backgroundColor = colorList.testColors2[0].color
+//        view.backgroundColor = colorList.testColors[0]
+//        view.backgroundColor = colorList.testColors[0]
+//        view.backgroundColor = colorList.bgColorForExtrasMiddle
     }
     
     
@@ -313,10 +368,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
             case 10 ... 20 :
                 sender.backgroundColor =  colorList.bgColorForOperatorsDM
-//            case 31 ... 40:
-//                sender.backgroundColor =  colorList.bgColorForExtrasDM
             case 21 ... 30 :
-                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+//                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+                sender.backgroundColor = colorList.bgColorForExtrasDM
                 basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
@@ -327,10 +381,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
             case 10 ... 20 :
                 sender.backgroundColor =  colorList.bgColorForOperatorsLM
-//            case 31 ... 40:
-//                sender.backgroundColor =  colorList.bgColorForExtrasLM
+
             case 21 ... 30 :
-                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+//                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+                sender.backgroundColor = colorList.bgColorForExtrasLM
                 basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
@@ -349,17 +403,19 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func handleDeletePressedDown(sender : UIButton){
 
         if isDarkMode{
-            sender.backgroundColor =  colorList.bgColorForExtrasDM
+//            sender.backgroundColor =  colorList.bgColorForExtrasDM
+            sender.backgroundColor = colorList.bgColorForOperatorsDM
         }else{
-            sender.backgroundColor =  colorList.bgColorForExtrasLM
+//            sender.backgroundColor =  colorList.bgColorForExtrasLM
+            sender.backgroundColor = colorList.bgColorForOperatorsLM
         }
         basicCalc.didPressedDownDelete()
     }
     
     
     @objc func handleDeleteTapped(sender : UIButton){
-        sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-    
+//        sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
+        sender.backgroundColor = colorList.bgColorForOperatorsDM
         basicCalc.handleDeleteTapped()
     }
 
@@ -368,7 +424,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         playSound()
     }
     
-     /// when button tapped 'down', color changes
+     /// when button tapped 'down', change colors
     @objc func handleColorChangeAction(sender: UIButton) {
         sender.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
@@ -591,7 +647,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             tabBarController?.tabBar.isHidden = false
             frameView = view
             
-        }else if !portraitMode{ // LandScape Mode
+        } else if !portraitMode{ // LandScape Mode
             tabBarController?.tabBar.isHidden = true
             
             //right side (calculator)
@@ -795,10 +851,59 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[deviceSize]!)
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
         
-//        view.backgroundColor = colorList.bgColorForExtrasDM
-        // 왜 색상이 바뀌지 않지 ?? 
-        view.backgroundColor = colorList.bgColorForExtrasLM // ?????
-//        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+//        if userDefaultSetup.getDarkMode() {
+//            view.backgroundColor = colorList.bgColorForExtrasDM
+//        } else {
+//            view.backgroundColor = colorList.bgColorForExtrasLM
+//        }
+        
+        frameView.addSubview(upButton)
+        frameView.addSubview(colorIndexLabel)
+        frameView.addSubview(downButton)
+        
+        frameView.addSubview(colorDescLabel)
+        frameView.addSubview(testToggleButton)
+        
+        downButton.snp.makeConstraints { make in
+            make.top.equalTo(historyClickButton.snp.bottom)
+            make.left.equalTo(view).offset(20)
+            make.width.height.equalTo(30)
+        }
+        
+        
+        upButton.snp.makeConstraints { make in
+            make.top.equalTo(downButton)
+            make.left.equalTo(downButton.snp.right).offset(20)
+            make.width.height.equalTo(30)
+        }
+        
+        colorDescLabel.snp.makeConstraints { make in
+            make.top.equalTo(downButton)
+            make.left.equalTo(upButton.snp.right).offset(20)
+            make.width.equalTo(180)
+            make.height.equalTo(30)
+        }
+        
+        colorIndexLabel.snp.makeConstraints { make in
+            make.top.equalTo(downButton)
+            make.left.equalTo(colorDescLabel.snp.right)
+//            make.width.height.equalTo(30)
+            make.height.equalTo(30)
+            make.width.equalTo(30)
+        }
+        
+        testToggleButton.snp.makeConstraints { make in
+            make.bottom.equalTo(deleteButton.snp.top)
+            make.left.equalTo(colorIndexLabel.snp.right)
+            make.width.equalTo(50)
+//            make.height.equalTo(30)
+            make.height.equalTo(200)
+        }
+        
+//        view.backgroundColor = colorList.testColors[0]
+//        view.backgroundColor = colorList.testColors[0]
+//        view.backgroundColor = colorList.bgColorForExtrasMiddle
+        view.backgroundColor = colorList.testColors2[0].color
     }
     
     func setupAddTargets(){
@@ -842,8 +947,51 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
         historyDragButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
+        
+        upButton.addTarget(self, action: #selector(countUp), for: .touchUpInside)
+        downButton.addTarget(self, action: #selector(countDown), for: .touchUpInside)
+        
+        testToggleButton.addTarget(self, action: #selector(toggleVisibility), for: .touchUpInside)
     }
-    
+    @objc func countUp(_ sender: UIButton) {
+        colorIndex += 1
+        if colorIndex == colorList.testColors2.count {
+            colorIndex = 0
+        }
+        colorIndexLabel.text = String(colorIndex)
+        
+        view.backgroundColor = colorList.testColors2[colorIndex].color
+        colorDescLabel.text = colorList.testColors2[colorIndex].desc
+    }
+    @objc func countDown(_ sender: UIButton) {
+        colorIndex -= 1
+        if colorIndex < 0 {
+            colorIndex = colorList.testColors2.count - 1
+        }
+        colorIndexLabel.text = String(colorIndex)
+        view.backgroundColor = colorList.testColors2[colorIndex].color
+        colorDescLabel.text = colorList.testColors2[colorIndex].desc
+        
+    }
+    @objc func toggleVisibility(_ sender: UIButton) {
+       
+        
+            isShowing.toggle()
+        
+        if isShowing {
+            upButton.isHidden = true
+            downButton.isHidden = true
+            colorDescLabel.isHidden = true
+            colorIndexLabel.isHidden = true
+            testToggleButton.setTitle("show", for: .normal)
+        } else {
+            upButton.isHidden = false
+            downButton.isHidden = false
+            colorDescLabel.isHidden = false
+            colorIndexLabel.isHidden = false
+            testToggleButton.setTitle("hide", for: .normal)
+        }
+    }
     
     fileprivate func setupButtonImageInLightMode() {
         
@@ -871,7 +1019,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subMinus = lightSubtract
         subEqual = lightEqual
         
-        subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
+//        subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
     }
     
     fileprivate func setupButtonImageInDarkMode() {
@@ -900,7 +1048,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subMinus = darkSubtract
         subEqual = darkEqual
         
-        subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
+//        subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
+        
     }
     
 //    fileprivate func setupButtonPositionAndSize(_ modifiedWidth: inout [Double]) {
@@ -1030,21 +1179,28 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         }
 
 
-        let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot,progressView,resultTextView,emptySpace]
+//        let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot,progressView,resultTextView,emptySpace]
+        let numBtns = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot]
         
-        let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
+        let operatorBtns = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
         
+        let backgrounds = [progressView,resultTextView,emptySpace, deleteButton]
         
         if isDarkMode{
             
             
-            for num in numButtons{
-                num.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+            for numBtn in numBtns{ // emptySpace 등 도 포함..;;
+                numBtn.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
             }
-            for other in otherButtons{
-                other.backgroundColor =  colorList.bgColorForOperatorsDM
+            for operBtn in operatorBtns{
+                operBtn.backgroundColor =  colorList.bgColorForOperatorsDM
             }
-            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+            for other in backgrounds {
+                other.backgroundColor = colorList.bgColorForExtrasDM
+            }
+            
+//            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+            
             setupButtonImageInDarkMode()
             
             for view in historyClickButton.subviews{
@@ -1056,6 +1212,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                     view.removeFromSuperview()
                 }
             }
+            
             historyClickButton.addSubview(subHistory)
             
             subHistory.fillSuperview()
@@ -1071,13 +1228,19 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
         }else{ // lightMode
             
-            for num in numButtons{
-                num.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+            for numBtn in numBtns{
+                numBtn.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
             }
-            for other in otherButtons{
-                other.backgroundColor =  colorList.bgColorForOperatorsLM
+            for operBtn in operatorBtns{
+                operBtn.backgroundColor =  colorList.bgColorForOperatorsLM
             }
-            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+            
+            for other in backgrounds {
+                other.backgroundColor = colorList.bgColorForExtrasLM
+            }
+            
+//            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+            
             setupButtonImageInLightMode()
             
             

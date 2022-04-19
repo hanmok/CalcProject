@@ -26,14 +26,14 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         print(#function, #file)
         print("viewDidLoad in MainTabController called")
         
-//        var tabFrame = self.tabBar.frame
-//        tabFrame.size.height = 200
-//            tabFrame.origin.y = self.view.frame.size.height - 200
-//            self.tabBar.frame = tabFrame
+        //        var tabFrame = self.tabBar.frame
+        //        tabFrame.size.height = 200
+        //            tabFrame.origin.y = self.view.frame.size.height - 200
+        //            self.tabBar.frame = tabFrame
         createObservers()
         configureColors()
         
-//        view.backgroundColor = userDefaultSetup.getIsDarkModeOn() ? .white : .black
+        //        view.backgroundColor = userDefaultSetup.getIsDarkModeOn() ? .white : .black
         
         print("flag darkMode: \(isDarkMode)")
         print("userdefault: \(userDefaultSetup.getDarkMode())")
@@ -55,7 +55,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     
     func configureViewControllers() {
-//        self.delegate = self
+        //        self.delegate = self
         
         let calculator = templateNavigationController(
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
@@ -70,34 +70,42 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "gear")!,
             rootViewController: settingsVC)
         
-//        settings.delegate = self
-
+        //        settings.delegate = self
+        
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
             rootViewController: DutchpayController())
         
+#if DEBUG
         viewControllers = [calculator, dutch, settings]
+#else
+        viewControllers = [calculator, settings]
+#endif
+        
+        
+        //        viewControllers = [calculator, dutch, settings]
         
         
     }
     func configureColors() {
         
-//        if userDefaultSetup.getIsLightModeOn() {
+        //        if userDefaultSetup.getIsLightModeOn() {
         if isDarkMode {
             
             
-//            self.view.backgroundColor = .red
-//                      self.tabBar.barTintColor = colorList.bgColorForExtrasDM
+            //            self.view.backgroundColor = .red
+            //                      self.tabBar.barTintColor = colorList.bgColorForExtrasDM
             UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
+                //                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
-                
             }
-
+            
         } else {
             
-        UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
-            self.tabBar.barTintColor = self.colorList.bgColorForExtrasLM
+            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
+                //            self.tabBar.barTintColor = self.colorList.bgColorForExtrasLM
+                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
             }
         }
         
@@ -122,9 +130,9 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-//        tabBar.isHidden = true // use this to hide tabBar from
-//        tabBar.frame.size.height = 200
-//        tabBar.frame.origin.y = view.frame.height - 200
+        //        tabBar.isHidden = true // use this to hide tabBar from
+        //        tabBar.frame.size.height = 200
+        //        tabBar.frame.origin.y = view.frame.height - 200
         
         
     }

@@ -1,0 +1,18 @@
+delete
+        handleDeletePressedDown
+        handleDeleteTapped
+        handleDeleteDragOutAction
+        turnIntoOriginalColor
+        turnIntoOriginalColor
+        
+        moveToHistoryTable
+
+
+switch toggle button color :
+SettingsTableCell -> lazy var switchControl -> .onTintColor
+
+
+
+    upButton
+    downButton
+    colorDesc

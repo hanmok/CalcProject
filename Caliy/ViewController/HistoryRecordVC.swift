@@ -34,7 +34,7 @@ class HistoryRecordVC: UIViewController {
     let colorList = ColorList()
     
     var userDefaultSetup = UserDefaultSetup()
-
+    
     lazy var darkModeOn = userDefaultSetup.getDarkMode()
     
     let realm = RealmService.shared.realm
@@ -96,7 +96,7 @@ class HistoryRecordVC: UIViewController {
             deviceInfo.removeFirst()
         }
         
-
+        
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
@@ -129,7 +129,7 @@ class HistoryRecordVC: UIViewController {
         
         tableView.setContentOffset(.zero, animated: false)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear table")
         viewDidLoad()
@@ -165,7 +165,7 @@ class HistoryRecordVC: UIViewController {
     }
     
     @objc func transitionOccured(notification: NSNotification){
-       
+        
         guard let newPortrait = notification.userInfo?["orientation"] as? Bool else {
             print("there's an error in tableView transitionOccured function")
             return }
@@ -240,7 +240,7 @@ class HistoryRecordVC: UIViewController {
                 tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
                 
                 view.addSubview(subHistoryDark)
-                
+                //                trashbinImage.tintColor = .red
                 
                 
                 subHistoryDark.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
@@ -252,12 +252,14 @@ class HistoryRecordVC: UIViewController {
             }else{
                 infoView.backgroundColor = colorList.bgColorForExtrasLM
                 // 들췄을 때 color
+                infoLabel.textColor = .black
                 tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
+                //                trashbinImage.tintColor = .blue
                 
                 view.addSubview(subHistoryLight)
                 
                 subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeBottomAnchor, paddingLeft: 30)
-                                
+                
                 
                 
                 subHistoryLight.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
@@ -270,16 +272,16 @@ class HistoryRecordVC: UIViewController {
             
             view.addSubview(historyClickButton)
             
-
+            
             
             
             historyClickButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingLeft: 30, paddingBottom: paddingForNotch)
             
-
+            
             historyClickButton.setDimensions(width: 40, height: 40)
             
         }else{
-//            tableView.pin(to: view) // 이거같은데?
+            //            tableView.pin(to: view) // 이거같은데?
             tableView.fillSuperview()
             
             tableView.backgroundColor = darkModeOn ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
@@ -310,16 +312,16 @@ class HistoryRecordVC: UIViewController {
     @objc func removeAllAlert(){
         showAlert(title: "Clear History", message: localizedStrings.removeAll,
                   handlerA: { actionA in
-                  },
+        },
                   handlerB: { actionB in
-                    
-                    for element in self.historyRecords{
-                        RealmService.shared.delete(element)
-                    }
-                    self.tableView.reloadData()
-                    
-                    self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.3, hRatio: 0.04)
-                  })
+            
+            for element in self.historyRecords{
+                RealmService.shared.delete(element)
+            }
+            self.tableView.reloadData()
+            
+            self.toastHelper(msg: self.localizedStrings.deleteAllComplete, wRatio: 0.3, hRatio: 0.04)
+        })
     }
     
     @objc func changeColorToOriginal(sender : UITableViewCell){
@@ -426,7 +428,7 @@ extension HistoryRecordVC : UITableViewDataSource{
             
             let saveAction = UIAlertAction(title: self.localizedStrings.save, style: UIAlertAction.Style.default, handler: { alert -> Void in
                 let textFieldInput = alertController.textFields![0] as UITextField
-//                textFieldInput.delegate = self
+                //                textFieldInput.delegate = self
                 
                 textFieldInput.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
                 
@@ -458,7 +460,7 @@ extension HistoryRecordVC : UITableViewDataSource{
             })
             
             let cancelAction = UIAlertAction(title: self.localizedStrings.cancel, style: UIAlertAction.Style.destructive, handler: {
-                                                (action : UIAlertAction!) -> Void in })
+                (action : UIAlertAction!) -> Void in })
             
             alertController.addAction(saveAction)
             alertController.addAction(cancelAction)
@@ -497,10 +499,10 @@ extension HistoryRecordVC : UITableViewDataSource{
     @objc func textFieldDidChange(_ textField: UITextField) {
         print("sender.text: \(textField.text!)")
         
-        }
+    }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    
+        
         let copyAction = UIContextualAction(style: .normal, title: "") { (action, view, completionHandler) in
             
             let maxNumber = self.historyRecords.count
@@ -543,7 +545,7 @@ extension HistoryRecordVC : UITableViewDataSource{
                     let activityController = UIActivityViewController(activityItems: [toBeSaved], applicationActivities: nil)
                     
                     self.present(activityController, animated: true, completion: nil)
-                    
+          
                     UIPasteboard.general.string = toBeSaved
                 }
             }
@@ -561,7 +563,7 @@ extension HistoryRecordVC : UITableViewDataSource{
         let leftSwipe = UISwipeActionsConfiguration(actions: [copyAction, shareAction])
         return leftSwipe
     }
-
+    
 }
 
 extension HistoryRecordVC : UITableViewDelegate {
