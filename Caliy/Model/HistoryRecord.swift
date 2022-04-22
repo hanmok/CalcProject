@@ -34,5 +34,4 @@ import RealmSwift
         self.dateString = dateString
         
     }
-    
 }
