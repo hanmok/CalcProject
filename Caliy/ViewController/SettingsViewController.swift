@@ -34,6 +34,9 @@ class SettingsViewController: UIViewController {
     
     let tableView = UITableView()
 
+//    let containerView = UIView()
+//    let emptyView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,11 +44,13 @@ class SettingsViewController: UIViewController {
         
         tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
         
+        
         if userDefaultSetup.getDarkMode() {
-            view.backgroundColor = colorList.bgColorForExtrasDM
+            view.backgroundColor = colorList.newMainForDarkMode
         } else {
-            view.backgroundColor = colorList.bgColorForExtrasLM
+            view.backgroundColor = colorList.newMainForLightMode
         }
+//        emptyView.backgroundColor = .orange
         
         
     }
@@ -54,7 +59,6 @@ class SettingsViewController: UIViewController {
     
     func configureTableView() {
         print("configureTableView triggered!")
-//        tableView = UITableView()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -63,26 +67,22 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
         
         view.addSubview(tableView)
-
+//        view.addSubview(emptyView)
+        
+//        emptyView.snp.makeConstraints { make in
+//            make.left.top.right.equalToSuperview()
+//            make.bottom.equalToSuperview().offset(-tabbarheight)
+//        }
+//
+//        emptyView.addSubview(tableView)
+        
         tableView.snp.makeConstraints { make in
             make.top.left.right.equalTo(view)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-//        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
-//        view.backgroundColor = .magenta
-//        view.backgroundColor = colorList.bgColorForExtrasLM
-        // main tab bar below
-//        isDarkMode = userDefaultSetup.getDarkMode()
-//        let mode = userDefaultSetup.getDarkMode()
-//        if mode {
-//            view.backgroundColor = colorList.bgColorForExtrasDM
-//        } else {
-//            view.backgroundColor = colorList.bgColorForExtrasLM
-//        }
+//        emptyView.backgroundColor = .orange
         
-        
-       
     }
     
     func configureUI() {
@@ -144,7 +144,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
+        let headerView = UIView()
         print("viewForheaderInSection, hasLoaded : \(hasLoaded), ")
         // has changed displayMode
         
@@ -152,12 +152,18 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         if hasLoaded {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
 
-                view.backgroundColor = self.isDarkMode ? self.colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
-//                view.backgroundColor = .orange
+                if self.userDefaultSetup.getDarkMode() {
+                    headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+                } else {
+                    headerView.backgroundColor = self.colorList.bgColorForExtrasLM
+                }
             }
         } else {
-            
-            view.backgroundColor = self.isDarkMode ? self.colorList.bgColorForEmptyAndNumbersDM : self.colorList.bgColorForEmptyAndNumbersLM
+            if self.userDefaultSetup.getDarkMode() {
+                headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+            } else {
+                headerView.backgroundColor = self.colorList.bgColorForExtrasLM
+            }
         }
         
         let title = UILabel()
@@ -166,16 +172,18 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         title.text = SettingsSection(rawValue: section)?.description
         
-        view.addSubview(title)
+        headerView.addSubview(title)
         
-        title.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 16, paddingBottom: 10)
+        title.anchor(left: headerView.leftAnchor, bottom: headerView.bottomAnchor, paddingLeft: 16, paddingBottom: 10)
         
-        return view
+        return headerView
     }
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-                return 70
+                return 60
+        // return 70 // original
+//        return 85
     }
     
     
@@ -265,9 +273,13 @@ extension SettingsViewController: SettingsTableCellDelegate {
             self.tableView.reloadData()
             
             if userDefaultSetup.getDarkMode() {
-                view.backgroundColor = colorList.bgColorForExtrasDM
+//                view.backgroundColor = colorList.bgColorForExtrasDM
+                view.backgroundColor = colorList.newMainForDarkMode
+//                emptyView.backgroundColor = .orange
             } else {
-                view.backgroundColor = colorList.bgColorForExtrasLM
+//                view.backgroundColor = colorList.bgColorForExtrasLM
+                view.backgroundColor = colorList.newMainForLightMode
+//                emptyView.backgroundColor = .orange
             }
             
         case 1:

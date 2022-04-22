@@ -162,6 +162,7 @@ static NSDictionary *RLMAnalyticsPayload() {
 
     // Main bundle isn't always the one of interest (e.g. when running tests
     // it's xctest rather than the app's bundle), so look for one with a bundle ID
+    
     if (!hashedBundleID) {
         for (NSBundle *bundle in NSBundle.allBundles) {
             if ((hashedBundleID = bundle.bundleIdentifier)) {

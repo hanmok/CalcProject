@@ -14,6 +14,8 @@ class DutchpayController: UIViewController {
     
     // MARK: - Properties
     
+    var userDefaultSetup = UserDefaultSetup()
+    
     let colorList = ColorList()
     
     
@@ -72,7 +74,9 @@ class DutchpayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = colorList.bgColorForExtrasLM
+        
         setupLayout()
         addTargets()
     }
@@ -105,6 +109,12 @@ class DutchpayController: UIViewController {
         plusBtn.snp.makeConstraints { make in
             make.width.height.equalTo(containerView.snp.width).dividedBy(3)
             make.center.equalTo(containerView)
+        }
+        
+        if userDefaultSetup.getDarkMode() {
+            view.backgroundColor = colorList.newMainForDarkMode
+        } else {
+            view.backgroundColor = colorList.newMainForLightMode
         }
     }
 }

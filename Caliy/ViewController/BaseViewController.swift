@@ -45,7 +45,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         btn.layer.cornerRadius = 5
         return btn
     }()
-    
+
     let downButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("-1", for: .normal)
@@ -86,6 +86,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     lazy var multiplier = 1 - 0.108*5 - tabbarheight/frameView.frame.height
     
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
+    
+//    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 98
     
     
     /// indicate whether ans button has pressed
@@ -303,16 +305,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         setupColorAndImage()
         
-//        if isDarkMode {
-//            view.backgroundColor = colorList.bgColorForExtrasDM
-//
-//        } else {
-//            view.backgroundColor = colorList.bgColorForExtrasLM
-//        }
-        view.backgroundColor = colorList.testColors2[0].color
-//        view.backgroundColor = colorList.testColors[0]
-//        view.backgroundColor = colorList.testColors[0]
-//        view.backgroundColor = colorList.bgColorForExtrasMiddle
+        
+//        view.backgroundColor = colorList.testColors2[23].color
+        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
     }
     
     
@@ -851,39 +846,41 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[deviceSize]!)
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
         
-//        if userDefaultSetup.getDarkMode() {
-//            view.backgroundColor = colorList.bgColorForExtrasDM
-//        } else {
-//            view.backgroundColor = colorList.bgColorForExtrasLM
-//        }
+        if userDefaultSetup.getDarkMode() {
+            view.backgroundColor = colorList.newMainForDarkMode
+        } else {
+
+            view.backgroundColor = colorList.newMainForLightMode
+        }
         
+        /*       color Testing Code
         frameView.addSubview(upButton)
         frameView.addSubview(colorIndexLabel)
         frameView.addSubview(downButton)
-        
+
         frameView.addSubview(colorDescLabel)
         frameView.addSubview(testToggleButton)
-        
+
         downButton.snp.makeConstraints { make in
             make.top.equalTo(historyClickButton.snp.bottom)
             make.left.equalTo(view).offset(20)
             make.width.height.equalTo(30)
         }
-        
-        
+
+
         upButton.snp.makeConstraints { make in
             make.top.equalTo(downButton)
             make.left.equalTo(downButton.snp.right).offset(20)
             make.width.height.equalTo(30)
         }
-        
+
         colorDescLabel.snp.makeConstraints { make in
             make.top.equalTo(downButton)
             make.left.equalTo(upButton.snp.right).offset(20)
             make.width.equalTo(180)
             make.height.equalTo(30)
         }
-        
+
         colorIndexLabel.snp.makeConstraints { make in
             make.top.equalTo(downButton)
             make.left.equalTo(colorDescLabel.snp.right)
@@ -891,7 +888,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             make.height.equalTo(30)
             make.width.equalTo(30)
         }
-        
+
         testToggleButton.snp.makeConstraints { make in
             make.bottom.equalTo(deleteButton.snp.top)
             make.left.equalTo(colorIndexLabel.snp.right)
@@ -900,10 +897,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             make.height.equalTo(200)
         }
         
-//        view.backgroundColor = colorList.testColors[0]
-//        view.backgroundColor = colorList.testColors[0]
-//        view.backgroundColor = colorList.bgColorForExtrasMiddle
-        view.backgroundColor = colorList.testColors2[0].color
+        view.backgroundColor = colorList.testColors2[colorIndex].color
+         */
     }
     
     func setupAddTargets(){
@@ -947,19 +942,22 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
         historyDragButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
-        
+        /*
         upButton.addTarget(self, action: #selector(countUp), for: .touchUpInside)
         downButton.addTarget(self, action: #selector(countDown), for: .touchUpInside)
-        
+
         testToggleButton.addTarget(self, action: #selector(toggleVisibility), for: .touchUpInside)
+         */
     }
+    
+    /* TestCode
     @objc func countUp(_ sender: UIButton) {
         colorIndex += 1
         if colorIndex == colorList.testColors2.count {
             colorIndex = 0
         }
         colorIndexLabel.text = String(colorIndex)
-        
+
         view.backgroundColor = colorList.testColors2[colorIndex].color
         colorDescLabel.text = colorList.testColors2[colorIndex].desc
     }
@@ -971,13 +969,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         colorIndexLabel.text = String(colorIndex)
         view.backgroundColor = colorList.testColors2[colorIndex].color
         colorDescLabel.text = colorList.testColors2[colorIndex].desc
-        
+
     }
+    
     @objc func toggleVisibility(_ sender: UIButton) {
-       
-        
+
+
             isShowing.toggle()
-        
+
         if isShowing {
             upButton.isHidden = true
             downButton.isHidden = true
@@ -992,6 +991,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             testToggleButton.setTitle("hide", for: .normal)
         }
     }
+     */
     
     fileprivate func setupButtonImageInLightMode() {
         

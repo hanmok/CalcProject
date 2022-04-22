@@ -61,6 +61,11 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
+
+        let dutch = templateNavigationController(
+            unselectedImage: UIImage(systemName: "divide.circle")!,
+            selectedImage: UIImage(systemName: "divide.circle")!,
+            rootViewController: DutchpayController())
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
@@ -72,10 +77,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         //        settings.delegate = self
         
-        let dutch = templateNavigationController(
-            unselectedImage: UIImage(systemName: "divide.circle")!,
-            selectedImage: UIImage(systemName: "divide.circle")!,
-            rootViewController: DutchpayController())
+
         
 #if DEBUG
         viewControllers = [calculator, dutch, settings]
@@ -111,12 +113,13 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         if isDarkMode {
             self.tabBar.tintColor = .black
-            self.tabBar.unselectedItemTintColor = UIColor(white: 0.65, alpha: 1)
+//            self.tabBar.unselectedItemTintColor = UIColor(white: 0.65, alpha: 1)
+            self.tabBar.unselectedItemTintColor = UIColor(white: 0.5, alpha: 1)
             
             
         } else {
             self.tabBar.tintColor = .black
-            self.tabBar.unselectedItemTintColor = UIColor(white: 0.6, alpha: 1)
+            self.tabBar.unselectedItemTintColor = UIColor(white: 0.5, alpha: 1)
         }
     }
     
