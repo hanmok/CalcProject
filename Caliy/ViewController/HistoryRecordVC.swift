@@ -414,9 +414,11 @@ extension HistoryRecordVC : UITableViewDataSource{
             
             var userInput = ""
             
-            if self.historyRecords[historyIndex].titleLabel != nil {
-                userInput = self.historyRecords[historyIndex].titleLabel!
+            if let titleLabel = self.historyRecords[historyIndex].titleLabel {
+//                userInput = self.historyRecords[historyIndex].titleLabel!
+                userInput = titleLabel
             }
+            
             // alert
             let alertController = UIAlertController(title: self.localizedStrings.editName, message: "", preferredStyle: UIAlertController.Style.alert)
             
@@ -462,8 +464,9 @@ extension HistoryRecordVC : UITableViewDataSource{
             let cancelAction = UIAlertAction(title: self.localizedStrings.cancel, style: UIAlertAction.Style.destructive, handler: {
                 (action : UIAlertAction!) -> Void in })
             
-            alertController.addAction(saveAction)
             alertController.addAction(cancelAction)
+            alertController.addAction(saveAction)
+
             
             self.present(alertController, animated: true, completion: nil)
             

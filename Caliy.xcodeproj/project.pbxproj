@@ -32,6 +32,8 @@
 		9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */; };
 		9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FFF24CCDF6A001057D2 /* Localizable.strings */; };
 		9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */; };
+		9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9A1C84F62814E3A6001020EF /* DutchpayMemo */; };
+		9A1C84F92814E527001020EF /* AddingBriefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84F82814E527001020EF /* AddingBriefController.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
@@ -110,6 +112,9 @@
 		9A083FFE24CCDF6A001057D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9A08400024CCDF6E001057D2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameSizes.swift; sourceTree = "<group>"; };
+		9A1C84F52814E39F001020EF /* ColorMemo */ = {isa = PBXFileReference; lastKnownFileType = text; path = ColorMemo; sourceTree = "<group>"; };
+		9A1C84F62814E3A6001020EF /* DutchpayMemo */ = {isa = PBXFileReference; lastKnownFileType = text; path = DutchpayMemo; sourceTree = "<group>"; };
+		9A1C84F82814E527001020EF /* AddingBriefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingBriefController.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -204,6 +209,8 @@
 		9A083FA424CCD55D001057D2 /* Caliy */ = {
 			isa = PBXGroup;
 			children = (
+				9A1C84F52814E39F001020EF /* ColorMemo */,
+				9A1C84F62814E3A6001020EF /* DutchpayMemo */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF524CCDE04001057D2 /* Model */,
@@ -256,6 +263,7 @@
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
 				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
 				9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */,
+				9A1C84F82814E527001020EF /* AddingBriefController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -445,6 +453,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */,
 				9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */,
 				9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */,
 				9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */,
@@ -581,6 +590,7 @@
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
+				9A1C84F92814E527001020EF /* AddingBriefController.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
 				9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */,
