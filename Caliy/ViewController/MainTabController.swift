@@ -81,7 +81,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         
 #if DEBUG
-        viewControllers = [calculator, dutch, settings]
+//        viewControllers = [calculator, dutch, settings]
+        viewControllers = [dutch, calculator, settings]
 #else
         viewControllers = [calculator, settings]
 #endif

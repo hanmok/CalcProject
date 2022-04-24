@@ -13,7 +13,7 @@
 		9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */; };
 		9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA524CCD55D001057D2 /* AppDelegate.swift */; };
 		9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA724CCD55D001057D2 /* SceneDelegate.swift */; };
-		9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */; };
+		9A083FB024CCD55D001057D2 /* Dutchpay.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */; };
 		9A083FB224CCD55E001057D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FB124CCD55E001057D2 /* Assets.xcassets */; };
 		9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */; };
 		9A083FC024CCD55E001057D2 /* CaliyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FBF24CCD55E001057D2 /* CaliyTests.swift */; };
@@ -35,6 +35,10 @@
 		9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9A1C84F62814E3A6001020EF /* DutchpayMemo */; };
 		9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FA2814E822001020EF /* PersistenceManager.swift */; };
 		9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FD2814ED81001020EF /* AddingBriefController.swift */; };
+		9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */; };
+		9A1C85032815A865001020EF /* SettingGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85022815A865001020EF /* SettingGroupController.swift */; };
+		9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85052815BB0F001020EF /* GroupButton.swift */; };
+		9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85072815C5C7001020EF /* AttendingButton.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
@@ -117,6 +121,10 @@
 		9A1C84F62814E3A6001020EF /* DutchpayMemo */ = {isa = PBXFileReference; lastKnownFileType = text; path = DutchpayMemo; sourceTree = "<group>"; };
 		9A1C84FA2814E822001020EF /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		9A1C84FD2814ED81001020EF /* AddingBriefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingBriefController.swift; sourceTree = "<group>"; };
+		9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BasicCalc.xcdatamodel; sourceTree = "<group>"; };
+		9A1C85022815A865001020EF /* SettingGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingGroupController.swift; sourceTree = "<group>"; };
+		9A1C85052815BB0F001020EF /* GroupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupButton.swift; sourceTree = "<group>"; };
+		9A1C85072815C5C7001020EF /* AttendingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendingButton.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -277,7 +285,8 @@
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
 				9A1C84FA2814E822001020EF /* PersistenceManager.swift */,
-				9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */,
+				9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */,
+				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -298,8 +307,19 @@
 			isa = PBXGroup;
 			children = (
 				9A1C84FD2814ED81001020EF /* AddingBriefController.swift */,
+				9A1C85022815A865001020EF /* SettingGroupController.swift */,
+				9A1C85042815BAF6001020EF /* SubViews */,
 			);
 			path = DutchPay;
+			sourceTree = "<group>";
+		};
+		9A1C85042815BAF6001020EF /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				9A1C85052815BB0F001020EF /* GroupButton.swift */,
+				9A1C85072815C5C7001020EF /* AttendingButton.swift */,
+			);
+			path = SubViews;
 			sourceTree = "<group>";
 		};
 		9AF62EE526FF65CC00E183AB /* Services */ = {
@@ -599,12 +619,13 @@
 				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
+				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
 				9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */,
-				9A083FB024CCD55D001057D2 /* Caliy.xcdatamodeld in Sources */,
+				9A083FB024CCD55D001057D2 /* Dutchpay.xcdatamodeld in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
@@ -617,10 +638,12 @@
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
+				9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
+				9A1C85032815A865001020EF /* SettingGroupController.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
@@ -633,6 +656,7 @@
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
+				9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,13 +1005,23 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		9A083FAE24CCD55D001057D2 /* Caliy.xcdatamodeld */ = {
+		9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				9A083FAF24CCD55D001057D2 /* Caliy.xcdatamodel */,
 			);
 			currentVersion = 9A083FAF24CCD55D001057D2 /* Caliy.xcdatamodel */;
-			path = Caliy.xcdatamodeld;
+			path = Dutchpay.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */,
+			);
+			currentVersion = 9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */;
+			path = BasicCalc.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

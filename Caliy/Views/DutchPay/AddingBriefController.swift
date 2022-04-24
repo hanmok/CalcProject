@@ -107,7 +107,6 @@ class AddingBriefController: UIViewController {
         btn.layer.borderColor = UIColor.magenta.cgColor
         btn.layer.borderWidth = 1
         return btn
-        
     }()
     
     

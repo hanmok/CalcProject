@@ -141,7 +141,8 @@ class DutchpayController: UIViewController {
         }
         
         
-        let addingBriefController = AddingBriefController()
+//        let addingBriefController = AddingBriefController()
+        let addingBriefController = SettingGroupController()
         
         self.addChild(addingBriefController)
         
@@ -149,8 +150,8 @@ class DutchpayController: UIViewController {
         
         addingBriefController.view.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(view).dividedBy(1.5)
-            make.height.equalTo(view).dividedBy(3)
+            make.width.equalTo(view).dividedBy(1.2)
+            make.height.equalTo(view).dividedBy(1.5)
         }
         addingBriefController.view.layer.cornerRadius = 10
         

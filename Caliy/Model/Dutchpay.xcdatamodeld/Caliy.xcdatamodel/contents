@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21D62" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Dutchpay" representedClassName="Dutchpay" syncable="YES" codeGenerationType="class">
+        <attribute name="totalSpentAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="placeUnits" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="PlaceUnit" inverseName="dutchPay" inverseEntity="PlaceUnit"/>
+        <relationship name="relatedPeople" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person" inverseName="relatedAt" inverseEntity="Person"/>
+    </entity>
+    <entity name="Group" representedClassName="Group" syncable="YES" codeGenerationType="class">
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="dutchPay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dutchpay"/>
+        <relationship name="people" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Person" inverseName="belongTo" inverseEntity="Person"/>
+    </entity>
+    <entity name="Participant" representedClassName="Participant" syncable="YES" codeGenerationType="class">
+        <attribute name="isAttended" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="spentAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="attendedAt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceUnit" inverseName="participants" inverseEntity="PlaceUnit"/>
+    </entity>
+    <entity name="Person" representedClassName="Person" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="belongTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="people" inverseEntity="Group"/>
+        <relationship name="relatedAt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dutchpay" inverseName="relatedPeople" inverseEntity="Dutchpay"/>
+    </entity>
+    <entity name="PlaceUnit" representedClassName="PlaceUnit" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="placeTitle" optional="YES" attributeType="String"/>
+        <attribute name="spentAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="dutchPay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dutchpay" inverseName="placeUnits" inverseEntity="Dutchpay"/>
+        <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Participant" inverseName="attendedAt" inverseEntity="Participant"/>
+    </entity>
+    <elements>
+        <element name="Group" positionX="-162.0899047851562" positionY="21.6839599609375" width="128" height="103"/>
+        <element name="Person" positionX="83.0150146484375" positionY="145.102294921875" width="128" height="88"/>
+        <element name="PlaceUnit" positionX="367.6398620605469" positionY="-132.4838562011719" width="128" height="118"/>
+        <element name="Participant" positionX="562.3368530273438" positionY="2.4891357421875" width="128" height="88"/>
+        <element name="Dutchpay" positionX="103.9974975585938" positionY="-106.3706359863281" width="128" height="88"/>
+    </elements>
+</model>
