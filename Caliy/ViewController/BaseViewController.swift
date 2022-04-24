@@ -307,7 +307,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         
 //        view.backgroundColor = colorList.testColors2[23].color
-        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
+//        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
+        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     
@@ -846,12 +847,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[deviceSize]!)
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
         
-        if userDefaultSetup.getDarkMode() {
-            view.backgroundColor = colorList.newMainForDarkMode
-        } else {
-
-            view.backgroundColor = colorList.newMainForLightMode
-        }
+        
+        view.backgroundColor = userDefaultSetup.getDarkMode() ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        
+        
         
         /*       color Testing Code
         frameView.addSubview(upButton)
@@ -1019,7 +1018,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subMinus = lightSubtract
         subEqual = lightEqual
         
-//        subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
+        subHistory = UIImageView(image: #imageLiteral(resourceName: "light_down"))
     }
     
     fileprivate func setupButtonImageInDarkMode() {
@@ -1048,7 +1047,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         subMinus = darkSubtract
         subEqual = darkEqual
         
-//        subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
+        subHistory = UIImageView(image: #imageLiteral(resourceName: "dark_down"))
         
     }
     
@@ -1195,8 +1194,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             for operBtn in operatorBtns{
                 operBtn.backgroundColor =  colorList.bgColorForOperatorsDM
             }
+            
             for other in backgrounds {
-                other.backgroundColor = colorList.bgColorForExtrasDM
+//                other.backgroundColor = colorList.bgColorForExtrasDM
+                other.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
             }
             
 //            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
@@ -1236,10 +1237,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             }
             
             for other in backgrounds {
-                other.backgroundColor = colorList.bgColorForExtrasLM
+//                other.backgroundColor = colorList.bgColorForExtrasLM
+                other.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
             }
             
-//            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
             
             setupButtonImageInLightMode()
             

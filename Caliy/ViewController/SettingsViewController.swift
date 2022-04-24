@@ -46,9 +46,11 @@ class SettingsViewController: UIViewController {
         
         
         if userDefaultSetup.getDarkMode() {
-            view.backgroundColor = colorList.newMainForDarkMode
+//            view.backgroundColor = colorList.newMainForDarkMode
+            view.backgroundColor = colorList.bgColorForExtrasDM
         } else {
-            view.backgroundColor = colorList.newMainForLightMode
+//            view.backgroundColor = colorList.newMainForLightMode
+            view.backgroundColor = colorList.bgColorForExtrasLM
         }
 //        emptyView.backgroundColor = .orange
         
@@ -273,12 +275,12 @@ extension SettingsViewController: SettingsTableCellDelegate {
             self.tableView.reloadData()
             
             if userDefaultSetup.getDarkMode() {
-//                view.backgroundColor = colorList.bgColorForExtrasDM
-                view.backgroundColor = colorList.newMainForDarkMode
+                view.backgroundColor = colorList.bgColorForExtrasDM
+//                view.backgroundColor = colorList.newMainForDarkMode
 //                emptyView.backgroundColor = .orange
             } else {
-//                view.backgroundColor = colorList.bgColorForExtrasLM
-                view.backgroundColor = colorList.newMainForLightMode
+                view.backgroundColor = colorList.bgColorForExtrasLM
+//                view.backgroundColor = colorList.newMainForLightMode
 //                emptyView.backgroundColor = .orange
             }
             

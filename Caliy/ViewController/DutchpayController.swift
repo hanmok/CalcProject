@@ -111,10 +111,16 @@ class DutchpayController: UIViewController {
             make.center.equalTo(containerView)
         }
         
+        // Color
         if userDefaultSetup.getDarkMode() {
-            view.backgroundColor = colorList.newMainForDarkMode
+            view.backgroundColor = colorList.bgColorForExtrasDM
+            containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
         } else {
-            view.backgroundColor = colorList.newMainForLightMode
+            view.backgroundColor = colorList.bgColorForExtrasLM
+            containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
         }
     }
+    
+    
+    
 }

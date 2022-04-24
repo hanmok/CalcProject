@@ -10,9 +10,11 @@
         <attribute name="resultValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="titleLabel" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="DutchPay" representedClassName="DutchPay" syncable="YES" codeGenerationType="class"/>
     <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class"/>
     <elements>
-        <element name="Entity" positionX="-63" positionY="-18" width="128" height="29"/>
         <element name="BasicHistory" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="Entity" positionX="-63" positionY="-18" width="128" height="29"/>
+        <element name="DutchPay" positionX="-54" positionY="54" width="128" height="29"/>
     </elements>
 </model>
