@@ -55,7 +55,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     
     func configureViewControllers() {
-                self.delegate = self
+//                self.delegate = self
         
         let calculator = templateNavigationController(
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
