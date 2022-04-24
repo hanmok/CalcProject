@@ -32,9 +32,9 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         //            self.tabBar.frame = tabFrame
         createObservers()
         configureColors()
-        
+//        viewControllers.inde
         //        view.backgroundColor = userDefaultSetup.getIsDarkModeOn() ? .white : .black
-        
+//        self.delega
         print("flag darkMode: \(isDarkMode)")
         print("userdefault: \(userDefaultSetup.getDarkMode())")
     }
@@ -55,7 +55,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     
     func configureViewControllers() {
-        //        self.delegate = self
+                self.delegate = self
         
         let calculator = templateNavigationController(
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
@@ -65,7 +65,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
-            rootViewController: DutchpayController())
+            
+            rootViewController: DutchpayController(persistenceManager: PersistenceManager.shared))
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
@@ -144,9 +145,13 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 }
 
 extension MainTabController: UITabBarControllerDelegate {
+    
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        
+
         let index = viewControllers?.firstIndex(of: viewController)
+        if let validIndex = index {
+            print("selected viewController: \(validIndex)")
+        }
         if index == 0 {
             print("calculator ")
             viewController.viewDidLoad()
@@ -159,11 +164,18 @@ extension MainTabController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let tabBarIndex = tabBarController.selectedIndex
+        
+      
+            print("selected tabBarIndex: \(tabBarIndex)")
+      
+        
         print(#line, "didSelect in MainTabController triggered")
         if tabBarIndex == 0 {
             self.viewDidLoad()
         }
     }
+    
+//    tabbarcontr
 }
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
 

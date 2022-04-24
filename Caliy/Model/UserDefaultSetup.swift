@@ -21,6 +21,27 @@ struct UserDefaultSetup{
 //        case deviceVersionType
     }
     
+    
+    public var soundOn: Bool {
+        get {
+            defaults.bool(forKey: UserDefaultKey.soundOn.rawValue)
+        }
+        set {
+            defaults.set(newValue ,forKey: UserDefaultKey.soundOn.rawValue)
+        }
+    }
+    
+    public var darkModeOn: Bool {
+        get {
+            defaults.bool(forKey: UserDefaultKey.darkModeOn.rawValue)
+        }
+        set {
+            defaults.set(newValue ,forKey: UserDefaultKey.darkModeOn.rawValue)
+        }
+    }
+    
+    
+    
     // MARK: - Set
     
     func setSoundMode(isSoundOn : Bool){
