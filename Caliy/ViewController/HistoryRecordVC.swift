@@ -35,7 +35,7 @@ class HistoryRecordVC: UIViewController {
     
     var userDefaultSetup = UserDefaultSetup()
     
-    lazy var darkModeOn = userDefaultSetup.getDarkMode()
+    lazy var darkModeOn = userDefaultSetup.darkModeOn
     
     let realm = RealmService.shared.realm
     
@@ -113,7 +113,7 @@ class HistoryRecordVC: UIViewController {
             portraitMode = true
         }
         
-        darkModeOn = userDefaultSetup.getDarkMode()
+        darkModeOn = userDefaultSetup.darkModeOn
         
         setupLayout()
         
@@ -194,13 +194,15 @@ class HistoryRecordVC: UIViewController {
         view.addSubview(tableView)
         
         if portraitMode{
-            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getDeviceSize())
+//            tableView.pinWithSpace2(to: view, type : userDefaultSetup.getDeviceSize())
+            tableView.pinWithSpace2(to: view, type : userDefaultSetup.deviceSize)
             
             view.addSubview(infoView)
             infoView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor)
             
             
-            switch userDefaultSetup.getDeviceSize() {
+//            switch userDefaultSetup.getDeviceSize() {
+            switch userDefaultSetup.deviceSize {
             case DeviceSize.smallest.rawValue:  infoView.setHeight(50)
             case DeviceSize.small.rawValue:  infoView.setHeight(80)
             case DeviceSize.medium.rawValue:  infoView.setHeight(80)
@@ -335,10 +337,10 @@ class HistoryRecordVC: UIViewController {
     
     func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
         showToast(message: msg,
-                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
-                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.getDeviceSize()] ?? 667,
+                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
+                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
                   widthRatio: wRatio, heightRatio: hRatio,
-                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.getDeviceSize()] ?? 13)
+                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
     }
     
     let infoView = UIView()
@@ -414,9 +416,11 @@ extension HistoryRecordVC : UITableViewDataSource{
             
             var userInput = ""
             
-            if self.historyRecords[historyIndex].titleLabel != nil {
-                userInput = self.historyRecords[historyIndex].titleLabel!
+            if let titleLabel = self.historyRecords[historyIndex].titleLabel {
+//                userInput = self.historyRecords[historyIndex].titleLabel!
+                userInput = titleLabel
             }
+            
             // alert
             let alertController = UIAlertController(title: self.localizedStrings.editName, message: "", preferredStyle: UIAlertController.Style.alert)
             
@@ -462,8 +466,9 @@ extension HistoryRecordVC : UITableViewDataSource{
             let cancelAction = UIAlertAction(title: self.localizedStrings.cancel, style: UIAlertAction.Style.destructive, handler: {
                 (action : UIAlertAction!) -> Void in })
             
-            alertController.addAction(saveAction)
             alertController.addAction(cancelAction)
+            alertController.addAction(saveAction)
+
             
             self.present(alertController, animated: true, completion: nil)
             

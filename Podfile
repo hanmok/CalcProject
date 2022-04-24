@@ -9,7 +9,7 @@ target 'Caliy' do
 
 pod 'RealmSwift', '~> 5.0'
 pod 'SnapKit', '~> 5.6.0'
-
+pod 'AddThen'
   target 'CaliyTests' do
     inherit! :search_paths
     # Pods for testing

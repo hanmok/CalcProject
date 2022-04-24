@@ -1,4 +1,5 @@
 PODS:
+  - AddThen (1.0.3)
   - Realm (5.5.1):
     - Realm/Headers (= 5.5.1)
   - Realm/Headers (5.5.1)
@@ -7,20 +8,23 @@ PODS:
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
+  - AddThen
   - RealmSwift (~> 5.0)
   - SnapKit (~> 5.6.0)
 
 SPEC REPOS:
   trunk:
+    - AddThen
     - Realm
     - RealmSwift
     - SnapKit
 
 SPEC CHECKSUMS:
+  AddThen: aeab6c1cb34bef9667d593be3f67a2dd0e7f0a2b
   Realm: c2ffe0667f9c98c9ba65f608ba85684d39826145
   RealmSwift: 5a35c1c35c3e1925e6fcd092c881d5cc4a826bff
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: ab2d978cc1adcce826cb1687399f0dfd3c85b529
+PODFILE CHECKSUM: 5da35abb99524d8d183dac440741b3c2db9c9053
 
 COCOAPODS: 1.11.3

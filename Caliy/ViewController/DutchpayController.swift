@@ -14,6 +14,40 @@ class DutchpayController: UIViewController {
     
     // MARK: - Properties
     
+    let persistenceManager: PersistenceManager
+    
+    init(persistenceManager: PersistenceManager) {
+        self.persistenceManager = persistenceManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    /*
+    func createUser() {
+        let user = User(context: persistenceManager.context)
+        user.name = "andrew"
+        
+        persistenceManager.save()
+        
+    }
+    */
+    
+    /*
+    func getUsers() {
+        
+//        guard let users = try! persistenceManager.context.fetch(User.fetchRequest()) as? [User] else { return }
+        
+        let users = persistenceManager.fetch(User.self)
+        users.forEach({ print($0.name) })
+        
+    }
+     */
+    
+    
+    
     var userDefaultSetup = UserDefaultSetup()
     
     let colorList = ColorList()
@@ -68,6 +102,12 @@ class DutchpayController: UIViewController {
         return cv
     }()
     
+    private let blurredView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        return view
+    }()
+    
    
     
     // MARK: - View LifeCycle
@@ -79,6 +119,8 @@ class DutchpayController: UIViewController {
         
         setupLayout()
         addTargets()
+        
+        presentAddingController()
     }
     
     private func addTargets() {
@@ -87,6 +129,32 @@ class DutchpayController: UIViewController {
     
     @objc func addDutchpay(_ sender: UIButton) {
             print("btn pressed!")
+        
+        presentAddingController()
+    }
+    
+    func presentAddingController() {
+        
+        view.addSubview(blurredView)
+        blurredView.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalToSuperview()
+        }
+        
+        
+        let addingBriefController = AddingBriefController()
+        
+        self.addChild(addingBriefController)
+        
+        self.view.addSubview(addingBriefController.view)
+        
+        addingBriefController.view.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(view).dividedBy(1.5)
+            make.height.equalTo(view).dividedBy(3)
+        }
+        addingBriefController.view.layer.cornerRadius = 10
+        
+        addingBriefController.didMove(toParent: self)
     }
     
     private func setupLayout() {
@@ -112,7 +180,7 @@ class DutchpayController: UIViewController {
         }
         
         // Color
-        if userDefaultSetup.getDarkMode() {
+        if userDefaultSetup.darkModeOn {
             view.backgroundColor = colorList.bgColorForExtrasDM
             containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
         } else {

@@ -25,10 +25,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     var userDefaultSetup = UserDefaultSetup() // model, view
     // USERDEFAULT VALUES
-    lazy var isDarkMode = userDefaultSetup.getDarkMode()
-    lazy var isSoundOn = userDefaultSetup.getSoundMode()
-    lazy var isNotificationOn = userDefaultSetup.getNotificationMode()
-    lazy var deviceSize = userDefaultSetup.getDeviceSize()
+//    lazy var isDarkMode = userDefaultSetup.darkModeOn
+//    lazy var isSoundOn = userDefaultSetup.getSoundMode()
+//    lazy var isNotificationOn = userDefaultSetup.getNotificationMode()
+//    lazy var deviceSize = userDefaultSetup.getDeviceSize()
     
     /// entire view for basic calculator (not HistoryRecordVC)
     var frameView = UIView()
@@ -143,7 +143,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         createObservers()
         
         navigationController?.navigationBar.isHidden = true
-        
+        print("darkMode in baseVC: \(userDefaultSetup.darkModeOn)")
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -231,10 +231,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             return
         }
         if receivedAnsPressed {
-            resultTextView.textColor = isDarkMode ? colorList.textColorForResultDM : colorList.textColorForResultLM
+            resultTextView.textColor = userDefaultSetup.darkModeOn ? colorList.textColorForResultDM : colorList.textColorForResultLM
             
         } else {
-            resultTextView.textColor = isDarkMode ? colorList.textColorForSemiResultDM : colorList.textColorForSemiResultLM
+            resultTextView.textColor = userDefaultSetup.darkModeOn ? colorList.textColorForSemiResultDM : colorList.textColorForSemiResultLM
         }
     }
     
@@ -270,7 +270,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 self.toastHelper(msg: localizedStrings.floatingLimit, wRatio: 0.6, hRatio: 0.08)
             }
         case .modified:
-            if isNotificationOn {
+            if userDefaultSetup.notificationOn {
                 self.toastHelper(msg: localizedStrings.modified, wRatio: 0.4, hRatio: 0.04)
             }
         case .saved:
@@ -297,18 +297,20 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             print("something is wrong with soundMode in BaseViewController")
             return
         }
-        // both of these updates each time
-        isDarkMode = darkModeInfo
         
-        isSoundOn = soundModeInfo
-        isNotificationOn = notificationModeInfo
+        
+        // both of these updates each time
+//        isDarkMode = darkModeInfo
+//        userDefaultSetup
+//        isSoundOn = soundModeInfo
+//        isNotificationOn = notificationModeInfo
         
         setupColorAndImage()
         
         
 //        view.backgroundColor = colorList.testColors2[23].color
 //        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
-        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     
@@ -358,7 +360,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     // tags -2 ~ 9 : number, 11 ~ 18 : operators, delete: 21
     @objc func turnIntoOriginalColor(sender : UIButton){
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
             switch sender.tag {
             case -2 ... 9:
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
@@ -398,7 +400,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     // deletePressedDown
     @objc func handleDeletePressedDown(sender : UIButton){
 
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
 //            sender.backgroundColor =  colorList.bgColorForExtrasDM
             sender.backgroundColor = colorList.bgColorForOperatorsDM
         }else{
@@ -422,7 +424,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
      /// when button tapped 'down', change colors
     @objc func handleColorChangeAction(sender: UIButton) {
-        sender.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     /// triggerd when historyButton Tapped
@@ -442,19 +444,21 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     /// 보류 settings
     func setupUserDefaults(){
-        if userDefaultSetup.getHasEverChanged(){
-            isDarkMode = userDefaultSetup.getDarkMode()
-            isSoundOn = userDefaultSetup.getSoundMode()
-            isNotificationOn = userDefaultSetup.getNotificationMode()
-
-        }
-        else{ // initial value . when a user first download.
-            print("flag2, this line has called")
-            userDefaultSetup.setDarkMode(isDarkMode: true)
-            userDefaultSetup.setNotificationMode(isNotificationOn: false)
-            userDefaultSetup.setSoundMode(isSoundOn: true)
-
-        }
+//        if userDefaultSetup.getHasEverChanged(){
+//        userDefaultSetup.everChanged {
+////            isDarkMode = userDefaultSetup.darkModeOn
+////            isSoundOn = userDefaultSetup.getSoundMode()
+////            isNotificationOn = userDefaultSetup.getNotificationMode()
+//
+//        }
+//        else{ // initial value . when a user first download.
+//            print("flag2, this line has called")
+////            userDefaultSetup.setDarkMode(isDarkMode: true)
+////            userDefaultSetup.darkModeOn = true
+////            userDefaultSetup.setNotificationMode(isNotificationOn: false)
+////            userDefaultSetup.setSoundMode(isSoundOn: true)
+//
+//        }
         
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
@@ -466,21 +470,27 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         switch maxLength {
         case 0 ... 800:
 //            userDefaultSetup.setUserDeviceSizeInfo(userDeviceSizeInfo: "A")
-            userDefaultSetup.setDeviceSize(size: DeviceSize.smallest.rawValue)
+//            userDefaultSetup.setDeviceSize(size: DeviceSize.smallest.rawValue)
+            userDefaultSetup.deviceSize = DeviceSize.smallest.rawValue
         case 801 ... 1000:
-            userDefaultSetup.setDeviceSize(size: DeviceSize.small.rawValue)
+//            userDefaultSetup.setDeviceSize(size: DeviceSize.small.rawValue)
+            userDefaultSetup.deviceSize = DeviceSize.small.rawValue
         case 1001 ... 1100:
-            userDefaultSetup.setDeviceSize(size: DeviceSize.medium.rawValue)
+//            userDefaultSetup.setDeviceSize(size: DeviceSize.medium.rawValue)
+            userDefaultSetup.deviceSize = DeviceSize.medium.rawValue
         case 1101 ... 1500:
-            userDefaultSetup.setDeviceSize(size: DeviceSize.large.rawValue)
+//            userDefaultSetup.setDeviceSize(size: DeviceSize.large.rawValue)
+            userDefaultSetup.deviceSize = DeviceSize.large.rawValue
         default:
-            userDefaultSetup.setDeviceSize(size: DeviceSize.smallest.rawValue)
+//            userDefaultSetup.setDeviceSize(size: DeviceSize.smallest.rawValue)
+            userDefaultSetup.deviceSize = DeviceSize.smallest.rawValue
         }
     }
     
     
     func playSound(){
-        if isSoundOn {
+//        if isSoundOn {
+        if userDefaultSetup.soundOn {
             AudioServicesPlaySystemSound(1104)
         }
     }
@@ -488,10 +498,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
         showToast(message: msg,
-                  defaultWidthSize: self.frameSize.showToastWidthSize[self.deviceSize] ?? 375,
-                  defaultHeightSize: self.frameSize.showToastHeightSize[self.deviceSize] ?? 667,
+                  defaultWidthSize: self.frameSize.showToastWidthSize[self.userDefaultSetup.deviceSize] ?? 375,
+                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
                   widthRatio: wRatio, heightRatio: hRatio,
-                  fontsize: self.fontSize.showToastTextSize[self.deviceSize] ?? 13)
+                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
     }
 
     //MARK: - < Main Functional Section Ends >
@@ -844,11 +854,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             historyDragButton.setDimensions(width: 40, height: 40)
         }
         
-        resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[deviceSize]!)
-        progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
+        resultTextView.font = UIFont.systemFont(ofSize: fontSize.resultBasicPortrait[userDefaultSetup.deviceSize]!)
+        progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[userDefaultSetup.deviceSize]!)
         
         
-        view.backgroundColor = userDefaultSetup.getDarkMode() ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
         
         
         
@@ -1185,7 +1195,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         let backgrounds = [progressView,resultTextView,emptySpace, deleteButton]
         
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
             
             
             for numBtn in numBtns{ // emptySpace 등 도 포함..;;
