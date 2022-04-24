@@ -17,7 +17,7 @@ protocol SettingsTableCellDelegate: AnyObject {
 
 class SettingsTableCell: UITableViewCell {
     
-    lazy var isDarkMode = userDefaultSetup.getDarkMode()
+    lazy var isDarkMode = userDefaultSetup.darkModeOn
     let colorList = ColorList()
     static let identifier = "SettingsTableCell"
     // MARK: - Properties
@@ -80,7 +80,7 @@ class SettingsTableCell: UITableViewCell {
     override func layoutSubviews() { // 이거 계속 trigger 되는데?
         super.layoutSubviews()
         
-        isDarkMode = userDefaultSetup.getDarkMode()
+        isDarkMode = userDefaultSetup.darkModeOn
         
                 switchControl.anchor(right: rightAnchor, paddingRight: 12)
                 switchControl.centerY(inView: self)

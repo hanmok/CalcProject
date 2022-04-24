@@ -35,7 +35,7 @@ class HistoryRecordVC: UIViewController {
     
     var userDefaultSetup = UserDefaultSetup()
     
-    lazy var darkModeOn = userDefaultSetup.getDarkMode()
+    lazy var darkModeOn = userDefaultSetup.darkModeOn
     
     let realm = RealmService.shared.realm
     
@@ -113,7 +113,7 @@ class HistoryRecordVC: UIViewController {
             portraitMode = true
         }
         
-        darkModeOn = userDefaultSetup.getDarkMode()
+        darkModeOn = userDefaultSetup.darkModeOn
         
         setupLayout()
         

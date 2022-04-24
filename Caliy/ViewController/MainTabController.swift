@@ -18,7 +18,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     var userDefaultSetup = UserDefaultSetup()
     let colorList = ColorList()
     
-    lazy var isDarkMode = userDefaultSetup.getDarkMode()
+    lazy var isDarkMode = userDefaultSetup.darkModeOn
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         //        view.backgroundColor = userDefaultSetup.getIsDarkModeOn() ? .white : .black
 //        self.delega
         print("flag darkMode: \(isDarkMode)")
-        print("userdefault: \(userDefaultSetup.getDarkMode())")
+        print("userdefault: \(userDefaultSetup.darkModeOn)")
     }
     
     func createObservers() {

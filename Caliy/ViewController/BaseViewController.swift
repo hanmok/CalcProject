@@ -25,7 +25,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     var userDefaultSetup = UserDefaultSetup() // model, view
     // USERDEFAULT VALUES
-    lazy var isDarkMode = userDefaultSetup.getDarkMode()
+//    lazy var isDarkMode = userDefaultSetup.darkModeOn
     lazy var isSoundOn = userDefaultSetup.getSoundMode()
     lazy var isNotificationOn = userDefaultSetup.getNotificationMode()
     lazy var deviceSize = userDefaultSetup.getDeviceSize()
@@ -143,7 +143,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         createObservers()
         
         navigationController?.navigationBar.isHidden = true
-        
+        print("darkMode in baseVC: \(userDefaultSetup.darkModeOn)")
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -231,10 +231,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             return
         }
         if receivedAnsPressed {
-            resultTextView.textColor = isDarkMode ? colorList.textColorForResultDM : colorList.textColorForResultLM
+            resultTextView.textColor = userDefaultSetup.darkModeOn ? colorList.textColorForResultDM : colorList.textColorForResultLM
             
         } else {
-            resultTextView.textColor = isDarkMode ? colorList.textColorForSemiResultDM : colorList.textColorForSemiResultLM
+            resultTextView.textColor = userDefaultSetup.darkModeOn ? colorList.textColorForSemiResultDM : colorList.textColorForSemiResultLM
         }
     }
     
@@ -298,8 +298,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             return
         }
         // both of these updates each time
-        isDarkMode = darkModeInfo
-        
+//        isDarkMode = darkModeInfo
+//        userDefaultSetup
         isSoundOn = soundModeInfo
         isNotificationOn = notificationModeInfo
         
@@ -308,7 +308,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
 //        view.backgroundColor = colorList.testColors2[23].color
 //        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
-        view.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     
@@ -358,7 +358,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     // tags -2 ~ 9 : number, 11 ~ 18 : operators, delete: 21
     @objc func turnIntoOriginalColor(sender : UIButton){
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
             switch sender.tag {
             case -2 ... 9:
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
@@ -398,7 +398,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     // deletePressedDown
     @objc func handleDeletePressedDown(sender : UIButton){
 
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
 //            sender.backgroundColor =  colorList.bgColorForExtrasDM
             sender.backgroundColor = colorList.bgColorForOperatorsDM
         }else{
@@ -422,7 +422,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
      /// when button tapped 'down', change colors
     @objc func handleColorChangeAction(sender: UIButton) {
-        sender.backgroundColor = isDarkMode ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
     /// triggerd when historyButton Tapped
@@ -443,14 +443,15 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     /// 보류 settings
     func setupUserDefaults(){
         if userDefaultSetup.getHasEverChanged(){
-            isDarkMode = userDefaultSetup.getDarkMode()
+//            isDarkMode = userDefaultSetup.darkModeOn
             isSoundOn = userDefaultSetup.getSoundMode()
             isNotificationOn = userDefaultSetup.getNotificationMode()
 
         }
         else{ // initial value . when a user first download.
             print("flag2, this line has called")
-            userDefaultSetup.setDarkMode(isDarkMode: true)
+//            userDefaultSetup.setDarkMode(isDarkMode: true)
+//            userDefaultSetup.darkModeOn = true
             userDefaultSetup.setNotificationMode(isNotificationOn: false)
             userDefaultSetup.setSoundMode(isSoundOn: true)
 
@@ -848,7 +849,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         progressView.font = UIFont.systemFont(ofSize: fontSize.processBasicPortrait[deviceSize]!)
         
         
-        view.backgroundColor = userDefaultSetup.getDarkMode() ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
         
         
         
@@ -1185,7 +1186,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         let backgrounds = [progressView,resultTextView,emptySpace, deleteButton]
         
-        if isDarkMode{
+        if userDefaultSetup.darkModeOn{
             
             
             for numBtn in numBtns{ // emptySpace 등 도 포함..;;

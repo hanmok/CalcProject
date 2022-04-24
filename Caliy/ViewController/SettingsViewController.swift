@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController {
     var hasLoaded = false
     
     
-    lazy var isDarkMode = userDefaultSetup.getDarkMode()
+//    lazy var isDarkMode = userDefaultSetup.darkModeOn
     
     let colorList = ColorList()
     weak var delegate: SettingsViewControllerDelegate?
@@ -42,10 +42,11 @@ class SettingsViewController: UIViewController {
         
         configureUI()
         
-        tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
+        tableView.backgroundColor = userDefaultSetup.darkModeOn
+        ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
         
         
-        if userDefaultSetup.getDarkMode() {
+        if userDefaultSetup.darkModeOn {
 //            view.backgroundColor = colorList.newMainForDarkMode
             view.backgroundColor = colorList.bgColorForExtrasDM
         } else {
@@ -107,7 +108,7 @@ class SettingsViewController: UIViewController {
     // triggered each time switch has toggled
     func sendUpdatingUserDefault() {
         print("sendUPdatingUserDefault has triggered")
-        let userDefaultInfo = ["isDarkOn": userDefaultSetup.getDarkMode(),
+        let userDefaultInfo = ["isDarkOn": userDefaultSetup.darkModeOn,
                                "isSoundOn": userDefaultSetup.getSoundMode(),
                                "isNotificationOn": userDefaultSetup.getNotificationMode()]
         
@@ -117,10 +118,10 @@ class SettingsViewController: UIViewController {
         print("sending updateUserdefault from SettingsVC")
         
         // 이거 두개.. screen Mode 가 바뀔 때에만 호출할 수는 없나 ?
-        isDarkMode = userDefaultSetup.getDarkMode()
+//        isDarkMode = userDefaultSetup.darkModeOn
         
 //        tableView.backgroundColor = isDarkMode ? .black  : UIColor(white: 242 / 255, alpha: 1)
-        tableView.backgroundColor = isDarkMode ? colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
+        tableView.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
 //        tableView.backgroundColor = .magenta
         
         }
@@ -154,14 +155,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         if hasLoaded {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
 
-                if self.userDefaultSetup.getDarkMode() {
+                if self.userDefaultSetup.darkModeOn {
                     headerView.backgroundColor = self.colorList.bgColorForExtrasDM
                 } else {
                     headerView.backgroundColor = self.colorList.bgColorForExtrasLM
                 }
             }
         } else {
-            if self.userDefaultSetup.getDarkMode() {
+            if self.userDefaultSetup.darkModeOn {
                 headerView.backgroundColor = self.colorList.bgColorForExtrasDM
             } else {
                 headerView.backgroundColor = self.colorList.bgColorForExtrasLM
@@ -170,7 +171,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         let title = UILabel()
         title.font = UIFont.boldSystemFont(ofSize: 16)
-        title.textColor = isDarkMode ? .white : colorList.textColorForResultLM
+        title.textColor = userDefaultSetup.darkModeOn ? .white : colorList.textColorForResultLM
         
         title.text = SettingsSection(rawValue: section)?.description
         
@@ -206,8 +207,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
             switch mode {
             case .darkMode:
-                cell.switchControl.isOn = userDefaultSetup.getDarkMode()
-                print("getIsDarkModeOn: \(userDefaultSetup.getDarkMode())")
+                cell.switchControl.isOn = userDefaultSetup.darkModeOn
+                print("getIsDarkModeOn: \(userDefaultSetup.darkModeOn)")
                 cell.switchControl.tag = indexPath.row
                 
             case .sound:
@@ -269,12 +270,13 @@ extension SettingsViewController: SettingsTableCellDelegate {
     func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool) {
         switch tag {
         case 0:
-            userDefaultSetup.setDarkMode(isDarkMode: isOn)
+//            userDefaultSetup.setDarkMode(isDarkMode: isOn)
+            userDefaultSetup.darkModeOn = isOn
            
             hasLoaded = true
             self.tableView.reloadData()
             
-            if userDefaultSetup.getDarkMode() {
+            if userDefaultSetup.darkModeOn {
                 view.backgroundColor = colorList.bgColorForExtrasDM
 //                view.backgroundColor = colorList.newMainForDarkMode
 //                emptyView.backgroundColor = .orange

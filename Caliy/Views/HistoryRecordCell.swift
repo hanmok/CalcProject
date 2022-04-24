@@ -24,7 +24,7 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
         addSubview(titleLabel)
         
         setupProcessAndResultLabelConstraints()
-        setupColor(isDarkModeOn: userDefaultSetup.getDarkMode())
+        setupColor(isDarkModeOn: userDefaultSetup.darkModeOn)
     }
     
     
@@ -76,7 +76,7 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
             let attributedText = NSMutableAttributedString(string: "", attributes: [ .font: UIFont.systemFont(ofSize: 1)])
             let titleAttributedText = NSMutableAttributedString(string: "", attributes: [ .font: UIFont.systemFont(ofSize: 1)])
             
-            let isDarkMode = userDefaultSetup.getDarkMode()
+            let isDarkMode = userDefaultSetup.darkModeOn
             
             if !isDarkMode{//LightMode
                 

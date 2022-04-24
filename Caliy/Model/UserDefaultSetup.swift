@@ -49,10 +49,10 @@ struct UserDefaultSetup{
         defaults.set(isSoundOn,forKey: UserDefaultKey.soundOn.rawValue)
     }
     
-    func setDarkMode(isDarkMode : Bool){
-        
-        defaults.set(isDarkMode,forKey: UserDefaultKey.darkModeOn.rawValue)
-    }
+//    func setDarkMode(isDarkMode : Bool){
+//
+//        defaults.set(isDarkMode,forKey: UserDefaultKey.darkModeOn.rawValue)
+//    }
     
     func setNotificationMode(isNotificationOn : Bool){
         
@@ -83,9 +83,9 @@ struct UserDefaultSetup{
         return defaults.bool(forKey: UserDefaultKey.soundOn.rawValue)
     }
     
-    func getDarkMode() -> Bool{
-        return defaults.bool(forKey: UserDefaultKey.darkModeOn.rawValue)
-    }
+//    func getDarkMode() -> Bool{
+//        return defaults.bool(forKey: UserDefaultKey.darkModeOn.rawValue)
+//    }
     
     func getNotificationMode() -> Bool{
         return defaults.bool(forKey: UserDefaultKey.notificationOn.rawValue)
