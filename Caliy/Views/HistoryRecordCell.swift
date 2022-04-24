@@ -81,9 +81,9 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
             if !isDarkMode{//LightMode
                 
                 // date
-                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
+                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.deviceSize]!), .paragraphStyle : styleLeft, .foregroundColor: colorList.textColorForDateLM] ))
                 
-                titleAttributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "" + "\n" , attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]! + 3), .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultLM] ))
+                titleAttributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "" + "\n" , attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.deviceSize]! + 3), .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultLM] ))
                 
                 //\n
                 attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
@@ -92,39 +92,39 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
 
                 //process
                 if orientationPortrait && willbasicVCdisappear{
-                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
+                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     //result
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
                     
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.deviceSize]!), .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                     
                 }else if !orientationPortrait && willbasicVCdisappear{
                     
                     //HistoryLandscape
-                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
+                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     //result
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                 }else {
                     
                     //HistoryPortrait
-                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
+                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessLM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
@@ -132,16 +132,16 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     //result
                     
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultLM]))
                     
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                 }
                 
             }else{ // DarkMode
                 // date
-                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleLeft,  .foregroundColor: colorList.textColorForDateDM] ))
+                attributedText.append(NSAttributedString(string: dateValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleLeft,  .foregroundColor: colorList.textColorForDateDM] ))
                 
-                titleAttributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "" + "\n" , attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.getDeviceSize()]! + 3), .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultDM] ))
+                titleAttributedText.append(NSAttributedString(string: historyRecord.titleLabel ?? "" + "\n" , attributes: [.font: UIFont.systemFont(ofSize: fontSize.dateHistory[userDefaultSetup.deviceSize]! + 3), .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultDM] ))
                 
                 //\n
                 attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
@@ -151,9 +151,9 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                 if orientationPortrait && willbasicVCdisappear{
                     
                     //HistoryPortrait
-                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
+                    attributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processHisValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
@@ -161,16 +161,16 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     
                     //result
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultDM]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultDM]))
                     
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.getDeviceSize()]!), .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryPortrait[userDefaultSetup.deviceSize]!), .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                     
                 }else if !orientationPortrait && willbasicVCdisappear{
                     
                     //HistoryLandscape
-                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
+                    attributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processHisLongValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
@@ -178,25 +178,25 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     
                     //result
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultDM]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForResultDM]))
                     
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultHistoryLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                     
                 }else {
                     
                     //calc
-                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
+                    attributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: colorList.textColorForProcessDM] ))
                     
-                    titleAttributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
+                    titleAttributedText.append(NSAttributedString(string: processCalcValid + "\n", attributes: [ .font: UIFont.systemFont(ofSize: fontSize.processBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear] ))
                     
                     //\n
                     attributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     
                     titleAttributedText.append(NSAttributedString(string: "\n", attributes: [ .font:UIFont.systemFont(ofSize: 5),  .paragraphStyle : styleRight]))
                     //result
-                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultDM]))
+                    attributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight, .foregroundColor: colorList.textColorForResultDM]))
                     
-                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.getDeviceSize()]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
+                    titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                 }
             }
             stringLabel.attributedText = attributedText

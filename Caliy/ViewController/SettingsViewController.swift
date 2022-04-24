@@ -109,8 +109,8 @@ class SettingsViewController: UIViewController {
     func sendUpdatingUserDefault() {
         print("sendUPdatingUserDefault has triggered")
         let userDefaultInfo = ["isDarkOn": userDefaultSetup.darkModeOn,
-                               "isSoundOn": userDefaultSetup.getSoundMode(),
-                               "isNotificationOn": userDefaultSetup.getNotificationMode()]
+                               "isSoundOn": userDefaultSetup.soundOn,
+                               "isNotificationOn": userDefaultSetup.notificationOn]
         
         let name = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
         
@@ -208,15 +208,16 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             switch mode {
             case .darkMode:
                 cell.switchControl.isOn = userDefaultSetup.darkModeOn
-                print("getIsDarkModeOn: \(userDefaultSetup.darkModeOn)")
+//                print("getIsDarkModeOn: \(userDefaultSetup.darkModeOn)")
                 cell.switchControl.tag = indexPath.row
                 
             case .sound:
-                cell.switchControl.isOn = userDefaultSetup.getSoundMode()
+                cell.switchControl.isOn = userDefaultSetup.soundOn
                 cell.switchControl.tag = indexPath.row
                 
             case .notification:
-                cell.switchControl.isOn = userDefaultSetup.getNotificationMode()
+                cell.switchControl.isOn = userDefaultSetup.notificationOn
+                
                 cell.switchControl.tag = indexPath.row
             
             case .none:
@@ -287,11 +288,12 @@ extension SettingsViewController: SettingsTableCellDelegate {
             }
             
         case 1:
-            userDefaultSetup.setSoundMode(isSoundOn: isOn)
-            print("soundMode has changed to \(userDefaultSetup.getSoundMode())")
+//            userDefaultSetup.setSoundMode(isSoundOn: isOn)
+            userDefaultSetup.soundOn = isOn
         case 2:
-            userDefaultSetup.setNotificationMode(isNotificationOn: isOn)
-            print("notification has changed to \(userDefaultSetup.getNotificationMode())")
+//            userDefaultSetup.setNotificationMode(isNotificationOn: isOn)
+            userDefaultSetup.notificationOn = isOn
+//            print("notification has changed to \(userDefaultSetup.getNotificationMode())")
             
             
         default:
