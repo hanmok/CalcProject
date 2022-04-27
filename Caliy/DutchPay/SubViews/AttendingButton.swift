@@ -19,9 +19,9 @@ class AttendingButton: UIButton {
     }
     
     private func loadView() {
-        let title = attending ? "참석" : "불참"
+//        let title = attending ? "참석" : "불참"
         
-        self.setTitle(title, for: .normal)
+//        self.setTitle(title, for: .normal)
         self.backgroundColor = .brown
         self.layer.cornerRadius = 5
         self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
@@ -32,6 +32,4 @@ class AttendingButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
-

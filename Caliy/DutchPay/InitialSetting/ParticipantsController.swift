@@ -9,30 +9,15 @@
 import UIKit
 import SnapKit
 import AddThen
-
-struct Group2 {
-    let people: [Person2]
-        let title: String
-}
-
-struct Person2 {
-    let name: String
-    
-    init(_ name: String) {
-        self.name = name
-    }
-    
-    init(name: String) {
-        self.name = name
-    }
-}
+import Then
 
 private let cellIdentifier = "SettingGroupCell"
 private let footerIdentifier = "ProfileFooter" // Plus Button
 
-class SettingGroupController: UIViewController {
+class ParticipantsController: UIViewController {
 
-    private var participants = [Person2]()
+    private var participants: [Person2] = [Person2("hanmok"), Person2("jiwon"), Person2("dog")]
+    
     private var selectedGroup: Group2? {
         didSet {
             participantsCollectionView.reloadData()
@@ -46,35 +31,41 @@ class SettingGroupController: UIViewController {
     ]
     
     
+    
+//
+//    let topView = UILabel().then {
+//        $0.text = "참가 인원"
+//        $0.textAlignment = .center
+//        $0.font = .boldSystemFont(ofSize: 16)
+//        $0.backgroundColor = .white
+//        $0.textColor = .black
+//    }
+    
     lazy var testBtn1 = GroupButton(group: sampleGroups[0])
     lazy var testBtn2 = GroupButton(group: sampleGroups[1])
     
     let groupStackView = UIStackView()
     
-    let groupTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Group: "
-        return label
-    }()
+    let groupTitleLabel =  UILabel().then {$0.text = "Group: "}
     
     let decisionStackView = UIStackView()
     
     
-    private let cancelBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Cancel", for: .normal)
-        btn.setTitleColor(.red, for: .normal)
-        btn.addBorders(edges: [.top], color: .white)
-        return btn
-    }()
+    private let cancelBtn = UIButton().then {
+        $0.setTitle("Cancel", for: .normal)
+        $0.setTitleColor(.red, for: .normal)
+        $0.addBorders(edges: [.top], color: .white)
+        $0.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+    }
     
-    private let nextBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Next", for: .normal)
-        btn.addBorders(edges: [.top, .left], color: .white)
-        return btn
-        
-    }()
+    private let nextBtn = UIButton().then {
+        $0.setTitle("Next", for: .normal)
+        $0.addBorders(edges: [.top, .left], color: .white)
+        $0.addTarget(nil, action: #selector(nextTapped(_:)), for: .touchUpInside)
+    }
+    
+    
+    
     
     let participantsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -83,6 +74,29 @@ class SettingGroupController: UIViewController {
         return cv
     }()
     
+    private let addPersonBtn = UIButton().then {
+        let someImage = UIImageView(image: UIImage(systemName: "plus.circle"))
+        someImage.contentMode = .scaleAspectFit
+        $0.addSubview(someImage)
+        
+        someImage.tintColor = .blue
+        someImage.snp.makeConstraints { make in
+            make.top.bottom.left.right.equalToSuperview()
+        }
+        
+        $0.backgroundColor = .magenta
+    }
+    
+    @objc func cancelTapped(_ sender: UIButton) {
+            print("cancel tapped!")
+    }
+    
+    @objc func nextTapped(_ sender: UIButton) {
+        print("next Tapped!")
+        let addingUnitController = AddingUnitController(participants: participants)
+//        self.present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+        navigationController?.pushViewController(addingUnitController, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,10 +107,21 @@ class SettingGroupController: UIViewController {
     
     private func setupLayout() {
         view.backgroundColor = .gray
+        
+        self.title = "참가 인원"
+        self.navigationController?.navigationBar.barTintColor = .blue
+//        [ topView, groupTitleLabel, groupStackView].forEach { v in
+//            self.view.addSubview(v)
+//        }
+        [ groupTitleLabel, groupStackView].forEach { v in
+            self.view.addSubview(v)
+        }
 
-        view.addSubview(groupTitleLabel)
-        view.addSubview(groupStackView)
-
+//        topView.snp.makeConstraints { make in
+//            make.left.top.right.equalTo(view.safeAreaLayoutGuide)
+//            make.height.equalTo(40)
+//        }
+        
         let testBtns = [testBtn1, testBtn2]
         
         groupStackView.addArranged(testBtns)
@@ -106,17 +131,23 @@ class SettingGroupController: UIViewController {
         groupStackView.distribution = .fillEqually
         
         groupTitleLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().offset(10)
+//            make.top.equalTo(topView.snp.bottom).offset(10)
+//            make.top.equalTo(view.snp.bottom).offset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalToSuperview().offset(20)
             make.height.equalTo(30)
             make.width.equalTo(60)
         }
         
         groupStackView.snp.makeConstraints { make in
             make.leading.equalTo(groupTitleLabel.snp.trailing).offset(5)
-            make.top.equalToSuperview().offset(10)
+//            make.top.equalTo(topView.snp.bottom).offset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.top.equalTo(view.snp.bottom).offset(10)
             make.height.equalTo(30)
             make.trailing.equalToSuperview().offset(-10)
         }
+        
         
 
         // Bottom, Decision Buttons
@@ -135,9 +166,6 @@ class SettingGroupController: UIViewController {
             make.height.equalTo(50)
         }
         
-        
-        
-        // participants CollectionView
         self.participantsCollectionView.register(
             ParticipantCollectionViewCell.self,
             forCellWithReuseIdentifier: cellIdentifier)
@@ -146,11 +174,19 @@ class SettingGroupController: UIViewController {
         participantsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(groupStackView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(decisionStackView.snp.top).offset(-10)
+//            make.bottom.equalTo(decisionStackView.snp.top).offset(-10)
+            make.height.equalTo(participants.count * 40 - 10)
         }
         participantsCollectionView.delegate = self
         participantsCollectionView.dataSource = self
         
+        view.addSubview(addPersonBtn)
+        addPersonBtn.snp.makeConstraints { make in
+            make.top.equalTo(participantsCollectionView.snp.bottom).offset(10)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
+            
+        }
     }
     
     private func setupAddTargets() {
@@ -174,17 +210,15 @@ class SettingGroupController: UIViewController {
 }
 
 
-extension SettingGroupController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let selectedGroup = selectedGroup { return selectedGroup.people.count }
-        return 5
+        return participants.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ParticipantCollectionViewCell
-//        cell.name = participants[indexPath.row].name
-//        cell.backgroundColor = .magenta
+        cell.viewModel = ParticipantViewModel(person: participants[indexPath.row])
         return cell
     }
     
@@ -193,70 +227,16 @@ extension SettingGroupController : UICollectionViewDelegate, UICollectionViewDel
         return CGSize(width: width, height: 30)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 20
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
     
     
 }
 
-struct ParticipantViewModel {
-    
-}
-
-class ParticipantCollectionViewCell: UICollectionViewCell {
-    
-    
-    var viewModel: ParticipantViewModel? {
-        didSet {
-            self.loadView()
-        }
-    }
-    
-    var name: String?
-    
-    var isAttended = true
-    
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    private let attendingButton = AttendingButton()
-    
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.loadView()
-    }
-    
-    
-    
-    private func loadView() {
-        self.addSubview(nameLabel)
-        self.addSubview(attendingButton)
-        
-//        guard let name = name else { return }
-        
-//        nameLabel.text = name
-        nameLabel.text = "name Label"
-//        attendingButton
-        nameLabel.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(2)
-        }
-        
-        attendingButton.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.trailing).offset(5)
-            make.top.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 
 
 

@@ -142,20 +142,29 @@ class DutchpayController: UIViewController {
         
         
 //        let addingBriefController = AddingBriefController()
-        let addingBriefController = SettingGroupController()
+        let addingBriefController = ParticipantsController()
         
-        self.addChild(addingBriefController)
+        let some = UINavigationController(rootViewController: addingBriefController)
+       
+        UINavigationBar.appearance().backgroundColor = .black
+        UINavigationBar.appearance().barTintColor = .red
+//        UINavigationBar.appearance().prefersLargeTitles = true // make large title
+        UINavigationBar.appearance().tintColor = .magenta // chevron Color
+//        UINavigationItem.
+//        UINavigationBar.
         
-        self.view.addSubview(addingBriefController.view)
+        self.addChild(some)
         
-        addingBriefController.view.snp.makeConstraints { make in
+        self.view.addSubview(some.view)
+        
+        some.view.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(view).dividedBy(1.2)
             make.height.equalTo(view).dividedBy(1.5)
         }
-        addingBriefController.view.layer.cornerRadius = 10
+        some.view.layer.cornerRadius = 10
         
-        addingBriefController.didMove(toParent: self)
+        some.didMove(toParent: self)
     }
     
     private func setupLayout() {

@@ -36,7 +36,7 @@
 		9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FA2814E822001020EF /* PersistenceManager.swift */; };
 		9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FD2814ED81001020EF /* AddingBriefController.swift */; };
 		9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */; };
-		9A1C85032815A865001020EF /* SettingGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85022815A865001020EF /* SettingGroupController.swift */; };
+		9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85022815A865001020EF /* ParticipantsController.swift */; };
 		9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85052815BB0F001020EF /* GroupButton.swift */; };
 		9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85072815C5C7001020EF /* AttendingButton.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
@@ -50,6 +50,10 @@
 		9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C433271701FD0021975C /* SettingsSection.swift */; };
 		9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43527186A9D0021975C /* MVCSampleCode.swift */; };
 		9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C43727186F5F0021975C /* AppUtility.swift */; };
+		9AC3CC592819923D00C9A37F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* Group.swift */; };
+		9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */; };
+		9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */; };
+		9AC3CC632819999C00C9A37F /* AddingUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* AddingUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
@@ -122,7 +126,7 @@
 		9A1C84FA2814E822001020EF /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		9A1C84FD2814ED81001020EF /* AddingBriefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingBriefController.swift; sourceTree = "<group>"; };
 		9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BasicCalc.xcdatamodel; sourceTree = "<group>"; };
-		9A1C85022815A865001020EF /* SettingGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingGroupController.swift; sourceTree = "<group>"; };
+		9A1C85022815A865001020EF /* ParticipantsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsController.swift; sourceTree = "<group>"; };
 		9A1C85052815BB0F001020EF /* GroupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupButton.swift; sourceTree = "<group>"; };
 		9A1C85072815C5C7001020EF /* AttendingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendingButton.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
@@ -136,6 +140,10 @@
 		9AA5C433271701FD0021975C /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		9AA5C43527186A9D0021975C /* MVCSampleCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVCSampleCode.swift; sourceTree = "<group>"; };
 		9AA5C43727186F5F0021975C /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
+		9AC3CC582819923D00C9A37F /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCollectionViewCell.swift; sourceTree = "<group>"; };
+		9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewModel.swift; sourceTree = "<group>"; };
+		9AC3CC622819999C00C9A37F /* AddingUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -225,6 +233,8 @@
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF524CCDE04001057D2 /* Model */,
 				9AF62EF12701C16A00E183AB /* Views */,
+				9A1C84FC2814EBD4001020EF /* DutchPay */,
+				9AC3CC612819993D00C9A37F /* Trash */,
 				9A083FF624CCDE0D001057D2 /* Extension */,
 				9AF62EE526FF65CC00E183AB /* Services */,
 				9AF62EE626FF65ED00E183AB /* Constants */,
@@ -272,7 +282,6 @@
 				9A083FD824CCDBDE001057D2 /* BaseViewController.swift */,
 				9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */,
 				9AA5C42F2716FE320021975C /* SettingsViewController.swift */,
-				9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -306,9 +315,11 @@
 		9A1C84FC2814EBD4001020EF /* DutchPay */ = {
 			isa = PBXGroup;
 			children = (
-				9A1C84FD2814ED81001020EF /* AddingBriefController.swift */,
-				9A1C85022815A865001020EF /* SettingGroupController.swift */,
+				9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */,
+				9AC3CC642819A90D00C9A37F /* AddingUnit */,
+				9AC3CC602819981500C9A37F /* InitialSetting */,
 				9A1C85042815BAF6001020EF /* SubViews */,
+				9AC3CC572819922F00C9A37F /* Model */,
 			);
 			path = DutchPay;
 			sourceTree = "<group>";
@@ -320,6 +331,41 @@
 				9A1C85072815C5C7001020EF /* AttendingButton.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		9AC3CC572819922F00C9A37F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		9AC3CC602819981500C9A37F /* InitialSetting */ = {
+			isa = PBXGroup;
+			children = (
+				9A1C85022815A865001020EF /* ParticipantsController.swift */,
+				9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */,
+				9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */,
+				9AC3CC582819923D00C9A37F /* Group.swift */,
+			);
+			path = InitialSetting;
+			sourceTree = "<group>";
+		};
+		9AC3CC612819993D00C9A37F /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				9A1C84FD2814ED81001020EF /* AddingBriefController.swift */,
+			);
+			name = Trash;
+			path = DutchPay;
+			sourceTree = "<group>";
+		};
+		9AC3CC642819A90D00C9A37F /* AddingUnit */ = {
+			isa = PBXGroup;
+			children = (
+				9AC3CC622819999C00C9A37F /* AddingUnitController.swift */,
+			);
+			path = AddingUnit;
 			sourceTree = "<group>";
 		};
 		9AF62EE526FF65CC00E183AB /* Services */ = {
@@ -356,7 +402,6 @@
 				9AA5C431271701190021975C /* SettingsTableCell.swift */,
 				9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */,
 				9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */,
-				9A1C84FC2814EBD4001020EF /* DutchPay */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -618,6 +663,7 @@
 			files = (
 				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
+				9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
@@ -627,6 +673,7 @@
 				9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */,
 				9A083FB024CCD55D001057D2 /* Dutchpay.xcdatamodeld in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
+				9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
@@ -635,15 +682,17 @@
 				9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
+				9AC3CC632819999C00C9A37F /* AddingUnitController.swift in Sources */,
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
+				9AC3CC592819923D00C9A37F /* Group.swift in Sources */,
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
 				9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
-				9A1C85032815A865001020EF /* SettingGroupController.swift in Sources */,
+				9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
