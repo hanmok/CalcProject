@@ -4,7 +4,7 @@ delete
         handleDeleteDragOutAction
         turnIntoOriginalColor
         turnIntoOriginalColor
-        
+
         moveToHistoryTable
 
 
@@ -13,6 +13,8 @@ SettingsTableCell -> lazy var switchControl -> .onTintColor
 
 
 
-    upButton
-    downButton
-    colorDesc
+upButton
+downButton
+colorDesc
+
+

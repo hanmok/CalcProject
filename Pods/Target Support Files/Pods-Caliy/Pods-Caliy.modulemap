@@ -1,6 +1,0 @@
-framework module Pods_Caliy {
-  umbrella header "Pods-Caliy-umbrella.h"
-
-  export *
-  module * { export * }
-}

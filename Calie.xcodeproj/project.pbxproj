@@ -7,17 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D7F45A9112293F8474D06D4 /* Pods_Caliy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1BE52393F5BA4FD1ED3E2 /* Pods_Caliy.framework */; };
-		53FA256CB2892A0F3E90CB87 /* Pods_Caliy_CaliyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */; };
-		72E0B38604C70E034BD72AEF /* Pods_CaliyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51AB6320738546AF2F3C9FDD /* Pods_CaliyTests.framework */; };
+		5833A01F4BB1956F1EF0970C /* Pods_Calie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5931D4062B3225906FE3C994 /* Pods_Calie.framework */; };
 		9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */; };
 		9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA524CCD55D001057D2 /* AppDelegate.swift */; };
 		9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA724CCD55D001057D2 /* SceneDelegate.swift */; };
 		9A083FB024CCD55D001057D2 /* Dutchpay.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */; };
 		9A083FB224CCD55E001057D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FB124CCD55E001057D2 /* Assets.xcassets */; };
 		9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */; };
-		9A083FC024CCD55E001057D2 /* CaliyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FBF24CCD55E001057D2 /* CaliyTests.swift */; };
-		9A083FCB24CCD55E001057D2 /* CaliyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FCA24CCD55E001057D2 /* CaliyUITests.swift */; };
 		9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FD824CCDBDE001057D2 /* BaseViewController.swift */; };
 		9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */; };
 		9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FDC24CCDC3B001057D2 /* HistoryRecordCell.swift */; };
@@ -66,45 +62,27 @@
 		9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EFA2702145A00E183AB /* InputEnums.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9A083FBC24CCD55E001057D2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9A083F9A24CCD55D001057D2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9A083FA124CCD55D001057D2;
-			remoteInfo = Caliy;
-		};
-		9A083FC724CCD55E001057D2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9A083F9A24CCD55D001057D2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9A083FA124CCD55D001057D2;
-			remoteInfo = Caliy;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		19E1BE52393F5BA4FD1ED3E2 /* Pods_Caliy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51AB6320738546AF2F3C9FDD /* Pods_CaliyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaliyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.release.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.release.xcconfig"; sourceTree = "<group>"; };
+		1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.debug.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie.debug.xcconfig"; path = "Target Support Files/Pods-Calie/Pods-Calie.debug.xcconfig"; sourceTree = "<group>"; };
+		5931D4062B3225906FE3C994 /* Pods_Calie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		686B6DBE76AA8AE834DAB8D1 /* Pods_Calie_CalieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calie_CalieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D6080807D27694976AE0BD9 /* Pods-Caliy-CaliyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.release.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.release.xcconfig"; sourceTree = "<group>"; };
 		74E815B644FB9288D8FD3A96 /* Pods-Caliy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy.debug.xcconfig"; path = "Target Support Files/Pods-Caliy/Pods-Caliy.debug.xcconfig"; sourceTree = "<group>"; };
 		817EBCDE9E6DD8F3CC12E86E /* Pods-CaliyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.debug.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8465EFD5CB5B983E6C054A8D /* Pods_CalieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FEA1691EE216580305789D6 /* Pods-Caliy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy.release.xcconfig"; path = "Target Support Files/Pods-Caliy/Pods-Caliy.release.xcconfig"; sourceTree = "<group>"; };
+		8FF7093DB210353C65FD753D /* Pods-Calie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie.release.xcconfig"; path = "Target Support Files/Pods-Calie/Pods-Calie.release.xcconfig"; sourceTree = "<group>"; };
 		9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayController.swift; sourceTree = "<group>"; };
-		9A083FA224CCD55D001057D2 /* Caliy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Caliy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A083FA224CCD55D001057D2 /* Calie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A083FA524CCD55D001057D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A083FA724CCD55D001057D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9A083FAF24CCD55D001057D2 /* Caliy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Caliy.xcdatamodel; sourceTree = "<group>"; };
 		9A083FB124CCD55E001057D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A083FB424CCD55E001057D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A083FB624CCD55E001057D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A083FBB24CCD55E001057D2 /* CaliyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaliyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A083FBF24CCD55E001057D2 /* CaliyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaliyTests.swift; sourceTree = "<group>"; };
-		9A083FC124CCD55E001057D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A083FC624CCD55E001057D2 /* CaliyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaliyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A083FCA24CCD55E001057D2 /* CaliyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaliyUITests.swift; sourceTree = "<group>"; };
-		9A083FCC24CCD55E001057D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A083FD824CCDBDE001057D2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		9A083FDA24CCDC22001057D2 /* HistoryRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRecordVC.swift; sourceTree = "<group>"; };
 		9A083FDC24CCDC3B001057D2 /* HistoryRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRecordCell.swift; sourceTree = "<group>"; };
@@ -156,7 +134,8 @@
 		9AF62EF827020C1A00E183AB /* ToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessage.swift; sourceTree = "<group>"; };
 		9AF62EFA2702145A00E183AB /* InputEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEnums.swift; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
-		CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Caliy_CaliyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.release.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.release.xcconfig"; sourceTree = "<group>"; };
+		D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,23 +145,7 @@
 			files = (
 				9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */,
 				9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */,
-				3D7F45A9112293F8474D06D4 /* Pods_Caliy.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A083FB824CCD55E001057D2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				72E0B38604C70E034BD72AEF /* Pods_CaliyTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A083FC324CCD55E001057D2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				53FA256CB2892A0F3E90CB87 /* Pods_Caliy_CaliyUITests.framework in Frameworks */,
+				5833A01F4BB1956F1EF0970C /* Pods_Calie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,9 +158,9 @@
 				9AEA8A2E25611243008AE06E /* RealmSwift.framework */,
 				9AEA8A2425611209008AE06E /* XcodeKit.framework */,
 				9AEA8A1F256111D0008AE06E /* Realm.framework */,
-				19E1BE52393F5BA4FD1ED3E2 /* Pods_Caliy.framework */,
-				CC0DB417305520C5A2B630BE /* Pods_Caliy_CaliyUITests.framework */,
-				51AB6320738546AF2F3C9FDD /* Pods_CaliyTests.framework */,
+				5931D4062B3225906FE3C994 /* Pods_Calie.framework */,
+				686B6DBE76AA8AE834DAB8D1 /* Pods_Calie_CalieUITests.framework */,
+				8465EFD5CB5B983E6C054A8D /* Pods_CalieTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -205,9 +168,7 @@
 		9A083F9924CCD55D001057D2 = {
 			isa = PBXGroup;
 			children = (
-				9A083FA424CCD55D001057D2 /* Caliy */,
-				9A083FBE24CCD55E001057D2 /* CaliyTests */,
-				9A083FC924CCD55E001057D2 /* CaliyUITests */,
+				9A083FA424CCD55D001057D2 /* Calie */,
 				9A083FA324CCD55D001057D2 /* Products */,
 				E626D36DB9E65AF30BED8735 /* Pods */,
 				3E15720660FED9FFA29DB295 /* Frameworks */,
@@ -217,14 +178,12 @@
 		9A083FA324CCD55D001057D2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9A083FA224CCD55D001057D2 /* Caliy.app */,
-				9A083FBB24CCD55E001057D2 /* CaliyTests.xctest */,
-				9A083FC624CCD55E001057D2 /* CaliyUITests.xctest */,
+				9A083FA224CCD55D001057D2 /* Calie.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9A083FA424CCD55D001057D2 /* Caliy */ = {
+		9A083FA424CCD55D001057D2 /* Calie */ = {
 			isa = PBXGroup;
 			children = (
 				9A1C84F52814E39F001020EF /* ColorMemo */,
@@ -245,25 +204,7 @@
 				9AA5C43527186A9D0021975C /* MVCSampleCode.swift */,
 				9A083FB124CCD55E001057D2 /* Assets.xcassets */,
 			);
-			path = Caliy;
-			sourceTree = "<group>";
-		};
-		9A083FBE24CCD55E001057D2 /* CaliyTests */ = {
-			isa = PBXGroup;
-			children = (
-				9A083FBF24CCD55E001057D2 /* CaliyTests.swift */,
-				9A083FC124CCD55E001057D2 /* Info.plist */,
-			);
-			path = CaliyTests;
-			sourceTree = "<group>";
-		};
-		9A083FC924CCD55E001057D2 /* CaliyUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9A083FCA24CCD55E001057D2 /* CaliyUITests.swift */,
-				9A083FCC24CCD55E001057D2 /* Info.plist */,
-			);
-			path = CaliyUITests;
+			path = Calie;
 			sourceTree = "<group>";
 		};
 		9A083FF224CCDDB9001057D2 /* Delegate */ = {
@@ -415,6 +356,12 @@
 				6D6080807D27694976AE0BD9 /* Pods-Caliy-CaliyUITests.release.xcconfig */,
 				817EBCDE9E6DD8F3CC12E86E /* Pods-CaliyTests.debug.xcconfig */,
 				B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */,
+				2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */,
+				8FF7093DB210353C65FD753D /* Pods-Calie.release.xcconfig */,
+				D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */,
+				C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */,
+				1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */,
+				0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -422,9 +369,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9A083FA124CCD55D001057D2 /* Caliy */ = {
+		9A083FA124CCD55D001057D2 /* Calie */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9A083FCF24CCD55E001057D2 /* Build configuration list for PBXNativeTarget "Caliy" */;
+			buildConfigurationList = 9A083FCF24CCD55E001057D2 /* Build configuration list for PBXNativeTarget "Calie" */;
 			buildPhases = (
 				F8FBF747D87669628C9438C3 /* [CP] Check Pods Manifest.lock */,
 				9A083F9E24CCD55D001057D2 /* Sources */,
@@ -436,49 +383,10 @@
 			);
 			dependencies = (
 			);
-			name = Caliy;
+			name = Calie;
 			productName = Caliy;
-			productReference = 9A083FA224CCD55D001057D2 /* Caliy.app */;
+			productReference = 9A083FA224CCD55D001057D2 /* Calie.app */;
 			productType = "com.apple.product-type.application";
-		};
-		9A083FBA24CCD55E001057D2 /* CaliyTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9A083FD224CCD55E001057D2 /* Build configuration list for PBXNativeTarget "CaliyTests" */;
-			buildPhases = (
-				409BE63EA8E720318A794025 /* [CP] Check Pods Manifest.lock */,
-				9A083FB724CCD55E001057D2 /* Sources */,
-				9A083FB824CCD55E001057D2 /* Frameworks */,
-				9A083FB924CCD55E001057D2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9A083FBD24CCD55E001057D2 /* PBXTargetDependency */,
-			);
-			name = CaliyTests;
-			productName = CaliyTests;
-			productReference = 9A083FBB24CCD55E001057D2 /* CaliyTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		9A083FC524CCD55E001057D2 /* CaliyUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9A083FD524CCD55E001057D2 /* Build configuration list for PBXNativeTarget "CaliyUITests" */;
-			buildPhases = (
-				3994E896ECE107EC3E317974 /* [CP] Check Pods Manifest.lock */,
-				9A083FC224CCD55E001057D2 /* Sources */,
-				9A083FC324CCD55E001057D2 /* Frameworks */,
-				9A083FC424CCD55E001057D2 /* Resources */,
-				9DE4A86401A49978690FB24E /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9A083FC824CCD55E001057D2 /* PBXTargetDependency */,
-			);
-			name = CaliyUITests;
-			productName = CaliyUITests;
-			productReference = 9A083FC624CCD55E001057D2 /* CaliyUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -493,17 +401,9 @@
 					9A083FA124CCD55D001057D2 = {
 						CreatedOnToolsVersion = 11.6;
 					};
-					9A083FBA24CCD55E001057D2 = {
-						CreatedOnToolsVersion = 11.6;
-						TestTargetID = 9A083FA124CCD55D001057D2;
-					};
-					9A083FC524CCD55E001057D2 = {
-						CreatedOnToolsVersion = 11.6;
-						TestTargetID = 9A083FA124CCD55D001057D2;
-					};
 				};
 			};
-			buildConfigurationList = 9A083F9D24CCD55D001057D2 /* Build configuration list for PBXProject "Caliy" */;
+			buildConfigurationList = 9A083F9D24CCD55D001057D2 /* Build configuration list for PBXProject "Calie" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -517,9 +417,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9A083FA124CCD55D001057D2 /* Caliy */,
-				9A083FBA24CCD55E001057D2 /* CaliyTests */,
-				9A083FC524CCD55E001057D2 /* CaliyUITests */,
+				9A083FA124CCD55D001057D2 /* Calie */,
 			);
 		};
 /* End PBXProject section */
@@ -537,99 +435,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9A083FB924CCD55E001057D2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A083FC424CCD55E001057D2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3994E896ECE107EC3E317974 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Caliy-CaliyUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		409BE63EA8E720318A794025 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CaliyTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5C48402F60720EB59771B472 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Caliy/Pods-Caliy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Calie/Pods-Calie-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Caliy/Pods-Caliy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Calie/Pods-Calie-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Caliy/Pods-Caliy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9DE4A86401A49978690FB24E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Calie/Pods-Calie-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F8FBF747D87669628C9438C3 /* [CP] Check Pods Manifest.lock */ = {
@@ -647,7 +470,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Caliy-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Calie-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -709,36 +532,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9A083FB724CCD55E001057D2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9A083FC024CCD55E001057D2 /* CaliyTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A083FC224CCD55E001057D2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9A083FCB24CCD55E001057D2 /* CaliyUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9A083FBD24CCD55E001057D2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9A083FA124CCD55D001057D2 /* Caliy */;
-			targetProxy = 9A083FBC24CCD55E001057D2 /* PBXContainerItemProxy */;
-		};
-		9A083FC824CCD55E001057D2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9A083FA124CCD55D001057D2 /* Caliy */;
-			targetProxy = 9A083FC724CCD55E001057D2 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */ = {
@@ -882,13 +676,13 @@
 		};
 		9A083FD024CCD55E001057D2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74E815B644FB9288D8FD3A96 /* Pods-Caliy.debug.xcconfig */;
+			baseConfigurationReference = 2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = Caliy/Info.plist;
+				INFOPLIST_FILE = Calie/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -904,13 +698,13 @@
 		};
 		9A083FD124CCD55E001057D2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8FEA1691EE216580305789D6 /* Pods-Caliy.release.xcconfig */;
+			baseConfigurationReference = 8FF7093DB210353C65FD753D /* Pods-Calie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = Caliy/Info.plist;
+				INFOPLIST_FILE = Calie/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -924,98 +718,10 @@
 			};
 			name = Release;
 		};
-		9A083FD324CCD55E001057D2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 817EBCDE9E6DD8F3CC12E86E /* Pods-CaliyTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = CaliyTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CaliyTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Caliy.app/Caliy";
-			};
-			name = Debug;
-		};
-		9A083FD424CCD55E001057D2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = CaliyTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CaliyTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Caliy.app/Caliy";
-			};
-			name = Release;
-		};
-		9A083FD624CCD55E001057D2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = CaliyUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CaliyUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Caliy;
-			};
-			name = Debug;
-		};
-		9A083FD724CCD55E001057D2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D6080807D27694976AE0BD9 /* Pods-Caliy-CaliyUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23GD77ZRK;
-				INFOPLIST_FILE = CaliyUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CaliyUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Caliy;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9A083F9D24CCD55D001057D2 /* Build configuration list for PBXProject "Caliy" */ = {
+		9A083F9D24CCD55D001057D2 /* Build configuration list for PBXProject "Calie" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9A083FCD24CCD55E001057D2 /* Debug */,
@@ -1024,29 +730,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9A083FCF24CCD55E001057D2 /* Build configuration list for PBXNativeTarget "Caliy" */ = {
+		9A083FCF24CCD55E001057D2 /* Build configuration list for PBXNativeTarget "Calie" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9A083FD024CCD55E001057D2 /* Debug */,
 				9A083FD124CCD55E001057D2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9A083FD224CCD55E001057D2 /* Build configuration list for PBXNativeTarget "CaliyTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9A083FD324CCD55E001057D2 /* Debug */,
-				9A083FD424CCD55E001057D2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9A083FD524CCD55E001057D2 /* Build configuration list for PBXNativeTarget "CaliyUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9A083FD624CCD55E001057D2 /* Debug */,
-				9A083FD724CCD55E001057D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

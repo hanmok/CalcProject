@@ -1,6 +1,0 @@
-framework module Pods_CaliyTests {
-  umbrella header "Pods-CaliyTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
