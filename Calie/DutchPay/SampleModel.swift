@@ -33,3 +33,21 @@ struct Payment {
     let spentTo: String
     let totalAmount: Double
 }
+
+
+struct DutchUnit2 {
+    var placeName: String
+    var spentAmount: Double
+    var date: Date
+    var personUnits: [PersonUnit2]
+}
+
+struct PersonUnit2 {
+    var person: Person2
+    var spentAmount: Double
+}
+
+struct Gathering2 {
+    let title: String
+    let totalCost: Double
+}

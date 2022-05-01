@@ -9,10 +9,47 @@
 import UIKit
 import SnapKit
 
+
+enum PopupScreens {
+    case AddingNewDutchpay
+    case Modifying
+    
+}
+
+private let cellIdentifier = "DutchCell"
+private let headerIdentifier = "headerCell"
+private let footerIdentifier = "footerCell"
 class DutchpayController: UIViewController {
     
     
     // MARK: - Properties
+    
+//    var gatheringTitle: String = "지원이와 강아지"
+    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000)
+    
+    var dutchUnits : [DutchUnit2] = [
+        DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, date: Date(),
+                   personUnits: [
+            PersonUnit2(person: Person2("지원이"), spentAmount: 30000),
+            PersonUnit2(person: Person2("한목이"), spentAmount: 0),
+            PersonUnit2(person: Person2("강아지"), spentAmount: 0)
+                   ]),
+        DutchUnit2(placeName: "카페", spentAmount: 10000, date: Date(),
+                   personUnits: [
+                    PersonUnit2(person: Person2("지원이"), spentAmount: 10000),
+                    PersonUnit2(person: Person2("한목이"), spentAmount: 0),
+                    PersonUnit2(person: Person2("강아지"), spentAmount: 0)
+                   ]),
+        DutchUnit2(placeName: "술집", spentAmount: 40000, date: Date(),
+                   personUnits: [
+                    PersonUnit2(person: Person2("지원이"), spentAmount: 0),
+                    PersonUnit2(person: Person2("한목이"), spentAmount: 40000)
+                   ]),
+    ]
+    
+    var popupToShow: PopupScreens?
+    
+    
     
     let persistenceManager: PersistenceManager
     
@@ -48,10 +85,17 @@ class DutchpayController: UIViewController {
     
     
     
+//    var dutchTitle
+    
+    
+    
     var userDefaultSetup = UserDefaultSetup()
     
     let colorList = ColorList()
     
+    
+//    var isAdding = false
+    var isAdding = true
     
     let containerView: UIView = {
         let uiview = UIView()
@@ -82,6 +126,12 @@ class DutchpayController: UIViewController {
         return btn
     }()
     
+//    private let gatheringTitleLabel = UILabel().then {
+//        $0.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+//        $0.textColor = .magenta
+//        $0.textAlignment = .center
+//    }
+    
     private let plusBtn: UIButton = {
         let btn = UIButton()
 
@@ -96,11 +146,16 @@ class DutchpayController: UIViewController {
         return btn
     }()
     
-    private let collectionView: UICollectionView = {
+    private let dutchCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.layer.borderColor = UIColor.black.cgColor
+        cv.layer.borderWidth = 1
+        cv.layer.cornerRadius = 10
         return cv
     }()
+    
+    
     
     private let blurredView: UIView = {
         let view = UIView()
@@ -117,21 +172,48 @@ class DutchpayController: UIViewController {
         
         view.backgroundColor = colorList.bgColorForExtrasLM
         
+        setupCollectionView()
         setupLayout()
         addTargets()
-        
-        presentAddingController()
+
     }
     
     private func addTargets() {
-        plusBtn.addTarget(self, action: #selector(addDutchpay(_:)), for: .touchUpInside)
+        plusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func addDutchpay(_ sender: UIButton) {
-            print("btn pressed!")
-        
-        presentAddingController()
+    func setupCollectionView(){
+        if isAdding {
+            dutchCollectionView.delegate = self
+            dutchCollectionView.dataSource = self
+            self.dutchCollectionView.register(DutchCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+            
+            self.dutchCollectionView.register(DutchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+            
+            self.dutchCollectionView.register(DutchFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerIdentifier)
+            
+        }
     }
+    @objc func addBtnTapped(_ sender: UIButton) {
+        
+        isAdding.toggle()
+        
+        popupToShow = .AddingNewDutchpay
+        
+        if popupToShow != nil {
+            switch popupToShow! {
+                
+            case .AddingNewDutchpay:
+                presentAddingController()
+                
+            case .Modifying:
+                //TODO: presentModifyingController
+                break
+            }
+        }
+    }
+    
+    // need to remove after dismiss
     
     func presentAddingController() {
         
@@ -140,20 +222,15 @@ class DutchpayController: UIViewController {
             make.left.top.right.bottom.equalToSuperview()
         }
         
+        let participantsController = ParticipantsController()
         
-//        let addingBriefController = AddingBriefController()
-        let addingBriefController = ParticipantsController()
-        
-        let some = UINavigationController(rootViewController: addingBriefController)
-       
-//        UINavigationBar.appearance().backgroundColor = .black
+        let some = UINavigationController(rootViewController: participantsController)
+
         UINavigationBar.appearance().backgroundColor = .cyan
                 
         UINavigationBar.appearance().barTintColor = .red
-//        UINavigationBar.appearance().prefersLargeTitles = true // make large title
+
         UINavigationBar.appearance().tintColor = .magenta // chevron Color
-//        UINavigationItem.
-//        UINavigationBar.
         
         self.addChild(some)
         
@@ -175,6 +252,7 @@ class DutchpayController: UIViewController {
         containerView.addSubview(historyBtn)
         containerView.addSubview(plusBtn)
         
+        // saveArea on the bottom
         containerView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
@@ -187,9 +265,35 @@ class DutchpayController: UIViewController {
             make.top.equalTo(containerView).offset(50)
         }
         
-        plusBtn.snp.makeConstraints { make in
-            make.width.height.equalTo(containerView.snp.width).dividedBy(3)
-            make.center.equalTo(containerView)
+        
+        if isAdding {
+
+//            containerView.addSubview(gatheringTitleLabel)
+//            gatheringTitleLabel.snp.makeConstraints { make in
+//                make.top.equalTo(historyBtn.snp.bottom).offset(10)
+//                make.leading.equalToSuperview().offset(10)
+//                make.trailing.equalToSuperview().offset(-10)
+//                make.height.equalTo(50)
+//            }
+            
+            containerView.addSubview(dutchCollectionView)
+            dutchCollectionView.snp.makeConstraints { make in
+                make.top.equalTo(historyBtn.snp.bottom).offset(20)
+                make.leading.equalToSuperview().offset(10)
+                make.trailing.equalToSuperview().offset(-10)
+                make.bottom.equalToSuperview()
+            }
+            
+//            gatheringTitleLabel.text = gatheringTitle
+        }
+        
+        
+        
+        if !isAdding {
+            plusBtn.snp.makeConstraints { make in
+                make.width.height.equalTo(containerView.snp.width).dividedBy(3)
+                make.center.equalTo(containerView)
+            }
         }
         
         // Color
@@ -201,7 +305,69 @@ class DutchpayController: UIViewController {
             containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
         }
     }
+}
+
+
+extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("dutchpay collectionView has appeared!!")
+        return dutchUnits.count
+    }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionViewCell
+        print("cutchpay cell has appeared")
+        cell.viewModel = DutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])
+        return cell
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = view.frame.width
+        return CGSize(width: width, height: 50)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+            
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! DutchHeader
+            header.viewModel = DutchHeaderViewModel(gathering: gathering)
+            return header
+            
+        case UICollectionView.elementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerIdentifier, for: indexPath) as! DutchFooter
+            footer.viewModel = DutchFooterViewModel(gathering: gathering)
+            footer.footerDelegate = self
+            return footer
+         
+        default:
+            assert(false, "Unexpected element kind")
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 60)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 100)
+    }
+}
+
+
+
+extension DutchpayController: DutchFooterDelegate {
+    func didTapPlus() {
+        // TODO: Add DutchUnit
+        print("didTapPlus triggered in DutchpayController!!")
+    }
 }

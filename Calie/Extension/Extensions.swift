@@ -30,6 +30,17 @@ public extension String {
 
 
 
+extension Double {
+    public func convertToInt() -> Int? {
+        if self == Double(Int(self)) {
+            return Int(self)
+        }
+        return nil
+    }
+}
+
+
+
 extension StringProtocol {
     subscript(offset: Int) -> Character { self[index(startIndex, offsetBy: offset)] }
     subscript(range: Range<Int>) -> SubSequence {

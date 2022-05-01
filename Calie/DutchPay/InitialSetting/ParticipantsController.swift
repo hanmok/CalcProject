@@ -240,7 +240,3 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
     
     
 }
-
-
-
-
