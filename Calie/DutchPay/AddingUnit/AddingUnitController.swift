@@ -214,9 +214,11 @@ class PayCollectionViewCell: UICollectionViewCell {
     private let nameLabel = UILabel().then { $0.backgroundColor = .green
         $0.textColor = .blue
     }
+
     private let spentAmountTF = UITextField().then { $0.text = "0"
         $0.keyboardType = .numberPad
-        $0.backgroundColor = .blue
+//        $0.backgroundColor = .blue
+        $0.backgroundColor = .brown
         $0.text = "222,222 원"
     }
     

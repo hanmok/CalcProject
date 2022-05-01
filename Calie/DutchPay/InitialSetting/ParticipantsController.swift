@@ -103,13 +103,17 @@ class ParticipantsController: UIViewController {
 
         self.setupLayout()
         setupAddTargets()
+        
     }
     
     private func setupLayout() {
         view.backgroundColor = .gray
         
         self.title = "참가 인원"
+//        self.navigationController?.navigationBar.backgroundColor
+        self.navigationController?.navigationBar.tintColor = .brown
         self.navigationController?.navigationBar.barTintColor = .blue
+//        self.navigationController?.navigationBar.title
 //        [ topView, groupTitleLabel, groupStackView].forEach { v in
 //            self.view.addSubview(v)
 //        }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DutchUnit" representedClassName="DutchUnit" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="placeName" optional="YES" attributeType="String"/>
+        <attribute name="spentAmountAt" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="belongToGathering" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gathering" inverseName="dutchUnits" inverseEntity="Gathering"/>
+        <relationship name="personUnits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersonUnit" inverseName="dutchUnit" inverseEntity="PersonUnit"/>
+    </entity>
+    <entity name="Gathering" representedClassName="Gathering" syncable="YES" codeGenerationType="class">
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="totalCost" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="dutchUnits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DutchUnit" inverseName="belongToGathering" inverseEntity="DutchUnit"/>
+        <relationship name="people" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person" inverseName="belongToGathering" inverseEntity="Person"/>
+    </entity>
+    <entity name="Group" representedClassName="Group" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="people" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person" inverseName="belongToGroup" inverseEntity="Person"/>
+    </entity>
+    <entity name="Person" representedClassName="Person" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="belongToGathering" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gathering" inverseName="people" inverseEntity="Gathering"/>
+        <relationship name="belongToGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="people" inverseEntity="Group"/>
+        <relationship name="belongToUnit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersonUnit" inverseName="person" inverseEntity="PersonUnit"/>
+    </entity>
+    <entity name="PersonUnit" representedClassName="PersonUnit" syncable="YES" codeGenerationType="class">
+        <attribute name="spentAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="dutchUnit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DutchUnit" inverseName="personUnits" inverseEntity="DutchUnit"/>
+        <relationship name="person" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="belongToUnit" inverseEntity="Person"/>
+    </entity>
+    <elements>
+        <element name="Gathering" positionX="-221.2743530273438" positionY="-32.6239013671875" width="128" height="89"/>
+        <element name="Person" positionX="45.71826171875" positionY="-258.228515625" width="128" height="103"/>
+        <element name="Group" positionX="442.8922119140625" positionY="-134.3114929199219" width="128" height="73"/>
+        <element name="DutchUnit" positionX="458.2440185546875" positionY="25.660400390625" width="128" height="104"/>
+        <element name="PersonUnit" positionX="18" positionY="108" width="128" height="74"/>
+    </elements>
+</model>

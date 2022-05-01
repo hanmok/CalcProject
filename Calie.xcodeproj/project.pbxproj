@@ -133,6 +133,7 @@
 		9AF62EF62702051B00E183AB /* BasicCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCalculator.swift; sourceTree = "<group>"; };
 		9AF62EF827020C1A00E183AB /* ToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessage.swift; sourceTree = "<group>"; };
 		9AF62EFA2702145A00E183AB /* InputEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEnums.swift; sourceTree = "<group>"; };
+		9AFB9502281EDBA700A9DEAA /* Gathering.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Gathering.xcdatamodel; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.release.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +238,7 @@
 				9A1C84FA2814E822001020EF /* PersistenceManager.swift */,
 				9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */,
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
+				9AFB9501281EDBA700A9DEAA /* Gathering.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -759,6 +761,16 @@
 			);
 			currentVersion = 9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */;
 			path = BasicCalc.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		9AFB9501281EDBA700A9DEAA /* Gathering.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9AFB9502281EDBA700A9DEAA /* Gathering.xcdatamodel */,
+			);
+			currentVersion = 9AFB9502281EDBA700A9DEAA /* Gathering.xcdatamodel */;
+			path = Gathering.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

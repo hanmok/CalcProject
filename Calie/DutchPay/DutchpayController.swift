@@ -146,7 +146,9 @@ class DutchpayController: UIViewController {
         
         let some = UINavigationController(rootViewController: addingBriefController)
        
-        UINavigationBar.appearance().backgroundColor = .black
+//        UINavigationBar.appearance().backgroundColor = .black
+        UINavigationBar.appearance().backgroundColor = .cyan
+                
         UINavigationBar.appearance().barTintColor = .red
 //        UINavigationBar.appearance().prefersLargeTitles = true // make large title
         UINavigationBar.appearance().tintColor = .magenta // chevron Color
@@ -162,6 +164,7 @@ class DutchpayController: UIViewController {
             make.width.equalTo(view).dividedBy(1.2)
             make.height.equalTo(view).dividedBy(1.5)
         }
+        
         some.view.layer.cornerRadius = 10
         
         some.didMove(toParent: self)
