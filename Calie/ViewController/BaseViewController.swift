@@ -626,7 +626,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     //MARK: - <#UI Section Not Included Any Function End.
     
     func setupPositionLayout(){
-        print(#function)
         
         for subview in frameView.subviews{
             subview.removeFromSuperview()
@@ -768,7 +767,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.122).isActive = true
-            print(#line, #function)
+//            print(#line, #function)
             deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: 0.1446010638).isActive = true
             
@@ -808,7 +807,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             deleteWidthReference.anchor(right: frameView.rightAnchor)
             deleteWidthReference.widthAnchor.constraint(equalTo: frameView.widthAnchor, multiplier: 0.032).isActive = true
-            print(#line, #function)
+//            print(#line, #function)
             deleteHeightReference.anchor(bottom: emptySpace.bottomAnchor)
             deleteHeightReference.heightAnchor.constraint(equalTo: emptySpace.heightAnchor, multiplier: CGFloat(0.0171*k)).isActive = true
             

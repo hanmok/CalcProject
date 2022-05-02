@@ -8,10 +8,16 @@
 
 import Foundation
 
-struct Group2 {
-    let people: [Person2]
-        let title: String
+
+struct Payment {
+    let name: String
+    let spentAmount: Double
+    let attended: Bool
+    let spentTo: String
+    let totalAmount: Double
 }
+
+
 
 struct Person2 {
     let name: String
@@ -25,29 +31,40 @@ struct Person2 {
     }
 }
 
-
-struct Payment {
-    let name: String
-    let spentAmount: Double
-    let attended: Bool
-    let spentTo: String
-    let totalAmount: Double
+struct Group2 {
+    let people: [Person2]
+    let title: String
 }
 
 
 struct DutchUnit2 {
     var placeName: String
     var spentAmount: Double
-    var date: Date
-    var personUnits: [PersonUnit2]
+    var date: Date = Date()
+    var personDetails: [PersonDetail2]
 }
 
-struct PersonUnit2 {
+
+struct PersonDetail2 {
     var person: Person2
-    var spentAmount: Double
+    var spentAmount: Double = 0
+    var isAttended: Bool = true
 }
+
 
 struct Gathering2 {
     let title: String
-    let totalCost: Double
+    var totalCost: Double
+    var dutchUnits: [DutchUnit2]
+    let people: [Person2]
+}
+
+
+
+
+
+extension String {
+    static let jiwon = "jiwon"
+    static let hanmok = "hanmok"
+    static let dog = "dog"
 }

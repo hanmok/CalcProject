@@ -1,3 +1,17 @@
 
 그룹 이름, 구성원 들도 저장할 수 있으면 좋겠다
 
+근데 지금 속도가 왜이렇게 느리지?
+
+
+
+UI
+
+Preferred Large Size 말고,
+다른 CustomSize 로 주자. 현재 너무 크다...
+
+Footer 각 element 더 끝부분으로 붙이자.
+
+Model 을, 직접 만들고 전달하는 Simulation 으로 하는게 오히려 더 빠르고 정확할수도 .. CoreData 추가하기 !!
+
+

@@ -10,34 +10,32 @@ import UIKit
 import SnapKit
 import Then
 
-private let cellIdentifier = "CoreCell"
+private let cellIdentifier = "PersonDetailCell"
 
 class AddingUnitController: UIViewController {
 
     let participants: [Person2]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(white: 0.7, alpha: 1)
-        
-        setupLayout()
-    }
+//    var dutchUnit = DutchUnit2(placeName: <#T##String#>, spentAmount: <#T##Double#>, date: <#T##Date#>, personDetails: <#T##[PersonDetail2]#>)
+    var dutchUnit: DutchUnit2?
+    var personDetails: [PersonDetail2] = []
+    
 
     private let spentToLabel = UILabel().then { $0.text = "Spent To"}
-    private let spentTF = UITextField().then {
-        $0.placeholder = "쭈꾸미 집"
+    private let spentPlaceTF = UITextField().then {
+        $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .center
     }
     
     private let spentAmount = UILabel().then { $0.text = "Spent Amount"}
-    private let spentAmountTF = UITextField().then {
-        $0.placeholder = "10,000 원"
-        $0.textAlignment = .center
-        $0.keyboardType = .numberPad // need to be custom Pad
-        
-    }
+//    private let spentAmountTF = UITextField().then {
+//        $0.placeholder = "지출 비용을 입력해주세요."
+//        $0.textAlignment = .center
+//        $0.keyboardType = .numberPad // need to be custom Pad
+//    }
+    private let spentAmountTF = PriceTextField(placeHolder: "지출 비용")
     
-    private let spentDateLabel = UILabel().then { $0.text = "When ?"}
+    private let spentDateLabel = UILabel().then { $0.text = "지출 시각"}
     private let spentDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .compact
         $0.locale = Locale(identifier: "ko-KR")
@@ -48,20 +46,20 @@ class AddingUnitController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        cv.backgroundColor = .white
         return cv
     }()
     
     private let cancelBtn = UIButton().then {
         $0.setTitle("Cancel", for: .normal)
         $0.setTitleColor(.red, for: .normal)
-        $0.addBorders(edges: [.top], color: .white)
+        $0.addBorders(edges: [.top], color: .black)
         $0.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
     }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
-        $0.addBorders(edges: [.top, .left], color: .white)
+        $0.setTitleColor(.blue, for: .normal)
+        $0.addBorders(edges: [.top, .left], color: .black)
         $0.addTarget(nil, action: #selector(nextTapped(_:)), for: .touchUpInside)
     }
     
@@ -73,20 +71,46 @@ class AddingUnitController: UIViewController {
         print("success action")
     }
     
-
+    
+    // MARK: - Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        setupLayout()
+        initializePersonDetails()
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    
+    // sequence : Init -> viewDidLoad
     init(participants: [Person2]) {
         self.participants = participants
         super.init(nibName: nil, bundle: nil)
     }
     
+    private func initializePersonDetails() {
+        participants.forEach { person in
+            self.personDetails.append(PersonDetail2(person: person))
+        }
+    }
+    
     private func setupLayout() {
-        [spentToLabel, spentTF,
+        [spentToLabel, spentPlaceTF,
          spentAmount, spentAmountTF,
          spentDateLabel, spentDatePicker,
          payCollectionView
         ].forEach { v in
             self.view.addSubview(v)
         }
+        
+        spentPlaceTF.delegate = self
+        spentAmountTF.delegate = self
+        
         
         spentToLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
@@ -95,7 +119,7 @@ class AddingUnitController: UIViewController {
             make.width.equalTo(150)
         }
         
-        spentTF.snp.makeConstraints { make in
+        spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalTo(spentToLabel.snp.trailing).offset(20)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
@@ -133,11 +157,11 @@ class AddingUnitController: UIViewController {
             make.height.equalTo(50)
         }
         
-        payCollectionView.register(PayCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        payCollectionView.register(PersonDetailCVCell.self, forCellWithReuseIdentifier: cellIdentifier)
         payCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalTo(spentDateLabel.snp.bottom).offset(40)
+            make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
             make.height.equalTo(60 * participants.count - 10)
         }
         
@@ -170,8 +194,9 @@ class AddingUnitController: UIViewController {
     }
 }
 
-// need to divide AddingUnitController into Two, One with PayCollectionView
 
+
+// MARK: - UICOllectionView Delegates
 extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -179,15 +204,12 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PayCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PersonDetailCVCell
         print("numberOfParticipants: \(participants.count)")
         let name = participants[indexPath.row].name
-        let spentAmount: Double = Double(spentAmountTF.text ?? "0.0") ?? 0.0
-        cell.viewModel = PayViewModel(pay: Payment(name: name,
-                                                spentAmount: 0,
-                                                attended: true,
-                                                   spentTo: "", totalAmount: spentAmount))
-        
+        let spentAmount: Double = Double(spentAmountTF.text ?? "0") ?? 0.0
+        cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
+                                                            
         return cell
     }
     
@@ -196,115 +218,22 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 20
     }
     
 }
 
 
-class PayCollectionViewCell: UICollectionViewCell {
-    
-    var viewModel: PayViewModel? {
-        didSet {
-            self.loadView()
-        }
-    }
-    
-    
-    private let nameLabel = UILabel().then { $0.backgroundColor = .green
-        $0.textColor = .blue
-    }
 
-    private let spentAmountTF = UITextField().then { $0.text = "0"
-        $0.keyboardType = .numberPad
-//        $0.backgroundColor = .blue
-        $0.backgroundColor = .brown
-        $0.text = "222,222 원"
-    }
-    
-    private let attendedBtn = UIButton().then {
-        $0.setTitle("참석", for: .normal)
-        $0.backgroundColor = .green
-        $0.setTitleColor(.white, for: .normal)
-    }
-    
-    private let fullPriceBtn = UIButton().then {
-        $0.setTitle("전액", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .magenta
-    }
-    
-    private func loadView() {
-        print("load View triggered")
-        guard let viewModel = viewModel else { return }
-        nameLabel.text = viewModel.name
-        spentAmountTF.text = viewModel.spentAmount
-        print("attendedBtn title: \(viewModel.attendedBtnTitle)")
-        attendedBtn.setTitle(viewModel.attendedBtnTitle, for: .normal)
-        attendedBtn.setTitleColor(viewModel.attendedBtnColor, for: .normal)
-//        attendedBtn.setTitleColor(.blue, for: .normal)
-        
-        fullPriceBtn.setTitle("전액", for: .normal)
-        fullPriceBtn.setTitleColor(.green, for: .normal)
-        
-        print("load View ended")
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupLayout() {
-        [nameLabel, spentAmountTF, fullPriceBtn, attendedBtn].forEach { v in
-            self.addSubview(v)
+
+
+
+
+extension AddingUnitController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == spentPlaceTF {
+            spentAmountTF.becomeFirstResponder()
         }
-        
-        nameLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().offset(20)
-            make.height.equalTo(30)
-            make.width.equalTo(70)
-        }
-        
-        spentAmountTF.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.trailing)
-            make.width.equalTo(100)
-            make.height.equalTo(30)
-            make.top.equalToSuperview().offset(20)
-        }
-        
-        fullPriceBtn.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountTF.snp.trailing)
-            make.width.equalTo(60)
-            make.top.equalToSuperview().offset(20)
-            make.height.equalTo(30)
-        }
-        
-        attendedBtn.snp.makeConstraints { make in
-            make.leading.equalTo(fullPriceBtn.snp.trailing)
-            make.width.equalTo(60)
-            make.top.equalToSuperview().offset(20)
-            make.height.equalTo(30)
-        }
+        return true
     }
 }
-
-
-struct PayViewModel {
-    private let pay: Payment
-    
-    var name: String { return pay.name }
-    var spentAmount: String { return String(pay.spentAmount) + " 원"}
-    var attendedBtnTitle: String { return pay.attended ? "참석" : "불참"}
-    var attendedBtnColor: UIColor { return pay.attended ? .blue : .red }
-
-    init(pay: Payment) {
-        self.pay = pay
-    }
-}
-    
-

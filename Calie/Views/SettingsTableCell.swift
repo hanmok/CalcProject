@@ -50,7 +50,7 @@ class SettingsTableCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print(#function)
+//        print(#function)
 //        print(#function)
         
         contentView.addSubview(switchControl)

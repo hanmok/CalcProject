@@ -24,28 +24,50 @@ class DutchpayController: UIViewController {
     
     // MARK: - Properties
     
-//    var gatheringTitle: String = "지원이와 강아지"
-    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000)
+//    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000)
+//
+//    var dutchUnits : [DutchUnit2] = [
+//        DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, date: Date(),
+//                   personUnits: [
+//            PersonDetail2(person: Person2("지원이"), spentAmount: 30000),
+//            PersonDetail2(person: Person2("한목이"), spentAmount: 0),
+//            PersonDetail2(person: Person2("강아지"), spentAmount: 0)
+//                   ]),
+//        DutchUnit2(placeName: "카페", spentAmount: 10000, date: Date(),
+//                   personUnits: [
+//                    PersonDetail2(person: Person2("지원이"), spentAmount: 10000),
+//                    PersonDetail2(person: Person2("한목이"), spentAmount: 0),
+//                    PersonDetail2(person: Person2("강아지"), spentAmount: 0)
+//                   ]),
+//        DutchUnit2(placeName: "술집", spentAmount: 40000, date: Date(),
+//                   personUnits: [
+//                    PersonDetail2(person: Person2("지원이"), spentAmount: 0),
+//                    PersonDetail2(person: Person2("한목이"), spentAmount: 40000)
+    //                   ]),
+    //    ]
     
-    var dutchUnits : [DutchUnit2] = [
-        DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, date: Date(),
-                   personUnits: [
-            PersonUnit2(person: Person2("지원이"), spentAmount: 30000),
-            PersonUnit2(person: Person2("한목이"), spentAmount: 0),
-            PersonUnit2(person: Person2("강아지"), spentAmount: 0)
-                   ]),
-        DutchUnit2(placeName: "카페", spentAmount: 10000, date: Date(),
-                   personUnits: [
-                    PersonUnit2(person: Person2("지원이"), spentAmount: 10000),
-                    PersonUnit2(person: Person2("한목이"), spentAmount: 0),
-                    PersonUnit2(person: Person2("강아지"), spentAmount: 0)
-                   ]),
-        DutchUnit2(placeName: "술집", spentAmount: 40000, date: Date(),
-                   personUnits: [
-                    PersonUnit2(person: Person2("지원이"), spentAmount: 0),
-                    PersonUnit2(person: Person2("한목이"), spentAmount: 40000)
-                   ]),
-    ]
+    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000, dutchUnits: [
+        DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, personDetails: [
+            PersonDetail2(person: Person2(name: .jiwon), spentAmount: 30000),
+            PersonDetail2(person: Person2(name: .hanmok), spentAmount: 0),
+            PersonDetail2(person: Person2(name: .dog), spentAmount: 0)
+        ]),
+        DutchUnit2(placeName: "카페", spentAmount: 10000, personDetails: [
+            PersonDetail2(person: Person2(name: .jiwon), spentAmount: 10000),
+            PersonDetail2(person: Person2(name: .hanmok), spentAmount: 0),
+            PersonDetail2(person: Person2(name: .dog), spentAmount: 0)
+        ]),
+        DutchUnit2(placeName: "술집", spentAmount: 80000, personDetails: [
+            PersonDetail2(person: Person2(name: .jiwon), spentAmount: 0),
+            PersonDetail2(person: Person2(name: .hanmok), spentAmount: 80000),
+            PersonDetail2(person: Person2(name: .dog), spentAmount: 0,isAttended: false)
+        ])
+    ],
+        people: [
+            Person2(.jiwon),
+            Person2(.hanmok),
+            Person2(.dog)
+        ])
     
     var popupToShow: PopupScreens?
     
@@ -61,6 +83,7 @@ class DutchpayController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     /*
     func createUser() {
@@ -94,8 +117,8 @@ class DutchpayController: UIViewController {
     let colorList = ColorList()
     
     
-//    var isAdding = false
-    var isAdding = true
+    var isAdding = false
+//    var isAdding = true
     
     let containerView: UIView = {
         let uiview = UIView()
@@ -157,11 +180,12 @@ class DutchpayController: UIViewController {
     
     
     
-    private let blurredView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        return view
-    }()
+//    private let blurredView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+//        return view
+//    }()
+    private var blurredView = UIView()
     
    
     
@@ -175,14 +199,36 @@ class DutchpayController: UIViewController {
         setupCollectionView()
         setupLayout()
         addTargets()
-
+        
     }
     
     private func addTargets() {
         plusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
     }
     
-    func setupCollectionView(){
+    @objc func addBtnTapped(_ sender: UIButton) {
+        
+//        isAdding.toggle()
+        
+//        popupToShow = .AddingNewDutchpay
+        
+//        if popupToShow != nil {
+//            switch popupToShow! {
+//
+//            case .AddingNewDutchpay:
+//                presentAddingController()
+//
+//            case .Modifying:
+//                //TODO: presentModifyingController
+//                break
+//            }
+//        }
+        print("addBtnTapped")
+        blurredView.isHidden = false
+        presentAddingController()
+    }
+    
+    private func setupCollectionView(){
         if isAdding {
             dutchCollectionView.delegate = self
             dutchCollectionView.dataSource = self
@@ -194,33 +240,33 @@ class DutchpayController: UIViewController {
             
         }
     }
-    @objc func addBtnTapped(_ sender: UIButton) {
-        
-        isAdding.toggle()
-        
-        popupToShow = .AddingNewDutchpay
-        
-        if popupToShow != nil {
-            switch popupToShow! {
-                
-            case .AddingNewDutchpay:
-                presentAddingController()
-                
-            case .Modifying:
-                //TODO: presentModifyingController
-                break
+    
+    
+    
+    private func removeChildVC() {
+        if self.children.count > 0 {
+            let viewControllers: [UIViewController] = self.children
+            for eachVC in viewControllers {
+                eachVC.willMove(toParent: nil)
+                eachVC.view.removeFromSuperview()
+                eachVC.removeFromParent()
             }
         }
+        
+//        if blurredView.
+        blurredView.backgroundColor = .clear
+        
     }
     
     // need to remove after dismiss
-    
-    func presentAddingController() {
-        
-        view.addSubview(blurredView)
-        blurredView.snp.makeConstraints { make in
-            make.left.top.right.bottom.equalToSuperview()
-        }
+    private func presentAddingController() {
+//        blurredView.removeFromSuperview()
+        // should i.. append this ?
+//        view.addSubview(blurredView)
+//        blurredView.snp.makeConstraints { make in
+//            make.left.top.right.bottom.equalToSuperview()
+//        }
+        blurredView.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
         
         let participantsController = ParticipantsController()
         
@@ -283,8 +329,6 @@ class DutchpayController: UIViewController {
                 make.trailing.equalToSuperview().offset(-10)
                 make.bottom.equalToSuperview()
             }
-            
-//            gatheringTitleLabel.text = gatheringTitle
         }
         
         
@@ -296,14 +340,13 @@ class DutchpayController: UIViewController {
             }
         }
         
-        // Color
-        if userDefaultSetup.darkModeOn {
-            view.backgroundColor = colorList.bgColorForExtrasDM
-            containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
-        } else {
-            view.backgroundColor = colorList.bgColorForExtrasLM
-            containerView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
+        view.addSubview(blurredView)
+        blurredView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
         }
+        blurredView.isHidden = true
+        
+       
     }
 }
 
@@ -311,14 +354,14 @@ class DutchpayController: UIViewController {
 extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("dutchpay collectionView has appeared!!")
-        return dutchUnits.count
+        return gathering.dutchUnits.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionViewCell
         print("cutchpay cell has appeared")
-        cell.viewModel = DutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])
+        cell.viewModel = DutchUnitViewModel(dutchUnit: gathering.dutchUnits[indexPath.row])
         return cell
     }
     

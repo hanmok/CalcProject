@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 struct DutchUnitViewModel {
@@ -26,6 +27,7 @@ struct DutchUnitViewModel {
     }
     
     var peopleList: String {
-        return dutchUnit.personUnits.map { $0.person.name}.joined(separator: ", ")
+        return dutchUnit.personDetails.map { $0.person.name}.joined(separator: ", ")
     }
 }
+

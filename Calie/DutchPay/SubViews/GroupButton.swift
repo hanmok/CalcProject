@@ -11,13 +11,36 @@ import UIKit
 
 class GroupButton: UIButton {
     
-    var title: String
+    
+    public var group: Group2
+    
+    public var title: String {
+        return group.title
+    }
 
+    public var people: [Person2] {
+//        return group.people.map{ $0.name }
+        return group.people
+    }
+    
+//    public var
     init( group: Group2, _ frame: CGRect = .zero) {
-        self.title = group.title
+        self.group = group
         super.init(frame: frame)
         loadView()
     }
+    
+    var isSelected_: Bool {
+        get {
+            return isSelected
+        }
+        set {
+            self.isSelected = newValue
+            loadView()
+            
+        }
+    }
+    
     
     private func loadView() {
         self.setTitle(title, for: .normal)
@@ -26,6 +49,11 @@ class GroupButton: UIButton {
         self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
         self.layer.borderWidth = 1
         
+        if isSelected {
+            self.backgroundColor = .black
+        } else {
+            self.backgroundColor = .magenta
+        }
     }
     
     required init?(coder: NSCoder) {

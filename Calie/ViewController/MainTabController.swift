@@ -23,7 +23,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
-        print(#function, #file)
+//        print(#function, #file)
         print("viewDidLoad in MainTabController called")
         
         //        var tabFrame = self.tabBar.frame

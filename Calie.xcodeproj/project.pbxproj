@@ -37,6 +37,9 @@
 		9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85072815C5C7001020EF /* AttendingButton.swift */; };
 		9A2DBBFD281F024200CF4E86 /* DutchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFC281F024200CF4E86 /* DutchHeader.swift */; };
 		9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */; };
+		9A2DBC012820698F00CF4E86 /* PersonDetailCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */; };
+		9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */; };
+		9A2DBC052820717200CF4E86 /* PriceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC042820717200CF4E86 /* PriceTextField.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
@@ -113,6 +116,9 @@
 		9A1C85072815C5C7001020EF /* AttendingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendingButton.swift; sourceTree = "<group>"; };
 		9A2DBBFC281F024200CF4E86 /* DutchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchHeader.swift; sourceTree = "<group>"; };
 		9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchFooter.swift; sourceTree = "<group>"; };
+		9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailCVCell.swift; sourceTree = "<group>"; };
+		9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailViewModel.swift; sourceTree = "<group>"; };
+		9A2DBC042820717200CF4E86 /* PriceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTextField.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -257,6 +263,7 @@
 				9A4FD3C026A7AD9800593358 /* Extensions.swift */,
 				9A083FEE24CCDCB4001057D2 /* UIView+Ext.swift */,
 				9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */,
+				9A2DBC042820717200CF4E86 /* PriceTextField.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -317,6 +324,8 @@
 			isa = PBXGroup;
 			children = (
 				9AC3CC622819999C00C9A37F /* AddingUnitController.swift */,
+				9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */,
+				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
 			);
 			path = AddingUnit;
 			sourceTree = "<group>";
@@ -515,9 +524,11 @@
 				9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
 				9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */,
+				9A2DBC052820717200CF4E86 /* PriceTextField.swift in Sources */,
 				9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
+				9A2DBC012820698F00CF4E86 /* PersonDetailCVCell.swift in Sources */,
 				9AC3CC632819999C00C9A37F /* AddingUnitController.swift in Sources */,
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
@@ -538,6 +549,7 @@
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
+				9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
 				9AFB9505281EF5F200A9DEAA /* DutchCollectionViewCell.swift in Sources */,

@@ -16,11 +16,17 @@ private let footerIdentifier = "ProfileFooter" // Plus Button
 
 class ParticipantsController: UIViewController {
 
-    private var participants: [Person2] = [Person2("hanmok"), Person2("jiwon"), Person2("dog")]
+//    private var participants: [Person2] = [Person2("hanmok"), Person2("jiwon"), Person2("dog")]
+    
+    private var participants: [Person2] = []
     
     private var selectedGroup: Group2? {
         didSet {
-            participantsCollectionView.reloadData()
+            setGroup()
+            // TODO: Setup Height each time num of people changed?
+//            setupCollectionViewHeight()
+//            setupLayout()
+            reloadCollectionView()
         }
     }
     
@@ -30,19 +36,42 @@ class ParticipantsController: UIViewController {
         Group2(people: [Person2(name: "Zoy"), Person2(name: "julie"), Person2(name: "jong hun"), Person2(name: "hanmok")], title: "some other")
     ]
     
+    private func setGroup() {
+        print("setGroup triggered!")
+        guard let selectedGroup = selectedGroup else { return }
+        print("flag1")
+        participants.removeAll()
+        print("flag2")
+        selectedGroup.people.forEach {
+            participants.append($0)
+            print("append!")
+            print($0.name)
+        }
+        print("flag3")
+        reloadCollectionView()
+    }
+    
+    private func setupCollectionViewHeight() {
+        participantsCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(groupStackView.snp.bottom).offset(30)
+            make.leading.trailing.equalToSuperview().inset(10)
+//            make.height.equalTo(0)
+            make.height.equalTo(participants.count * 40 - 10)
+        }
+    }
+    
+    private func reloadCollectionView() {
+        print("flag4")
+        DispatchQueue.main.async {
+            self.participantsCollectionView.reloadData()
+            print("what the..")
+        }
+        print("flag5")
+    }
     
     
-//
-//    let topView = UILabel().then {
-//        $0.text = "참가 인원"
-//        $0.textAlignment = .center
-//        $0.font = .boldSystemFont(ofSize: 16)
-//        $0.backgroundColor = .white
-//        $0.textColor = .black
-//    }
-    
-    lazy var testBtn1 = GroupButton(group: sampleGroups[0])
-    lazy var testBtn2 = GroupButton(group: sampleGroups[1])
+    lazy var groupBtn1 = GroupButton(group: sampleGroups[0])
+    lazy var groupBtn2 = GroupButton(group: sampleGroups[1])
     
     let groupStackView = UIStackView()
     
@@ -66,15 +95,14 @@ class ParticipantsController: UIViewController {
     
     
     
-    
-    let participantsCollectionView: UICollectionView = {
+    private let participantsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return cv
     }()
     
-    private let addPersonBtn = UIButton().then {
+    private let addPeopleBtn = UIButton().then {
         let someImage = UIImageView(image: UIImage(systemName: "plus.circle"))
         someImage.contentMode = .scaleAspectFit
         $0.addSubview(someImage)
@@ -94,7 +122,6 @@ class ParticipantsController: UIViewController {
     @objc func nextTapped(_ sender: UIButton) {
         print("next Tapped!")
         let addingUnitController = AddingUnitController(participants: participants)
-//        self.present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>)
         navigationController?.pushViewController(addingUnitController, animated: true)
     }
     
@@ -126,7 +153,7 @@ class ParticipantsController: UIViewController {
 //            make.height.equalTo(40)
 //        }
         
-        let testBtns = [testBtn1, testBtn2]
+        let testBtns = [groupBtn1, groupBtn2]
         
         groupStackView.addArranged(testBtns)
         
@@ -175,42 +202,84 @@ class ParticipantsController: UIViewController {
             forCellWithReuseIdentifier: cellIdentifier)
         
         view.addSubview(participantsCollectionView)
+        
         participantsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(groupStackView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(10)
-//            make.bottom.equalTo(decisionStackView.snp.top).offset(-10)
-            make.height.equalTo(participants.count * 40 - 10)
+//            make.height.equalTo(0)
+//            make.height.equalTo(participants.count * 40 - 10)
+            make.bottom.equalToSuperview().offset(-100)
         }
         participantsCollectionView.delegate = self
         participantsCollectionView.dataSource = self
         
-        view.addSubview(addPersonBtn)
-        addPersonBtn.snp.makeConstraints { make in
+        view.addSubview(addPeopleBtn)
+        addPeopleBtn.snp.makeConstraints { make in
             make.top.equalTo(participantsCollectionView.snp.bottom).offset(10)
             make.left.right.equalToSuperview()
             make.height.equalTo(40)
-            
         }
     }
     
     private func setupAddTargets() {
-        let btns = [testBtn1,testBtn2]
+        let btns = [groupBtn1,groupBtn2]
         
         btns.forEach { btn in
-            btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
+            btn.addTarget(self, action: #selector(groupBtnTapped(_:)), for: .touchUpInside)
         }
+        
+        addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func btnTapped(_ sender: UIButton) {
+    @objc func groupBtnTapped(_ sender: UIButton) {
         print("btn Tapped!")
-        let groupBtn = sender as! GroupButton
-        let groupTitle = groupBtn.title
+//        let selectedGroupBtn = sender as! GroupButton
+//        let groupTitle = selectedGroupBtn.title
+//        let selectedPeople = selectedGroupBtn.people
         
-        switch groupTitle {
-        default:
-            print(groupTitle)
+        guard let selectedGroupBtn = sender as? GroupButton else { return }
+        
+//        let groupTitle = selectedGroupBtn.title // 어디쓰지? .. ;;
+//        let selectedPeople = selectedGroupBtn.people
+     
+        // TODO: set other btn backgroundColor different from the selected one
+        
+        if !selectedGroupBtn.isSelected_ {
+            selectedGroupBtn.isSelected_ = true
         }
+        
+        selectedGroup = selectedGroupBtn.group
+        print("selectedGroup : \(selectedGroup?.title)")
+        
+        
     }
+    
+    @objc func addPersonBtnTapped(_ sender: UIButton) {
+        presentAddingPeopleAlert()
+    }
+    
+    private func presentAddingPeopleAlert() {
+        let alertController = UIAlertController(title: "Add People", message: "추가할 사람을 입력해주세요", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Person Name"
+        }
+        
+        let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
+            let textFieldInput = alertController.textFields![0] as UITextField
+            
+            self.participants.append(Person2(textFieldInput.text!))
+            self.reloadCollectionView()
+        }
+        let cancelAction = UIAlertAction(title: "cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
 }
 
 
