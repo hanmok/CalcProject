@@ -12,15 +12,18 @@ import Then
 
 private let cellIdentifier = "PersonDetailCell"
 
+protocol AddingUnitControllerDelegate: AnyObject {
+    func dismissChildVC()
+}
+
 class AddingUnitController: UIViewController {
 
     let participants: [Person2]
-    
-//    var dutchUnit = DutchUnit2(placeName: <#T##String#>, spentAmount: <#T##Double#>, date: <#T##Date#>, personDetails: <#T##[PersonDetail2]#>)
+
     var dutchUnit: DutchUnit2?
     var personDetails: [PersonDetail2] = []
     
-
+    weak var delegate: AddingUnitControllerDelegate?
     private let spentToLabel = UILabel().then { $0.text = "Spent To"}
     private let spentPlaceTF = UITextField().then {
         $0.placeholder = "지출한 곳을 입력해주세요."
@@ -28,11 +31,7 @@ class AddingUnitController: UIViewController {
     }
     
     private let spentAmount = UILabel().then { $0.text = "Spent Amount"}
-//    private let spentAmountTF = UITextField().then {
-//        $0.placeholder = "지출 비용을 입력해주세요."
-//        $0.textAlignment = .center
-//        $0.keyboardType = .numberPad // need to be custom Pad
-//    }
+
     private let spentAmountTF = PriceTextField(placeHolder: "지출 비용")
     
     private let spentDateLabel = UILabel().then { $0.text = "지출 시각"}
@@ -64,7 +63,9 @@ class AddingUnitController: UIViewController {
     }
     
     @objc func cancelTapped(_ sender: UIButton) {
-        print("canel action")
+        print("cancel action")
+
+        delegate?.dismissChildVC()
     }
     
     @objc func nextTapped(_ sender: UIButton) {

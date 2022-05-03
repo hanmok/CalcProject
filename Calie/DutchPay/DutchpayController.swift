@@ -269,28 +269,28 @@ class DutchpayController: UIViewController {
         blurredView.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
         
         let participantsController = ParticipantsController()
+        participantsController.delegate = self
+        let navParticipantsController = UINavigationController(rootViewController: participantsController)
         
-        let some = UINavigationController(rootViewController: participantsController)
-
         UINavigationBar.appearance().backgroundColor = .cyan
                 
         UINavigationBar.appearance().barTintColor = .red
 
         UINavigationBar.appearance().tintColor = .magenta // chevron Color
         
-        self.addChild(some)
+        self.addChild(navParticipantsController)
         
-        self.view.addSubview(some.view)
+        self.view.addSubview(navParticipantsController.view)
         
-        some.view.snp.makeConstraints { make in
+        navParticipantsController.view.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(view).dividedBy(1.2)
             make.height.equalTo(view).dividedBy(1.5)
         }
         
-        some.view.layer.cornerRadius = 10
+        navParticipantsController.view.layer.cornerRadius = 10
         
-        some.didMove(toParent: self)
+        navParticipantsController.didMove(toParent: self)
     }
     
     private func setupLayout() {
@@ -413,4 +413,27 @@ extension DutchpayController: DutchFooterDelegate {
         // TODO: Add DutchUnit
         print("didTapPlus triggered in DutchpayController!!")
     }
+}
+
+
+extension DutchpayController: ParticipantsVCDelegate {
+//    func removeBlurredBGView() {
+//        blurredView.isHidden = true
+//    }
+    
+    func removeParticipantsController() {
+        blurredView.isHidden = true
+        if self.children.count > 0 {
+            let viewControllers: [UIViewController] = self.children
+            for eachVC in viewControllers {
+                eachVC.willMove(toParent: nil)
+                eachVC.view.removeFromSuperview()
+                eachVC.removeFromParent()
+            }
+        }
+    }
+    
+    
+    
+    
 }

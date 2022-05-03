@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 protocol DutchFooterDelegate: AnyObject {
     func didTapPlus()
 }
