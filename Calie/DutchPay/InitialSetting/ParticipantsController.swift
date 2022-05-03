@@ -14,9 +14,17 @@ import Then
 private let cellIdentifier = "SettingGroupCell"
 private let footerIdentifier = "ProfileFooter" // Plus Button
 
+
+protocol ParticipantsVCDelegate: AnyObject {
+    func removeParticipantsController()
+//    func removeBlurredBGView()
+}
+
 class ParticipantsController: UIViewController {
 
 //    private var participants: [Person2] = [Person2("hanmok"), Person2("jiwon"), Person2("dog")]
+    
+    weak var delegate: ParticipantsVCDelegate?
     
     private var participants: [Person2] = []
     
@@ -117,11 +125,14 @@ class ParticipantsController: UIViewController {
     
     @objc func cancelTapped(_ sender: UIButton) {
             print("cancel tapped!")
+        delegate?.removeParticipantsController()
+//        delegate?.removeBlurredBGView()
     }
     
     @objc func nextTapped(_ sender: UIButton) {
         print("next Tapped!")
         let addingUnitController = AddingUnitController(participants: participants)
+        addingUnitController.delegate = self
         navigationController?.pushViewController(addingUnitController, animated: true)
     }
     
@@ -306,6 +317,25 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
+}
+
+
+extension ParticipantsController: AddingUnitControllerDelegate {
+    func dismissChildVC() {
+        delegate?.removeParticipantsController()
+    }
+}
+
+
+class NumberPadController: UIViewController {
     
     
+    
+    init(frame: CGRect) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

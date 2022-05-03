@@ -9,7 +9,7 @@ target 'Calie' do
 
 pod 'RealmSwift', '~> 5.0'
 pod 'SnapKit', '~> 5.6.0'
-pod 'AddThen'
 pod 'Then'
+pod 'AddThen'
 
 end
