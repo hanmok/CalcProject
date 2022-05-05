@@ -11,12 +11,17 @@ import SnapKit
 import Then
 
 protocol CustomNumberPadDelegate: AnyObject {
+    // update Text to numberText
     func updateCost()
 }
 
 class CustomNumberPadController: UIViewController {
     
-    public var numberText = "0"
+    public var numberText = "0" {
+        didSet {
+            numberText.applyNumberFormatter()
+        }
+    }
     
     weak var delegate: CustomNumberPadDelegate?
     
@@ -54,16 +59,16 @@ class CustomNumberPadController: UIViewController {
         numberText.applyNumberFormatter()
     }
     
-    private func applyNumberFormatter(_ num: String) -> String{
-        guard let intNum = Int(num) else {return ""}
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        
-        if let result = numberFormatter.string(for: intNum) {
-            return result
-        }
-      return num
-    }
+//    private func applyNumberFormatter(_ num: String) -> String{
+//        guard let intNum = Int(num) else {return ""}
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//
+//        if let result = numberFormatter.string(for: intNum) {
+//            return result
+//        }
+//      return num
+//    }
     
     private func setupLayout() {
 
@@ -115,4 +120,3 @@ class CustomNumberPadController: UIViewController {
         }
     }
 }
-

@@ -49,8 +49,8 @@ extension String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
     
-        guard let intNum = Int(self),
-              let result = numberFormatter.string(for: intNum) else { return }
+        guard let int = Int(self),
+              let result = numberFormatter.string(for: int) else { return }
         
         self = result
     }
