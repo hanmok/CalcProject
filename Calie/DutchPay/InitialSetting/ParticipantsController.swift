@@ -17,12 +17,10 @@ private let footerIdentifier = "ProfileFooter" // Plus Button
 
 protocol ParticipantsVCDelegate: AnyObject {
     func removeParticipantsController()
-//    func removeBlurredBGView()
 }
 
 class ParticipantsController: UIViewController {
-
-//    private var participants: [Person2] = [Person2("hanmok"), Person2("jiwon"), Person2("dog")]
+    
     
     weak var delegate: ParticipantsVCDelegate?
     
@@ -32,8 +30,8 @@ class ParticipantsController: UIViewController {
         didSet {
             setGroup()
             // TODO: Setup Height each time num of people changed?
-//            setupCollectionViewHeight()
-//            setupLayout()
+            //            setupCollectionViewHeight()
+            //            setupLayout()
             reloadCollectionView()
         }
     }
@@ -63,7 +61,7 @@ class ParticipantsController: UIViewController {
         participantsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(groupStackView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(10)
-//            make.height.equalTo(0)
+            //            make.height.equalTo(0)
             make.height.equalTo(participants.count * 40 - 10)
         }
     }
@@ -81,12 +79,23 @@ class ParticipantsController: UIViewController {
     lazy var groupBtn1 = GroupButton(group: sampleGroups[0])
     lazy var groupBtn2 = GroupButton(group: sampleGroups[1])
     
-    let groupStackView = UIStackView()
+    let groupStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 5
+        $0.distribution = .fillEqually
+    }
     
     let groupTitleLabel =  UILabel().then {$0.text = "Group: "}
     
-    let decisionStackView = UIStackView()
+    let decisionStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 0
+        $0.distribution = .fillEqually
+    }
     
+    private let containerView = UIView().then {
+        $0.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+    }
     
     private let cancelBtn = UIButton().then {
         $0.setTitle("Cancel", for: .normal)
@@ -124,9 +133,9 @@ class ParticipantsController: UIViewController {
     }
     
     @objc func cancelTapped(_ sender: UIButton) {
-            print("cancel tapped!")
+        print("cancel tapped!")
         delegate?.removeParticipantsController()
-//        delegate?.removeBlurredBGView()
+        //        delegate?.removeBlurredBGView()
     }
     
     @objc func nextTapped(_ sender: UIButton) {
@@ -136,45 +145,67 @@ class ParticipantsController: UIViewController {
         navigationController?.pushViewController(addingUnitController, animated: true)
     }
     
+    private func registerCollectionView() {
+        
+        self.participantsCollectionView.register(
+            ParticipantCollectionViewCell.self,
+            forCellWithReuseIdentifier: cellIdentifier)
+        
+        participantsCollectionView.delegate = self
+        participantsCollectionView.dataSource = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.setupLayout()
-        setupAddTargets()
+        view.backgroundColor = .gray
+        setupNavigation()
+        registerCollectionView()
+        setupLayout()
         
+        setupAddTargets()
+        //        prepareNumberController()
+        
+    }
+    private let bottomView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    private let showBtn = UIButton().then {
+        $0.setTitle("show", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.backgroundColor = .black
+    }
+    
+    private let hideBtn = UIButton().then {
+        $0.setTitle("hide", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.backgroundColor = .black
+    }
+    
+    private func setupNavigation() {
+        self.title = "참가 인원"
+        
+        self.navigationController?.navigationBar.tintColor = .brown
+        self.navigationController?.navigationBar.barTintColor = .blue
     }
     
     private func setupLayout() {
-        view.backgroundColor = .gray
         
-        self.title = "참가 인원"
-//        self.navigationController?.navigationBar.backgroundColor
-        self.navigationController?.navigationBar.tintColor = .brown
-        self.navigationController?.navigationBar.barTintColor = .blue
-//        self.navigationController?.navigationBar.title
-//        [ topView, groupTitleLabel, groupStackView].forEach { v in
-//            self.view.addSubview(v)
-//        }
-        [ groupTitleLabel, groupStackView].forEach { v in
-            self.view.addSubview(v)
+        
+        view.addSubview(containerView)
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.top.equalToSuperview()
         }
-
-//        topView.snp.makeConstraints { make in
-//            make.left.top.right.equalTo(view.safeAreaLayoutGuide)
-//            make.height.equalTo(40)
-//        }
         
-        let testBtns = [groupBtn1, groupBtn2]
+        [ groupTitleLabel, groupStackView].forEach { v in
+            self.containerView.addSubview(v)
+        }
         
-        groupStackView.addArranged(testBtns)
+        let testGroupBtns = [groupBtn1, groupBtn2]
+        groupStackView.addArranged(testGroupBtns)
         
-        groupStackView.axis = .horizontal
-        groupStackView.spacing = 5
-        groupStackView.distribution = .fillEqually
         
         groupTitleLabel.snp.makeConstraints { make in
-//            make.top.equalTo(topView.snp.bottom).offset(10)
-//            make.top.equalTo(view.snp.bottom).offset(10)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(30)
@@ -183,53 +214,44 @@ class ParticipantsController: UIViewController {
         
         groupStackView.snp.makeConstraints { make in
             make.leading.equalTo(groupTitleLabel.snp.trailing).offset(5)
-//            make.top.equalTo(topView.snp.bottom).offset(10)
             make.top.equalTo(view.safeAreaLayoutGuide)
-//            make.top.equalTo(view.snp.bottom).offset(10)
             make.height.equalTo(30)
             make.trailing.equalToSuperview().offset(-10)
         }
         
         
-
-        // Bottom, Decision Buttons
-        view.addSubview(decisionStackView)
-       
-        let decisionBtns = [ cancelBtn, nextBtn]
         
-        decisionStackView.addArranged(decisionBtns)
-        
-        decisionStackView.axis = .horizontal
-        decisionStackView.spacing = 0
-        decisionStackView.distribution = .fillEqually
-        
-        decisionStackView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(50)
-        }
-        
-        self.participantsCollectionView.register(
-            ParticipantCollectionViewCell.self,
-            forCellWithReuseIdentifier: cellIdentifier)
-        
-        view.addSubview(participantsCollectionView)
+        containerView.addSubview(participantsCollectionView)
         
         participantsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(groupStackView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(10)
-//            make.height.equalTo(0)
-//            make.height.equalTo(participants.count * 40 - 10)
-            make.bottom.equalToSuperview().offset(-100)
+            
+            make.bottom.equalToSuperview().offset(-200)
         }
-        participantsCollectionView.delegate = self
-        participantsCollectionView.dataSource = self
         
-        view.addSubview(addPeopleBtn)
+        
+        containerView.addSubview(addPeopleBtn)
         addPeopleBtn.snp.makeConstraints { make in
             make.top.equalTo(participantsCollectionView.snp.bottom).offset(10)
             make.left.right.equalToSuperview()
             make.height.equalTo(40)
         }
+        
+        // Bottom, Decision Buttons
+        containerView.addSubview(decisionStackView)
+        
+        let decisionBtns = [cancelBtn, nextBtn]
+        
+        decisionStackView.addArranged(decisionBtns)
+        
+        decisionStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            //            make.bottom.equalToSuperview().offset(-70)
+            make.top.equalTo(addPeopleBtn.snp.bottom).offset(10)
+            make.height.equalTo(50)
+        }
+        
     }
     
     private func setupAddTargets() {
@@ -244,15 +266,15 @@ class ParticipantsController: UIViewController {
     
     @objc func groupBtnTapped(_ sender: UIButton) {
         print("btn Tapped!")
-//        let selectedGroupBtn = sender as! GroupButton
-//        let groupTitle = selectedGroupBtn.title
-//        let selectedPeople = selectedGroupBtn.people
+        //        let selectedGroupBtn = sender as! GroupButton
+        //        let groupTitle = selectedGroupBtn.title
+        //        let selectedPeople = selectedGroupBtn.people
         
         guard let selectedGroupBtn = sender as? GroupButton else { return }
         
-//        let groupTitle = selectedGroupBtn.title // 어디쓰지? .. ;;
-//        let selectedPeople = selectedGroupBtn.people
-     
+        //        let groupTitle = selectedGroupBtn.title // 어디쓰지? .. ;;
+        //        let selectedPeople = selectedGroupBtn.people
+        
         // TODO: set other btn backgroundColor different from the selected one
         
         if !selectedGroupBtn.isSelected_ {
@@ -267,6 +289,7 @@ class ParticipantsController: UIViewController {
     
     @objc func addPersonBtnTapped(_ sender: UIButton) {
         presentAddingPeopleAlert()
+        //        showNumberController()
     }
     
     private func presentAddingPeopleAlert() {
@@ -323,19 +346,5 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
 extension ParticipantsController: AddingUnitControllerDelegate {
     func dismissChildVC() {
         delegate?.removeParticipantsController()
-    }
-}
-
-
-class NumberPadController: UIViewController {
-    
-    
-    
-    init(frame: CGRect) {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

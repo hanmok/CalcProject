@@ -62,11 +62,15 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
 
+        let dutchController = DutchpayController(persistenceManager: PersistenceManager.shared)
+        dutchController.delegate = self
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
             
-            rootViewController: DutchpayController(persistenceManager: PersistenceManager.shared))
+            
+//            rootViewController: DutchpayController(persistenceManager: PersistenceManager.shared))
+            rootViewController: dutchController)
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
@@ -94,35 +98,25 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     func configureColors() {
         
-        //        if userDefaultSetup.getIsLightModeOn() {
         if isDarkMode {
-            
-            
-            //            self.view.backgroundColor = .red
-            //                      self.tabBar.barTintColor = colorList.bgColorForExtrasDM
             UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
-                //                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
             }
             
         } else {
             
             UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
-                //            self.tabBar.barTintColor = self.colorList.bgColorForExtrasLM
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
             }
         }
         
         if isDarkMode {
             self.tabBar.tintColor = .black
-//            self.tabBar.unselectedItemTintColor = UIColor(white: 0.65, alpha: 1)
-//            self.tabBar.unselectedItemTintColor = UIColor(white: 0.5, alpha: 1)
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.4, alpha: 1)
             
             
         } else {
             self.tabBar.tintColor = .black
-//            self.tabBar.unselectedItemTintColor = UIColor(white: 0.5, alpha: 1)
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.6, alpha: 1)
         }
     }
@@ -189,4 +183,17 @@ extension MainTabController: SettingsViewControllerDelegate {
         print("vcs: \(String(describing: viewControllers))")
         self.viewDidLoad()
     }
+}
+
+extension MainTabController: DutchpayControllerDelegate {
+    func dutchpayController(shouldHideMainTab: Bool) {
+//        tabBar.isHidden = true
+        if shouldHideMainTab {
+            tabBar.isHidden = true
+        } else {
+            tabBar.isHidden = false
+        }
+    }
+    
+    
 }

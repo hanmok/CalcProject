@@ -17,9 +17,9 @@ protocol AddingUnitControllerDelegate: AnyObject {
 }
 
 class AddingUnitController: UIViewController {
-
+    
     let participants: [Person2]
-
+    
     var dutchUnit: DutchUnit2?
     var personDetails: [PersonDetail2] = []
     
@@ -31,7 +31,7 @@ class AddingUnitController: UIViewController {
     }
     
     private let spentAmount = UILabel().then { $0.text = "Spent Amount"}
-
+    
     private let spentAmountTF = PriceTextField(placeHolder: "지출 비용")
     
     private let spentDateLabel = UILabel().then { $0.text = "지출 시각"}
@@ -62,9 +62,18 @@ class AddingUnitController: UIViewController {
         $0.addTarget(nil, action: #selector(nextTapped(_:)), for: .touchUpInside)
     }
     
+    private let numberController = CustomNumberPadController()
+    
+    private func prepareNumberController() {
+        numberController.delegate = self
+        addChild(numberController)
+        view.addSubview(numberController.view)
+        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+    }
+    
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel action")
-
+        
         delegate?.dismissChildVC()
     }
     
@@ -81,6 +90,7 @@ class AddingUnitController: UIViewController {
         view.addGestureRecognizer(tap)
         setupLayout()
         initializePersonDetails()
+        prepareNumberController()
     }
     
     @objc func dismissKeyboard() {
@@ -99,6 +109,19 @@ class AddingUnitController: UIViewController {
             self.personDetails.append(PersonDetail2(person: person))
         }
     }
+    
+    private func showNumberController() {
+        UIView.animate(withDuration: 0.4) {
+            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
+        }
+    }
+    
+    private func hideNumberController() {
+        UIView.animate(withDuration: 0.4) {
+            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+        }
+    }
+    
     
     private func setupLayout() {
         [spentToLabel, spentPlaceTF,
@@ -143,7 +166,7 @@ class AddingUnitController: UIViewController {
         }
         
         
-
+        
         spentDateLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(spentAmount.snp.bottom).offset(20)
@@ -210,7 +233,7 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
         let name = participants[indexPath.row].name
         let spentAmount: Double = Double(spentAmountTF.text ?? "0") ?? 0.0
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
-                                                            
+        
         return cell
     }
     
@@ -240,3 +263,19 @@ extension AddingUnitController: UITextFieldDelegate {
 }
 
 
+
+extension AddingUnitController: CustomNumberPadDelegate {
+    
+    func numberPadViewShouldReturn() {
+        print("Complete has been pressed!")
+        // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
+        hideNumberController()
+        
+    }
+    
+    func numberPadView(updateWith numTextInput: String) {
+        print("text: \(numTextInput)")
+        // update textField with text
+    }
+    
+}

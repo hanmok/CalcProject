@@ -8,6 +8,7 @@
 
 import UIKit
 
+// better implement uisng Extension Color
 struct ColorList{
     
     // BackgroundColor
@@ -139,3 +140,5 @@ extension UIColor {
         )
     }
 }
+
+

@@ -15,6 +15,10 @@ class NumberButton: UIButton {
         self.wrapperString = wrapperString
         super.init(frame: frame)
         self.setTitle(wrapperString, for: .normal)
+        self.setTitleColor(.white, for: .normal)
+        self.backgroundColor = .black
+        
+//        self.backgroundColor = .magenta
     }
     
     required init?(coder: NSCoder) {

@@ -19,32 +19,17 @@ enum PopupScreens {
 private let cellIdentifier = "DutchCell"
 private let headerIdentifier = "headerCell"
 private let footerIdentifier = "footerCell"
+
+protocol DutchpayControllerDelegate: AnyObject {
+    func dutchpayController(shouldHideMainTab: Bool)
+    
+    
+}
+
 class DutchpayController: UIViewController {
     
-    
+    weak var delegate: DutchpayControllerDelegate?
     // MARK: - Properties
-    
-//    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000)
-//
-//    var dutchUnits : [DutchUnit2] = [
-//        DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, date: Date(),
-//                   personUnits: [
-//            PersonDetail2(person: Person2("지원이"), spentAmount: 30000),
-//            PersonDetail2(person: Person2("한목이"), spentAmount: 0),
-//            PersonDetail2(person: Person2("강아지"), spentAmount: 0)
-//                   ]),
-//        DutchUnit2(placeName: "카페", spentAmount: 10000, date: Date(),
-//                   personUnits: [
-//                    PersonDetail2(person: Person2("지원이"), spentAmount: 10000),
-//                    PersonDetail2(person: Person2("한목이"), spentAmount: 0),
-//                    PersonDetail2(person: Person2("강아지"), spentAmount: 0)
-//                   ]),
-//        DutchUnit2(placeName: "술집", spentAmount: 40000, date: Date(),
-//                   personUnits: [
-//                    PersonDetail2(person: Person2("지원이"), spentAmount: 0),
-//                    PersonDetail2(person: Person2("한목이"), spentAmount: 40000)
-    //                   ]),
-    //    ]
     
     var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000, dutchUnits: [
         DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, personDetails: [
@@ -120,8 +105,9 @@ class DutchpayController: UIViewController {
     var isAdding = false
 //    var isAdding = true
     
-    let containerView: UIView = {
+    private let containerView: UIView = {
         let uiview = UIView()
+        uiview.backgroundColor = .white
         return uiview
     }()
     
@@ -185,7 +171,7 @@ class DutchpayController: UIViewController {
 //        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
 //        return view
 //    }()
-    private var blurredView = UIView()
+//    private var blurredView = UIView()
     
    
     
@@ -199,7 +185,6 @@ class DutchpayController: UIViewController {
         setupCollectionView()
         setupLayout()
         addTargets()
-        
     }
     
     private func addTargets() {
@@ -224,7 +209,7 @@ class DutchpayController: UIViewController {
 //            }
 //        }
         print("addBtnTapped")
-        blurredView.isHidden = false
+//        blurredView.isHidden = false
         presentAddingController()
     }
     
@@ -254,7 +239,7 @@ class DutchpayController: UIViewController {
         }
         
 //        if blurredView.
-        blurredView.backgroundColor = .clear
+//        blurredView.backgroundColor = .clear
         
     }
     
@@ -266,7 +251,7 @@ class DutchpayController: UIViewController {
 //        blurredView.snp.makeConstraints { make in
 //            make.left.top.right.bottom.equalToSuperview()
 //        }
-        blurredView.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+//        blurredView.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
         
         let participantsController = ParticipantsController()
         participantsController.delegate = self
@@ -284,13 +269,15 @@ class DutchpayController: UIViewController {
         
         navParticipantsController.view.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(view).dividedBy(1.2)
-            make.height.equalTo(view).dividedBy(1.5)
+            make.width.equalTo(view)
+            make.height.equalTo(view)
         }
         
         navParticipantsController.view.layer.cornerRadius = 10
         
         navParticipantsController.didMove(toParent: self)
+        
+        delegate?.dutchpayController(shouldHideMainTab: true)
     }
     
     private func setupLayout() {
@@ -298,7 +285,7 @@ class DutchpayController: UIViewController {
         containerView.addSubview(historyBtn)
         containerView.addSubview(plusBtn)
         
-        // saveArea on the bottom
+        // safeArea on the bottom
         containerView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
@@ -340,11 +327,11 @@ class DutchpayController: UIViewController {
             }
         }
         
-        view.addSubview(blurredView)
-        blurredView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
-        blurredView.isHidden = true
+//        view.addSubview(blurredView)
+//        blurredView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+//        }
+//        blurredView.isHidden = true
         
        
     }
@@ -422,7 +409,7 @@ extension DutchpayController: ParticipantsVCDelegate {
 //    }
     
     func removeParticipantsController() {
-        blurredView.isHidden = true
+//        blurredView.isHidden = true
         if self.children.count > 0 {
             let viewControllers: [UIViewController] = self.children
             for eachVC in viewControllers {
