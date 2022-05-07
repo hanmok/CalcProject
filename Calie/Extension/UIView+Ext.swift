@@ -106,23 +106,9 @@ extension UIView{
         trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
     }
     
-//    func pinWithSpace(to superView : UIView){
-//        translatesAutoresizingMaskIntoConstraints = false
-////        topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
-//        topAnchor.constraint(equalTo: superView.topAnchor, constant: 60).isActive = true
-////        bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
-//        bottomAnchor.constraint(equalTo: superView.bottomAnchor, constant: -15).isActive = true
-//        leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
-//        trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
-//    }
     
     func pinWithSpace2(to superView : UIView, type : String){
         var sizeForType : CGFloat?
-//        switch type {
-//        case DeviceVersionType.recentPhones.rawValue : sizeForType = 80
-//        case DeviceVersionType.iPod.rawValue : sizeForType = 50
-//        default   : sizeForType = 60
-//        }
         
 
         switch type {
@@ -141,9 +127,6 @@ extension UIView{
         bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
-        
-//        superView.addSubview(self)
-//        anchor(top:superView.topAnchor, left: superView.leadingAnchor, bottom: superView.bottomAnchor, right: superView.trailingAnchor, paddingTop: sizeForType!)
         
     }
     

@@ -10,29 +10,53 @@ import UIKit
 import SnapKit
 import Then
 
-private let cellIdentifier = "PersonDetailCell"
+/*
+struct PersonDetail2 {
+    var person: Person2
+    var spentAmount: Double = 0
+    var isAttended: Bool = true
+}
+*/
 
 protocol AddingUnitControllerDelegate: AnyObject {
     func dismissChildVC()
 }
 
+
 class AddingUnitController: UIViewController {
+    
+    // MARK: - Properties
+    
+    private let cellIdentifier = "PersonDetailCell"
     
     let participants: [Person2]
     
     var dutchUnit: DutchUnit2?
     var personDetails: [PersonDetail2] = []
+    var selectedPriceTF: PriceTextField?
+    
+    private let numberController = CustomNumberPadController()
     
     weak var delegate: AddingUnitControllerDelegate?
-    private let spentToLabel = UILabel().then { $0.text = "Spent To"}
+    
+    
+    private let spentPlaceLabel = UILabel().then { $0.text = "Spent To"}
+    
     private let spentPlaceTF = UITextField().then {
         $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .center
+        $0.backgroundColor = .yellow
+        $0.tag = 1
     }
     
-    private let spentAmount = UILabel().then { $0.text = "Spent Amount"}
     
-    private let spentAmountTF = PriceTextField(placeHolder: "지출 비용")
+    private let spentAmountLabel = UILabel().then { $0.text = "Spent Amount"}
+    
+    private let spentAmountTF = PriceTextField(placeHolder: "지출 비용").then {
+        $0.backgroundColor = .magenta
+        $0.tag = 2
+    }
+    
     
     private let spentDateLabel = UILabel().then { $0.text = "지출 시각"}
     private let spentDatePicker = UIDatePicker().then {
@@ -48,37 +72,28 @@ class AddingUnitController: UIViewController {
         return cv
     }()
     
+    
     private let cancelBtn = UIButton().then {
         $0.setTitle("Cancel", for: .normal)
         $0.setTitleColor(.red, for: .normal)
         $0.addBorders(edges: [.top], color: .black)
-        $0.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
     }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
         $0.addBorders(edges: [.top, .left], color: .black)
-        $0.addTarget(nil, action: #selector(nextTapped(_:)), for: .touchUpInside)
     }
     
-    private let numberController = CustomNumberPadController()
     
-    private func prepareNumberController() {
-        numberController.delegate = self
-        addChild(numberController)
-        view.addSubview(numberController.view)
-        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-    }
     
-    @objc func cancelTapped(_ sender: UIButton) {
-        print("cancel action")
-        
-        delegate?.dismissChildVC()
-    }
     
-    @objc func nextTapped(_ sender: UIButton) {
-        print("success action")
+    
+    
+    init(participants: [Person2]) {
+        self.participants = participants
+        super.init(nibName: nil, bundle: nil)
+        initializePersonDetails()
     }
     
     
@@ -86,48 +101,34 @@ class AddingUnitController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        registerCollectionView()
         setupLayout()
+        setupTargets()
         initializePersonDetails()
         prepareNumberController()
+        
+        payCollectionView.reloadData()
     }
     
-    @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
-    }
     
-    // sequence : Init -> viewDidLoad
-    init(participants: [Person2]) {
-        self.participants = participants
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    private func initializePersonDetails() {
-        participants.forEach { person in
-            self.personDetails.append(PersonDetail2(person: person))
-        }
-    }
-    
-    private func showNumberController() {
-        UIView.animate(withDuration: 0.4) {
-            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
-        }
-    }
-    
-    private func hideNumberController() {
-        UIView.animate(withDuration: 0.4) {
-            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-        }
+    private func registerCollectionView() {
+        payCollectionView.register(PersonDetailCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        payCollectionView.delegate = self
+        payCollectionView.dataSource = self
     }
     
     
     private func setupLayout() {
-        [spentToLabel, spentPlaceTF,
-         spentAmount, spentAmountTF,
+        
+        [spentPlaceLabel, spentPlaceTF,
+         spentAmountLabel, spentAmountTF,
          spentDateLabel, spentDatePicker,
-         payCollectionView
+         payCollectionView,
+         cancelBtn, confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
         }
@@ -135,68 +136,57 @@ class AddingUnitController: UIViewController {
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
         
-        
-        spentToLabel.snp.makeConstraints { make in
+        spentPlaceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.height.equalTo(30)
             make.width.equalTo(150)
+            make.height.equalTo(30)
         }
         
         spentPlaceTF.snp.makeConstraints { make in
-            make.leading.equalTo(spentToLabel.snp.trailing).offset(20)
+            make.leading.equalTo(spentPlaceLabel.snp.trailing).offset(20)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
             make.height.equalTo(30)
         }
         
         
-        spentAmount.snp.makeConstraints { make in
+        spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(spentToLabel.snp.bottom).offset(20)
+            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(30)
         }
         
         spentAmountTF.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmount.snp.trailing).offset(20)
-            make.top.equalTo(spentToLabel.snp.bottom).offset(20)
+            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(20)
+            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
             make.height.equalTo(30)
         }
         
         
-        
         spentDateLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(spentAmount.snp.bottom).offset(20)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(20)
             make.width.equalTo(70)
             make.height.equalTo(50)
         }
         
         spentDatePicker.snp.makeConstraints { make in
             make.leading.equalTo(spentDateLabel.snp.trailing).offset(20)
-            make.top.equalTo(spentAmount.snp.bottom).offset(20)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
         }
         
-        payCollectionView.register(PersonDetailCVCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        
         payCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
             make.height.equalTo(60 * participants.count - 10)
-        }
-        
-        payCollectionView.delegate = self
-        payCollectionView.dataSource = self
-        
-        
-        let btns = [confirmBtn, cancelBtn]
-        
-        btns.forEach { btn in
-            view.addSubview(btn)
+//            make.height.equalTo(300)
         }
         
         cancelBtn.snp.makeConstraints { make in
@@ -213,6 +203,95 @@ class AddingUnitController: UIViewController {
         }
     }
     
+    private func setupTargets() {
+        cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+    }
+    
+    
+    @objc func cancelTapped(_ sender: UIButton) {
+        print("cancel action")
+        
+        delegate?.dismissChildVC()
+    }
+    
+    @objc func confirmTapped(_ sender: UIButton) {
+        print("success action")
+    }
+    
+    
+    @objc func dismissKeyboard() {
+        print("dismissKeyboard triggered!!")
+        view.endEditing(true)
+        hideNumberController()
+    }
+    
+    func dismissKeyboardOnly() {
+        view.endEditing(true)
+    }
+    
+    // MARK: - .. ??
+    private func initializePersonDetails() {
+        participants.forEach { person in
+            self.personDetails.append(PersonDetail2(person: person))
+        }
+    }
+    
+    private func prepareNumberController() {
+        numberController.delegate = self
+        addChild(numberController)
+        view.addSubview(numberController.view)
+        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+    }
+    
+    private func showNumberController() {
+        UIView.animate(withDuration: 0.4) {
+            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
+        }
+    }
+    
+    private func hideNumberController() {
+        UIView.animate(withDuration: 0.4) {
+            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+        }
+    }
+    
+    
+    @objc func fullPriceTapped(_ sender: UIButton) {
+        print("fullPriceTapped")
+    }
+    
+    @objc func attendedTapped(_ sender: UIButton) {
+        print("attended Btn Tapped")
+    }
+    
+    @objc func textDidBegin(_ textField: UITextField) {
+        if textField == spentAmountTF {
+            print("it's spentAmountTF")
+        } else if textField == spentPlaceTF {
+            print("it's spentPlaceTF")
+        }
+        
+        print("tag: \(textField.tag)")
+        if let tf = textField as? PriceTextField {
+            print("tag: \(tf.tag)")
+            print("it's pricetextfield!, textDidBegin")
+        } else {
+            print("it's not priceTextField!")
+        }
+    }
+    
+    @objc func textDidChange(_ textField: PriceTextField) {
+        print("tag: \(textField.tag)")
+        if let tf = textField as? PriceTextField {
+            print("tag: \(tf.tag)")
+            print("it's pricetextfield!, textDidChange")
+        } else {
+            print("it's not priceTextField!")
+        }
+    }
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -228,11 +307,21 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PersonDetailCVCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PersonDetailCell
+        
+        cell.spentAmountTF.delegate = self
+        
+        cell.delegate = self
+
+        cell.contentView.isUserInteractionEnabled = false
+        cell.fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
+        cell.attendedBtn.addTarget(self, action: #selector(attendedTapped(_:)), for: .touchUpInside)
         print("numberOfParticipants: \(participants.count)")
-        let name = participants[indexPath.row].name
-        let spentAmount: Double = Double(spentAmountTF.text ?? "0") ?? 0.0
+//        let name = participants[indexPath.row].name
+//        let spentAmount: Double = Double(spentAmountTF.text ?? "0") ?? 0.0
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
+        print("cell loaded !!")
+        
         
         return cell
     }
@@ -244,15 +333,35 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 20
     }
+}
+
+// MARK: - PersonDetailCell Delegate
+extension AddingUnitController: PersonDetailCellDelegate {
+    func showUpNumberPad() {
+        
+    }
+    
+    func hideNumberpad() {
+        
+    }
+    
+    func cell(_ cell: PersonDetailCell, didTapFullPrice: Bool) {
+        print("didTapFullPrice triggered")
+    }
+    
+    func cell(_ cell: PersonDetailCell, didTapAttended: Bool) {
+        print("didTapAttended triggered")
+    }
+    
     
 }
 
 
 
 
-
-
-
+// MARK: - TextField Delegate
+// Type 이 달라서 호출이 안되는 것 같은데 ??
+// PriceTextFieldDelegate 이라서 ... ;;
 extension AddingUnitController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == spentPlaceTF {
@@ -260,11 +369,52 @@ extension AddingUnitController: UITextFieldDelegate {
         }
         return true
     }
+    
+    //    func textFieldDidBeginEditing(_ textField: UITextField) {
+    //        if let tf = textField as? PriceTextField {
+    //            print("tag: \(tf.tag)")
+    //            textField.resignFirstResponder()
+    //        }
+    //
+    //        print("textFieldTag: \(textField.tag)")
+    //
+    //        self.dismissKeyboardOnly()
+    //        print("textFieldDidBeginEditing textField called")
+    //    }
+    //    textfielddidbegin
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        
+        if let tf = textField as? PriceTextField {
+            self.dismissKeyboardOnly()
+            showNumberController()
+            selectedPriceTF = tf
+            print("tag : \(textField.tag)")
+            print("textField: \(textField)")
+            return false
+        } else {
+            hideNumberController()
+            print("tag : \(textField.tag)")
+            return true
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        textField.text =
+    }
 }
 
 
 
+
 extension AddingUnitController: CustomNumberPadDelegate {
+    
+    func numberPadView(updateWith numTextInput: String) {
+        print("text: \(numTextInput)")
+        guard let tf = selectedPriceTF else { return }
+        tf.text = numTextInput
+    }
+    
     
     func numberPadViewShouldReturn() {
         print("Complete has been pressed!")
@@ -272,10 +422,10 @@ extension AddingUnitController: CustomNumberPadDelegate {
         hideNumberController()
         
     }
-    
-    func numberPadView(updateWith numTextInput: String) {
+
+    func numberPadView(updateWith numTextInput: String, textField: UITextField) {
         print("text: \(numTextInput)")
         // update textField with text
+        
     }
-    
 }

@@ -24,7 +24,17 @@ class ParticipantsController: UIViewController {
     
     weak var delegate: ParticipantsVCDelegate?
     
-    private var participants: [Person2] = []
+    private var participants: [Person2] = [] {
+        willSet {
+            if newValue.count != 0 {
+                nextBtn.isUserInteractionEnabled = true
+                nextBtn.setTitleColor(.white, for: .normal)
+            } else {
+                nextBtn.isUserInteractionEnabled = false
+                nextBtn.setTitleColor(.gray, for: .normal)
+            }
+        }
+    }
     
     private var selectedGroup: Group2? {
         didSet {
@@ -107,7 +117,9 @@ class ParticipantsController: UIViewController {
     private let nextBtn = UIButton().then {
         $0.setTitle("Next", for: .normal)
         $0.addBorders(edges: [.top, .left], color: .white)
-        $0.addTarget(nil, action: #selector(nextTapped(_:)), for: .touchUpInside)
+        $0.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        $0.isUserInteractionEnabled = false
+        $0.setTitleColor(.gray, for: .normal)
     }
     
     
@@ -132,40 +144,7 @@ class ParticipantsController: UIViewController {
         $0.backgroundColor = .magenta
     }
     
-    @objc func cancelTapped(_ sender: UIButton) {
-        print("cancel tapped!")
-        delegate?.removeParticipantsController()
-        //        delegate?.removeBlurredBGView()
-    }
     
-    @objc func nextTapped(_ sender: UIButton) {
-        print("next Tapped!")
-        let addingUnitController = AddingUnitController(participants: participants)
-        addingUnitController.delegate = self
-        navigationController?.pushViewController(addingUnitController, animated: true)
-    }
-    
-    private func registerCollectionView() {
-        
-        self.participantsCollectionView.register(
-            ParticipantCollectionViewCell.self,
-            forCellWithReuseIdentifier: cellIdentifier)
-        
-        participantsCollectionView.delegate = self
-        participantsCollectionView.dataSource = self
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .gray
-        setupNavigation()
-        registerCollectionView()
-        setupLayout()
-        
-        setupAddTargets()
-        //        prepareNumberController()
-        
-    }
     private let bottomView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -182,6 +161,19 @@ class ParticipantsController: UIViewController {
         $0.backgroundColor = .black
     }
     
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .gray
+        
+        setupNavigation()
+        registerCollectionView()
+        setupLayout()
+        setupAddTargets()
+    }
+    
+    
     private func setupNavigation() {
         self.title = "참가 인원"
         
@@ -189,8 +181,20 @@ class ParticipantsController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .blue
     }
     
-    private func setupLayout() {
+    
+    private func registerCollectionView() {
         
+        self.participantsCollectionView.register(
+            ParticipantCollectionViewCell.self,
+            forCellWithReuseIdentifier: cellIdentifier)
+        
+        participantsCollectionView.delegate = self
+        participantsCollectionView.dataSource = self
+    }
+    
+    
+    
+    private func setupLayout() {
         
         view.addSubview(containerView)
         containerView.snp.makeConstraints { make in
@@ -203,7 +207,6 @@ class ParticipantsController: UIViewController {
         
         let testGroupBtns = [groupBtn1, groupBtn2]
         groupStackView.addArranged(testGroupBtns)
-        
         
         groupTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -218,8 +221,6 @@ class ParticipantsController: UIViewController {
             make.height.equalTo(30)
             make.trailing.equalToSuperview().offset(-10)
         }
-        
-        
         
         containerView.addSubview(participantsCollectionView)
         
@@ -262,6 +263,23 @@ class ParticipantsController: UIViewController {
         }
         
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
+    }
+    
+    
+    
+    @objc func cancelTapped(_ sender: UIButton) {
+        print("cancel tapped!")
+        delegate?.removeParticipantsController()
+        //        delegate?.removeBlurredBGView()
+    }
+    
+    @objc func confirmTapped(_ sender: UIButton) {
+        print("next Tapped!")
+        if participants.count != 0 {
+        let addingUnitController = AddingUnitController(participants: participants)
+        addingUnitController.delegate = self
+        navigationController?.pushViewController(addingUnitController, animated: true)
+        }
     }
     
     @objc func groupBtnTapped(_ sender: UIButton) {

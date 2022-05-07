@@ -52,10 +52,25 @@ extension String {
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-    
-        guard let int = Int(self),
-              let result = numberFormatter.string(for: int) else { return }
+
+        self = self.replacingOccurrences(of: ",", with: "")
         
+        guard self != "" else { return }
+        
+        guard let int = Int(self),
+              let result = numberFormatter.string(for: int) else {
+            print("self: \(self)")
+            fatalError("fail to convert str to Int! ", file: #function, line: #line)
+        }
+       
         self = result
+    }
+}
+
+extension Int {
+    func withCommas() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value:self))!
     }
 }

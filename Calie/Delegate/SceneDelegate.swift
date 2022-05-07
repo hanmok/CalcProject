@@ -21,8 +21,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-//        window?.rootViewController = BaseViewController()
-        window?.rootViewController = MainTabController()
+    
+//        var rootVC = MainTabController()
+        
+        let rootVC = AddingUnitController(participants: [Person2(name: "hello"), Person2(name: "world")])
+        
+//        let rootVC = CollectionTestViewController()
+        
+        
+        window?.rootViewController = rootVC
+//        window
 //        window?.rootViewController = CustomNumberPadController()
 //                window?.rootViewController = HistoryViewController()
         window?.makeKeyAndVisible()

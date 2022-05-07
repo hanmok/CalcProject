@@ -9,14 +9,29 @@
 import UIKit
 
 
+//protocol PriceTextFieldDelegate: UITextFieldDelegate {
+//     func textFieldDidBeginEditing(_ textField: PriceTextField)
+//     func textFieldShouldBeginEditing(_ textField: PriceTextField) -> Bool
+//}
+
+extension UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: PriceTextField) {
+        print("tag : \(textField.tag)")
+    }
+}
+
+
 class PriceTextField: UITextField {
     
+    let id = UUID()
     
+    public var hello = "hello"
     private let currencyLabel = UILabel().then { $0.text = "원"}
-    private let currencyTF = UITextField().then {
-        $0.placeholder = "0"
-        $0.textAlignment = .right
-//        $0.placeholdercol
+    
+    override weak var delegate: UITextFieldDelegate? {
+        didSet{
+            print("delegate has been assigned!")
+        }
     }
     
     override init(frame: CGRect) {
@@ -26,27 +41,29 @@ class PriceTextField: UITextField {
     
     init(placeHolder: String, _ frame: CGRect = .zero) {
         self.init()
-        currencyTF.placeholder = placeholder
+        self.textAlignment = .right
     }
     
     
     private func setupLayout() {
-        addSubview(currencyLabel)
-        addSubview(currencyTF)
+        currencyLabel.frame.size = CGSize(width: 30, height: 30)
+        rightView = currencyLabel
+//        addSubview(currencyLabel)
+//
+//        currencyLabel.snp.makeConstraints { make in
+//            make.trailing.top.bottom.equalToSuperview()
+//            make.width.equalTo(30)
+//
+//        }
+
         
-        currencyLabel.snp.makeConstraints { make in
-            make.trailing.top.bottom.equalToSuperview()
-            make.width.equalTo(30)
-        }
-        
-        currencyTF.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
-        }
+//        currencyTF.snp.makeConstraints { make in
+//            make.leading.top.bottom.equalToSuperview()
+//            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
+//        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

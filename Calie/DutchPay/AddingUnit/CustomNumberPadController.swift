@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
+
 protocol CustomNumberPadDelegate: AnyObject {
 //    func numberPadView(_ tappedNumber: String)
     func numberPadViewShouldReturn()
@@ -17,11 +18,18 @@ protocol CustomNumberPadDelegate: AnyObject {
     func numberPadView(updateWith numTextInput: String)
 }
 
+//protocol CustomNumberController {
+//    associatedtype tf
+//}
+
 class CustomNumberPadController: UIViewController {
+//    typealias tf = UITextField
     
+//    typealias tf
     public var numberText = "0" {
         didSet {
             numberText.applyNumberFormatter()
+            delegate?.numberPadView(updateWith: numberText)
         }
     }
     
@@ -31,10 +39,8 @@ class CustomNumberPadController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.frame.size = CGSize(width: UIScreen.width, height: 370)
-//        view.center =
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: 370)
-//        setupLayoutBottom()
+        
         setupLayoutUp()
         setupAddTargets()
         view.backgroundColor = .blue
@@ -90,23 +96,16 @@ class CustomNumberPadController: UIViewController {
         if numberText != "" {
             numberText.removeLast()
         }
-        
-        //        delegate?.numberPadViewShouldDelete()
     }
     
     
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
         numberText += sender.wrapperString
-
-        numberText.applyNumberFormatter()
-        
-        delegate?.numberPadView(updateWith: numberText)
         // update textFields belong to Controllers which conforms NumberPadDelegate
     }
     
     private func setupLayoutUp() {
-        
         
         view.addSubview(deleteBar)
         deleteBar.snp.makeConstraints { make in

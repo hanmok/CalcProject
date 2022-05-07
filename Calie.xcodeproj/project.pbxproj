@@ -37,11 +37,15 @@
 		9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85072815C5C7001020EF /* AttendingButton.swift */; };
 		9A2DBBFD281F024200CF4E86 /* DutchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFC281F024200CF4E86 /* DutchHeader.swift */; };
 		9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */; };
-		9A2DBC012820698F00CF4E86 /* PersonDetailCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */; };
+		9A2DBC012820698F00CF4E86 /* PersonDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */; };
 		9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */; };
 		9A2DBC052820717200CF4E86 /* PriceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC042820717200CF4E86 /* PriceTextField.swift */; };
 		9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */; };
 		9A2DBC09282181E800CF4E86 /* NumberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC08282181E800CF4E86 /* NumberButton.swift */; };
+		9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC0A28258CB200CF4E86 /* ColorExt+.swift */; };
+		9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */; };
+		9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */; };
+		9A2DBC312826DCDF00CF4E86 /* CollectionTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC302826DCDF00CF4E86 /* CollectionTestViewController.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
@@ -69,7 +73,6 @@
 		9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EFA2702145A00E183AB /* InputEnums.swift */; };
 		9AFB9505281EF5F200A9DEAA /* DutchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9504281EF5F200A9DEAA /* DutchCollectionViewCell.swift */; };
 		9AFB9507281EF60500A9DEAA /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9506281EF60500A9DEAA /* DutchUnitViewModel.swift */; };
-		E53B76F22823AF0A001C0CCE /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B76F12823AF0A001C0CCE /* ColorExt.swift */; };
 		E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */; };
 /* End PBXBuildFile section */
 
@@ -120,11 +123,15 @@
 		9A1C85072815C5C7001020EF /* AttendingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendingButton.swift; sourceTree = "<group>"; };
 		9A2DBBFC281F024200CF4E86 /* DutchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchHeader.swift; sourceTree = "<group>"; };
 		9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchFooter.swift; sourceTree = "<group>"; };
-		9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailCVCell.swift; sourceTree = "<group>"; };
+		9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailCell.swift; sourceTree = "<group>"; };
 		9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailViewModel.swift; sourceTree = "<group>"; };
 		9A2DBC042820717200CF4E86 /* PriceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTextField.swift; sourceTree = "<group>"; };
 		9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPadController.swift; sourceTree = "<group>"; };
 		9A2DBC08282181E800CF4E86 /* NumberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberButton.swift; sourceTree = "<group>"; };
+		9A2DBC0A28258CB200CF4E86 /* ColorExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorExt+.swift"; sourceTree = "<group>"; };
+		9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableButton.swift; sourceTree = "<group>"; };
+		9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailTestCell.swift; sourceTree = "<group>"; };
+		9A2DBC302826DCDF00CF4E86 /* CollectionTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTestViewController.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -156,7 +163,6 @@
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.release.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E53B76F12823AF0A001C0CCE /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorExt.swift; path = /Users/mok/Desktop/CalieDutchpay/Calie/DutchPay/ColorExt.swift; sourceTree = "<absolute>"; };
 		E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreenExt+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,6 +196,7 @@
 		9A083F9924CCD55D001057D2 = {
 			isa = PBXGroup;
 			children = (
+				9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */,
 				9A083FA424CCD55D001057D2 /* Calie */,
 				9A083FA324CCD55D001057D2 /* Products */,
 				E626D36DB9E65AF30BED8735 /* Pods */,
@@ -266,12 +273,14 @@
 		9A083FF624CCDE0D001057D2 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */,
+				9A2DBC0A28258CB200CF4E86 /* ColorExt+.swift */,
+				9A2DBC042820717200CF4E86 /* PriceTextField.swift */,
 				9A083FEC24CCDCAB001057D2 /* UIViewController+Ext.swift */,
 				9A4FD3BE26A7A86300593358 /* ButtonTag.swift */,
 				9A4FD3C026A7AD9800593358 /* Extensions.swift */,
 				9A083FEE24CCDCB4001057D2 /* UIView+Ext.swift */,
 				9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */,
-				9A2DBC042820717200CF4E86 /* PriceTextField.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -284,9 +293,6 @@
 				9AFB9506281EF60500A9DEAA /* DutchUnitViewModel.swift */,
 				9A2DBBFC281F024200CF4E86 /* DutchHeader.swift */,
 				9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */,
-				9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */,
-				E53B76F12823AF0A001C0CCE /* ColorExt.swift */,
-				E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */,
 				9AC3CC642819A90D00C9A37F /* AddingUnit */,
 				9AC3CC602819981500C9A37F /* InitialSetting */,
 				9A1C85042815BAF6001020EF /* SubViews */,
@@ -303,6 +309,15 @@
 				9A1C85072815C5C7001020EF /* AttendingButton.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		9A2DBC322826DF6A00CF4E86 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9A2DBC302826DCDF00CF4E86 /* CollectionTestViewController.swift */,
+				9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		9AC3CC572819922F00C9A37F /* Model */ = {
@@ -336,8 +351,10 @@
 			isa = PBXGroup;
 			children = (
 				9AC3CC622819999C00C9A37F /* AddingUnitController.swift */,
-				9A2DBC002820698F00CF4E86 /* PersonDetailCVCell.swift */,
+				9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */,
+				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
 				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
+				9A2DBC322826DF6A00CF4E86 /* Tests */,
 			);
 			path = AddingUnit;
 			sourceTree = "<group>";
@@ -541,7 +558,7 @@
 				9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
-				9A2DBC012820698F00CF4E86 /* PersonDetailCVCell.swift in Sources */,
+				9A2DBC012820698F00CF4E86 /* PersonDetailCell.swift in Sources */,
 				9AC3CC632819999C00C9A37F /* AddingUnitController.swift in Sources */,
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
 				9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */,
@@ -553,6 +570,7 @@
 				9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
 				9A2DBBFD281F024200CF4E86 /* DutchHeader.swift in Sources */,
+				9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
@@ -560,6 +578,7 @@
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
+				9A2DBC312826DCDF00CF4E86 /* CollectionTestViewController.swift in Sources */,
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */,
@@ -567,10 +586,11 @@
 				9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
+				9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */,
 				9AFB9505281EF5F200A9DEAA /* DutchCollectionViewCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
-				E53B76F22823AF0A001C0CCE /* ColorExt.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
+				9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
 				9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */,
 			);
