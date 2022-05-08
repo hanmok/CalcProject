@@ -46,6 +46,7 @@
 		9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */; };
 		9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */; };
 		9A2DBC312826DCDF00CF4E86 /* CollectionTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC302826DCDF00CF4E86 /* CollectionTestViewController.swift */; };
+		9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC33282822C600CF4E86 /* MyAlert.swift */; };
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
@@ -134,6 +135,7 @@
 		9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableButton.swift; sourceTree = "<group>"; };
 		9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailTestCell.swift; sourceTree = "<group>"; };
 		9A2DBC302826DCDF00CF4E86 /* CollectionTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTestViewController.swift; sourceTree = "<group>"; };
+		9A2DBC33282822C600CF4E86 /* MyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlert.swift; sourceTree = "<group>"; };
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		9AF62EE526FF65CC00E183AB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
 				9A5FFE5924DF101500681717 /* ReviewService.swift */,
 				9AA5C43727186F5F0021975C /* AppUtility.swift */,
@@ -553,6 +556,7 @@
 				9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */,
 				9A083FB024CCD55D001057D2 /* Dutchpay.xcdatamodeld in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
+				9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */,
 				9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,

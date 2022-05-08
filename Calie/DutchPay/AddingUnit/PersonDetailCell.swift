@@ -12,13 +12,9 @@ import SnapKit
 
 
 protocol PersonDetailCellDelegate: AnyObject {
-    func showUpNumberPad()
-    func hideNumberpad()
+
     func cell(_ cell: PersonDetailCell, from peopleIndex: Int)
     
-    func cell(_ cell: PersonDetailCell, didTapFullPrice: Bool)
-//    func updatePriceState(with tag: Int)
-//    func cell(_ cell: PersonDetailCell, isAttending: Bool)
     func updateAttendingState(with tag: Int, to isAttending: Bool)
 }
 
@@ -57,7 +53,6 @@ class PersonDetailCell: UICollectionViewCell {
     
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
-        delegate?.cell(self, didTapFullPrice: true)
         delegate?.cell(self, from: sender.tag)
 //        delegate?.updatePriceState(with: sender.tag)
         
@@ -66,8 +61,6 @@ class PersonDetailCell: UICollectionViewCell {
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
         print("Attended Btn Tapped!")
         attendingBtn.isAttending.toggle()
-        
-//        delegate?.cell(self, isAttending: sender.isAttending)
         
         delegate?.updateAttendingState(with: sender.tag, to: sender.isAttending)
     }

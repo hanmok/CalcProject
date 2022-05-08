@@ -13,7 +13,6 @@ import SnapKit
 enum PopupScreens {
     case AddingNewDutchpay
     case Modifying
-    
 }
 
 private let cellIdentifier = "DutchCell"
@@ -22,8 +21,6 @@ private let footerIdentifier = "footerCell"
 
 protocol DutchpayControllerDelegate: AnyObject {
     func dutchpayController(shouldHideMainTab: Bool)
-    
-    
 }
 
 class DutchpayController: UIViewController {
@@ -191,6 +188,8 @@ class DutchpayController: UIViewController {
         plusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
     }
     
+    let customAlert = MyAlert()
+    
     @objc func addBtnTapped(_ sender: UIButton) {
         
 //        isAdding.toggle()
@@ -210,7 +209,17 @@ class DutchpayController: UIViewController {
 //        }
         print("addBtnTapped")
 //        blurredView.isHidden = false
+        
         presentAddingController()
+        
+        
+        // Alert Test
+
+//        customAlert.showAlert(with: "Hello World", message: "This is my custom alert that is shown.", on: self)
+    }
+    
+    @objc func dismissAlert() {
+        customAlert.dismissAlert()
     }
     
     private func setupCollectionView(){
@@ -237,23 +246,13 @@ class DutchpayController: UIViewController {
                 eachVC.removeFromParent()
             }
         }
-        
-//        if blurredView.
-//        blurredView.backgroundColor = .clear
-        
     }
     
     // need to remove after dismiss
     private func presentAddingController() {
-//        blurredView.removeFromSuperview()
-        // should i.. append this ?
-//        view.addSubview(blurredView)
-//        blurredView.snp.makeConstraints { make in
-//            make.left.top.right.bottom.equalToSuperview()
-//        }
-//        blurredView.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
         
-        let participantsController = ParticipantsController()
+        let participantsController = ParticipantsController(dutchController: self)
+        
         participantsController.delegate = self
         let navParticipantsController = UINavigationController(rootViewController: participantsController)
         
@@ -404,12 +403,8 @@ extension DutchpayController: DutchFooterDelegate {
 
 
 extension DutchpayController: ParticipantsVCDelegate {
-//    func removeBlurredBGView() {
-//        blurredView.isHidden = true
-//    }
     
     func removeParticipantsController() {
-//        blurredView.isHidden = true
         if self.children.count > 0 {
             let viewControllers: [UIViewController] = self.children
             for eachVC in viewControllers {
@@ -419,8 +414,11 @@ extension DutchpayController: ParticipantsVCDelegate {
             }
         }
     }
-    
-    
-    
-    
+}
+
+
+extension DutchpayController: AddingUnitNavDelegate {
+    func dismissWithInfo(dutchUnit: DutchUnit2) {
+        print("dismiss Tapped from aDutchpayController triggered!!")
+    }
 }

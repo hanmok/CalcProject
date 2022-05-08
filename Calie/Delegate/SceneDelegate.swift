@@ -22,9 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
     
-//        var rootVC = MainTabController()
+        var rootVC = MainTabController()
         
-        let rootVC = AddingUnitController(participants: [Person2(name: "hello"), Person2(name: "world")])
+//        let rootVC = AddingUnitController(participants: [Person2(name: "hello"), Person2(name: "world")])
         
 //        let rootVC = CollectionTestViewController()
         

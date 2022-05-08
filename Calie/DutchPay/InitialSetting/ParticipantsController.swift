@@ -21,8 +21,18 @@ protocol ParticipantsVCDelegate: AnyObject {
 
 class ParticipantsController: UIViewController {
     
-    
+    var dutchController: DutchpayController
     weak var delegate: ParticipantsVCDelegate?
+    
+    init(dutchController: DutchpayController) {
+        self.dutchController = dutchController
+        super.init(nibName: nil, bundle: nil)
+//        dutchController
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private var participants: [Person2] = [] {
         willSet {
@@ -278,6 +288,7 @@ class ParticipantsController: UIViewController {
         if participants.count != 0 {
         let addingUnitController = AddingUnitController(participants: participants)
         addingUnitController.delegate = self
+            addingUnitController.navDelegate = dutchController
         navigationController?.pushViewController(addingUnitController, animated: true)
         }
     }
@@ -323,7 +334,7 @@ class ParticipantsController: UIViewController {
             self.participants.append(Person2(textFieldInput.text!))
             self.reloadCollectionView()
         }
-        let cancelAction = UIAlertAction(title: "cancel", style: UIAlertAction.Style.destructive, handler: {
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
         
         alertController.addAction(cancelAction)

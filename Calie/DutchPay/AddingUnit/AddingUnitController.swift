@@ -20,6 +20,11 @@ struct PersonDetail2 {
 
 protocol AddingUnitControllerDelegate: AnyObject {
     func dismissChildVC()
+//    func
+}
+
+protocol AddingUnitNavDelegate: AnyObject {
+    func dismissWithInfo(dutchUnit: DutchUnit2)
 }
 
 
@@ -38,12 +43,13 @@ class AddingUnitController: UIViewController {
     private let numberController = CustomNumberPadController()
     
     weak var delegate: AddingUnitControllerDelegate?
+    weak var navDelegate: AddingUnitNavDelegate?
     
     private var spentAmount: Double = 0
     
     private var sumOfIndividual: Double = 0
     private var textFieldWithPriceDic: [Int : Double] = [:]
-    
+    private var attendingDic: [Int: Bool] = [:]
     private var isConditionSatisfied = false
     
     private let spentPlaceLabel = UILabel().then { $0.text = "Spent To"}
@@ -220,6 +226,28 @@ class AddingUnitController: UIViewController {
     
     @objc func confirmTapped(_ sender: UIButton) {
         print("success action")
+        // send data to the next screen ?? no next screen... ;;
+//        personDetails
+        let peopleNames = participants.map { $0.name }
+        
+//        for (personIndex, person) in participants {
+        for personIndex in 0 ..< participants.count {
+            
+            personDetails.append(PersonDetail2(
+                person: Person2(peopleNames[personIndex]),
+                spentAmount: textFieldWithPriceDic[personIndex] ?? 0,
+                isAttended: attendingDic[personIndex] ?? true)
+            )
+        }
+        
+        dutchUnit = DutchUnit2(
+            placeName: spentPlaceTF.text!,
+            spentAmount: spentAmount,
+            date: spentDatePicker.date,
+            personDetails: personDetails
+        )
+        
+        navDelegate?.dismissWithInfo(dutchUnit: dutchUnit!)
     }
     
     
@@ -262,15 +290,7 @@ class AddingUnitController: UIViewController {
             self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
         }
     }
-    
-    
-    @objc func fullPriceTapped(_ sender: UIButton) {
-        print("fullPriceTapped")
-    }
-    
-    @objc func attendedTapped(_ sender: UIButton) {
-        print("attended Btn Tapped")
-    }
+
     
     @objc func textDidBegin(_ textField: UITextField) {
         if textField == spentAmountTF {
@@ -311,14 +331,26 @@ class AddingUnitController: UIViewController {
         print("spentAmount: \(spentAmount)")
         } else {
             textFieldWithPriceDic[tf.tag] = tf.text!.convertToDouble()
+            
+            sumOfIndividual = 0
+            for (tag, number) in textFieldWithPriceDic {
+                print("uuid: \(tag), number: \(number)")
+                sumOfIndividual += number
+            }
+            
+            // if sumOfIndividual is larger than spentAmount,
+            // update spentAmount with corresponding textField
+            if spentAmount < sumOfIndividual {
+                spentAmount = sumOfIndividual
+                var str = String(spentAmount)
+                str.applyNumberFormatter()
+                spentAmountTF.text = str
+            }
         }
 
-        sumOfIndividual = 0
-        for (tag, number) in textFieldWithPriceDic {
-            print("uuid: \(tag), number: \(number)")
-            sumOfIndividual += number
-        }
-        
+       
+        // if sumofIndividual and spent amount is the same,
+        // && if that amount is not 0 -> enable 'confirm' btn.
         isConditionSatisfied = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
         
         setupConfirmBtn(condition: isConditionSatisfied)
@@ -346,16 +378,14 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
         
         cell.spentAmountTF.tag = indexPath.row
         cell.attendingBtn.tag = indexPath.row
+        cell.fullPriceBtn.tag = indexPath.row
         
         cell.spentAmountTF.delegate = self
         
         cell.delegate = self
         
-        cell.attendingBtn.addTarget(self, action: #selector(attendedTapped(_:)), for: .touchUpInside)
         
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
-        print("cell loaded !!")
-        
         
         return cell
     }
@@ -372,35 +402,26 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
 // MARK: - PersonDetailCell Delegate
 extension AddingUnitController: PersonDetailCellDelegate {
     
-    func showUpNumberPad() {
-        
-    }
-    
-    func hideNumberpad() {
-        
-    }
-    
-    func cell(_ cell: PersonDetailCell, didTapFullPrice: Bool) {
-        print("didTapFullPrice triggered")
-    }
     
     func cell(_ cell: PersonDetailCell, isAttending: Bool) {
-//        personDetails[]
         print("didTapAttended triggered")
-//        participants
-        
     }
     
     func updateAttendingState(with tag: Int, to isAttending: Bool) {
-        personDetails[tag].isAttended = isAttending
+        attendingDic[tag] = isAttending
     }
     
     func cell(_ cell: PersonDetailCell, from peopleIndex: Int) {
         
+        for (tag, amount) in textFieldWithPriceDic {
+            print("tag: \(tag), amount: \(amount)")
+        }
+
         let prev = textFieldWithPriceDic[peopleIndex] ?? 0
         
         let remaining = spentAmount - sumOfIndividual - prev
-        print("spentAmount: \(spentAmount), sumOfIndividual: \(sumOfIndividual), prev: \(prev)")
+        print("currentIndex: \(peopleIndex)")
+        print("spentAmount: \(spentAmount), sumOfIndividual: \(sumOfIndividual), prev: \(prev), remaining: \(remaining)")
         
         if remaining != 0 {
             textFieldWithPriceDic[peopleIndex] = remaining
@@ -409,7 +430,6 @@ extension AddingUnitController: PersonDetailCellDelegate {
             strRemaining.applyNumberFormatter()
             cell.spentAmountTF.text = strRemaining
 
-            
         }
     }
 }
@@ -459,7 +479,6 @@ extension AddingUnitController: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//        textField.text =
     }
 }
 
@@ -480,7 +499,6 @@ extension AddingUnitController: CustomNumberPadDelegate {
     func numberPadViewShouldReturn() {
         print("Complete has been pressed!")
         // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
-//        guard let tf = selectedPriceTF else { return }
       
         completeAction()
     }
