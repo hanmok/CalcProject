@@ -28,7 +28,7 @@ public extension String {
     }
 }
 
-
+// String -> Double
 
 extension Double {
     public func convertToInt() -> Int? {

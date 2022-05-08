@@ -22,10 +22,9 @@ extension UITextFieldDelegate {
 
 
 class PriceTextField: UITextField {
-    
+    public var isTotalPrice = false
     let id = UUID()
     
-    public var hello = "hello"
     private let currencyLabel = UILabel().then { $0.text = "원"}
     
     override weak var delegate: UITextFieldDelegate? {
@@ -42,6 +41,8 @@ class PriceTextField: UITextField {
     init(placeHolder: String, _ frame: CGRect = .zero) {
         self.init()
         self.textAlignment = .right
+//        self.focus
+//        self.selectAll(<#T##sender: Any?##Any?#>)
     }
     
     

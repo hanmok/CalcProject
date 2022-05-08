@@ -74,6 +74,8 @@
 		9AFB9505281EF5F200A9DEAA /* DutchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9504281EF5F200A9DEAA /* DutchCollectionViewCell.swift */; };
 		9AFB9507281EF60500A9DEAA /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9506281EF60500A9DEAA /* DutchUnitViewModel.swift */; };
 		E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */; };
+		E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7715282790AB001C0CCE /* StringExt+.swift */; };
+		E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7717282790B7001C0CCE /* IntExt+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -164,6 +166,8 @@
 		C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.release.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreenExt+.swift"; sourceTree = "<group>"; };
+		E53B7715282790AB001C0CCE /* StringExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringExt+.swift"; sourceTree = "<group>"; };
+		E53B7717282790B7001C0CCE /* IntExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntExt+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,8 +278,9 @@
 			isa = PBXGroup;
 			children = (
 				E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */,
+				E53B7715282790AB001C0CCE /* StringExt+.swift */,
+				E53B7717282790B7001C0CCE /* IntExt+.swift */,
 				9A2DBC0A28258CB200CF4E86 /* ColorExt+.swift */,
-				9A2DBC042820717200CF4E86 /* PriceTextField.swift */,
 				9A083FEC24CCDCAB001057D2 /* UIViewController+Ext.swift */,
 				9A4FD3BE26A7A86300593358 /* ButtonTag.swift */,
 				9A4FD3C026A7AD9800593358 /* Extensions.swift */,
@@ -304,6 +309,7 @@
 		9A1C85042815BAF6001020EF /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				9A2DBC042820717200CF4E86 /* PriceTextField.swift */,
 				9A1C85052815BB0F001020EF /* GroupButton.swift */,
 				9A2DBC08282181E800CF4E86 /* NumberButton.swift */,
 				9A1C85072815C5C7001020EF /* AttendingButton.swift */,
@@ -552,6 +558,7 @@
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
 				9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */,
+				E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
 				9A083FF124CCDCC3001057D2 /* UIDevice+Ext.swift in Sources */,
 				9A2DBC052820717200CF4E86 /* PriceTextField.swift in Sources */,
@@ -576,6 +583,7 @@
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
+				E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
 				9A2DBC312826DCDF00CF4E86 /* CollectionTestViewController.swift in Sources */,

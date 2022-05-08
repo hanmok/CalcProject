@@ -10,19 +10,26 @@ import UIKit
 
 class AttendingButton: UIButton {
     
-    var attending: Bool
-
-    init( _ attending: Bool = true, _ frame: CGRect = .zero) {
-        self.attending = attending
-        super.init(frame: frame)
-        loadView()
+    var isAttending: Bool {
+        willSet {
+            setupLayout(using: newValue)
+        }
     }
     
-    private func loadView() {
-//        let title = attending ? "참석" : "불참"
-        
-//        self.setTitle(title, for: .normal)
-        self.backgroundColor = .brown
+    private func setupLayout(using condition: Bool) {
+        setTitle(condition ? "참가" : "불참", for: .normal)
+        backgroundColor = condition ? .green : .red
+    }
+
+    init( _ attending: Bool = true, _ frame: CGRect = .zero) {
+        self.isAttending = attending
+        super.init(frame: frame)
+
+        setupInitialLayout()
+    }
+    
+    private func setupInitialLayout() {
+        self.backgroundColor = .green
         self.layer.cornerRadius = 5
         self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
         self.layer.borderWidth = 1

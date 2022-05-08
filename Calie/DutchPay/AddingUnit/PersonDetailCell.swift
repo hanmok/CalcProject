@@ -14,8 +14,12 @@ import SnapKit
 protocol PersonDetailCellDelegate: AnyObject {
     func showUpNumberPad()
     func hideNumberpad()
+    func cell(_ cell: PersonDetailCell, from peopleIndex: Int)
+    
     func cell(_ cell: PersonDetailCell, didTapFullPrice: Bool)
-    func cell(_ cell: PersonDetailCell, didTapAttended: Bool)
+//    func updatePriceState(with tag: Int)
+//    func cell(_ cell: PersonDetailCell, isAttending: Bool)
+    func updateAttendingState(with tag: Int, to isAttending: Bool)
 }
 
 class PersonDetailCell: UICollectionViewCell {
@@ -24,7 +28,6 @@ class PersonDetailCell: UICollectionViewCell {
         didSet {
             self.loadView()
             self.setupTargets()
-//            self.contentView.isUserInteractionEnabled = false
         }
     }
     
@@ -34,16 +37,12 @@ class PersonDetailCell: UICollectionViewCell {
         $0.textColor = .black
     }
     
-    public let spentAmountTF = PriceTextField().then { // !!!! ;;;
+    public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
         $0.backgroundColor = .gray
     }
     
-    public let attendedBtn = UIButton().then {
-        $0.setTitle("참석", for: .normal)
-        $0.backgroundColor = .green
-        $0.setTitleColor(.white, for: .normal)
-    }
+    public let attendingBtn = AttendingButton()
     
     public let fullPriceBtn = UIButton().then {
         $0.setTitle("전액", for: .normal)
@@ -52,19 +51,25 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func setupTargets() {
-        fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
-        attendedBtn.addTarget(self, action: #selector(attendedBtnTapped(_:)), for: .touchUpInside)
+        fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
+        attendingBtn.addTarget(self, action: #selector(attendingBtnTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func fullPriceTapped(_ sender: UIButton) {
+    @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
         delegate?.cell(self, didTapFullPrice: true)
+        delegate?.cell(self, from: sender.tag)
+//        delegate?.updatePriceState(with: sender.tag)
         
     }
     
-    @objc func attendedBtnTapped(_ sender: UIButton) {
+    @objc func attendingBtnTapped(_ sender: AttendingButton) {
         print("Attended Btn Tapped!")
-        delegate?.cell(self, didTapAttended: true)
+        attendingBtn.isAttending.toggle()
+        
+//        delegate?.cell(self, isAttending: sender.isAttending)
+        
+        delegate?.updateAttendingState(with: sender.tag, to: sender.isAttending)
     }
     
     private func loadView() {
@@ -72,8 +77,8 @@ class PersonDetailCell: UICollectionViewCell {
         guard let viewModel = viewModel else { return }
         nameLabel.text = viewModel.name
         
-        attendedBtn.setTitle(viewModel.attendedBtnTitle, for: .normal)
-        attendedBtn.setTitleColor(viewModel.attendedBtnColor, for: .normal)
+        attendingBtn.setTitle(viewModel.attendingBtnTitle, for: .normal)
+        attendingBtn.setTitleColor(viewModel.attendingBtnColor, for: .normal)
         
     }
     
@@ -82,51 +87,20 @@ class PersonDetailCell: UICollectionViewCell {
         
         setupLayout()
         setupTargets()
-//        self.fullPriceBtn.addTarget(self, action: #selector(didTapMyButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//
-//        guard isUserInteractionEnabled else { return nil }
-//
-//        guard !isHidden else { return nil }
-//
-//        guard alpha >= 0.01 else { return nil }
-//
-//        guard self.point(inside: point, with: event) else { return nil }
-//
-//
-//        // add one of these blocks for each button in our collection view cell we want to actually work
-////        if self.myButton.point(inside: convert(point, to: myButton), with: event) {
-////            return self.myButton
-////        }
-//        if self.fullPriceBtn.point(inside: convert(point, to: fullPriceBtn), with: event) {
-//            return self.fullPriceBtn
-//        }
-//
-//        return super.hitTest(point, with: event)
-//    }
-    
-//    @objc func didTapMyButton(sender:UIButton!) {
-//        print("Tapped it!")
-//    }
-    
     private func setupLayout() {
-        [nameLabel, spentAmountTF, fullPriceBtn, attendedBtn].forEach { v in
-//            self.addSubview(v)
-//            self.contentView.addSubview(v)
-//            self.addSubview(v)
+        [nameLabel, spentAmountTF, fullPriceBtn, attendingBtn].forEach { v in
             addSubview(v)
         }
         
         spentAmountTF.delegate = self
         
         nameLabel.snp.makeConstraints { make in
-//            make.leading.top.equalToSuperview().offset(20)
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
             make.height.equalTo(30)
@@ -134,18 +108,16 @@ class PersonDetailCell: UICollectionViewCell {
         }
         
         
-        attendedBtn.snp.makeConstraints { make in
+        attendingBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
             make.width.equalTo(60)
-//            make.top.equalToSuperview().offset(20)
             make.top.equalToSuperview()
             make.height.equalTo(30)
         }
         
         fullPriceBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(attendedBtn.snp.leading).offset(-5)
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-5)
             make.width.equalTo(60)
-//            make.top.equalToSuperview().offset(20)
             make.top.equalToSuperview()
             make.height.equalTo(30)
         }
@@ -154,7 +126,6 @@ class PersonDetailCell: UICollectionViewCell {
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
             make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-10)
             make.height.equalTo(30)
-//            make.top.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
     }

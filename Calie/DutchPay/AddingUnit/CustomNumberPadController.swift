@@ -29,7 +29,7 @@ class CustomNumberPadController: UIViewController {
     public var numberText = "0" {
         didSet {
             numberText.applyNumberFormatter()
-            delegate?.numberPadView(updateWith: numberText)
+//            delegate?.numberPadView(updateWith: numberText)
         }
     }
     
@@ -88,7 +88,9 @@ class CustomNumberPadController: UIViewController {
     
     @objc func completeTapped(_ sender: UIButton) {
         print("complete Tapped!!")
+        
         delegate?.numberPadViewShouldReturn()
+        numberText = ""
     }
     
     @objc func deleteTapped(_ sender: UIButton) {
@@ -96,12 +98,14 @@ class CustomNumberPadController: UIViewController {
         if numberText != "" {
             numberText.removeLast()
         }
+        delegate?.numberPadView(updateWith: numberText)
     }
     
     
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
         numberText += sender.wrapperString
+        delegate?.numberPadView(updateWith: numberText)
         // update textFields belong to Controllers which conforms NumberPadDelegate
     }
     

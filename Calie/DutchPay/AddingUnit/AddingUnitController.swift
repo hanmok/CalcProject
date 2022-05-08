@@ -39,6 +39,12 @@ class AddingUnitController: UIViewController {
     
     weak var delegate: AddingUnitControllerDelegate?
     
+    private var spentAmount: Double = 0
+    
+    private var sumOfIndividual: Double = 0
+    private var textFieldWithPriceDic: [Int : Double] = [:]
+    
+    private var isConditionSatisfied = false
     
     private let spentPlaceLabel = UILabel().then { $0.text = "Spent To"}
     
@@ -55,6 +61,7 @@ class AddingUnitController: UIViewController {
     private let spentAmountTF = PriceTextField(placeHolder: "지출 비용").then {
         $0.backgroundColor = .magenta
         $0.tag = 2
+        $0.isTotalPrice = true
     }
     
     
@@ -65,7 +72,7 @@ class AddingUnitController: UIViewController {
         $0.datePickerMode = .dateAndTime
     }
     
-    private let payCollectionView: UICollectionView = {
+    private let personDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -83,12 +90,10 @@ class AddingUnitController: UIViewController {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
         $0.addBorders(edges: [.top, .left], color: .black)
+//        $0.setBackgroundImage(, for: <#T##UIControl.State#>)
+        $0.backgroundColor = .gray
+        $0.isUserInteractionEnabled = false
     }
-    
-    
-    
-    
-    
     
     init(participants: [Person2]) {
         self.participants = participants
@@ -111,23 +116,22 @@ class AddingUnitController: UIViewController {
         initializePersonDetails()
         prepareNumberController()
         
-        payCollectionView.reloadData()
+        personDetailCollectionView.reloadData()
     }
     
     
     private func registerCollectionView() {
-        payCollectionView.register(PersonDetailCell.self, forCellWithReuseIdentifier: cellIdentifier)
-        payCollectionView.delegate = self
-        payCollectionView.dataSource = self
+        personDetailCollectionView.register(PersonDetailCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        personDetailCollectionView.delegate = self
+        personDetailCollectionView.dataSource = self
     }
-    
     
     private func setupLayout() {
         
         [spentPlaceLabel, spentPlaceTF,
          spentAmountLabel, spentAmountTF,
          spentDateLabel, spentDatePicker,
-         payCollectionView,
+         personDetailCollectionView,
          cancelBtn, confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
@@ -181,12 +185,11 @@ class AddingUnitController: UIViewController {
         }
         
         
-        payCollectionView.snp.makeConstraints { make in
+        personDetailCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
             make.height.equalTo(60 * participants.count - 10)
-//            make.height.equalTo(300)
         }
         
         cancelBtn.snp.makeConstraints { make in
@@ -222,8 +225,12 @@ class AddingUnitController: UIViewController {
     
     @objc func dismissKeyboard() {
         print("dismissKeyboard triggered!!")
+        completeAction()
+        numberController.numberText = ""
         view.endEditing(true)
+        
         hideNumberController()
+        
     }
     
     func dismissKeyboardOnly() {
@@ -295,6 +302,34 @@ class AddingUnitController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func completeAction() {
+        guard let tf = selectedPriceTF else { return }
+        
+        if tf.isTotalPrice {
+            spentAmount = tf.text!.convertToDouble()
+        print("spentAmount: \(spentAmount)")
+        } else {
+            textFieldWithPriceDic[tf.tag] = tf.text!.convertToDouble()
+        }
+
+        sumOfIndividual = 0
+        for (tag, number) in textFieldWithPriceDic {
+            print("uuid: \(tag), number: \(number)")
+            sumOfIndividual += number
+        }
+        
+        isConditionSatisfied = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
+        
+        setupConfirmBtn(condition: isConditionSatisfied)
+        
+        hideNumberController()
+    }
+    
+    private func setupConfirmBtn(condition: Bool) {
+        confirmBtn.isUserInteractionEnabled = condition
+        confirmBtn.backgroundColor = condition ? .white : .gray
+    }
 }
 
 
@@ -309,16 +344,15 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PersonDetailCell
         
+        cell.spentAmountTF.tag = indexPath.row
+        cell.attendingBtn.tag = indexPath.row
+        
         cell.spentAmountTF.delegate = self
         
         cell.delegate = self
-
-        cell.contentView.isUserInteractionEnabled = false
-        cell.fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
-        cell.attendedBtn.addTarget(self, action: #selector(attendedTapped(_:)), for: .touchUpInside)
-        print("numberOfParticipants: \(participants.count)")
-//        let name = participants[indexPath.row].name
-//        let spentAmount: Double = Double(spentAmountTF.text ?? "0") ?? 0.0
+        
+        cell.attendingBtn.addTarget(self, action: #selector(attendedTapped(_:)), for: .touchUpInside)
+        
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
         print("cell loaded !!")
         
@@ -337,6 +371,7 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
 
 // MARK: - PersonDetailCell Delegate
 extension AddingUnitController: PersonDetailCellDelegate {
+    
     func showUpNumberPad() {
         
     }
@@ -349,11 +384,34 @@ extension AddingUnitController: PersonDetailCellDelegate {
         print("didTapFullPrice triggered")
     }
     
-    func cell(_ cell: PersonDetailCell, didTapAttended: Bool) {
+    func cell(_ cell: PersonDetailCell, isAttending: Bool) {
+//        personDetails[]
         print("didTapAttended triggered")
+//        participants
+        
     }
     
+    func updateAttendingState(with tag: Int, to isAttending: Bool) {
+        personDetails[tag].isAttended = isAttending
+    }
     
+    func cell(_ cell: PersonDetailCell, from peopleIndex: Int) {
+        
+        let prev = textFieldWithPriceDic[peopleIndex] ?? 0
+        
+        let remaining = spentAmount - sumOfIndividual - prev
+        print("spentAmount: \(spentAmount), sumOfIndividual: \(sumOfIndividual), prev: \(prev)")
+        
+        if remaining != 0 {
+            textFieldWithPriceDic[peopleIndex] = remaining
+
+            var strRemaining = String(remaining)
+            strRemaining.applyNumberFormatter()
+            cell.spentAmountTF.text = strRemaining
+
+            
+        }
+    }
 }
 
 
@@ -385,6 +443,7 @@ extension AddingUnitController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
+//        textField.selectAll(self)
         if let tf = textField as? PriceTextField {
             self.dismissKeyboardOnly()
             showNumberController()
@@ -410,8 +469,10 @@ extension AddingUnitController: UITextFieldDelegate {
 extension AddingUnitController: CustomNumberPadDelegate {
     
     func numberPadView(updateWith numTextInput: String) {
+        print("numberPadUpdateWith triggered")
         print("text: \(numTextInput)")
         guard let tf = selectedPriceTF else { return }
+        
         tf.text = numTextInput
     }
     
@@ -419,13 +480,8 @@ extension AddingUnitController: CustomNumberPadDelegate {
     func numberPadViewShouldReturn() {
         print("Complete has been pressed!")
         // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
-        hideNumberController()
-        
-    }
-
-    func numberPadView(updateWith numTextInput: String, textField: UITextField) {
-        print("text: \(numTextInput)")
-        // update textField with text
-        
+//        guard let tf = selectedPriceTF else { return }
+      
+        completeAction()
     }
 }

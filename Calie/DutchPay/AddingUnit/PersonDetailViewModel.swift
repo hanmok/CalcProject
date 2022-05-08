@@ -15,8 +15,8 @@ struct PersonDetailViewModel {
     
     var name: String { return personDetail.person.name }
 //    var spentAmount: String { return String(personDetail.spentAmount) + " 원"}
-    var attendedBtnTitle: String { return personDetail.isAttended ? "참석" : "불참"}
-    var attendedBtnColor: UIColor { return personDetail.isAttended ? .blue : .red }
+    var attendingBtnTitle: String { return personDetail.isAttended ? "참석" : "불참"}
+    var attendingBtnColor: UIColor { return personDetail.isAttended ? .blue : .red }
 
     init(personDetail: PersonDetail2) {
         self.personDetail = personDetail

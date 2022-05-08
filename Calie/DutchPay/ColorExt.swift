@@ -9,7 +9,6 @@ import UIKit
 
 extension UIColor {
     
-    
     /// background Color for Empty, and Numbers In Dark Mode
     static let bgColorForEmptyAndNumbersDM = UIColor(red: 0.247, green: 0.247, blue: 0.247, alpha : 1)
     /// background Color for Operators In Dark Mode
