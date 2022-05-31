@@ -127,7 +127,7 @@ class ParticipantsController: UIViewController {
     private let nextBtn = UIButton().then {
         $0.setTitle("Next", for: .normal)
         $0.addBorders(edges: [.top, .left], color: .white)
-        $0.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+//        $0.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
         $0.isUserInteractionEnabled = false
         $0.setTitleColor(.gray, for: .normal)
     }
@@ -273,6 +273,8 @@ class ParticipantsController: UIViewController {
         }
         
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
+        
+        nextBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
     
     

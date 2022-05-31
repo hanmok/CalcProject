@@ -43,7 +43,8 @@ class PersonDetailCell: UICollectionViewCell {
     public let fullPriceBtn = UIButton().then {
         $0.setTitle("전액", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.backgroundColor = .yellow
+//        $0.backgroundColor = .yellow
+        $0.backgroundColor = UIColor(white: 240 / 255, alpha: 1)
     }
     
     private func setupTargets() {

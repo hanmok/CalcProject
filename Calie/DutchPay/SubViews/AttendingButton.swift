@@ -32,7 +32,7 @@ class AttendingButton: UIButton {
         self.backgroundColor = .green
         self.layer.cornerRadius = 5
 //        self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
-        self.layer.borderWidth = 1
+//        self.layer.borderWidth = 1
         
     }
     

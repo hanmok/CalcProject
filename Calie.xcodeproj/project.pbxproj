@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22F65E722845D07500646FCD /* Dutchpay+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E712845D07500646FCD /* Dutchpay+Helper.swift */; };
+		22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E732845D08D00646FCD /* Group+Helper.swift */; };
+		22F65E762845D09B00646FCD /* Participant+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E752845D09B00646FCD /* Participant+Helper.swift */; };
+		22F65E782845D0AB00646FCD /* Person+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E772845D0AB00646FCD /* Person+Helper.swift */; };
+		22F65E7A2845D0B500646FCD /* PlaceUnit+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E792845D0B500646FCD /* PlaceUnit+Helper.swift */; };
 		5833A01F4BB1956F1EF0970C /* Pods_Calie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5931D4062B3225906FE3C994 /* Pods_Calie.framework */; };
 		9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */; };
 		9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A083FA524CCD55D001057D2 /* AppDelegate.swift */; };
@@ -83,6 +88,11 @@
 		07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.release.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.debug.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.debug.xcconfig"; sourceTree = "<group>"; };
+		22F65E712845D07500646FCD /* Dutchpay+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dutchpay+Helper.swift"; sourceTree = "<group>"; };
+		22F65E732845D08D00646FCD /* Group+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+Helper.swift"; sourceTree = "<group>"; };
+		22F65E752845D09B00646FCD /* Participant+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Participant+Helper.swift"; sourceTree = "<group>"; };
+		22F65E772845D0AB00646FCD /* Person+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Helper.swift"; sourceTree = "<group>"; };
+		22F65E792845D0B500646FCD /* PlaceUnit+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceUnit+Helper.swift"; sourceTree = "<group>"; };
 		2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie.debug.xcconfig"; path = "Target Support Files/Pods-Calie/Pods-Calie.debug.xcconfig"; sourceTree = "<group>"; };
 		5931D4062B3225906FE3C994 /* Pods_Calie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		686B6DBE76AA8AE834DAB8D1 /* Pods_Calie_CalieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calie_CalieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +280,11 @@
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
 				9A1C84FA2814E822001020EF /* PersistenceManager.swift */,
+				22F65E712845D07500646FCD /* Dutchpay+Helper.swift */,
+				22F65E732845D08D00646FCD /* Group+Helper.swift */,
+				22F65E752845D09B00646FCD /* Participant+Helper.swift */,
+				22F65E772845D0AB00646FCD /* Person+Helper.swift */,
+				22F65E792845D0B500646FCD /* PlaceUnit+Helper.swift */,
 				9A083FAE24CCD55D001057D2 /* Dutchpay.xcdatamodeld */,
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 			);
@@ -548,6 +563,8 @@
 				9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
+				22F65E762845D09B00646FCD /* Participant+Helper.swift in Sources */,
+				22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
 				9A2DBC09282181E800CF4E86 /* NumberButton.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
@@ -561,6 +578,7 @@
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
+				22F65E782845D0AB00646FCD /* Person+Helper.swift in Sources */,
 				9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */,
 				E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */,
 				9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */,
@@ -595,7 +613,9 @@
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
+				22F65E7A2845D0B500646FCD /* PlaceUnit+Helper.swift in Sources */,
 				9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */,
+				22F65E722845D07500646FCD /* Dutchpay+Helper.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
 				9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */,
