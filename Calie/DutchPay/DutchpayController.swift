@@ -53,44 +53,8 @@ class DutchpayController: UIViewController {
     
     var popupToShow: PopupScreens?
     
-    
-    
     let persistenceManager: PersistenceManager
     
-    init(persistenceManager: PersistenceManager) {
-        self.persistenceManager = persistenceManager
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    /*
-    func createUser() {
-        let user = User(context: persistenceManager.context)
-        user.name = "andrew"
-        
-        persistenceManager.save()
-        
-    }
-    */
-    
-    /*
-    func getUsers() {
-        
-//        guard let users = try! persistenceManager.context.fetch(User.fetchRequest()) as? [User] else { return }
-        
-        let users = persistenceManager.fetch(User.self)
-        users.forEach({ print($0.name) })
-        
-    }
-     */
-    
-    
-    
-//    var dutchTitle
     
     
     
@@ -100,7 +64,6 @@ class DutchpayController: UIViewController {
     
     
     var isAdding = false
-//    var isAdding = true
     
     private let containerView: UIView = {
         let uiview = UIView()
@@ -131,12 +94,6 @@ class DutchpayController: UIViewController {
         
         return btn
     }()
-    
-//    private let gatheringTitleLabel = UILabel().then {
-//        $0.font = UIFont.preferredFont(forTextStyle: .largeTitle)
-//        $0.textColor = .magenta
-//        $0.textAlignment = .center
-//    }
     
     private let plusBtn: UIButton = {
         let btn = UIButton()
@@ -172,7 +129,16 @@ class DutchpayController: UIViewController {
     
    
     
-    // MARK: - View LifeCycle
+    // MARK: - LifeCycle
+    
+    init(persistenceManager: PersistenceManager) {
+        self.persistenceManager = persistenceManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -254,6 +220,7 @@ class DutchpayController: UIViewController {
         let participantsController = ParticipantsController(dutchController: self)
         
         participantsController.delegate = self
+        
         let navParticipantsController = UINavigationController(rootViewController: participantsController)
         
         UINavigationBar.appearance().backgroundColor = .cyan
@@ -418,7 +385,7 @@ extension DutchpayController: ParticipantsVCDelegate {
 
 
 extension DutchpayController: AddingUnitNavDelegate {
-    func dismissWithInfo(dutchUnit: DutchUnit2) {
+    func dismissWithInfo(dutchUnit: DutchUnit) {
         print("dismiss Tapped from aDutchpayController triggered!!")
     }
 }

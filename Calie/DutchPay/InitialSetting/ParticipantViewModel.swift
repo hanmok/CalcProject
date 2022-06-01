@@ -9,9 +9,9 @@
 import Foundation
 
 struct ParticipantViewModel {
-    public var person: Person2
+    public var person: Person
     
-    var personName: String { return person.name }
+    var personName: String { return person.name! }
 }
 
 

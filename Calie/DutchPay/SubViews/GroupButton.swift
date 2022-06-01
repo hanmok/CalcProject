@@ -12,19 +12,19 @@ import UIKit
 class GroupButton: UIButton {
     
     
-    public var group: Group2
+    public var group: Group
     
     public var title: String {
-        return group.title
+        return group.title!
     }
 
-    public var people: [Person2] {
+    public var people: [Person] {
 //        return group.people.map{ $0.name }
-        return group.people
+        return group.people.sorted { $0.index < $1.index }
     }
     
 //    public var
-    init( group: Group2, _ frame: CGRect = .zero) {
+    init( group: Group, _ frame: CGRect = .zero) {
         self.group = group
         super.init(frame: frame)
         loadView()

@@ -24,7 +24,7 @@ protocol AddingUnitControllerDelegate: AnyObject {
 }
 
 protocol AddingUnitNavDelegate: AnyObject {
-    func dismissWithInfo(dutchUnit: DutchUnit2)
+    func dismissWithInfo(dutchUnit: DutchUnit)
 }
 
 
@@ -34,10 +34,10 @@ class AddingUnitController: UIViewController {
     
     private let cellIdentifier = "PersonDetailCell"
     
-    let participants: [Person2]
+    let participants: [Person]
     
-    var dutchUnit: DutchUnit2?
-    var personDetails: [PersonDetail2] = []
+    var dutchUnit: DutchUnit?
+    var personDetails: [PersonDetail] = []
     var selectedPriceTF: PriceTextField?
     
     private let numberController = CustomNumberPadController()
@@ -101,7 +101,7 @@ class AddingUnitController: UIViewController {
         $0.isUserInteractionEnabled = false
     }
     
-    init(participants: [Person2]) {
+    init(participants: [Person]) {
         self.participants = participants
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails()
@@ -230,24 +230,49 @@ class AddingUnitController: UIViewController {
 //        personDetails
         let peopleNames = participants.map { $0.name }
         
-//        for (personIndex, person) in participants {
         for personIndex in 0 ..< participants.count {
             
-            personDetails.append(PersonDetail2(
-                person: Person2(peopleNames[personIndex]),
-                spentAmount: textFieldWithPriceDic[personIndex] ?? 0,
-                isAttended: attendingDic[personIndex] ?? true)
-            )
+            
+            personDetails.append(
+                PersonDetail.save(person: Person.save(name: peopleNames[personIndex]!),
+                                  isAttended: attendingDic[personIndex] ?? true,
+                                  spentAmount: textFieldWithPriceDic[personIndex] ?? 0))
+            
+            
         }
         
-        dutchUnit = DutchUnit2(
-            placeName: spentPlaceTF.text!,
-            spentAmount: spentAmount,
-            date: spentDatePicker.date,
-            personDetails: personDetails
-        )
+//        dutchUnit = DutchUnit(
+//            placeName: spentPlaceTF.text!,
+//            spentAmount: spentAmount,
+//            date: spentDatePicker.date,
+//            personDetails: personDetails
+//        )
+        
+//        dutchUnit = DutchUnit(spentTo: spentPlaceTF.text!,
+//                              spentAmount: spentAmount,
+//                              personDetails: personDetails,
+//                              spentDate: spentDatePicker.date)
+        
+        dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
+                                   spentAmount: spentAmount,
+                                   personDetails: personDetails,
+                                   spentDate: spentDatePicker.date)
+        
+        
+//        let newGathering = Gathering(title: "name for gathering", people: people)
+//        let newGathering = Gathering.save(title: "name for gathering", people: peopleNames)
+//        let newGathering =
+        var people: [Person] = []
+        for peopleName in peopleNames {
+            people.append(Person.save(name: peopleName!))
+        }
+        // make new Gathering
+         Gathering.save(title: "name for gathering", people: people)
+        
         
         navDelegate?.dismissWithInfo(dutchUnit: dutchUnit!)
+        
+        
     }
     
     
@@ -265,10 +290,14 @@ class AddingUnitController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: - .. ??
+    // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
+    // TODO: 띄우는 것만 우선 하는게 필요.
     private func initializePersonDetails() {
         participants.forEach { person in
-            self.personDetails.append(PersonDetail2(person: person))
+//            self.personDetails.append(PersonDetail2(person: person))
+//            self.personDetails.append(PersonDetail())
+//            self.personDetails.append(PersonDetail)
+            
         }
     }
     

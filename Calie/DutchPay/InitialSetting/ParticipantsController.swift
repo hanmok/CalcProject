@@ -34,7 +34,7 @@ class ParticipantsController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var participants: [Person2] = [] {
+    private var participants: [Person] = [] {
         willSet {
             if newValue.count != 0 {
                 nextBtn.isUserInteractionEnabled = true
@@ -46,7 +46,7 @@ class ParticipantsController: UIViewController {
         }
     }
     
-    private var selectedGroup: Group2? {
+    private var selectedGroup: Group? {
         didSet {
             setGroup()
             // TODO: Setup Height each time num of people changed?
@@ -55,12 +55,12 @@ class ParticipantsController: UIViewController {
             reloadCollectionView()
         }
     }
-    
-    let sampleGroups: [Group2] = [
-        Group2(people: [Person2(name: "hanmok"), Person2(name: "jiwon")], title: "my love"),
-        Group2(people: [Person2(name: "Zoy"), Person2(name: "julie"), Person2(name: "jong hun"), Person2(name: "hanmok")], title: "dev"),
-        Group2(people: [Person2(name: "Zoy"), Person2(name: "julie"), Person2(name: "jong hun"), Person2(name: "hanmok")], title: "some other")
-    ]
+//    Group
+//    let sampleGroups: [Group] = [
+//        Group(people: [Person(name: "hanmok"), Person(name: "jiwon")], title: "my love"),
+//        Group(people: [Person(name: "Zoy"), Person(name: "julie"), Person(name: "jong hun"), Person(name: "hanmok")], title: "dev"),
+//        Group(people: [Person(name: "Zoy"), Person(name: "julie"), Person(name: "jong hun"), Person(name: "hanmok")], title: "some other")
+//    ]
     
     private func setGroup() {
         print("setGroup triggered!")
@@ -95,9 +95,9 @@ class ParticipantsController: UIViewController {
         print("flag5")
     }
     
-    
-    lazy var groupBtn1 = GroupButton(group: sampleGroups[0])
-    lazy var groupBtn2 = GroupButton(group: sampleGroups[1])
+    // TODO: make it dynamically with CollectionView,
+//    lazy var groupBtn1 = GroupButton(group: sampleGroups[0])
+//    lazy var groupBtn2 = GroupButton(group: sampleGroups[1])
     
     let groupStackView = UIStackView().then {
         $0.axis = .horizontal
@@ -215,8 +215,8 @@ class ParticipantsController: UIViewController {
             self.containerView.addSubview(v)
         }
         
-        let testGroupBtns = [groupBtn1, groupBtn2]
-        groupStackView.addArranged(testGroupBtns)
+//        let testGroupBtns = [groupBtn1, groupBtn2]
+//        groupStackView.addArranged(testGroupBtns)
         
         groupTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -266,11 +266,11 @@ class ParticipantsController: UIViewController {
     }
     
     private func setupAddTargets() {
-        let btns = [groupBtn1,groupBtn2]
+//        let btns = [groupBtn1,groupBtn2]
         
-        btns.forEach { btn in
-            btn.addTarget(self, action: #selector(groupBtnTapped(_:)), for: .touchUpInside)
-        }
+//        btns.forEach { btn in
+//            btn.addTarget(self, action: #selector(groupBtnTapped(_:)), for: .touchUpInside)
+//        }
         
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
         
@@ -288,6 +288,7 @@ class ParticipantsController: UIViewController {
     @objc func confirmTapped(_ sender: UIButton) {
         print("next Tapped!")
         if participants.count != 0 {
+            // Pass participants
         let addingUnitController = AddingUnitController(participants: participants)
         addingUnitController.delegate = self
             addingUnitController.navDelegate = dutchController
@@ -333,7 +334,8 @@ class ParticipantsController: UIViewController {
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
-            self.participants.append(Person2(textFieldInput.text!))
+//            self.participants.append(Person2(textFieldInput.text!))
+            self.participants.append(Person.save(name: textFieldInput.text!))
             self.reloadCollectionView()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

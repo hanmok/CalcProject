@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct Payment {
+struct Payment2 {
     let name: String
     let spentAmount: Double
     let attended: Bool
@@ -21,11 +21,11 @@ struct Payment {
 
 struct Person2 {
     let name: String
-    
+
     init(_ name: String) {
         self.name = name
     }
-    
+
     init(name: String) {
         self.name = name
     }
@@ -36,20 +36,16 @@ struct Group2 {
     let title: String
 }
 
-
-struct DutchUnit2 {
-    var placeName: String
-    var spentAmount: Double
-    var date: Date = Date()
-    var personDetails: [PersonDetail2]
-}
-
-
 struct PersonDetail2 {
     var person: Person2
     var spentAmount: Double = 0
     var isAttended: Bool = true
 }
+
+
+
+
+
 
 
 struct Gathering2 {
@@ -60,7 +56,12 @@ struct Gathering2 {
 }
 
 
-
+struct DutchUnit2 {
+    var placeName: String
+    var spentAmount: Double
+    var date: Date = Date()
+    var personDetails: [PersonDetail2]
+}
 
 
 extension String {
