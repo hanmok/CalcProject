@@ -6,6 +6,12 @@
 //  Copyright © 2022 Mac mini. All rights reserved.
 //
 
+
+//struct Flag {
+//    static let
+//}
+
+
 import UIKit
 import SnapKit
 import AddThen
@@ -17,10 +23,11 @@ private let footerIdentifier = "ProfileFooter" // Plus Button
 
 protocol ParticipantsVCDelegate: AnyObject {
     func removeParticipantsController()
+    func initializeGathering(with gathering: Gathering)
 }
 
 class ParticipantsController: UIViewController {
-    
+    // MARK: - Properties
     var dutchController: DutchpayController
     weak var delegate: ParticipantsVCDelegate?
     
@@ -37,12 +44,13 @@ class ParticipantsController: UIViewController {
     private var participants: [Person] = [] {
         willSet {
             if newValue.count != 0 {
-                nextBtn.isUserInteractionEnabled = true
-                nextBtn.setTitleColor(.white, for: .normal)
+                confirmBtn.isUserInteractionEnabled = true
+                confirmBtn.setTitleColor(.white, for: .normal)
             } else {
-                nextBtn.isUserInteractionEnabled = false
-                nextBtn.setTitleColor(.gray, for: .normal)
+                confirmBtn.isUserInteractionEnabled = false
+                confirmBtn.setTitleColor(.gray, for: .normal)
             }
+            print("numOfParticipants: \(newValue.count)")
         }
     }
     
@@ -55,12 +63,6 @@ class ParticipantsController: UIViewController {
             reloadCollectionView()
         }
     }
-//    Group
-//    let sampleGroups: [Group] = [
-//        Group(people: [Person(name: "hanmok"), Person(name: "jiwon")], title: "my love"),
-//        Group(people: [Person(name: "Zoy"), Person(name: "julie"), Person(name: "jong hun"), Person(name: "hanmok")], title: "dev"),
-//        Group(people: [Person(name: "Zoy"), Person(name: "julie"), Person(name: "jong hun"), Person(name: "hanmok")], title: "some other")
-//    ]
     
     private func setGroup() {
         print("setGroup triggered!")
@@ -124,10 +126,10 @@ class ParticipantsController: UIViewController {
         $0.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
     }
     
-    private let nextBtn = UIButton().then {
+    private let confirmBtn = UIButton().then {
         $0.setTitle("Next", for: .normal)
         $0.addBorders(edges: [.top, .left], color: .white)
-//        $0.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        
         $0.isUserInteractionEnabled = false
         $0.setTitleColor(.gray, for: .normal)
     }
@@ -173,6 +175,7 @@ class ParticipantsController: UIViewController {
     
     
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
@@ -252,7 +255,7 @@ class ParticipantsController: UIViewController {
         // Bottom, Decision Buttons
         containerView.addSubview(decisionStackView)
         
-        let decisionBtns = [cancelBtn, nextBtn]
+        let decisionBtns = [cancelBtn, confirmBtn]
         
         decisionStackView.addArranged(decisionBtns)
         
@@ -274,7 +277,7 @@ class ParticipantsController: UIViewController {
         
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
         
-        nextBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
     
     
@@ -289,11 +292,25 @@ class ParticipantsController: UIViewController {
         print("next Tapped!")
         if participants.count != 0 {
             // Pass participants
-        let addingUnitController = AddingUnitController(participants: participants)
-        addingUnitController.delegate = self
-            addingUnitController.navDelegate = dutchController
-        navigationController?.pushViewController(addingUnitController, animated: true)
+            var gatheringTitle = ""
+            for eachName in participants.map({$0.name}) {
+                gatheringTitle.append(eachName.first!)
+            }
+            
+            let gathering = Gathering.save(title: gatheringTitle, people: participants)
+            
+            delegate?.initializeGathering(with: gathering)
+            
+//            let addingUnitController = AddingUnitController(participants: participants, gathering: gathering)
+//
+//        addingUnitController.delegate = self
+//            addingUnitController.navDelegate = dutchController
+//
+//            navigationController?.pushViewController(addingUnitController, animated: true)
+            
+            
         }
+        
     }
     
     @objc func groupBtnTapped(_ sender: UIButton) {
@@ -334,8 +351,13 @@ class ParticipantsController: UIViewController {
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
-//            self.participants.append(Person2(textFieldInput.text!))
-            self.participants.append(Person.save(name: textFieldInput.text!))
+//            guard let newPersonName = textFieldInput.text
+            guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
+        
+            let somePerson = Person.save(name: textFieldInput.text!)
+            
+            self.participants.append(somePerson)
+            
             self.reloadCollectionView()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

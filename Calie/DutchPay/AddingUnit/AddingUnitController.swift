@@ -35,7 +35,7 @@ class AddingUnitController: UIViewController {
     private let cellIdentifier = "PersonDetailCell"
     
     let participants: [Person]
-    
+    let gathering: Gathering
     var dutchUnit: DutchUnit?
     var personDetails: [PersonDetail] = []
     var selectedPriceTF: PriceTextField?
@@ -54,6 +54,7 @@ class AddingUnitController: UIViewController {
     
     private let spentPlaceLabel = UILabel().then { $0.text = "Spent To"}
     
+    // MARK: - UI Properties
     private let spentPlaceTF = UITextField().then {
         $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .center
@@ -101,8 +102,9 @@ class AddingUnitController: UIViewController {
         $0.isUserInteractionEnabled = false
     }
     
-    init(participants: [Person]) {
+    init(participants: [Person], gathering: Gathering) {
         self.participants = participants
+        self.gathering = gathering
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails()
     }
@@ -226,48 +228,26 @@ class AddingUnitController: UIViewController {
     
     @objc func confirmTapped(_ sender: UIButton) {
         print("success action")
-        // send data to the next screen ?? no next screen... ;;
-//        personDetails
+
         let peopleNames = participants.map { $0.name }
         
         for personIndex in 0 ..< participants.count {
-            
-            
-            personDetails.append(
-                PersonDetail.save(person: Person.save(name: peopleNames[personIndex]!),
-                                  isAttended: attendingDic[personIndex] ?? true,
-                                  spentAmount: textFieldWithPriceDic[personIndex] ?? 0))
-            
-            
+            personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
+            personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
-        
-//        dutchUnit = DutchUnit(
-//            placeName: spentPlaceTF.text!,
-//            spentAmount: spentAmount,
-//            date: spentDatePicker.date,
-//            personDetails: personDetails
-//        )
-        
-//        dutchUnit = DutchUnit(spentTo: spentPlaceTF.text!,
-//                              spentAmount: spentAmount,
-//                              personDetails: personDetails,
-//                              spentDate: spentDatePicker.date)
         
         dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
                                    spentAmount: spentAmount,
                                    personDetails: personDetails,
                                    spentDate: spentDatePicker.date)
         
-        
-//        let newGathering = Gathering(title: "name for gathering", people: people)
-//        let newGathering = Gathering.save(title: "name for gathering", people: peopleNames)
-//        let newGathering =
         var people: [Person] = []
         for peopleName in peopleNames {
-            people.append(Person.save(name: peopleName!))
+            people.append(Person.save(name: peopleName))
         }
-        // make new Gathering
-         Gathering.save(title: "name for gathering", people: people)
+        // 이걸.. 여기 단계에서 하면 안될 것 같은데 ?? people 은 이미 전 단계에서 전해졌으니까.
+        // 여기 단계는 여러번 수행될 곳이기 때문에, Gathering 은 전 단계에서 이미 만들어졌어야함.
+//        Gathering.save(title: "name for gathering", people: people)
         
         
         navDelegate?.dismissWithInfo(dutchUnit: dutchUnit!)
@@ -294,10 +274,8 @@ class AddingUnitController: UIViewController {
     // TODO: 띄우는 것만 우선 하는게 필요.
     private func initializePersonDetails() {
         participants.forEach { person in
-//            self.personDetails.append(PersonDetail2(person: person))
-//            self.personDetails.append(PersonDetail())
-//            self.personDetails.append(PersonDetail)
-            
+            let personDetail = PersonDetail.save(person: person)
+            self.personDetails.append(personDetail)
         }
     }
     
@@ -399,6 +377,7 @@ class AddingUnitController: UIViewController {
 extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("numOfParticipantsInAddingUnitController: \(participants.count)")
         return participants.count
     }
     
@@ -412,10 +391,10 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
         cell.spentAmountTF.delegate = self
         
         cell.delegate = self
-        
-        
+        print("indexPath.row : \(indexPath.row)")
+        // index out of range ??
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
-        
+        // personDetails 가 아직 없는 듯 ??
         return cell
     }
     

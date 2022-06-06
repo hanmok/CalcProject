@@ -17,14 +17,14 @@ extension PersonDetail {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        guard let entity = NSEntityDescription.entity(forEntityName: "PersonDetail", in: managedContext) else { fatalError("failed to get entity from subject ")}
+        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.PersonDetail, in: managedContext) else { fatalError("failed to get entity from PersonDetail ")}
         guard let personDetail = NSManagedObject(entity: entity, insertInto: managedContext) as? PersonDetail else {
             fatalError("failed to case to Subject during saving ")
         }
         
-        personDetail.setValue(person, forKey: "person")
-        personDetail.setValue(isAttended, forKey: "isAttended")
-        personDetail.setValue(spentAmount, forKey: "spentAmount")
+        personDetail.setValue(person, forKey: .PersonDetail.person)
+        personDetail.setValue(isAttended, forKey: .PersonDetail.isAttended)
+        personDetail.setValue(spentAmount, forKey: .PersonDetail.spentAmount)
         
         managedContext.saveCoreData()
         return personDetail

@@ -45,3 +45,49 @@ extension String {
         return double
     }
 }
+
+
+
+extension String {
+    
+    struct Person {
+        static let name = "name_"
+        static let index = "index"
+
+    }
+    struct Gathering {
+        static let title = "title"
+        static let people = "people_"
+        static let isOnWorking = "isOnWorking"
+        static let createdAt = "createdAt_"
+    }
+    
+    struct PersonDetail {
+        static let person = "person"
+        static let isAttended = "isAttended"
+        static let spentAmount = "spentAmount"
+    }
+    
+    struct Group {
+        static let title = "title"
+        static let people = "people_"
+    }
+    
+    struct DutchUnit {
+        static let personDetails = "personDetails_"
+        static let placeName = "placeName"
+        static let spentAmount = "spentAmount"
+        static let date = "date"
+    }
+    
+    struct EntityName {
+        static let Person = "Person"
+        static let Gathering = "Gathering"
+        static let PersonDetail = "PersonDetail"
+        static let Group = "Group"
+        static let DutchUnit = "DutchUnit"
+    }
+}
+
+
+

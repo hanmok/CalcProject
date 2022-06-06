@@ -23,11 +23,31 @@ protocol DutchpayControllerDelegate: AnyObject {
     func dutchpayController(shouldHideMainTab: Bool)
 }
 
+//protocol DutchpayControllerDelegate2: AnyObject {
+//    func
+//}
+
 class DutchpayController: UIViewController {
     
     weak var delegate: DutchpayControllerDelegate?
     // MARK: - Properties
     
+    var coreGathering: Gathering? {
+        didSet {
+            DispatchQueue.main.async {
+                self.dutchCollectionView.reloadData()
+            }
+        }
+    }
+    
+    private func fetchDefaultGathering() {
+        let allGatherings = Gathering.fetchAll()
+        print("numOfAllGatherings : \(allGatherings.count)")
+        if let latestGathering = Gathering.fetchLatest() {
+                coreGathering = latestGathering
+        }
+    }
+
     var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000, dutchUnits: [
         DutchUnit2(placeName: "쭈꾸미집", spentAmount: 30000, personDetails: [
             PersonDetail2(person: Person2(name: .jiwon), spentAmount: 30000),
@@ -53,15 +73,11 @@ class DutchpayController: UIViewController {
     
     var popupToShow: PopupScreens?
     
-    let persistenceManager: PersistenceManager
-    
-    
-    
+    let persistenceManager: PersistenceController
     
     var userDefaultSetup = UserDefaultSetup()
     
     let colorList = ColorList()
-    
     
     var isAdding = false
     
@@ -106,6 +122,7 @@ class DutchpayController: UIViewController {
             make.width.equalTo(btn)
             make.height.equalTo(btn)
         }
+//        btn.backgroundColor = .magenta
         return btn
     }()
     
@@ -120,20 +137,13 @@ class DutchpayController: UIViewController {
     
     
     
-//    private let blurredView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-//        return view
-//    }()
-//    private var blurredView = UIView()
-    
-   
     
     // MARK: - LifeCycle
     
-    init(persistenceManager: PersistenceManager) {
+    init(persistenceManager: PersistenceController) {
         self.persistenceManager = persistenceManager
         super.init(nibName: nil, bundle: nil)
+        fetchDefaultGathering()
     }
     
     required init?(coder: NSCoder) {
@@ -157,31 +167,7 @@ class DutchpayController: UIViewController {
     let customAlert = MyAlert()
     
     @objc func addBtnTapped(_ sender: UIButton) {
-        
-//        isAdding.toggle()
-        
-//        popupToShow = .AddingNewDutchpay
-        
-//        if popupToShow != nil {
-//            switch popupToShow! {
-//
-//            case .AddingNewDutchpay:
-//                presentAddingController()
-//
-//            case .Modifying:
-//                //TODO: presentModifyingController
-//                break
-//            }
-//        }
-        print("addBtnTapped")
-//        blurredView.isHidden = false
-        
         presentAddingController()
-        
-        
-        // Alert Test
-
-//        customAlert.showAlert(with: "Hello World", message: "This is my custom alert that is shown.", on: self)
     }
     
     @objc func dismissAlert() {
@@ -190,6 +176,7 @@ class DutchpayController: UIViewController {
     
     private func setupCollectionView(){
         if isAdding {
+//        if coreGathering != nil {
             dutchCollectionView.delegate = self
             dutchCollectionView.dataSource = self
             self.dutchCollectionView.register(DutchCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
@@ -264,15 +251,8 @@ class DutchpayController: UIViewController {
         }
         
         
+//        if coreGathering != nil {
         if isAdding {
-
-//            containerView.addSubview(gatheringTitleLabel)
-//            gatheringTitleLabel.snp.makeConstraints { make in
-//                make.top.equalTo(historyBtn.snp.bottom).offset(10)
-//                make.leading.equalToSuperview().offset(10)
-//                make.trailing.equalToSuperview().offset(-10)
-//                make.height.equalTo(50)
-//            }
             
             containerView.addSubview(dutchCollectionView)
             dutchCollectionView.snp.makeConstraints { make in
@@ -286,19 +266,12 @@ class DutchpayController: UIViewController {
         
         
         if !isAdding {
+//        if coreGathering != nil {
             plusBtn.snp.makeConstraints { make in
                 make.width.height.equalTo(containerView.snp.width).dividedBy(3)
                 make.center.equalTo(containerView)
             }
         }
-        
-//        view.addSubview(blurredView)
-//        blurredView.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
-//        }
-//        blurredView.isHidden = true
-        
-       
     }
 }
 
@@ -307,6 +280,12 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("dutchpay collectionView has appeared!!")
         return gathering.dutchUnits.count
+        
+//        if let coreGathering = coreGathering {
+//            return coreGathering.dutchUnits.count
+//        } else { return 0 }
+        
+//        return coreGathering?.dutchUnits.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -325,6 +304,7 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -379,6 +359,13 @@ extension DutchpayController: ParticipantsVCDelegate {
                 eachVC.removeFromParent()
             }
         }
+        fetchDefaultGathering()
+    }
+    
+    func initializeGathering(with gathering: Gathering) {
+        self.coreGathering = gathering
+        dutchCollectionView.reloadData()
+        removeParticipantsController()
     }
 }
 
@@ -387,4 +374,9 @@ extension DutchpayController: AddingUnitNavDelegate {
     func dismissWithInfo(dutchUnit: DutchUnit) {
         print("dismiss Tapped from aDutchpayController triggered!!")
     }
+    
+    
 }
+
+
+

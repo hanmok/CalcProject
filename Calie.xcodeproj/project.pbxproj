@@ -30,7 +30,7 @@
 		9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A083FFF24CCDF6A001057D2 /* Localizable.strings */; };
 		9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */; };
 		9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9A1C84F62814E3A6001020EF /* DutchpayMemo */; };
-		9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FA2814E822001020EF /* PersistenceManager.swift */; };
+		9A1C84FB2814E822001020EF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FA2814E822001020EF /* PersistenceController.swift */; };
 		9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FD2814ED81001020EF /* AddingBriefController.swift */; };
 		9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */; };
 		9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C85022815A865001020EF /* ParticipantsController.swift */; };
@@ -124,7 +124,7 @@
 		9A0DA01A24D3B2C2006BBE95 /* FrameSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameSizes.swift; sourceTree = "<group>"; };
 		9A1C84F52814E39F001020EF /* ColorMemo */ = {isa = PBXFileReference; lastKnownFileType = text; path = ColorMemo; sourceTree = "<group>"; };
 		9A1C84F62814E3A6001020EF /* DutchpayMemo */ = {isa = PBXFileReference; lastKnownFileType = text; path = DutchpayMemo; sourceTree = "<group>"; };
-		9A1C84FA2814E822001020EF /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		9A1C84FA2814E822001020EF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		9A1C84FD2814ED81001020EF /* AddingBriefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingBriefController.swift; sourceTree = "<group>"; };
 		9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BasicCalc.xcdatamodel; sourceTree = "<group>"; };
 		9A1C85022815A865001020EF /* ParticipantsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsController.swift; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
-				9A1C84FA2814E822001020EF /* PersistenceManager.swift */,
+				9A1C84FA2814E822001020EF /* PersistenceController.swift */,
 				9AD2FB2C2847D2B20075551B /* CoreHelpers */,
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 				9AD2FB212847CF3B0075551B /* Dutchpay.xcdatamodeld */,
@@ -579,7 +579,7 @@
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
-				9A1C84FB2814E822001020EF /* PersistenceManager.swift in Sources */,
+				9A1C84FB2814E822001020EF /* PersistenceController.swift in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */,
 				9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */,

@@ -19,7 +19,6 @@ struct DutchUnitViewModel {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         if let intValue = dutchUnit.spentAmount.convertToInt() {
-//            return String(intValue) + " 원"
             return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
         } else {
             return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
@@ -31,3 +30,26 @@ struct DutchUnitViewModel {
     }
 }
 
+
+
+struct CoreDutchUnitViewModel {
+    public var dutchUnit: DutchUnit
+    
+    var placeName: String { return dutchUnit.placeName}
+    var spentAmount: String {
+        // TODO: Apply Global Currency
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        if let intValue = dutchUnit.spentAmount.convertToInt() {
+            
+            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
+        } else {
+            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
+        }
+    }
+    
+
+    var peopleList: String {
+        return dutchUnit.personDetails.map { $0.person!.name}.joined(separator: ", ")
+    }
+}

@@ -62,7 +62,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
 
-        let dutchController = DutchpayController(persistenceManager: PersistenceManager.shared)
+        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared)
         dutchController.delegate = self
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,

@@ -13,7 +13,7 @@ import UIKit
 struct PersonDetailViewModel {
     private let personDetail: PersonDetail
     
-    var name: String { return personDetail.person!.name! }
+    var name: String { return personDetail.person!.name }
 //    var spentAmount: String { return String(personDetail.spentAmount) + " 원"}
     var attendingBtnTitle: String { return personDetail.isAttended ? "참석" : "불참"}
     var attendingBtnColor: UIColor { return personDetail.isAttended ? .blue : .red }

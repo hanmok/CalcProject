@@ -20,6 +20,15 @@ extension Person {
 //        context.saveCoreData()
 //    }
     
+    var name: String {
+        get {
+            return self.name_ ?? ""
+        }
+        set {
+            self.name_ = newValue
+        }
+    }
+    
 }
 
 extension Person {
@@ -28,14 +37,14 @@ extension Person {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        guard let entity = NSEntityDescription.entity(forEntityName: "Subject", in: managedContext) else { fatalError("failed to get entity from subject ")}
+        guard let entity = NSEntityDescription.entity(forEntityName: String.EntityName.Person, in: managedContext) else { fatalError("failed to get entity from subject ")}
         
         guard let person = NSManagedObject(entity: entity, insertInto: managedContext) as? Person else {
             fatalError("failed to case to Subject during saving ")
         }
         
-        person.setValue(name, forKey: "name")
-        person.setValue(index, forKey: "index")
+        person.setValue(name, forKey: .Person.name)
+        person.setValue(index, forKey: .Person.index)
         
         managedContext.saveCoreData()
         return person

@@ -26,13 +26,13 @@ extension Group {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        guard let entity = NSEntityDescription.entity(forEntityName: "Group", in: managedContext) else { fatalError("failed to get entity from subject ")}
+        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.Group, in: managedContext) else { fatalError("failed to get entity from Group")}
         guard let group = NSManagedObject(entity: entity, insertInto: managedContext) as? Group else {
-            fatalError("failed to case to Subject during saving ")
+            fatalError("failed to case to Group during saving ")
         }
         let convertedPeople = Array<Any>.convertToSet(items: people)
-        group.setValue(title, forKey: "title")
-        group.setValue(convertedPeople, forKey: "people")
+        group.setValue(title, forKey: .Group.title)
+        group.setValue(convertedPeople, forKey: .Group.people)
         
         managedContext.saveCoreData()
         return group

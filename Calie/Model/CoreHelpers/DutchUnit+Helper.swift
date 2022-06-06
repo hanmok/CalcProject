@@ -18,6 +18,15 @@ extension DutchUnit {
             self.personDetails_ = newValue as NSSet
         }
     }
+    
+    var placeName: String {
+        get {
+            return self.placeName_ ?? ""
+        }
+        set {
+            self.placeName_ = newValue
+        }
+    }
 }
 
 extension DutchUnit {
@@ -29,23 +38,20 @@ extension DutchUnit {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
-        guard let entity = NSEntityDescription.entity(forEntityName: "DutchUnit", in: managedContext) else { fatalError("failed to get entity from subject ")}
+        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.DutchUnit, in: managedContext) else { fatalError("failed to get entity from DutchUnit ")}
         guard let dutchUnit = NSManagedObject(entity: entity, insertInto: managedContext) as? DutchUnit else {
             fatalError("failed to case to Subject during saving ")
         }
         
         let convertedDetails = Array<Any>.convertToSet(items: personDetails)
-        dutchUnit.setValue(placeName, forKey: "placeName")
-        dutchUnit.setValue(spentAmount, forKey: "spentAmount")
-        dutchUnit.setValue(convertedDetails, forKey: "personDetails")
-        dutchUnit.setValue(spentDate, forKey: "date")
+        dutchUnit.setValue(placeName, forKey: .DutchUnit.placeName)
+        dutchUnit.setValue(spentAmount, forKey: .DutchUnit.spentAmount)
+        dutchUnit.setValue(convertedDetails, forKey: .DutchUnit.personDetails)
+        dutchUnit.setValue(spentDate, forKey: .DutchUnit.date)
         
         managedContext.saveCoreData()
         return dutchUnit
     }
-    
-    
-    
 }
 
 

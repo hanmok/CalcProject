@@ -9,10 +9,10 @@
 import Foundation
 import CoreData
 
-final class PersistenceManager {
+final class PersistenceController {
     
     private init() {}
-    static let shared = PersistenceManager()
+    static let shared = PersistenceController()
     
     // MARK: - Core Data stack
     
