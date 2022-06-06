@@ -27,6 +27,15 @@ extension DutchUnit {
             self.placeName_ = newValue
         }
     }
+    
+    var date: Date {
+        get {
+            return self.date_ ?? Date()
+        }
+        set {
+            self.date_ = newValue
+        }
+    }
 }
 
 extension DutchUnit {

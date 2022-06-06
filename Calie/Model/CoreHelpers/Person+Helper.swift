@@ -10,15 +10,6 @@ import UIKit
 import CoreData
 
 extension Person {
-//    convenience init(name: String, index: Int64 = 0, context: NSManagedObjectContext) {
-//        self.init(context: context)
-////        self.person = person
-////        self.isAttended = isAttended
-////        self.spentAmount = spentAmount
-//        self.name = name
-//        self.index = index
-//        context.saveCoreData()
-//    }
     
     var name: String {
         get {
@@ -28,7 +19,6 @@ extension Person {
             self.name_ = newValue
         }
     }
-    
 }
 
 extension Person {

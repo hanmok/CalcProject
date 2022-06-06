@@ -18,9 +18,13 @@ struct PersonDetail2 {
 }
 */
 
-protocol AddingUnitControllerDelegate: AnyObject {
-    func dismissChildVC()
+//protocol AddingUnitControllerDelegate: AnyObject {
+//    func dismissChildVC()
 //    func
+//}
+
+protocol AddingUnitControllerDelegate: AnyObject {
+    func updateDutchUnits()
 }
 
 protocol AddingUnitNavDelegate: AnyObject {
@@ -34,7 +38,7 @@ class AddingUnitController: UIViewController {
     
     private let cellIdentifier = "PersonDetailCell"
     
-    let participants: [Person]
+    var participants: [Person]
     let gathering: Gathering
     var dutchUnit: DutchUnit?
     var personDetails: [PersonDetail] = []
@@ -103,8 +107,9 @@ class AddingUnitController: UIViewController {
     }
     
     init(participants: [Person], gathering: Gathering) {
-        self.participants = participants
+//        self.participants = participants
         self.gathering = gathering
+        self.participants = gathering.sortedPeople
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails()
     }
@@ -140,6 +145,7 @@ class AddingUnitController: UIViewController {
          spentAmountLabel, spentAmountTF,
          spentDateLabel, spentDatePicker,
          personDetailCollectionView,
+         addPersonBtn,
          cancelBtn, confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
@@ -197,8 +203,15 @@ class AddingUnitController: UIViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
-            make.height.equalTo(60 * participants.count - 10)
+            make.height.equalTo(60 * participants.count - 10 + 200)
         }
+        
+        addPersonBtn.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(30)
+        }
+        
         
         cancelBtn.snp.makeConstraints { make in
             make.leading.equalTo(view)
@@ -214,22 +227,40 @@ class AddingUnitController: UIViewController {
         }
     }
     
+    private let addPersonBtn = UIButton().then {
+        $0.setTitle("Add Person", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+    }
+    
     private func setupTargets() {
         cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        addPersonBtn.addTarget(nil, action: #selector(addPersonTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func addPersonTapped(_ sender: UIButton) {
+        let count = gathering.people.count
+        let newPerson = Person.save(name: "person \(count + 1)", index: Int64(count))
+        gathering.people.update(with: newPerson)
+        print("addPersonTapped,")
+        print("gathering.people.count: \(gathering.people.count)")
+        initializePersonDetails()
     }
     
     
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel action")
         
-        delegate?.dismissChildVC()
+//        delegate?.dismissChildVC()
+        self.dismiss(animated: true)
     }
     
     @objc func confirmTapped(_ sender: UIButton) {
         print("success action")
 
-        let peopleNames = participants.map { $0.name }
+//        let peopleNames = participants.map { $0.name }
         
         for personIndex in 0 ..< participants.count {
             personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
@@ -240,18 +271,19 @@ class AddingUnitController: UIViewController {
                                    spentAmount: spentAmount,
                                    personDetails: personDetails,
                                    spentDate: spentDatePicker.date)
+        guard let dutchUnit = dutchUnit else { fatalError() }
         
-        var people: [Person] = []
-        for peopleName in peopleNames {
-            people.append(Person.save(name: peopleName))
-        }
-        // 이걸.. 여기 단계에서 하면 안될 것 같은데 ?? people 은 이미 전 단계에서 전해졌으니까.
-        // 여기 단계는 여러번 수행될 곳이기 때문에, Gathering 은 전 단계에서 이미 만들어졌어야함.
-//        Gathering.save(title: "name for gathering", people: people)
+//        var people: [Person] = []
+//        for peopleName in peopleNames {
+//            people.append(Person.save(name: peopleName))
+//        }
         
-        
-        navDelegate?.dismissWithInfo(dutchUnit: dutchUnit!)
-        
+        gathering.dutchUnits.update(with: dutchUnit)
+        gathering.updatedAt = Date()
+        gathering.managedObjectContext?.saveCoreData()
+//        navDelegate?.dismissWithInfo(dutchUnit: dutchUnit)
+//        delegate
+        self.dismiss(animated: true)
         
     }
     
@@ -263,7 +295,6 @@ class AddingUnitController: UIViewController {
         view.endEditing(true)
         
         hideNumberController()
-        
     }
     
     func dismissKeyboardOnly() {
@@ -273,9 +304,14 @@ class AddingUnitController: UIViewController {
     // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
     // TODO: 띄우는 것만 우선 하는게 필요.
     private func initializePersonDetails() {
+        self.participants = gathering.sortedPeople
+        self.personDetails = []
         participants.forEach { person in
             let personDetail = PersonDetail.save(person: person)
             self.personDetails.append(personDetail)
+        }
+        DispatchQueue.main.async {
+            self.personDetailCollectionView.reloadData()
         }
     }
     

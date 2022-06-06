@@ -13,5 +13,3 @@ struct ParticipantViewModel {
     
     var personName: String { return person.name }
 }
-
-

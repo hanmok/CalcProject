@@ -23,9 +23,6 @@ protocol DutchpayControllerDelegate: AnyObject {
     func dutchpayController(shouldHideMainTab: Bool)
 }
 
-//protocol DutchpayControllerDelegate2: AnyObject {
-//    func
-//}
 
 class DutchpayController: UIViewController {
     
@@ -34,10 +31,17 @@ class DutchpayController: UIViewController {
     
     var coreGathering: Gathering? {
         didSet {
+            printCurrentState()
             DispatchQueue.main.async {
                 self.dutchCollectionView.reloadData()
             }
         }
+    }
+    
+    private func printCurrentState() {
+        guard let gathering = coreGathering else { fatalError() }
+        print("gathering Info: \(gathering)")
+        
     }
     
     private func fetchDefaultGathering() {
@@ -122,7 +126,6 @@ class DutchpayController: UIViewController {
             make.width.equalTo(btn)
             make.height.equalTo(btn)
         }
-//        btn.backgroundColor = .magenta
         return btn
     }()
     
@@ -158,7 +161,23 @@ class DutchpayController: UIViewController {
         setupCollectionView()
         setupLayout()
         addTargets()
+        
+        fetchAll()
     }
+    
+    // 현재, 제대로 저장도 안됐다.
+    private func fetchAll() {
+        let gatherings = Gathering.fetchAll()
+        for eachGathering in gatherings {
+            print("--------------------------------")
+            print(eachGathering)
+            for eachPerson in eachGathering.sortedPeople {
+                print("personName: \(eachPerson.name)")
+            }
+            print("--------------------------------")
+        }
+    }
+    
     
     private func addTargets() {
         plusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
@@ -175,8 +194,9 @@ class DutchpayController: UIViewController {
     }
     
     private func setupCollectionView(){
-        if isAdding {
+//        if isAdding {
 //        if coreGathering != nil {
+        
             dutchCollectionView.delegate = self
             dutchCollectionView.dataSource = self
             self.dutchCollectionView.register(DutchCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
@@ -184,7 +204,7 @@ class DutchpayController: UIViewController {
             self.dutchCollectionView.register(DutchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
             
             self.dutchCollectionView.register(DutchFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerIdentifier)
-        }
+//        }
     }
     
     
@@ -233,6 +253,13 @@ class DutchpayController: UIViewController {
     }
     
     private func setupLayout() {
+        print("setupLayout triggered")
+        let allViews = view.subviews
+        
+        allViews.forEach {
+            $0.removeFromSuperview()
+        }
+        
         view.addSubview(containerView)
         containerView.addSubview(historyBtn)
         containerView.addSubview(plusBtn)
@@ -251,9 +278,10 @@ class DutchpayController: UIViewController {
         }
         
         
-//        if coreGathering != nil {
-        if isAdding {
-            
+        
+//        if isAdding {
+        if coreGathering != nil {
+            //            if coreGathering != nil {
             containerView.addSubview(dutchCollectionView)
             dutchCollectionView.snp.makeConstraints { make in
                 make.top.equalTo(historyBtn.snp.bottom).offset(20)
@@ -261,12 +289,7 @@ class DutchpayController: UIViewController {
                 make.trailing.equalToSuperview().offset(-10)
                 make.bottom.equalToSuperview()
             }
-        }
-        
-        
-        
-        if !isAdding {
-//        if coreGathering != nil {
+        } else {
             plusBtn.snp.makeConstraints { make in
                 make.width.height.equalTo(containerView.snp.width).dividedBy(3)
                 make.center.equalTo(containerView)
@@ -279,11 +302,12 @@ class DutchpayController: UIViewController {
 extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("dutchpay collectionView has appeared!!")
-        return gathering.dutchUnits.count
+//        return gathering.dutchUnits.count
         
-//        if let coreGathering = coreGathering {
-//            return coreGathering.dutchUnits.count
-//        } else { return 0 }
+        
+        if let coreGathering = coreGathering {
+            return coreGathering.dutchUnits.count
+        } else { return 0 }
         
 //        return coreGathering?.dutchUnits.count
     }
@@ -292,7 +316,10 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionViewCell
         print("cutchpay cell has appeared")
-        cell.viewModel = DutchUnitViewModel(dutchUnit: gathering.dutchUnits[indexPath.row])
+//        cell.viewModel = DutchUnitViewModel(dutchUnit: gathering.dutchUnits[indexPath.row])
+        guard let coreGathering = coreGathering else { fatalError() }
+        let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
+        cell.viewModel = CoreDutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])
         return cell
     }
     
@@ -310,17 +337,22 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let coreGathering = coreGathering else { fatalError() }
         
         switch kind {
             
         case UICollectionView.elementKindSectionHeader:
+
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! DutchHeader
-            header.viewModel = DutchHeaderViewModel(gathering: gathering)
+//            header.viewModel = DutchHeaderViewModel(gathering: gathering)
+
+            header.viewModel = DutchHeaderViewModel(gathering: coreGathering)
             return header
             
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerIdentifier, for: indexPath) as! DutchFooter
-            footer.viewModel = DutchFooterViewModel(gathering: gathering)
+//            footer.viewModel = DutchFooterViewModel(gathering: gathering)
+            footer.viewModel = DutchFooterViewModel(gathering: coreGathering)
             footer.footerDelegate = self
             return footer
          
@@ -344,6 +376,13 @@ extension DutchpayController: DutchFooterDelegate {
     func didTapPlus() {
         // TODO: Add DutchUnit
         print("didTapPlus triggered in DutchpayController!!")
+        guard let coreGathering = coreGathering else { fatalError() }
+        
+        let addingUnitController = AddingUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
+        print("numOfPeople: \(coreGathering.sortedPeople.count)")
+        addingUnitController.delegate = self
+        self.present(addingUnitController, animated: true)
+        
     }
 }
 
@@ -366,6 +405,7 @@ extension DutchpayController: ParticipantsVCDelegate {
         self.coreGathering = gathering
         dutchCollectionView.reloadData()
         removeParticipantsController()
+        setupLayout()
     }
 }
 
@@ -374,9 +414,18 @@ extension DutchpayController: AddingUnitNavDelegate {
     func dismissWithInfo(dutchUnit: DutchUnit) {
         print("dismiss Tapped from aDutchpayController triggered!!")
     }
-    
-    
 }
 
 
 
+//extension DutchpayController: AddingUnitControllerDelegate { // 이거 필요없음 ;;
+//    func dismissChildVC() {
+//
+//    }
+//}
+
+extension DutchpayController: AddingUnitControllerDelegate {
+    func updateDutchUnits() {
+        fetchDefaultGathering()
+    }
+}

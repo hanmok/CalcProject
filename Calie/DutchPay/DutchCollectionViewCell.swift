@@ -10,7 +10,8 @@ import UIKit
 
 
 class DutchCollectionViewCell: UICollectionViewCell {
-    var viewModel: DutchUnitViewModel? {
+//    var viewModel: DutchUnitViewModel? {
+    var viewModel: CoreDutchUnitViewModel? {
         didSet {
             self.loadView()
         }

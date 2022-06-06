@@ -13,6 +13,7 @@ import UIKit
 class DutchHeader: UICollectionReusableView {
     
     var viewModel: DutchHeaderViewModel? {
+//    var viewModel: COre
         didSet { self.loadView()}
     }
     
@@ -53,7 +54,8 @@ class DutchHeader: UICollectionReusableView {
 
 
 struct DutchHeaderViewModel {
-    let gathering: Gathering2
+//    let gathering: Gathering2
+    let gathering: Gathering
     
     var gatheringTitle: String { return gathering.title }
 }

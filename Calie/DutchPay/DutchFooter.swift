@@ -28,7 +28,6 @@ class DutchFooter: UICollectionReusableView {
         leadingCostLabel.text = viewModel.leadingTotalCost
         trailingCostLabel.text = viewModel.trailingTotalCost
         print("loadView in header Triggered")
-
     }
     
     private let leadingCostLabel = UILabel().then {
@@ -45,7 +44,6 @@ class DutchFooter: UICollectionReusableView {
     private let plusBtn: UIButton = {
         let btn = UIButton()
        let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-//        plusImage.backgroundColor = .white
         
         let removingLineView = UIView()
         removingLineView.backgroundColor = .white
@@ -61,11 +59,7 @@ class DutchFooter: UICollectionReusableView {
         plusImage.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
-        
-
-        
-        
-        
+    
         btn.addTarget(nil, action: #selector(handleTappedAction(_:)), for: .touchUpInside)
         return btn
     }()
@@ -125,7 +119,8 @@ class DutchFooter: UICollectionReusableView {
 
 struct DutchFooterViewModel {
     
-    let gathering: Gathering2
+//    let gathering: Gathering2
+    let gathering: Gathering
     
     var trailingTotalCost: String {
         // TODO: Apply Global Currency

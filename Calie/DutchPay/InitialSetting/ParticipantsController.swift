@@ -301,14 +301,6 @@ class ParticipantsController: UIViewController {
             
             delegate?.initializeGathering(with: gathering)
             
-//            let addingUnitController = AddingUnitController(participants: participants, gathering: gathering)
-//
-//        addingUnitController.delegate = self
-//            addingUnitController.navDelegate = dutchController
-//
-//            navigationController?.pushViewController(addingUnitController, animated: true)
-            
-            
         }
         
     }
@@ -398,8 +390,8 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
 }
 
 
-extension ParticipantsController: AddingUnitControllerDelegate {
-    func dismissChildVC() {
-        delegate?.removeParticipantsController()
-    }
-}
+//extension ParticipantsController: AddingUnitControllerDelegate {
+//    func dismissChildVC() {
+//        delegate?.removeParticipantsController()
+//    }
+//}

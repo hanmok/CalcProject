@@ -18,6 +18,16 @@ extension Group {
             self.people_ = newValue as NSSet
         }
     }
+    
+    var title: String {
+        get {
+            self.title_ ?? ""
+        }
+        set {
+            self.title_ = newValue
+        }
+    }
+    
 }
 
 extension Group {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DutchUnit" representedClassName="DutchUnit" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="placeName_" optional="YES" attributeType="String"/>
         <attribute name="spentAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="personDetails_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersonDetail"/>
@@ -9,13 +9,14 @@
     <entity name="Gathering" representedClassName="Gathering" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isOnWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="title_" optional="YES" attributeType="String"/>
         <attribute name="totalCost" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="updatedAt_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="dutchUnits_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DutchUnit"/>
         <relationship name="people_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person"/>
     </entity>
     <entity name="Group" representedClassName="Group" syncable="YES" codeGenerationType="class">
-        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="title_" optional="YES" attributeType="String"/>
         <relationship name="people_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person"/>
     </entity>
     <entity name="Person" representedClassName="Person" syncable="YES" codeGenerationType="class">
@@ -29,8 +30,8 @@
     </entity>
     <elements>
         <element name="DutchUnit" positionX="-18" positionY="27" width="128" height="89"/>
-        <element name="Gathering" positionX="-63" positionY="-18" width="128" height="119"/>
-        <element name="Group" positionX="-27" positionY="18" width="128" height="14"/>
+        <element name="Gathering" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="Group" positionX="-27" positionY="18" width="128" height="59"/>
         <element name="Person" positionX="-54" positionY="-9" width="128" height="59"/>
         <element name="PersonDetail" positionX="9" positionY="45" width="128" height="14"/>
     </elements>

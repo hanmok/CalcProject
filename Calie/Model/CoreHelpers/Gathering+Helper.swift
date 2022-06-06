@@ -29,12 +29,37 @@ extension Gathering {
         }
     }
     
+    var sortedPeople: [Person] {
+        get {
+            self.people.sorted { $0.index < $1.index }
+        }
+    }
+    
     var createdAt: Date {
         get {
             self.createdAt_ ?? Date()
         }
         set {
             self.createdAt_ = newValue
+//            context
+        }
+    }
+    
+    var updatedAt: Date {
+        get {
+            self.updatedAt_ ?? Date()
+        }
+        set {
+            self.updatedAt_ = newValue
+        }
+    }
+    
+    var title: String {
+        get {
+            self.title_ ?? ""
+        }
+        set {
+            self.title_ = newValue
         }
     }
 }
@@ -79,7 +104,7 @@ extension Gathering {
         let req = Gathering.fetch(.all)
         if let gatherings = try? managedContext.fetch(req) {
             if gatherings.count != 0 {
-                return gatherings.sorted{$0.createdAt < $1.createdAt }.last!
+                return gatherings.sorted{$0.updatedAt < $1.updatedAt }.last!
             } else {
                 return nil }
         }
