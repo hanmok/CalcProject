@@ -17,6 +17,7 @@ extension Gathering {
         }
         set {
             self.dutchUnits_ = newValue as NSSet
+            self.managedObjectContext?.saveCoreData()
         }
     }
     
@@ -26,6 +27,7 @@ extension Gathering {
         }
         set {
             self.people_ = newValue as NSSet
+            self.managedObjectContext?.saveCoreData()
         }
     }
     
@@ -41,7 +43,7 @@ extension Gathering {
         }
         set {
             self.createdAt_ = newValue
-//            context
+            self.managedObjectContext?.saveCoreData()
         }
     }
     
@@ -51,6 +53,7 @@ extension Gathering {
         }
         set {
             self.updatedAt_ = newValue
+            self.managedObjectContext?.saveCoreData()
         }
     }
     
@@ -60,6 +63,8 @@ extension Gathering {
         }
         set {
             self.title_ = newValue
+            print("title has changed to \(newValue)")
+            self.managedObjectContext?.saveCoreData()
         }
     }
 }
@@ -80,6 +85,8 @@ extension Gathering {
         gathering.setValue(true, forKey: .Gathering.isOnWorking)
         
         managedContext.saveCoreData()
+        
+
         return gathering
     }
 }

@@ -10,12 +10,18 @@ import UIKit
 
 
 
+protocol HeaderDelegate: AnyObject {
+    func didTapGroupName()
+}
+
 class DutchHeader: UICollectionReusableView {
     
     var viewModel: DutchHeaderViewModel? {
 //    var viewModel: COre
         didSet { self.loadView()}
     }
+    
+    weak var delegate: HeaderDelegate?
     
     private func loadView() {
         guard let viewModel = viewModel else {
@@ -27,17 +33,26 @@ class DutchHeader: UICollectionReusableView {
     }
     
     private let titleLabel = UILabel().then {
-//        $0.font = UIFont.systemFont(ofSize: 20)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         $0.addBorders(edges: .bottom, color: .gray)
     }
     
+    private let transparentBtn = UIButton().then {
+        $0.backgroundColor = UIColor(white: 0.8, alpha: 0.5)
+        $0.addTarget(nil, action: #selector(handleTappedAction(_:)), for: .touchUpInside)
+    }
+    
+    @objc func handleTappedAction(_ sender: UIButton) {
+        delegate?.didTapGroupName()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
         print("header has loaded")
+        backgroundColor = .magenta
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +60,17 @@ class DutchHeader: UICollectionReusableView {
     }
     
     private func setupLayout() {
-        self.addSubview(titleLabel)
+        self.addSubview(transparentBtn)
+        transparentBtn.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+        
+//        self.addSubview(titleLabel)
+//        titleLabel.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+//        }
+        
+        transparentBtn.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }

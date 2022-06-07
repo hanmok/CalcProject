@@ -68,6 +68,7 @@
 		9AD2FB252847D24B0075551B /* Gathering+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB242847D24B0075551B /* Gathering+Helper.swift */; };
 		9AD2FB272847D2610075551B /* DutchUnit+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB262847D2610075551B /* DutchUnit+Helper.swift */; };
 		9AD2FB2B2847D2960075551B /* PersonDetail+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB2A2847D2960075551B /* PersonDetail+Helper.swift */; };
+		9AD2FB2E284FC4030075551B /* LayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB2D284FC4030075551B /* LayerController.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
 		9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* BaseVCMemo */; };
@@ -162,6 +163,7 @@
 		9AD2FB242847D24B0075551B /* Gathering+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Gathering+Helper.swift"; sourceTree = "<group>"; };
 		9AD2FB262847D2610075551B /* DutchUnit+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DutchUnit+Helper.swift"; sourceTree = "<group>"; };
 		9AD2FB2A2847D2960075551B /* PersonDetail+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonDetail+Helper.swift"; sourceTree = "<group>"; };
+		9AD2FB2D284FC4030075551B /* LayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerController.swift; sourceTree = "<group>"; };
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -373,6 +375,7 @@
 				9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */,
 				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
 				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
+				9AD2FB2D284FC4030075551B /* LayerController.swift */,
 				9A2DBC322826DF6A00CF4E86 /* Tests */,
 			);
 			path = AddingUnit;
@@ -604,6 +607,7 @@
 				9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */,
 				9AD2FB2B2847D2960075551B /* PersonDetail+Helper.swift in Sources */,
 				E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */,
+				9AD2FB2E284FC4030075551B /* LayerController.swift in Sources */,
 				9AFB9507281EF60500A9DEAA /* DutchUnitViewModel.swift in Sources */,
 				9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,

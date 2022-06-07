@@ -22,6 +22,7 @@ private let footerIdentifier = "ProfileFooter" // Plus Button
 
 
 protocol ParticipantsVCDelegate: AnyObject {
+//    func removeChildrenControllers()
     func removeParticipantsController()
     func initializeGathering(with gathering: Gathering)
 }
@@ -127,7 +128,7 @@ class ParticipantsController: UIViewController {
     }
     
     private let confirmBtn = UIButton().then {
-        $0.setTitle("Next", for: .normal)
+        $0.setTitle("Confirm", for: .normal)
         $0.addBorders(edges: [.top, .left], color: .white)
         
         $0.isUserInteractionEnabled = false
@@ -284,26 +285,33 @@ class ParticipantsController: UIViewController {
     
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel tapped!")
+//        delegate?.removeChildrenControllers()
         delegate?.removeParticipantsController()
         //        delegate?.removeBlurredBGView()
     }
     
+    
     @objc func confirmTapped(_ sender: UIButton) {
-        print("next Tapped!")
-        if participants.count != 0 {
-            // Pass participants
-            var gatheringTitle = ""
-            for eachName in participants.map({$0.name}) {
-                gatheringTitle.append(eachName.first!)
+            print("next Tapped!")
+            if participants.count != 0 {
+                // Pass participants
+                var gatheringTitle = ""
+                var names = ""
+                for eachName in participants.map({$0.name}) {
+                    names += eachName + ", "
+                }
+                
+                if names.count != 0 {
+                    names.removeLast()
+                    names.removeLast()
+                }
+                
+                let gathering = Gathering.save(title: gatheringTitle, people: participants)
+                
+                delegate?.initializeGathering(with: gathering)
             }
-            
-            let gathering = Gathering.save(title: gatheringTitle, people: participants)
-            
-            delegate?.initializeGathering(with: gathering)
-            
         }
         
-    }
     
     @objc func groupBtnTapped(_ sender: UIButton) {
         print("btn Tapped!")

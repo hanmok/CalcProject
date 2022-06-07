@@ -31,6 +31,7 @@ class PersonDetailCell: UICollectionViewCell {
     
     private let nameLabel = UILabel().then {
         $0.textColor = .black
+        $0.backgroundColor = .magenta
     }
     
     public let spentAmountTF = PriceTextField().then {
@@ -96,8 +97,9 @@ class PersonDetailCell: UICollectionViewCell {
         
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.top.equalToSuperview()
-            make.height.equalTo(30)
+            make.top.bottom.equalToSuperview()
+//            make.height.equalTo(30)
+//            make.height.equalToSuperview()
             make.width.equalTo(70)
         }
         
@@ -105,22 +107,25 @@ class PersonDetailCell: UICollectionViewCell {
         attendingBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
             make.width.equalTo(60)
-            make.top.equalToSuperview()
-            make.height.equalTo(30)
+//            make.top.equalToSuperview()
+//            make.height.equalTo(30)
+            make.top.bottom.equalToSuperview()
         }
         
         fullPriceBtn.snp.makeConstraints { make in
             make.trailing.equalTo(attendingBtn.snp.leading).offset(-5)
             make.width.equalTo(60)
-            make.top.equalToSuperview()
-            make.height.equalTo(30)
+//            make.top.equalToSuperview()
+//            make.height.equalTo(30)
+            make.top.bottom.equalToSuperview()
         }
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
             make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-10)
-            make.height.equalTo(30)
-            make.top.equalToSuperview()
+//            make.height.equalTo(30)
+//            make.top.equalToSuperview()
+            make.top.bottom.equalToSuperview()
         }
     }
 }
@@ -128,6 +133,3 @@ class PersonDetailCell: UICollectionViewCell {
 extension PersonDetailCell: UITextFieldDelegate {
     // need to communicate to.. the viewController that contains CollectionView which is of type PersonDetailCell for its cell
 }
-
-
-

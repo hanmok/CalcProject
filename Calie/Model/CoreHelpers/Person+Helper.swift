@@ -13,7 +13,7 @@ extension Person {
     
     var name: String {
         get {
-            return self.name_ ?? ""
+            return self.name_ ?? "person name"
         }
         set {
             self.name_ = newValue
@@ -38,12 +38,6 @@ extension Person {
         
         managedContext.saveCoreData()
         return person
-//        do {
-//            try managedContext.save()
-//            print("savedData: \(person)")
-//        } catch let error as NSError {
-//            print("Could not save, \(error), \(error.userInfo)")
-//        }
         
     }
 }

@@ -20,11 +20,11 @@ struct PersonDetail2 {
 
 //protocol AddingUnitControllerDelegate: AnyObject {
 //    func dismissChildVC()
-//    func
 //}
 
 protocol AddingUnitControllerDelegate: AnyObject {
     func updateDutchUnits()
+    func dismissChildVC()
 }
 
 protocol AddingUnitNavDelegate: AnyObject {
@@ -102,7 +102,9 @@ class AddingUnitController: UIViewController {
         $0.setTitleColor(.blue, for: .normal)
         $0.addBorders(edges: [.top, .left], color: .black)
 //        $0.setBackgroundImage(, for: <#T##UIControl.State#>)
-        $0.backgroundColor = .gray
+//        $0.backgroundColor = .gray
+//        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
+        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
         $0.isUserInteractionEnabled = false
     }
     
@@ -118,7 +120,8 @@ class AddingUnitController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+//        view.backgroundColor = .green
         // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -130,6 +133,11 @@ class AddingUnitController: UIViewController {
         prepareNumberController()
         
         personDetailCollectionView.reloadData()
+        
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10
+        view.layer.borderWidth = 1
+        view.clipsToBounds = true
     }
     
     
@@ -203,7 +211,8 @@ class AddingUnitController: UIViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
-            make.height.equalTo(60 * participants.count - 10 + 200)
+//            make.height.equalTo(60 * participants.count - 10)
+            make.height.equalTo(60 * participants.count - 10 + 50)
         }
         
         addPersonBtn.snp.makeConstraints { make in
@@ -227,6 +236,8 @@ class AddingUnitController: UIViewController {
         }
     }
     
+    /// Should not be here.
+    // FIXME: remove after testing
     private let addPersonBtn = UIButton().then {
         $0.setTitle("Add Person", for: .normal)
         $0.setTitleColor(.black, for: .normal)
@@ -253,7 +264,7 @@ class AddingUnitController: UIViewController {
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel action")
         
-//        delegate?.dismissChildVC()
+        delegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
     
@@ -403,7 +414,8 @@ class AddingUnitController: UIViewController {
     
     private func setupConfirmBtn(condition: Bool) {
         confirmBtn.isUserInteractionEnabled = condition
-        confirmBtn.backgroundColor = condition ? .white : .gray
+//        confirmBtn.backgroundColor = condition ? .white : .gray
+        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
     }
 }
 
