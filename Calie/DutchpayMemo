@@ -54,9 +54,13 @@ AddingUnitController (DutchUnit 생성 )
 2. 그룹명 수정 / 완료.
 3. ChildView 띄우는 방식 수정 / 부분 수정 완료.
 4. ChildView 에서 CustomNumberPad 이용해서 업데이트하기.
-
+5. LayerController 완성시키기.
+6. AddingUnitContoller 수정하기. 
 
 ***
 음 ?? setValue 를 통해 값을 바꾸는게 아닌,
 coreGathering.title = "newTitle" 처럼 Property 를 이용해서 값을 바꿔야함.
 ***
+
+
+

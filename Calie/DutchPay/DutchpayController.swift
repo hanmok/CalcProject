@@ -169,18 +169,26 @@ class DutchpayController: UIViewController {
         addingUnitController.addingDelegate = self
         
         
-        blurredView.isHidden = false
+//        blurredView.isHidden = false
         
-        self.addChild(addingUnitController)
-        self.view.addSubview(addingUnitController.view)
-        addingUnitController.view.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(view.snp.centerY).offset(-100)
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.height.equalToSuperview().dividedBy(2)
-        }
+//        self.addChild(addingUnitController)
+//        self.view.addSubview(addingUnitController.view)
+//
+//        addingUnitController.view.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.centerY.equalTo(view.snp.centerY).offset(-100)
+//            make.leading.trailing.equalToSuperview().inset(10)
+//            make.height.equalToSuperview().dividedBy(2)
+//        }
         
         let layerController = LayerController(bgColor: UIColor(white: 0.7, alpha: 1), presentingChildVC: addingUnitController)
+        
+        self.addChild(layerController)
+        self.view.addSubview(layerController.view)
+        
+        layerController.view.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
         
         layerController.parentDelegate = self
         
@@ -416,11 +424,11 @@ class DutchpayController: UIViewController {
             }
         }
         
-        view.addSubview(blurredView)
-        blurredView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
-        blurredView.isHidden = true
+//        view.addSubview(blurredView)
+//        blurredView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+//        }
+//        blurredView.isHidden = true
     }
 }
 
@@ -559,9 +567,9 @@ extension DutchpayController: AddingUnitNavDelegate {
 extension DutchpayController: AddingUnitControllerDelegate {
     func dismissChildVC() {
        removeChildrenControllers()
-        DispatchQueue.main.async {
-            self.blurredView.isHidden = true
-        }
+//        DispatchQueue.main.async {
+//            self.blurredView.isHidden = true
+//        }
         
         // TODO: Update Gathering's DutchUnits
         // UI .. 가 너무 큰문제인데.. ??
