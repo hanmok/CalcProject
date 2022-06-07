@@ -32,7 +32,8 @@ protocol AddingUnitNavDelegate: AnyObject {
 }
 
 
-class AddingUnitController: UIViewController {
+//class AddingUnitController: UIViewController {
+class AddingUnitController: NeedingController {
     
     // MARK: - Properties
     
@@ -46,7 +47,8 @@ class AddingUnitController: UIViewController {
     
     private let numberController = CustomNumberPadController()
     
-    weak var delegate: AddingUnitControllerDelegate?
+    weak var addingDelegate: AddingUnitControllerDelegate?
+    
     weak var navDelegate: AddingUnitNavDelegate?
     
     private var spentAmount: Double = 0
@@ -264,7 +266,7 @@ class AddingUnitController: UIViewController {
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel action")
         
-        delegate?.dismissChildVC()
+        addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
     

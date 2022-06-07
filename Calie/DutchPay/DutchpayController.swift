@@ -136,7 +136,7 @@ class DutchpayController: UIViewController {
     
     private let dutchUnitPlusBtn: UIButton = {
         let btn = UIButton()
-        // 왜.. 아래에서 보이지 ? 
+        // 왜.. 아래에서 보이지 ?
        let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
 //        let plusImage = UIImageView(image: UIImage(systemName: "folder"))
         
@@ -160,31 +160,29 @@ class DutchpayController: UIViewController {
     
     @objc func handleAddDutchUnit(_ sender: UIButton) {
         
-            // TODO: Add DutchUnit
-            print("didTapPlus triggered in DutchpayController!!")
-            guard let coreGathering = coreGathering else { fatalError() }
-            
-            let addingUnitController = AddingUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
-            print("numOfPeople: \(coreGathering.sortedPeople.count)")
-            addingUnitController.delegate = self
-    //        self.present(addingUnitController, animated: true)
-            // Presenting 방식을.. 어떻게 바꿀까 ??
-            // ChildView, 한 중간쯤 차지하게 바꾸고싶어.
-            
-    //        view.addSubview()
-            blurredView.isHidden = false
-            
-            self.addChild(addingUnitController)
-            self.view.addSubview(addingUnitController.view)
-            addingUnitController.view.snp.makeConstraints { make in
-    //            make.center.equalToSuperview()
-                make.centerX.equalToSuperview()
-                make.centerY.equalTo(view.snp.centerY).offset(-100)
-    //            make.centerY.equalToSuperview()
-                make.leading.trailing.equalToSuperview().inset(10)
-                make.height.equalToSuperview().dividedBy(2)
-            }
+        // TODO: Add DutchUnit
+        print("didTapPlus triggered in DutchpayController!!")
+        guard let coreGathering = coreGathering else { fatalError() }
         
+        let addingUnitController = AddingUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
+        print("numOfPeople: \(coreGathering.sortedPeople.count)")
+        addingUnitController.addingDelegate = self
+        
+        
+        blurredView.isHidden = false
+        
+        self.addChild(addingUnitController)
+        self.view.addSubview(addingUnitController.view)
+        addingUnitController.view.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(view.snp.centerY).offset(-100)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.height.equalToSuperview().dividedBy(2)
+        }
+        
+        let layerController = LayerController(bgColor: UIColor(white: 0.7, alpha: 1), presentingChildVC: addingUnitController)
+        
+        layerController.parentDelegate = self
         
     }
     
@@ -614,4 +612,9 @@ extension DutchpayController: HeaderDelegate {
         
         self.present(alertController, animated: true)
     }
+}
+
+
+extension DutchpayController: LayerDelegateToParent {
+    
 }

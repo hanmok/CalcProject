@@ -12,24 +12,16 @@ import Then
 
 
 protocol CustomNumberPadDelegate: AnyObject {
-//    func numberPadView(_ tappedNumber: String)
     func numberPadViewShouldReturn()
-//    func numberPadViewShouldDelete()
-    func numberPadView(updateWith numTextInput: String)
+    func numberPadView(updateWith numTextInput: String) // include delete Action
 }
 
-//protocol CustomNumberController {
-//    associatedtype tf
-//}
-
 class CustomNumberPadController: UIViewController {
-//    typealias tf = UITextField
     
-//    typealias tf
     public var numberText = "0" {
         didSet {
             numberText.applyNumberFormatter()
-//            delegate?.numberPadView(updateWith: numberText)
+            
         }
     }
     

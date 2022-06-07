@@ -69,6 +69,7 @@
 		9AD2FB272847D2610075551B /* DutchUnit+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB262847D2610075551B /* DutchUnit+Helper.swift */; };
 		9AD2FB2B2847D2960075551B /* PersonDetail+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB2A2847D2960075551B /* PersonDetail+Helper.swift */; };
 		9AD2FB2E284FC4030075551B /* LayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB2D284FC4030075551B /* LayerController.swift */; };
+		9AD2FB30284FD8D70075551B /* NeedingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB2F284FD8D70075551B /* NeedingController.swift */; };
 		9AEA8A20256111D0008AE06E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A1F256111D0008AE06E /* Realm.framework */; };
 		9AEA8A2F25611243008AE06E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AEA8A2E25611243008AE06E /* RealmSwift.framework */; };
 		9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF62EE326FF251900E183AB /* BaseVCMemo */; };
@@ -164,6 +165,7 @@
 		9AD2FB262847D2610075551B /* DutchUnit+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DutchUnit+Helper.swift"; sourceTree = "<group>"; };
 		9AD2FB2A2847D2960075551B /* PersonDetail+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonDetail+Helper.swift"; sourceTree = "<group>"; };
 		9AD2FB2D284FC4030075551B /* LayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerController.swift; sourceTree = "<group>"; };
+		9AD2FB2F284FD8D70075551B /* NeedingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedingController.swift; sourceTree = "<group>"; };
 		9AEA8A1F256111D0008AE06E /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA8A2425611209008AE06E /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		9AEA8A2E25611243008AE06E /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +237,7 @@
 			children = (
 				9A1C84F52814E39F001020EF /* ColorMemo */,
 				9A1C84F62814E3A6001020EF /* DutchpayMemo */,
+				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF524CCDE04001057D2 /* Model */,
@@ -376,6 +379,7 @@
 				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
 				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
 				9AD2FB2D284FC4030075551B /* LayerController.swift */,
+				9AD2FB2F284FD8D70075551B /* NeedingController.swift */,
 				9A2DBC322826DF6A00CF4E86 /* Tests */,
 			);
 			path = AddingUnit;
@@ -396,7 +400,6 @@
 		9AF62EE526FF65CC00E183AB /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FDE24CCDC66001057D2 /* RealmService.swift */,
 				9A5FFE5924DF101500681717 /* ReviewService.swift */,
 				9AA5C43727186F5F0021975C /* AppUtility.swift */,
@@ -628,6 +631,7 @@
 				9A1C84FE2814ED81001020EF /* AddingBriefController.swift in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
 				9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */,
+				9AD2FB30284FD8D70075551B /* NeedingController.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
 				9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */,

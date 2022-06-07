@@ -21,7 +21,7 @@ extension DutchUnit {
     
     var placeName: String {
         get {
-            return self.placeName_ ?? ""
+            return self.placeName_ ?? "default place"
         }
         set {
             self.placeName_ = newValue
