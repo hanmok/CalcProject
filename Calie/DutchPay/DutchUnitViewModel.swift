@@ -42,9 +42,11 @@ struct CoreDutchUnitViewModel {
         numberFormatter.numberStyle = .decimal
         if let intValue = dutchUnit.spentAmount.convertToInt() {
             
-            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
+//            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
+            return convertIntoKoreanPrice(number: Double(intValue))
         } else {
-            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
+//            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
+            return convertIntoKoreanPrice(number: dutchUnit.spentAmount)
         }
     }
     
@@ -52,4 +54,24 @@ struct CoreDutchUnitViewModel {
     var peopleList: String {
         return dutchUnit.personDetails.map { $0.person!.name}.joined(separator: ", ")
     }
+    
+    private func convertIntoKoreanPrice(number: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.string(from: NSNumber(value:number))
+        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
+    }
+}
+
+
+//struct Price: Int && Double { }
+//struct Price: Int {
+//
+//}
+
+public func convertIntoKoreanPrice(number: Double) -> String {
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .decimal
+    numberFormatter.string(from: NSNumber(value:number))
+    return numberFormatter.string(from: NSNumber(value: number))! + " 원"
 }

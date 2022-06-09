@@ -12,7 +12,9 @@ import Then
 
 
 protocol CustomNumberPadDelegate: AnyObject {
+    /// Triggered when "완료" Tapped
     func numberPadViewShouldReturn()
+    /// Triggered when number tapped
     func numberPadView(updateWith numTextInput: String) // include delete Action
 }
 

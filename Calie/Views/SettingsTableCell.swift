@@ -64,12 +64,6 @@ class SettingsTableCell: UITableViewCell {
     }
     
     func configureCellColor(hasLoaded: Bool) {
-//        if hasLoaded {
-////            contentView.backgroundColor = .blue
-//            contentView.backgroundColor = .none
-//        } else {
-//            contentView.backgroundColor = .cyan
-//        }
     }
     
     required init?(coder: NSCoder) {

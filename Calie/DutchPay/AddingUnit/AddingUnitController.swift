@@ -39,6 +39,8 @@ class AddingUnitController: NeedingController {
     
     private let cellIdentifier = "PersonDetailCell"
     
+    weak var needingDelegate: NeedingControllerDelegate?
+    
     var participants: [Person]
     let gathering: Gathering
     var dutchUnit: DutchUnit?
@@ -132,7 +134,7 @@ class AddingUnitController: NeedingController {
         setupLayout()
         setupTargets()
         initializePersonDetails()
-        prepareNumberController()
+//        prepareNumberController()
         
         personDetailCollectionView.reloadData()
         
@@ -155,7 +157,7 @@ class AddingUnitController: NeedingController {
          spentAmountLabel, spentAmountTF,
          spentDateLabel, spentDatePicker,
          personDetailCollectionView,
-         addPersonBtn,
+//         addPersonBtn,
          cancelBtn, confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
@@ -217,11 +219,11 @@ class AddingUnitController: NeedingController {
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
         
-        addPersonBtn.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
-            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(30)
-        }
+//        addPersonBtn.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview().inset(20)
+//            make.height.equalTo(40)
+//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(30)
+//        }
         
         
         cancelBtn.snp.makeConstraints { make in
@@ -300,6 +302,12 @@ class AddingUnitController: NeedingController {
         
     }
     
+    override func updateNumber(tf: UITextField? = nil, with numberText: String) {
+        print("hi, \(numberText)")
+//        tf?.text = numberText
+        selectedPriceTF?.text = numberText
+    }
+    
     
     @objc func dismissKeyboard() {
         print("dismissKeyboard triggered!!")
@@ -307,7 +315,8 @@ class AddingUnitController: NeedingController {
         numberController.numberText = ""
         view.endEditing(true)
         
-        hideNumberController()
+//        hideNumberController()
+        needingDelegate?.hideNumberPad()
     }
     
     func dismissKeyboardOnly() {
@@ -328,24 +337,24 @@ class AddingUnitController: NeedingController {
         }
     }
     
-    private func prepareNumberController() {
-        numberController.delegate = self
-        addChild(numberController)
-        view.addSubview(numberController.view)
-        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-    }
+//    private func prepareNumberController() {
+//        numberController.delegate = self
+//        addChild(numberController)
+//        view.addSubview(numberController.view)
+//        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+//    }
     
-    private func showNumberController() {
-        UIView.animate(withDuration: 0.4) {
-            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
-        }
-    }
+//    private func showNumberController() {
+//        UIView.animate(withDuration: 0.4) {
+//            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
+//        }
+//    }
     
-    private func hideNumberController() {
-        UIView.animate(withDuration: 0.4) {
-            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-        }
-    }
+//    private func hideNumberController() {
+//        UIView.animate(withDuration: 0.4) {
+//            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
+//        }
+//    }
 
     
     @objc func textDidBegin(_ textField: UITextField) {
@@ -405,13 +414,12 @@ class AddingUnitController: NeedingController {
         }
 
        
-        // if sumofIndividual and spent amount is the same,
-        // && if that amount is not 0 -> enable 'confirm' btn.
+        
         isConditionSatisfied = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
         
         setupConfirmBtn(condition: isConditionSatisfied)
         
-        hideNumberController()
+        needingDelegate?.hideNumberPad()
     }
     
     private func setupConfirmBtn(condition: Bool) {
@@ -478,8 +486,6 @@ extension AddingUnitController: PersonDetailCellDelegate {
         let prev = textFieldWithPriceDic[peopleIndex] ?? 0
         
         let remaining = spentAmount - sumOfIndividual - prev
-        print("currentIndex: \(peopleIndex)")
-        print("spentAmount: \(spentAmount), sumOfIndividual: \(sumOfIndividual), prev: \(prev), remaining: \(remaining)")
         
         if remaining != 0 {
             textFieldWithPriceDic[peopleIndex] = remaining
@@ -496,8 +502,7 @@ extension AddingUnitController: PersonDetailCellDelegate {
 
 
 // MARK: - TextField Delegate
-// Type 이 달라서 호출이 안되는 것 같은데 ??
-// PriceTextFieldDelegate 이라서 ... ;;
+
 extension AddingUnitController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == spentPlaceTF {
@@ -506,35 +511,28 @@ extension AddingUnitController: UITextFieldDelegate {
         return true
     }
     
-    //    func textFieldDidBeginEditing(_ textField: UITextField) {
-    //        if let tf = textField as? PriceTextField {
-    //            print("tag: \(tf.tag)")
-    //            textField.resignFirstResponder()
-    //        }
-    //
-    //        print("textFieldTag: \(textField.tag)")
-    //
-    //        self.dismissKeyboardOnly()
-    //        print("textFieldDidBeginEditing textField called")
-    //    }
-    //    textfielddidbegin
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
 //        textField.selectAll(self)
         if let tf = textField as? PriceTextField {
             self.dismissKeyboardOnly()
-            showNumberController()
+//            showNumberController()
+            needingDelegate?.presentNumberPad()
+            
             selectedPriceTF = tf
             print("tag : \(textField.tag)")
             print("textField: \(textField)")
             return false
         } else {
-            hideNumberController()
+//            hideNumberController()
+            needingDelegate?.hideNumberPad()
             print("tag : \(textField.tag)")
             return true
         }
     }
+    
+    
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
     }
@@ -560,4 +558,10 @@ extension AddingUnitController: CustomNumberPadDelegate {
       
         completeAction()
     }
+    
+//    override func update(with numberText: String) {
+//        <#code#>
+//    }
 }
+
+

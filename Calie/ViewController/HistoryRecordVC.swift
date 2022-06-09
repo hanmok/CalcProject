@@ -256,7 +256,6 @@ class HistoryRecordVC: UIViewController {
                 // 들췄을 때 color
                 infoLabel.textColor = .black
                 tableView.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
-                //                trashbinImage.tintColor = .blue
                 
                 view.addSubview(subHistoryLight)
                 

@@ -10,14 +10,19 @@ import UIKit
 
 
 protocol NeedingControllerDelegate: AnyObject {
-        func presentNumberPad()
+    func presentNumberPad()
     func hideNumberPad()
 }
 
 /// Controller that need numberPadController
 class NeedingController: UIViewController {
+   
+//    func some() {
+    func updateNumber(tf : UITextField? = nil, with numberText: String) {
+        print("some triggered")
+    }
     
-    
+//    weak var
     weak var delegate: NeedingControllerDelegate?
 
     public var layerController: LayerController? {
@@ -25,11 +30,12 @@ class NeedingController: UIViewController {
             oldValue?.childDelegate = self
         }
     }
-    
 }
 
 extension NeedingController: LayerDelegateToChild {
     func update(with numberText: String) {
+        print("printed from needingController: \(numberText)")
         
+        updateNumber(with: numberText)
     }
 }

@@ -50,6 +50,20 @@ class DutchpayController: UIViewController {
         if let latestGathering = Gathering.fetchLatest() {
                 coreGathering = latestGathering
         }
+        
+        setupTotalPrice()
+        
+    }
+    
+    private func setupTotalPrice() {
+//        coreGathering
+        guard let coreGathering = coreGathering else {
+            return
+        }
+        
+//        totalPriceLabel.text = convertIntoKoreanPrice(number: coreGathering.totalCost)
+        
+        totalPriceValueLabel.text = convertIntoKoreanPrice(number: coreGathering.totalCost)
     }
 
 //    var gathering: Gathering2 = Gathering2(title: "지원이와 강아지", totalCost: 80000, dutchUnits: [
@@ -168,20 +182,15 @@ class DutchpayController: UIViewController {
         print("numOfPeople: \(coreGathering.sortedPeople.count)")
         addingUnitController.addingDelegate = self
         
+        let layerController = LayerController(
+            bgColor: UIColor(white: 0.7, alpha: 1),
+            presentingChildVC: addingUnitController
+        )
         
-//        blurredView.isHidden = false
+//        addingUnitController.layerController = layerController
+        layerController.childDelegate = addingUnitController
         
-//        self.addChild(addingUnitController)
-//        self.view.addSubview(addingUnitController.view)
-//
-//        addingUnitController.view.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalTo(view.snp.centerY).offset(-100)
-//            make.leading.trailing.equalToSuperview().inset(10)
-//            make.height.equalToSuperview().dividedBy(2)
-//        }
-        
-        let layerController = LayerController(bgColor: UIColor(white: 0.7, alpha: 1), presentingChildVC: addingUnitController)
+        addingUnitController.needingDelegate = layerController
         
         self.addChild(layerController)
         self.view.addSubview(layerController.view)
@@ -189,6 +198,8 @@ class DutchpayController: UIViewController {
         layerController.view.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
+        
+        delegate?.dutchpayController(shouldHideMainTab: true)
         
         layerController.parentDelegate = self
         
@@ -370,7 +381,7 @@ class DutchpayController: UIViewController {
         }
         
         historyBtn.snp.makeConstraints { make in
-            make.left.equalTo(containerView).offset(40)
+            make.left.equalTo(containerView).offset(20)
             make.top.equalTo(containerView).offset(50)
         }
         
@@ -415,7 +426,7 @@ class DutchpayController: UIViewController {
                 make.height.equalTo(50)
             }
             // TODO: relocate assigning location, convert double to string with comma
-            totalPriceValueLabel.text = String(coreGathering!.totalCost)
+//            totalPriceValueLabel.text = String(coreGathering!.totalCost)
             
         } else {
             gatheringPlusBtn.snp.makeConstraints { make in
@@ -450,7 +461,7 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionViewCell
         print("cutchpay cell has appeared")
-//        cell.viewModel = DutchUnitViewModel(dutchUnit: gathering.dutchUnits[indexPath.row])
+
         guard let coreGathering = coreGathering else { fatalError() }
         let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
         cell.viewModel = CoreDutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])

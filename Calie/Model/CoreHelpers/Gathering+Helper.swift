@@ -18,6 +18,7 @@ extension Gathering {
         set {
             self.dutchUnits_ = newValue as NSSet
             self.managedObjectContext?.saveCoreData()
+            self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
         }
     }
     
@@ -70,6 +71,15 @@ extension Gathering {
 }
 
 extension Gathering {
+    
+    private func getTotalPrice(dutchUnits: Set<DutchUnit>) -> Double{
+        var price = 0.0
+        for eachUnit in dutchUnits {
+            price += eachUnit.spentAmount
+        }
+        return price
+    }
+    
     @discardableResult
     static func save(title: String, people: [Person]) -> Gathering{
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
