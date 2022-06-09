@@ -23,7 +23,6 @@ class CustomNumberPadController: UIViewController {
     public var numberText = "0" {
         didSet {
             numberText.applyNumberFormatter()
-            
         }
     }
     

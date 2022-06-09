@@ -33,7 +33,7 @@ class DutchpayController: UIViewController {
         didSet {
             printCurrentState()
             DispatchQueue.main.async {
-                self.dutchCollectionView.reloadData()
+                self.dutchTableView.reloadData()
             }
             print("coregathering has assigned, title: \(oldValue?.title)")
         }
@@ -53,6 +53,11 @@ class DutchpayController: UIViewController {
         
         setupTotalPrice()
         
+    }
+    
+    let headerBtn = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
+        $0.backgroundColor = UIColor(white: 0.8, alpha: 0.5)
+        $0.setTitleColor(.black, for: .normal)
     }
     
     private func setupTotalPrice() {
@@ -187,13 +192,15 @@ class DutchpayController: UIViewController {
             presentingChildVC: addingUnitController
         )
         
-//        addingUnitController.layerController = layerController
         layerController.childDelegate = addingUnitController
         
         addingUnitController.needingDelegate = layerController
         
+        layerController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: UIScreen.height)
+        
         self.addChild(layerController)
         self.view.addSubview(layerController.view)
+
         
         layerController.view.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
@@ -203,22 +210,51 @@ class DutchpayController: UIViewController {
         
         layerController.parentDelegate = self
         
+//        UIView.animate(withDuration: 0.4) {
+//            layerController.view.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: UIScreen.height)
+//        }
+
+        
+        
     }
     
-    private let dutchCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.layer.borderColor = UIColor.black.cgColor
-        cv.layer.borderWidth = 1
-        cv.layer.cornerRadius = 10
-        return cv
-    }()
+//    private let dutchCollectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        cv.layer.borderColor = UIColor.black.cgColor
+//        cv.layer.borderWidth = 1
+//        cv.layer.cornerRadius = 10
+//        return cv
+//    }()
+    private let dutchTableView = UITableView().then {
+        $0.layer.borderColor = UIColor.black.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 10
+    }
+    
+    private func registerTableView() {
+        dutchTableView.register(DutchTableCell.self, forCellReuseIdentifier: DutchTableCell.identifier)
+        dutchTableView.delegate = self
+        dutchTableView.dataSource = self
+        dutchTableView.rowHeight = 80
+        
+        dutchTableView.tableHeaderView = headerBtn
+        
+//        guard let coreGathering = coreGathering else {
+//            return
+//        }
+//
+//        headerBtn.setTitle(coreGathering.title, for: .normal)
+        updateGroupName()
+        
+//        dutchTableView.register(DutchTableHeader.self, forCellReuseIdentifier: DutchTableHeader.dutchHeaderIdentifier)
+//        dutchTableView
+    }
     
     private let totalPriceLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24)
         $0.textAlignment = .center
         $0.text = "총 금액"
-
     }
     
     private let totalPriceValueLabel = UILabel().then {
@@ -248,7 +284,8 @@ class DutchpayController: UIViewController {
         
         fetchDefaultGathering()
         
-        setupCollectionView()
+//        setupCollectionView()
+        registerTableView()
         setupLayout()
         addTargets()
         
@@ -274,6 +311,23 @@ class DutchpayController: UIViewController {
         gatheringPlusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
         
         dutchUnitPlusBtn.addTarget(self, action: #selector(handleAddDutchUnit(_:)), for: .touchUpInside)
+        
+        headerBtn.addTarget(self, action: #selector(changeGroupAction), for: .touchUpInside)
+    }
+    
+    @objc private func changeGroupAction(_ sender: UIButton) {
+        self.presentEditingGroupName()
+    }
+    
+//    updateGroupname
+    private func updateGroupName() {
+        guard let coreGathering = coreGathering else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.headerBtn.setTitle(coreGathering.title, for: .normal)
+        }
     }
     
     let customAlert = MyAlert()
@@ -290,11 +344,11 @@ class DutchpayController: UIViewController {
 //        if isAdding {
 //        if coreGathering != nil {
         
-            dutchCollectionView.delegate = self
-            dutchCollectionView.dataSource = self
-            self.dutchCollectionView.register(DutchCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+//            dutchCollectionView.delegate = self
+//            dutchCollectionView.dataSource = self
+//            self.dutchCollectionView.register(DutchCollectionCell.self, forCellWithReuseIdentifier: cellIdentifier)
             
-            self.dutchCollectionView.register(DutchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+//            self.dutchCollectionView.register(DutchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
             
 //            self.dutchCollectionView.register(DutchFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerIdentifier)
 //        }
@@ -389,10 +443,9 @@ class DutchpayController: UIViewController {
         
 //        if isAdding {
         if coreGathering != nil {
-            //            if coreGathering != nil {
-            containerView.addSubview(dutchCollectionView)
+            containerView.addSubview(dutchTableView)
             
-            dutchCollectionView.snp.makeConstraints { make in
+            dutchTableView.snp.makeConstraints { make in
                 make.top.equalTo(historyBtn.snp.bottom).offset(20)
                 make.leading.equalToSuperview().offset(10)
                 make.trailing.equalToSuperview().offset(-10)
@@ -402,7 +455,7 @@ class DutchpayController: UIViewController {
             
             containerView.addSubview(dutchUnitPlusBtn)
             dutchUnitPlusBtn.snp.makeConstraints { make in
-                make.centerY.equalTo(dutchCollectionView.snp.bottom)
+                make.centerY.equalTo(dutchTableView.snp.bottom)
                 make.centerX.equalToSuperview()
                 make.width.height.equalTo(50)
             }
@@ -410,7 +463,7 @@ class DutchpayController: UIViewController {
             
             containerView.addSubview(totalPriceLabel)
             totalPriceLabel.snp.makeConstraints { make in
-                make.top.equalTo(dutchCollectionView.snp.bottom).offset(10)
+                make.top.equalTo(dutchTableView.snp.bottom).offset(10)
 //                make.leading.trailing.equalToSuperview().inset(10)
                 make.leading.equalToSuperview().inset(10)
                 make.width.equalToSuperview().dividedBy(2)
@@ -420,7 +473,7 @@ class DutchpayController: UIViewController {
             
             containerView.addSubview(totalPriceValueLabel)
             totalPriceValueLabel.snp.makeConstraints { make in
-                make.top.equalTo(dutchCollectionView.snp.bottom).offset(10)
+                make.top.equalTo(dutchTableView.snp.bottom).offset(10)
                 make.trailing.equalToSuperview().inset(10)
                 make.leading.equalTo(totalPriceLabel.snp.trailing)
                 make.height.equalTo(50)
@@ -459,8 +512,8 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionViewCell
-        print("cutchpay cell has appeared")
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! DutchCollectionCell
+        print("dutchpay cell has appeared")
 
         guard let coreGathering = coreGathering else { fatalError() }
         let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
@@ -488,7 +541,7 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
             
         case UICollectionView.elementKindSectionHeader:
 
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! DutchHeader
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! DutchCollectionHeader
 //            header.viewModel = DutchHeaderViewModel(gathering: gathering)
             
             header.viewModel = DutchHeaderViewModel(gathering: coreGathering)
@@ -515,6 +568,81 @@ extension DutchpayController: UICollectionViewDelegate, UICollectionViewDelegate
 //        return CGSize(width: view.frame.width - 50, height: 100)
 //    }
 }
+
+
+
+extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let coreGathering = coreGathering {
+            return coreGathering.dutchUnits.count
+        } else { return 0 }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
+        print("cutchpay cell has appeared")
+
+        guard let coreGathering = coreGathering else { fatalError() }
+        let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
+        cell.viewModel = CoreDutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
+            
+            guard let coreGathering = self.coreGathering else { return }
+            
+            let selectedDutchUnit = coreGathering.dutchUnits.sorted { $0.date < $1.date }[indexPath.row]
+            
+//            DutchUnit.remove
+            coreGathering.dutchUnits.remove(selectedDutchUnit)
+
+            DutchUnit.deleteSelf(selectedDutchUnit)
+            
+            self.dutchTableView.reloadData()
+            
+
+            
+            //            tableView.deleteRows(at: [indexPath], with: .fade)
+//            let screenToDelete = self.screens[indexPath.row]
+//            let subjectToDelete = self.subjects[indexPath.row]
+            //            Screen.deleteSelf(self.screens[indexPath.row])
+//            Screen.deleteSelf(screenToDelete)
+//            Subject.deleteSelf(subjectToDelete)
+            //            self.screens.remove(at: indexPath.row)
+//            self.subject.screens.remove(screenToDelete)
+//            self.subjects.remove(at: <#T##Int#>)
+//            self.subjects.remove(at: indexPath.row)
+//            self.fetchAndReloadScreens()
+//            self.fetchAndReloadSubjects()
+            //            tableView.reloadData()
+            completionhandler(true)
+        }
+        
+        delete.image = UIImage(systemName: "trash.fill")
+        delete.backgroundColor = .red
+        
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        return rightSwipe
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
+    }
+    
+//    header
+}
+
+//extension DutchpayController: UITableViewHeaderFooterView {
+//
+//}
 
 
 
@@ -557,7 +685,7 @@ extension DutchpayController: ParticipantsVCDelegate {
     
     func initializeGathering(with gathering: Gathering) {
         self.coreGathering = gathering
-        dutchCollectionView.reloadData()
+        dutchTableView.reloadData()
         removeChildrenControllers()
         fetchDefaultGathering()
         setupLayout()
@@ -578,6 +706,8 @@ extension DutchpayController: AddingUnitNavDelegate {
 extension DutchpayController: AddingUnitControllerDelegate {
     func dismissChildVC() {
        removeChildrenControllers()
+        updateDutchUnits()
+        delegate?.dutchpayController(shouldHideMainTab: false)
 //        DispatchQueue.main.async {
 //            self.blurredView.isHidden = true
 //        }
@@ -618,9 +748,10 @@ extension DutchpayController: HeaderDelegate {
 //            coreGathering.setValue(newGroupName, forKey: .Group.title)
             coreGathering.title = newGroupName
             
-            DispatchQueue.main.async {
-                self.dutchCollectionView.reloadData()
-            }
+//            DispatchQueue.main.async {
+//                self.dutchTableView.reloadData()
+//            }
+            self.updateGroupName()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

@@ -70,3 +70,5 @@ extension DutchUnit {
 //    var date: Date = Date()
 //    var personDetails: [PersonDetail2]
 //}
+
+extension DutchUnit: RemovableProtocol {}

@@ -17,3 +17,14 @@ extension UIScreen {
 
     static let height = UIScreen.main.bounds.size.height
 }
+
+
+extension UIViewController {
+    public var screenWidth: CGFloat {
+        return UIScreen.width
+    }
+    
+    public var screenHeight: CGFloat {
+        return UIScreen.height
+    }
+}

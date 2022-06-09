@@ -12,13 +12,14 @@ import UIKit
 protocol NeedingControllerDelegate: AnyObject {
     func presentNumberPad()
     func hideNumberPad()
+    func dismissLayer()
 }
 
 /// Controller that need numberPadController
 class NeedingController: UIViewController {
    
 //    func some() {
-    func updateNumber(tf : UITextField? = nil, with numberText: String) {
+    func updateNumber(with numberText: String) {
         print("some triggered")
     }
     

@@ -65,3 +65,6 @@ coreGathering.title = "newTitle" 처럼 Property 를 이용해서 값을 바꿔�
 
 
 
+
+DutchUnit 추가 후, 지가 알아서 업데이트 안됨 ;; 껐다가 켜야함..
+

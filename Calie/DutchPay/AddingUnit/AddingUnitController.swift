@@ -75,7 +75,8 @@ class AddingUnitController: NeedingController {
     
     private let spentAmountTF = PriceTextField(placeHolder: "지출 비용").then {
         $0.backgroundColor = .magenta
-        $0.tag = 2
+//        $0.tag = 2
+        $0.tag = -1
         $0.isTotalPrice = true
     }
     
@@ -105,9 +106,6 @@ class AddingUnitController: NeedingController {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
         $0.addBorders(edges: [.top, .left], color: .black)
-//        $0.setBackgroundImage(, for: <#T##UIControl.State#>)
-//        $0.backgroundColor = .gray
-//        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
         $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
         $0.isUserInteractionEnabled = false
     }
@@ -124,8 +122,12 @@ class AddingUnitController: NeedingController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .white
-//        view.backgroundColor = .green
+        
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10
+        view.layer.borderWidth = 1
+        view.clipsToBounds = true
+        
         // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -134,14 +136,8 @@ class AddingUnitController: NeedingController {
         setupLayout()
         setupTargets()
         initializePersonDetails()
-//        prepareNumberController()
         
         personDetailCollectionView.reloadData()
-        
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 10
-        view.layer.borderWidth = 1
-        view.clipsToBounds = true
     }
     
     
@@ -215,7 +211,6 @@ class AddingUnitController: NeedingController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
-//            make.height.equalTo(60 * participants.count - 10)
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
         
@@ -259,8 +254,7 @@ class AddingUnitController: NeedingController {
         let count = gathering.people.count
         let newPerson = Person.save(name: "person \(count + 1)", index: Int64(count))
         gathering.people.update(with: newPerson)
-        print("addPersonTapped,")
-        print("gathering.people.count: \(gathering.people.count)")
+        
         initializePersonDetails()
     }
     
@@ -275,8 +269,6 @@ class AddingUnitController: NeedingController {
     @objc func confirmTapped(_ sender: UIButton) {
         print("success action")
 
-//        let peopleNames = participants.map { $0.name }
-        
         for personIndex in 0 ..< participants.count {
             personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
@@ -288,34 +280,41 @@ class AddingUnitController: NeedingController {
                                    spentDate: spentDatePicker.date)
         guard let dutchUnit = dutchUnit else { fatalError() }
         
-//        var people: [Person] = []
-//        for peopleName in peopleNames {
-//            people.append(Person.save(name: peopleName))
-//        }
-        
         gathering.dutchUnits.update(with: dutchUnit)
         gathering.updatedAt = Date()
         gathering.managedObjectContext?.saveCoreData()
-//        navDelegate?.dismissWithInfo(dutchUnit: dutchUnit)
-//        delegate
-        self.dismiss(animated: true)
+        
+        needingDelegate?.dismissLayer()
         
     }
     
-    override func updateNumber(tf: UITextField? = nil, with numberText: String) {
+    override func updateNumber(with numberText: String) {
         print("hi, \(numberText)")
-//        tf?.text = numberText
-        selectedPriceTF?.text = numberText
+
+        guard let selectedPriceTF = selectedPriceTF else {
+            return
+        }
+
+        selectedPriceTF.text = numberText
+        
+        let selectedTag = selectedPriceTF.tag
+        
+        switch selectedTag {
+        case -1: spentAmount = numberText.convertStrToDouble()
+        default: textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
+        }
+        
+        changeConfirmBtn()
     }
     
     
     @objc func dismissKeyboard() {
         print("dismissKeyboard triggered!!")
-        completeAction()
+//        dismissNumberPadAction()
+        changeConfirmBtn()
         numberController.numberText = ""
         view.endEditing(true)
         
-//        hideNumberController()
         needingDelegate?.hideNumberPad()
     }
     
@@ -337,26 +336,6 @@ class AddingUnitController: NeedingController {
         }
     }
     
-//    private func prepareNumberController() {
-//        numberController.delegate = self
-//        addChild(numberController)
-//        view.addSubview(numberController.view)
-//        self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-//    }
-    
-//    private func showNumberController() {
-//        UIView.animate(withDuration: 0.4) {
-//            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height - 360, width: UIScreen.width, height: 360)
-//        }
-//    }
-    
-//    private func hideNumberController() {
-//        UIView.animate(withDuration: 0.4) {
-//            self.numberController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 360)
-//        }
-//    }
-
-    
     @objc func textDidBegin(_ textField: UITextField) {
         if textField == spentAmountTF {
             print("it's spentAmountTF")
@@ -371,6 +350,7 @@ class AddingUnitController: NeedingController {
         } else {
             print("it's not priceTextField!")
         }
+//        setupConfirmBtn(condition: <#T##Bool#>)
     }
     
     @objc func textDidChange(_ textField: PriceTextField) {
@@ -381,6 +361,7 @@ class AddingUnitController: NeedingController {
         } else {
             print("it's not priceTextField!")
         }
+//        changeConfirmBtn(if: <#T##Bool#>)
     }
     
     
@@ -388,38 +369,23 @@ class AddingUnitController: NeedingController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func completeAction() {
-        guard let tf = selectedPriceTF else { return }
+    private func changeConfirmBtn() {
+        print("changeConfirmBtn called ")
+        sumOfIndividual = 0
         
-        if tf.isTotalPrice {
-            spentAmount = tf.text!.convertToDouble()
-        print("spentAmount: \(spentAmount)")
-        } else {
-            textFieldWithPriceDic[tf.tag] = tf.text!.convertToDouble()
-            
-            sumOfIndividual = 0
-            for (tag, number) in textFieldWithPriceDic {
-                print("uuid: \(tag), number: \(number)")
-                sumOfIndividual += number
-            }
-            
-            // if sumOfIndividual is larger than spentAmount,
-            // update spentAmount with corresponding textField
-            if spentAmount < sumOfIndividual {
-                spentAmount = sumOfIndividual
-                var str = String(spentAmount)
-                str.applyNumberFormatter()
-                spentAmountTF.text = str
-            }
+        for (tag, number) in textFieldWithPriceDic {
+            print("tag: \(tag), number: \(number)")
+            sumOfIndividual += number
         }
-
-       
+        let condition = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
         
-        isConditionSatisfied = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
-        
+        isConditionSatisfied = condition
         setupConfirmBtn(condition: isConditionSatisfied)
         
-        needingDelegate?.hideNumberPad()
+        print("sumOfIndividual: \(sumOfIndividual)")
+        print("spentAmount: \(spentAmount)")
+        print("condition: \(condition)")
+        
     }
     
     private func setupConfirmBtn(condition: Bool) {
@@ -508,6 +474,7 @@ extension AddingUnitController: UITextFieldDelegate {
         if textField == spentPlaceTF {
             spentAmountTF.becomeFirstResponder()
         }
+        changeConfirmBtn()
         return true
     }
     
@@ -523,45 +490,51 @@ extension AddingUnitController: UITextFieldDelegate {
             selectedPriceTF = tf
             print("tag : \(textField.tag)")
             print("textField: \(textField)")
+            changeConfirmBtn()
             return false
         } else {
 //            hideNumberController()
             needingDelegate?.hideNumberPad()
             print("tag : \(textField.tag)")
+            changeConfirmBtn()
             return true
         }
+        changeConfirmBtn()
     }
     
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        changeConfirmBtn()
     }
 }
 
 
 
-
-extension AddingUnitController: CustomNumberPadDelegate {
-    
-    func numberPadView(updateWith numTextInput: String) {
-        print("numberPadUpdateWith triggered")
-        print("text: \(numTextInput)")
-        guard let tf = selectedPriceTF else { return }
-        
-        tf.text = numTextInput
-    }
-    
-    
-    func numberPadViewShouldReturn() {
-        print("Complete has been pressed!")
-        // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
-      
-        completeAction()
-    }
-    
-//    override func update(with numberText: String) {
-//        <#code#>
+// MARK: - CustomNumberPadDelegate
+//extension AddingUnitController: CustomNumberPadDelegate {
+//
+//    func numberPadView(updateWith numTextInput: String) {
+//        print("numberPadUpdateWith triggered")
+//        print("text: \(numTextInput)")
+//        guard let tf = selectedPriceTF else { return }
+//
+//        tf.text = numTextInput
+//        if tf.isTotalPrice {
+//            spentAmount = tf.text!.convertStrToDouble()
+//        }
+//
+//        changeConfirmBtn()
 //    }
-}
+//
+//
+//    func numberPadViewShouldReturn() {
+//        print("Complete has been pressed!")
+//        // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
+//
+////        dismissNumberPadAction()
+//        changeConfirmBtn()
+//    }
+//}
 
 

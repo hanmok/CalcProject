@@ -17,6 +17,7 @@ extension Gathering {
         }
         set {
             self.dutchUnits_ = newValue as NSSet
+            print("gathering dutchUnits set triggered")
             self.managedObjectContext?.saveCoreData()
             self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
         }
@@ -146,6 +147,7 @@ extension Gathering {
 
 extension NSManagedObjectContext {
     func saveCoreData() {
+        print("saveCoreData called")
         do {
             try self.save()
         } catch {
@@ -163,7 +165,27 @@ extension NSManagedObjectContext {
 //}
 
 
+//extension Gathering: Removable
+
 extension NSPredicate {
     static var all = NSPredicate(format: "TRUEPREDICATE")
     static var none = NSPredicate(format: "FALSEPREDICATE")
 }
+
+
+
+protocol RemovableProtocol: AnyObject {
+    static func deleteSelf(_ target: NSManagedObject)
+}
+
+extension RemovableProtocol {
+    static func deleteSelf(_ target: NSManagedObject) {
+        
+        if let context = target.managedObjectContext {
+            context.delete(target)
+            context.saveCoreData()
+        }
+    }
+}
+
+extension Gathering: RemovableProtocol {}

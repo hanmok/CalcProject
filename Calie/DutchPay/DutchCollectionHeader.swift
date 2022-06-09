@@ -14,7 +14,7 @@ protocol HeaderDelegate: AnyObject {
     func didTapGroupName()
 }
 
-class DutchHeader: UICollectionReusableView {
+class DutchCollectionHeader: UICollectionReusableView {
     
     var viewModel: DutchHeaderViewModel? {
 //    var viewModel: COre
