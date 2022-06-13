@@ -34,7 +34,7 @@ class CustomNumberPadController: UIViewController {
         super.viewDidLoad()
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: 370)
         
-        setupLayoutUp()
+        setupLayout()
         setupAddTargets()
         view.backgroundColor = .blue
     }
@@ -57,7 +57,16 @@ class CustomNumberPadController: UIViewController {
         $0.setTitleColor(.black, for: .normal)
     }
     
-    private let deleteBar = UIView().then {
+    private let fullPriceBtn = UIButton().then {
+        $0.setTitle("전액", for: .normal)
+//        $0.layer.borderColor = UIColor.black.cgColor
+        $0.layer.borderColor = UIColor(white: 0.6, alpha: 1).cgColor
+        $0.layer.cornerRadius = 10
+        $0.layer.borderWidth = 1
+        $0.setTitleColor(.black, for: .normal)
+    }
+    
+    private let inputBar = UIView().then {
         $0.backgroundColor = UIColor.bgColorForExtrasLM
     }
     
@@ -102,17 +111,25 @@ class CustomNumberPadController: UIViewController {
         // update textFields belong to Controllers which conforms NumberPadDelegate
     }
     
-    private func setupLayoutUp() {
+    private func setupLayout() {
         
-        view.addSubview(deleteBar)
-        deleteBar.snp.makeConstraints { make in
+        view.addSubview(inputBar)
+        inputBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(50)
 //            make.bottom.equalTo(hor3Stack.snp.top)
             make.top.equalToSuperview()
         }
+        [fullPriceBtn, deleteBtn].forEach { self.inputBar.addSubview($0) }
+//        inputBar.addSubview(deleteBtn)
         
-        deleteBar.addSubview(deleteBtn)
+        fullPriceBtn.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(5)
+            make.width.equalTo(150)
+        }
+        
         deleteBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-10)
             make.width.equalTo(60)
@@ -207,14 +224,14 @@ class CustomNumberPadController: UIViewController {
             make.bottom.equalTo(hor2Stack.snp.top)
         }
         
-        view.addSubview(deleteBar)
-        deleteBar.snp.makeConstraints { make in
+        view.addSubview(inputBar)
+        inputBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(50)
             make.bottom.equalTo(hor3Stack.snp.top)
         }
         
-        deleteBar.addSubview(deleteBtn)
+        inputBar.addSubview(deleteBtn)
         deleteBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-10)
             make.width.equalTo(60)

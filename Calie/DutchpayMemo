@@ -71,3 +71,12 @@ DutchUnit 추가 후, 지가 알아서 업데이트 안됨 ;; 껐다가 켜야�
 
 Number TextField 에 Blink Animation 주기 ..
 
+음... ㅇ
+
+*************************
+AddingUnitController 가 너무 작아.
+이걸 어디 넣지 말고, 다른 화면으로 넘겨서 처리하자.
+FullScreen 아니면 힘들 것 같음.
+사람도 다섯명 이상 넘어갈 수 있고, CustomPad 도 띄워야하니까.
+**************************
+

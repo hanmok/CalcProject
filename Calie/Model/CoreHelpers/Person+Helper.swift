@@ -13,7 +13,8 @@ extension Person {
     
     var name: String {
         get {
-            return self.name_ ?? "default person"
+//            return self.name_ ?? "default person"
+            return self.name_ ?? "가나다라마바사아자차카타파하"
         }
         set {
             self.name_ = newValue

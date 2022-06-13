@@ -87,7 +87,7 @@ class AddingUnitController: NeedingController {
     
     
     private let spentDateLabel = UILabel().then {
-        $0.text = "시각"
+//        $0.text = "시각"
         $0.textAlignment = .center
     }
     
