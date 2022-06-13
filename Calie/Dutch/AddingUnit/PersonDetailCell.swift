@@ -31,12 +31,13 @@ class PersonDetailCell: UICollectionViewCell {
     
     private let nameLabel = UILabel().then {
         $0.textColor = .black
-        $0.backgroundColor = .magenta
+        $0.backgroundColor = .white
     }
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
-        $0.backgroundColor = .gray
+        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
+        $0.layer.cornerRadius = 5
     }
     
     public let attendingBtn = AttendingButton()
@@ -96,8 +97,10 @@ class PersonDetailCell: UICollectionViewCell {
         spentAmountTF.delegate = self
         
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.bottom.equalToSuperview()
+//            make.leading.equalToSuperview().offset(20)
+//            make.leading.equalToSuperview()
+//            make.top.bottom.equalToSuperview()
+            make.leading.top.bottom.equalToSuperview()
             make.width.equalTo(70)
         }
         

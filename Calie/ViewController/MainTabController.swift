@@ -64,13 +64,14 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         let dutchController = DutchpayController(persistenceManager: PersistenceController.shared)
         dutchController.delegate = self
+//        let uiNav = UINavigationController(rootViewController: dutchController)
+        
+
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
-            
-            
-//            rootViewController: DutchpayController(persistenceManager: PersistenceManager.shared))
             rootViewController: dutchController)
+//            rootViewController: uiNav)
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self

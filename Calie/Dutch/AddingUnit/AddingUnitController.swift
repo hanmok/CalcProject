@@ -41,6 +41,8 @@ class AddingUnitController: NeedingController {
     
     weak var needingDelegate: NeedingControllerDelegate?
     
+    private let smallPadding: CGFloat = 10
+    
     var participants: [Person]
     let gathering: Gathering
     var dutchUnit: DutchUnit?
@@ -60,32 +62,40 @@ class AddingUnitController: NeedingController {
     private var attendingDic: [Int: Bool] = [:]
     private var isConditionSatisfied = false
     
-    private let spentPlaceLabel = UILabel().then { $0.text = "Spent To"}
+    private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목"}
     
     // MARK: - UI Properties
     private let spentPlaceTF = UITextField().then {
         $0.placeholder = "지출한 곳을 입력해주세요."
-        $0.textAlignment = .center
-        $0.backgroundColor = .yellow
+        $0.textAlignment = .left
+        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = 1
+        $0.layer.cornerRadius = 5
     }
     
     
-    private let spentAmountLabel = UILabel().then { $0.text = "Spent Amount"}
+    private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
     
-    private let spentAmountTF = PriceTextField(placeHolder: "지출 비용").then {
-        $0.backgroundColor = .magenta
-//        $0.tag = 2
+    private let spentAmountTF = PriceTextField(placeHolder: "비용").then {
+//        $0.backgroundColor = .magenta
+//        $0.backgroundColor =
+        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
         $0.isTotalPrice = true
+        $0.layer.cornerRadius = 5
     }
     
     
-    private let spentDateLabel = UILabel().then { $0.text = "지출 시각"}
+    private let spentDateLabel = UILabel().then {
+        $0.text = "시각"
+        $0.textAlignment = .center
+    }
+    
     private let spentDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .compact
         $0.locale = Locale(identifier: "ko-KR")
-        $0.datePickerMode = .dateAndTime
+//        $0.datePickerMode = .dateAndTime
+        $0.datePickerMode = .date
     }
     
     private let personDetailCollectionView: UICollectionView = {
@@ -163,63 +173,61 @@ class AddingUnitController: NeedingController {
         spentAmountTF.delegate = self
         
         spentPlaceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.leading.equalToSuperview().inset(smallPadding * 2)
+            make.top.equalToSuperview().inset(20)
             make.width.equalTo(150)
-            make.height.equalTo(30)
+            make.height.equalTo(20)
         }
         
         spentPlaceTF.snp.makeConstraints { make in
-            make.leading.equalTo(spentPlaceLabel.snp.trailing).offset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.leading.equalToSuperview().inset(15)
+            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
+            make.width.equalToSuperview().dividedBy(2)
             make.height.equalTo(30)
         }
         
         
+        
+        
         spentAmountLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().inset(smallPadding * 2)
+            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
             make.width.equalTo(150)
             make.height.equalTo(30)
         }
         
         spentAmountTF.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(20)
-            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.leading.equalToSuperview().inset(15)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(10)
+            make.width.equalTo(170)
             make.height.equalTo(30)
         }
         
         
+        
+        
+        
         spentDateLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(spentAmountLabel.snp.bottom).offset(20)
-            make.width.equalTo(70)
-            make.height.equalTo(50)
+            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
+            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
+            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(30)
         }
         
         spentDatePicker.snp.makeConstraints { make in
-            make.leading.equalTo(spentDateLabel.snp.trailing).offset(20)
-            make.top.equalTo(spentAmountLabel.snp.bottom).offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
+            make.top.equalTo(spentAmountLabel.snp.bottom)
+            make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }
         
         
         personDetailCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalTo(spentDateLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().inset(smallPadding)
+            make.trailing.equalToSuperview().inset(smallPadding)
+            make.top.equalTo(spentDatePicker.snp.bottom).offset(40)
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
-        
-//        addPersonBtn.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview().inset(20)
-//            make.height.equalTo(40)
-//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(30)
-//        }
-        
         
         cancelBtn.snp.makeConstraints { make in
             make.leading.equalTo(view)
@@ -284,7 +292,7 @@ class AddingUnitController: NeedingController {
         gathering.updatedAt = Date()
         gathering.managedObjectContext?.saveCoreData()
         
-        needingDelegate?.dismissLayer()
+        needingDelegate?.dismissNumberLayer()
         
     }
     
@@ -343,7 +351,7 @@ class AddingUnitController: NeedingController {
             print("it's spentPlaceTF")
         }
         
-        print("tag: \(textField.tag)")
+
         if let tf = textField as? PriceTextField {
             print("tag: \(tf.tag)")
             print("it's pricetextfield!, textDidBegin")
@@ -361,7 +369,6 @@ class AddingUnitController: NeedingController {
         } else {
             print("it's not priceTextField!")
         }
-//        changeConfirmBtn(if: <#T##Bool#>)
     }
     
     
@@ -474,6 +481,8 @@ extension AddingUnitController: UITextFieldDelegate {
         if textField == spentPlaceTF {
             spentAmountTF.becomeFirstResponder()
         }
+        
+        
         changeConfirmBtn()
         return true
     }
@@ -499,6 +508,8 @@ extension AddingUnitController: UITextFieldDelegate {
             changeConfirmBtn()
             return true
         }
+        
+//        return true
         changeConfirmBtn()
     }
     

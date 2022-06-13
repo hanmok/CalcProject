@@ -11,20 +11,20 @@ import SnapKit
 import Then
 
 
-protocol LayerDelegateToChild: AnyObject {
+protocol NumberLayerDelegateToChild: AnyObject {
     func update(with numberText: String)
 }
 
-protocol LayerDelegateToParent: AnyObject {
+protocol NumberLayerDelegateToParent: AnyObject {
     func dismissChildVC()
 }
 
-class LayerController : UIViewController {
+class NumberLayerController : UIViewController {
     
     let backgroundColor: UIColor
     
-    weak var childDelegate: LayerDelegateToChild?
-    weak var parentDelegate: LayerDelegateToParent?
+    weak var childDelegate: NumberLayerDelegateToChild?
+    weak var parentDelegate: NumberLayerDelegateToParent?
     
     private var presentingChildVC: NeedingController
     
@@ -34,7 +34,6 @@ class LayerController : UIViewController {
         self.backgroundColor = bgColor
         self.presentingChildVC = presentingChildVC
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -43,7 +42,6 @@ class LayerController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         setupLayout()
         prepareNumberPad()
@@ -88,7 +86,7 @@ class LayerController : UIViewController {
 }
 
 
-extension LayerController: NeedingControllerDelegate {
+extension NumberLayerController: NeedingControllerDelegate {
     func presentNumberPad() {
         showNumberPadAction()
     }
@@ -97,13 +95,13 @@ extension LayerController: NeedingControllerDelegate {
         hideNumberPadAction()
     }
     
-    func dismissLayer() {
+    func dismissNumberLayer() {
         parentDelegate?.dismissChildVC()
     }
 }
 
 
-extension LayerController: CustomNumberPadDelegate {
+extension NumberLayerController: CustomNumberPadDelegate {
     
     func numberPadViewShouldReturn() {
         hideNumberPadAction()
@@ -114,3 +112,6 @@ extension LayerController: CustomNumberPadDelegate {
         childDelegate?.update(with: numText)
     }
 }
+
+
+

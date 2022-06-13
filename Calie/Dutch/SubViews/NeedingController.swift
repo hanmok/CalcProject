@@ -12,7 +12,7 @@ import UIKit
 protocol NeedingControllerDelegate: AnyObject {
     func presentNumberPad()
     func hideNumberPad()
-    func dismissLayer()
+    func dismissNumberLayer()
 }
 
 /// Controller that need numberPadController
@@ -26,14 +26,14 @@ class NeedingController: UIViewController {
 //    weak var
     weak var delegate: NeedingControllerDelegate?
 
-    public var layerController: LayerController? {
+    public var numLayerController: NumberLayerController? {
         didSet {
             oldValue?.childDelegate = self
         }
     }
 }
 
-extension NeedingController: LayerDelegateToChild {
+extension NeedingController: NumberLayerDelegateToChild {
     func update(with numberText: String) {
         print("printed from needingController: \(numberText)")
         
