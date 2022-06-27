@@ -348,13 +348,43 @@ class DutchpayController: UIViewController {
     @objc func handleAddDutchUnit(_ sender: UIButton) {
         
         // TODO: Add DutchUnit
-        print("didTapPlus triggered in DutchpayController!!")
+//        print("didTapPlus triggered in DutchpayController!!")
+//        guard let coreGathering = coreGathering else { fatalError() }
+//
+//        let addingUnitController = DutchUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
+//
+//        addingUnitController.addingDelegate = self
+//
+////        print("numOfPeople: \(coreGathering.sortedPeople.count)")
+//
+//        let numLayerController = NumberLayerController(
+//            bgColor: UIColor(white: 0.7, alpha: 1),
+//            presentingChildVC: addingUnitController
+//        )
+//
+//        numLayerController.childDelegate = addingUnitController
+//
+//        addingUnitController.needingDelegate = numLayerController
+//
+//        navigationController?.pushViewController(numLayerController, animated: true)
+//
+//        navigationController?.navigationBar.isHidden = true
+//
+//        delegate?.dutchpayController(shouldHideMainTab: true)
+//
+//        numLayerController.parentDelegate = self
+        presentDutchUnitController()
+    }
+    
+    private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
+        
         guard let coreGathering = coreGathering else { fatalError() }
         
-        let addingUnitController = AddingUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
-        print("numOfPeople: \(coreGathering.sortedPeople.count)")
+        let addingUnitController = DutchUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
+
         addingUnitController.addingDelegate = self
         
+
         let numLayerController = NumberLayerController(
             bgColor: UIColor(white: 0.7, alpha: 1),
             presentingChildVC: addingUnitController
@@ -371,8 +401,8 @@ class DutchpayController: UIViewController {
         delegate?.dutchpayController(shouldHideMainTab: true)
         
         numLayerController.parentDelegate = self
-        
     }
+    
     
     // MARK: - Helper Functions
    
@@ -667,6 +697,14 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+//        let selectedUnit = coreGathering?.dutchUnits
+        guard let coreGathering = coreGathering else { fatalError() }
+        
+        let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
+        
+        let selectedDutchUnit = dutchUnits[indexPath.row]
+        
+        presentDutchUnitController(selectedUnit: selectedDutchUnit)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-struct DutchUnitViewModel {
+struct DutchUnitTableViewModel {
     public var dutchUnit: DutchUnit2
     
     var placeName: String { return dutchUnit.placeName}

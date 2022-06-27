@@ -63,10 +63,10 @@ class CustomNumberPadController: UIViewController {
     
     private let fullPriceBtn = UIButton().then {
         $0.setTitle("전액", for: .normal)
-        $0.layer.borderColor = UIColor(white: 0.6, alpha: 0.5).cgColor
-        $0.layer.cornerRadius = 10
-        $0.layer.borderWidth = 1
-        $0.setTitleColor(.black, for: .normal)
+//        $0.layer.borderColor = UIColor(white: 0.6, alpha: 0.5).cgColor
+//        $0.layer.cornerRadius = 10
+//        $0.layer.borderWidth = 1
+        $0.setTitleColor(.black, for: .normal) 
     }
     
     private let inputBar = UIView().then {
@@ -135,13 +135,14 @@ class CustomNumberPadController: UIViewController {
         
         fullPriceBtn.snp.makeConstraints { make in
 //            make.leading.top.trailing.bottom.equalToSuperview()
-            make.centerX.equalToSuperview()
+//            make.centerX.equalToSuperview()
+            make.leading.equalToSuperview().inset(10)
             make.top.bottom.equalToSuperview().inset(5)
-            make.width.equalTo(150)
+            make.width.equalTo(80)
         }
         
         deleteBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-10)
+            make.trailing.equalToSuperview().inset(10)
             make.width.equalTo(60)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()

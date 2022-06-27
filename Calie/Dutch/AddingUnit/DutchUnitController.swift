@@ -33,7 +33,7 @@ protocol AddingUnitNavDelegate: AnyObject {
 
 
 //class AddingUnitController: UIViewController {
-class AddingUnitController: NeedingController {
+class DutchUnitController: NeedingController {
     
     // MARK: - Properties
     
@@ -136,8 +136,11 @@ class AddingUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
-    init(participants: [Person], gathering: Gathering) {
-//        self.participants = participants
+    var initialDutchUnit: DutchUnit?
+    
+    init(participants: [Person], gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
+        
+        self.initialDutchUnit = initialDutchUnit
         self.gathering = gathering
         self.participants = gathering.sortedPeople
         super.init(nibName: nil, bundle: nil)
@@ -272,6 +275,8 @@ class AddingUnitController: NeedingController {
             make.height.equalTo(50)
         }
     }
+    
+//    private func setupIni
     
     /// Should not be here.
     // FIXME: remove after testing
@@ -469,7 +474,7 @@ class AddingUnitController: NeedingController {
 
 
 // MARK: - UICOllectionView Delegates
-extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("numOfParticipantsInAddingUnitController: \(participants.count)")
@@ -503,7 +508,7 @@ extension AddingUnitController: UICollectionViewDelegate, UICollectionViewDelega
 }
 
 // MARK: - PersonDetailCell Delegate
-extension AddingUnitController: PersonDetailCellDelegate {
+extension DutchUnitController: PersonDetailCellDelegate {
     
     
     func cell(_ cell: PersonDetailCell, isAttending: Bool) {
@@ -540,7 +545,7 @@ extension AddingUnitController: PersonDetailCellDelegate {
 
 // MARK: - TextField Delegate
 
-extension AddingUnitController: UITextFieldDelegate {
+extension DutchUnitController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == spentPlaceTF {
             spentAmountTF.becomeFirstResponder()
