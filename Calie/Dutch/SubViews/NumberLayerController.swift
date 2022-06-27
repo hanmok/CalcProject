@@ -13,9 +13,10 @@ import Then
 
 protocol NumberLayerDelegateToChild: AnyObject {
     func update(with numberText: String)
+    func fullPriceAction()
 }
 
-protocol NumberLayerDelegateToParent: AnyObject {
+protocol NumberLayerDelegateToSuperVC: AnyObject {
     func dismissChildVC()
 }
 
@@ -24,7 +25,7 @@ class NumberLayerController : UIViewController {
     let backgroundColor: UIColor
     
     weak var childDelegate: NumberLayerDelegateToChild?
-    weak var parentDelegate: NumberLayerDelegateToParent?
+    weak var parentDelegate: NumberLayerDelegateToSuperVC?
     
     private var presentingChildVC: NeedingController
     
@@ -50,15 +51,14 @@ class NumberLayerController : UIViewController {
     
     
     private func setupLayout() {
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.95)
-//        view.backgroundColor = .cyan
+        view.backgroundColor = .white
         
         view.addSubview(presentingChildVC.view)
         
         presentingChildVC.view.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalToSuperview().offset(150)
-            make.height.equalToSuperview().dividedBy(2)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -87,6 +87,10 @@ class NumberLayerController : UIViewController {
 
 
 extension NumberLayerController: NeedingControllerDelegate {
+    func initializeNumberText() {
+        numberPadController.numberText = ""
+    }
+    
     func presentNumberPad() {
         showNumberPadAction()
     }
@@ -103,6 +107,11 @@ extension NumberLayerController: NeedingControllerDelegate {
 
 extension NumberLayerController: CustomNumberPadDelegate {
     
+    func fullPriceAction() {
+        childDelegate?.fullPriceAction()
+    }
+    
+    
     func numberPadViewShouldReturn() {
         hideNumberPadAction()
     }
@@ -112,6 +121,3 @@ extension NumberLayerController: CustomNumberPadDelegate {
         childDelegate?.update(with: numText)
     }
 }
-
-
-

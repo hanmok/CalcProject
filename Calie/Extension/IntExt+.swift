@@ -16,3 +16,25 @@ extension Int {
         return numberFormatter.string(from: NSNumber(value:self))!
     }
 }
+
+extension Double {
+    func withCommas() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value:self))!
+    }
+}
+
+extension String {
+//    func removeComma(from strValue: String) -> String {
+//
+//    }
+    func convertNumStrToDouble() -> Double {
+        print("input : \(self)")
+        if self == "" { return 0 }
+        let num = self.replacingOccurrences(of: ",", with: "")
+        print("replaced num: \(num)")
+        print("converted result: \(Double(num))")
+        return Double(num)!
+    }
+}

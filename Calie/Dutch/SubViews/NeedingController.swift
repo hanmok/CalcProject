@@ -13,27 +13,62 @@ protocol NeedingControllerDelegate: AnyObject {
     func presentNumberPad()
     func hideNumberPad()
     func dismissNumberLayer()
+    func initializeNumberText()
 }
 
-/// Controller that need numberPadController
-class NeedingController: UIViewController {
-   
-//    func some() {
+protocol NeedingControllerProtocol: AnyObject {
+    func updateNumber(with numberText: String)
+    func fullPriceAction2()
+//    func
+    var numLayerController: NumberLayerController? { get set }
+    var delegate: NeedingControllerDelegate? { get set }
+}
+
+/// Controller that need numberPadController (ex: addingUnitController
+//class NeedingController: UIViewController {
+//
+////    func some() {
+//    func updateNumber(with numberText: String) {
+//        print("some triggered")
+//    }
+//
+//    func fullPriceAction2() { }
+////    weak var
+//    weak var delegate: NeedingControllerDelegate?
+//
+//    public var numLayerController: NumberLayerController? {
+//        didSet {
+//            oldValue?.childDelegate = self
+//        }
+//    }
+//}
+
+class NeedingController: UIViewController, NeedingControllerProtocol {
+    weak var delegate: NeedingControllerDelegate?
+    
     func updateNumber(with numberText: String) {
-        print("some triggered")
+        
     }
     
-//    weak var
-    weak var delegate: NeedingControllerDelegate?
-
+    func fullPriceAction2() {
+        
+    }
+    
     public var numLayerController: NumberLayerController? {
         didSet {
             oldValue?.childDelegate = self
         }
     }
+    
+    
 }
 
 extension NeedingController: NumberLayerDelegateToChild {
+    func fullPriceAction() {
+        print("fullPriceAction")
+        fullPriceAction2()
+    }
+    
     func update(with numberText: String) {
         print("printed from needingController: \(numberText)")
         

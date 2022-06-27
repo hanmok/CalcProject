@@ -12,10 +12,14 @@ import Then
 
 
 protocol CustomNumberPadDelegate: AnyObject {
-    /// Triggered when "완료" Tapped
+    
+    ///  "완료"
     func numberPadViewShouldReturn()
-    /// Triggered when number tapped
+    
+    /// number
     func numberPadView(updateWith numTextInput: String) // include delete Action
+    
+    func fullPriceAction()
 }
 
 class CustomNumberPadController: UIViewController {
@@ -59,8 +63,7 @@ class CustomNumberPadController: UIViewController {
     
     private let fullPriceBtn = UIButton().then {
         $0.setTitle("전액", for: .normal)
-//        $0.layer.borderColor = UIColor.black.cgColor
-        $0.layer.borderColor = UIColor(white: 0.6, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor(white: 0.6, alpha: 0.5).cgColor
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.setTitleColor(.black, for: .normal)
@@ -86,6 +89,13 @@ class CustomNumberPadController: UIViewController {
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
+        
+        fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func fullPriceTapped(_ sender: UIButton) {
+        delegate?.fullPriceAction()
+        delegate?.numberPadViewShouldReturn()
     }
     
     @objc func completeTapped(_ sender: UIButton) {
@@ -153,22 +163,18 @@ class CustomNumberPadController: UIViewController {
         }
         
         hor3Stack.snp.makeConstraints { make in
-//            make.bottom.equalTo(hor2Stack.snp.top)
             make.top.equalTo(deleteBtn.snp.bottom)
         }
         
         hor2Stack.snp.makeConstraints { make in
-//            make.bottom.equalTo(hor1Stack.snp.top)
             make.top.equalTo(hor3Stack.snp.bottom)
         }
         
         hor1Stack.snp.makeConstraints { make in
-//            make.bottom.equalTo(hor0Stack.snp.top)
             make.top.equalTo(hor2Stack.snp.bottom)
         }
         
         hor0Stack.snp.makeConstraints { make in
-//            make.bottom.equalTo(completeBtn.snp.top)
             make.top.equalTo(hor1Stack.snp.bottom)
         }
         
@@ -176,14 +182,10 @@ class CustomNumberPadController: UIViewController {
         // The bottom
         view.addSubview(completeBtn)
         completeBtn.snp.makeConstraints { make in
-//            make.bottom.equalToSuperview()
             make.top.equalTo(hor0Stack.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(70)
         }
-        
-        
-        
     }
     
     private func setupLayoutBottom() {

@@ -397,9 +397,3 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
     }
 }
 
-
-//extension ParticipantsController: AddingUnitControllerDelegate {
-//    func dismissChildVC() {
-//        delegate?.removeParticipantsController()
-//    }
-//}

@@ -49,8 +49,6 @@ class AddingUnitController: NeedingController {
     var personDetails: [PersonDetail] = []
     var selectedPriceTF: PriceTextField?
     
-    private let numberController = CustomNumberPadController()
-    
     weak var addingDelegate: AddingUnitControllerDelegate?
     
     weak var navDelegate: AddingUnitNavDelegate?
@@ -88,6 +86,7 @@ class AddingUnitController: NeedingController {
     
     private let spentDateLabel = UILabel().then {
 //        $0.text = "시각"
+//        $0.text = "일자"
         $0.textAlignment = .center
     }
     
@@ -106,17 +105,34 @@ class AddingUnitController: NeedingController {
     }()
     
     
-    private let cancelBtn = UIButton().then {
-        $0.setTitle("Cancel", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
-        $0.addBorders(edges: [.top], color: .black)
-    }
+//    private let cancelBtn = UIButton().then {
+//        $0.setTitle("Cancel", for: .normal)
+//        $0.setTitleColor(.red, for: .normal)
+//        $0.addBorders(edges: [.top], color: .black)
+//    }
+    
+//    private var dismissBtn = UIButton().then {
+    private let dismissBtn: UIButton = {
+        let btn = UIButton()
+//        let image = UIImage(systemName: "chevron.left")
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+//        image.contentMode = .scaleToFill
+        imageView.contentMode = .scaleToFill
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+        }
+//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+       return btn
+    }()
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
-        $0.addBorders(edges: [.top, .left], color: .black)
-        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
+//        $0.addBorders(edges: [.top, .left], color: .black)
+//        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
+        $0.backgroundColor = .orange
+        $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
     
@@ -134,9 +150,9 @@ class AddingUnitController: NeedingController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        view.layer.cornerRadius = 10
-        view.layer.borderWidth = 1
-        view.clipsToBounds = true
+//        view.layer.cornerRadius = 10
+//        view.layer.borderWidth = 1
+//        view.clipsToBounds = true
         
         // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
@@ -159,12 +175,16 @@ class AddingUnitController: NeedingController {
     
     private func setupLayout() {
         
-        [spentPlaceLabel, spentPlaceTF,
+        [
+            dismissBtn,
+            spentPlaceLabel, spentPlaceTF,
          spentAmountLabel, spentAmountTF,
-         spentDateLabel, spentDatePicker,
+//         spentDateLabel,
+            spentDatePicker,
          personDetailCollectionView,
 //         addPersonBtn,
-         cancelBtn, confirmBtn
+//         cancelBtn,
+         confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
         }
@@ -172,9 +192,17 @@ class AddingUnitController: NeedingController {
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
         
+        dismissBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(30)
+            make.width.equalTo(15)
+        }
+        
         spentPlaceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalToSuperview().inset(20)
+//            make.top.equalToSuperview().inset(20)
+            make.top.equalTo(dismissBtn.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(20)
         }
@@ -207,15 +235,15 @@ class AddingUnitController: NeedingController {
         
         
         
-        spentDateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
-            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(30)
-        }
+//        spentDateLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
+//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
+//            make.trailing.equalToSuperview().inset(20)
+//            make.height.equalTo(30)
+//        }
         
         spentDatePicker.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
+            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(25)
             make.top.equalTo(spentAmountLabel.snp.bottom)
             make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(50)
@@ -229,15 +257,17 @@ class AddingUnitController: NeedingController {
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
         
-        cancelBtn.snp.makeConstraints { make in
-            make.leading.equalTo(view)
-            make.bottom.equalTo(view)
-            make.width.equalTo(view.snp.width).dividedBy(2)
-            make.height.equalTo(50)
-        }
+//        cancelBtn.snp.makeConstraints { make in
+//            make.leading.equalTo(view)
+//            make.bottom.equalTo(view)
+//            make.width.equalTo(view.snp.width).dividedBy(2)
+//            make.height.equalTo(50)
+//        }
         
         confirmBtn.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(view)
+//            make.trailing.bottom.equalTo(view)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(view).inset(20)
             make.width.equalTo(view.snp.width).dividedBy(2)
             make.height.equalTo(50)
         }
@@ -253,7 +283,9 @@ class AddingUnitController: NeedingController {
     }
     
     private func setupTargets() {
-        cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+//        cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+        
+        dismissBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
         addPersonBtn.addTarget(nil, action: #selector(addPersonTapped(_:)), for: .touchUpInside)
     }
@@ -269,7 +301,7 @@ class AddingUnitController: NeedingController {
     
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel action")
-        
+        // dutchpayController
         addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
@@ -296,6 +328,36 @@ class AddingUnitController: NeedingController {
         
     }
     
+    override func fullPriceAction2() {
+        print("fullprice from addingUnitController!")
+        guard let selectedPriceTF = selectedPriceTF else {
+            fatalError()
+        }
+        
+//        let totalAmount = Double(spentAmountTF.text!)!
+        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
+        
+        sumOfIndividual = 0
+        
+        for (tag, number) in textFieldWithPriceDic {
+            print("tag: \(tag), number: \(number)")
+            sumOfIndividual += number
+        }
+        
+        var costRemaining = spentAmount - sumOfIndividual
+        // 값이 없을 수 있다..
+        
+        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
+        
+        let remainingStr = costRemaining.withCommas()
+        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
+        
+//        selectedPriceTF.text = String(costRemaining)
+//
+        selectedPriceTF.text = remainingStr
+        changeConfirmBtn()
+    }
+    
     override func updateNumber(with numberText: String) {
         print("hi, \(numberText)")
 
@@ -320,7 +382,7 @@ class AddingUnitController: NeedingController {
         print("dismissKeyboard triggered!!")
 //        dismissNumberPadAction()
         changeConfirmBtn()
-        numberController.numberText = ""
+
         view.endEditing(true)
         
         needingDelegate?.hideNumberPad()
@@ -384,6 +446,7 @@ class AddingUnitController: NeedingController {
             print("tag: \(tag), number: \(number)")
             sumOfIndividual += number
         }
+        
         let condition = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
         
         isConditionSatisfied = condition
@@ -398,7 +461,8 @@ class AddingUnitController: NeedingController {
     private func setupConfirmBtn(condition: Bool) {
         confirmBtn.isUserInteractionEnabled = condition
 //        confirmBtn.backgroundColor = condition ? .white : .gray
-        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
+//        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
+        confirmBtn.backgroundColor = condition ? .green : .orange
     }
 }
 
@@ -490,10 +554,10 @@ extension AddingUnitController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-//        textField.selectAll(self)
         if let tf = textField as? PriceTextField {
+            delegate?.initializeNumberText()
             self.dismissKeyboardOnly()
-//            showNumberController()
+            
             needingDelegate?.presentNumberPad()
             
             selectedPriceTF = tf
@@ -502,7 +566,7 @@ extension AddingUnitController: UITextFieldDelegate {
             changeConfirmBtn()
             return false
         } else {
-//            hideNumberController()
+            
             needingDelegate?.hideNumberPad()
             print("tag : \(textField.tag)")
             changeConfirmBtn()
@@ -510,7 +574,7 @@ extension AddingUnitController: UITextFieldDelegate {
         }
         
 //        return true
-        changeConfirmBtn()
+//        changeConfirmBtn()
     }
     
     
@@ -519,33 +583,3 @@ extension AddingUnitController: UITextFieldDelegate {
         changeConfirmBtn()
     }
 }
-
-
-
-// MARK: - CustomNumberPadDelegate
-//extension AddingUnitController: CustomNumberPadDelegate {
-//
-//    func numberPadView(updateWith numTextInput: String) {
-//        print("numberPadUpdateWith triggered")
-//        print("text: \(numTextInput)")
-//        guard let tf = selectedPriceTF else { return }
-//
-//        tf.text = numTextInput
-//        if tf.isTotalPrice {
-//            spentAmount = tf.text!.convertStrToDouble()
-//        }
-//
-//        changeConfirmBtn()
-//    }
-//
-//
-//    func numberPadViewShouldReturn() {
-//        print("Complete has been pressed!")
-//        // TODO: Dismiss CustomPad ! or.. move to the bottom to not be seen.
-//
-////        dismissNumberPadAction()
-//        changeConfirmBtn()
-//    }
-//}
-
-

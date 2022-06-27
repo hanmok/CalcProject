@@ -19,8 +19,14 @@ extension Gathering {
             self.dutchUnits_ = newValue as NSSet
             print("gathering dutchUnits set triggered")
             self.managedObjectContext?.saveCoreData()
-            self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
+//            self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
         }
+    }
+    
+    var totalCost: String {
+//        return getTotalPrice(dutchUnits: self.dutchUnits)
+        let cost = getTotalPrice(dutchUnits: self.dutchUnits)
+        return convertIntoKoreanPrice(number: cost)
     }
     
     var people: Set<Person> {

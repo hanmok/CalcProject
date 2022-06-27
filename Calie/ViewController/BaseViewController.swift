@@ -1209,8 +1209,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 other.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
             }
             
-//            deleteButton.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-            
             setupButtonImageInDarkMode()
             
             for view in historyClickButton.subviews{

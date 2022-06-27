@@ -63,7 +63,7 @@ coreGathering.title = "newTitle" 처럼 Property 를 이용해서 값을 바꿔�
 ***
 
 
-
+ㅇ
 
 
 DutchUnit 추가 후, 지가 알아서 업데이트 안됨 ;; 껐다가 켜야함..
@@ -79,4 +79,5 @@ AddingUnitController 가 너무 작아.
 FullScreen 아니면 힘들 것 같음.
 사람도 다섯명 이상 넘어갈 수 있고, CustomPad 도 띄워야하니까.
 **************************
+
 
