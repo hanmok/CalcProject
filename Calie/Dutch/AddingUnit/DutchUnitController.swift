@@ -31,8 +31,6 @@ protocol AddingUnitNavDelegate: AnyObject {
     func dismissWithInfo(dutchUnit: DutchUnit)
 }
 
-
-//class AddingUnitController: UIViewController {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
@@ -164,9 +162,23 @@ class DutchUnitController: NeedingController {
         registerCollectionView()
         setupLayout()
         setupTargets()
+        
         initializePersonDetails()
         
+
+        if let initialDutchUnit = initialDutchUnit {
+            setupInitialState(dutchUnit: initialDutchUnit)
+        }
+        
         personDetailCollectionView.reloadData()
+    }
+    
+    private func setupInitialState(dutchUnit: DutchUnit) {
+        spentPlaceTF.text = dutchUnit.placeName
+        spentAmountTF.text = String(dutchUnit.spentAmount)
+        // TODO: set people Spent Amount
+        // personDetailCollectionView
+        
     }
     
     
@@ -400,6 +412,7 @@ class DutchUnitController: NeedingController {
     // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
     // TODO: 띄우는 것만 우선 하는게 필요.
     private func initializePersonDetails() {
+        
         self.participants = gathering.sortedPeople
         self.personDetails = []
         participants.forEach { person in
@@ -492,6 +505,14 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         print("indexPath.row : \(indexPath.row)")
+        
+        if let initialDutchUnit = initialDutchUnit {
+            print("initialDutchUnit: \(initialDutchUnit)")
+            let peopleDetail = initialDutchUnit.personDetails.sorted { $0.person!.name < $1.person!.name }
+            cell.spentAmountTF.text = String(peopleDetail[indexPath.row].spentAmount)
+        } else {
+            print("initialDutchUnit is nil ")
+        }
         // index out of range ??
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
         // personDetails 가 아직 없는 듯 ??

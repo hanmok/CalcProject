@@ -415,7 +415,8 @@ class DutchpayController: UIViewController {
         dutchTableView.tableHeaderView = headerContainer
         
         guard let coreGathering = coreGathering else {
-            fatalError()
+//            fatalError()
+            return
         }
         
         updateGroupName()

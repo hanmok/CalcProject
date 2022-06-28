@@ -24,7 +24,6 @@ extension Gathering {
     }
     
     var totalCost: String {
-//        return getTotalPrice(dutchUnits: self.dutchUnits)
         let cost = getTotalPrice(dutchUnits: self.dutchUnits)
         return convertIntoKoreanPrice(number: cost)
     }
