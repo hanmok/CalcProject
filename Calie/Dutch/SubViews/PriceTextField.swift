@@ -36,32 +36,18 @@ class PriceTextField: UITextField {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        setLeftPaddingPoints(5)
+        setRightPaddingPoints(5)
     }
     
     init(placeHolder: String, _ frame: CGRect = .zero) {
         self.init()
         self.textAlignment = .right
-//        self.focus
-//        self.selectAll(<#T##sender: Any?##Any?#>)
     }
-    
     
     private func setupLayout() {
         currencyLabel.frame.size = CGSize(width: 30, height: 30)
         rightView = currencyLabel
-//        addSubview(currencyLabel)
-//
-//        currencyLabel.snp.makeConstraints { make in
-//            make.trailing.top.bottom.equalToSuperview()
-//            make.width.equalTo(30)
-//
-//        }
-
-        
-//        currencyTF.snp.makeConstraints { make in
-//            make.leading.top.bottom.equalToSuperview()
-//            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
-//        }
     }
     
     required init?(coder: NSCoder) {

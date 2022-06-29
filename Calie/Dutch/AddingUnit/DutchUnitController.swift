@@ -47,6 +47,10 @@ class DutchUnitController: NeedingController {
     var personDetails: [PersonDetail] = []
     var selectedPriceTF: PriceTextField?
     
+    private let currenyLabel = UILabel().then {
+        $0.text = "원"
+    }
+    
     weak var addingDelegate: AddingUnitControllerDelegate?
     
     weak var navDelegate: AddingUnitNavDelegate?
@@ -61,12 +65,18 @@ class DutchUnitController: NeedingController {
     private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목"}
     
     // MARK: - UI Properties
-    private let spentPlaceTF = UITextField().then {
+
+    private let spentPlaceTF = UITextField(withPadding: true).then {
         $0.placeholder = "지출한 곳을 입력해주세요."
-        $0.textAlignment = .left
+        $0.textAlignment = .right
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = 1
         $0.layer.cornerRadius = 5
+    }
+    
+    private let divider = UIView().then {
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
     }
     
     
@@ -134,7 +144,11 @@ class DutchUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
-    var initialDutchUnit: DutchUnit?
+    var initialDutchUnit: DutchUnit? {
+        didSet {
+            print("initialDutchUnit set, : \(oldValue)")
+        }
+    }
     
     init(participants: [Person], gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
         
@@ -145,11 +159,16 @@ class DutchUnitController: NeedingController {
         initializePersonDetails()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let initialDutchUnit = initialDutchUnit {
+            setupInitialState(dutchUnit: initialDutchUnit)
+        }
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("viewDidLoad in dutchunitController called")
         view.backgroundColor = .white
 //        view.layer.cornerRadius = 10
 //        view.layer.borderWidth = 1
@@ -168,17 +187,25 @@ class DutchUnitController: NeedingController {
 
         if let initialDutchUnit = initialDutchUnit {
             setupInitialState(dutchUnit: initialDutchUnit)
+            print("initialDutchUnit is valid")
+        } else {
+            print("initialDutchUnit is nil")
         }
         
         personDetailCollectionView.reloadData()
+        changeConfirmBtn()
     }
     
     private func setupInitialState(dutchUnit: DutchUnit) {
+        print("setup initialState called !")
         spentPlaceTF.text = dutchUnit.placeName
-        spentAmountTF.text = String(dutchUnit.spentAmount)
+        spentAmountTF.text = dutchUnit.spentAmount.addComma()
         // TODO: set people Spent Amount
         // personDetailCollectionView
         
+//        textFieldWithPriceDic
+        
+        changeConfirmBtn()
     }
     
     
@@ -193,9 +220,10 @@ class DutchUnitController: NeedingController {
         [
             dismissBtn,
             spentPlaceLabel, spentPlaceTF,
-         spentAmountLabel, spentAmountTF,
+         spentAmountLabel, spentAmountTF, currenyLabel,
 //         spentDateLabel,
             spentDatePicker,
+            divider,
          personDetailCollectionView,
 //         addPersonBtn,
 //         cancelBtn,
@@ -225,7 +253,8 @@ class DutchUnitController: NeedingController {
         spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
-            make.width.equalToSuperview().dividedBy(2)
+//            make.width.equalToSuperview().dividedBy(2)
+            make.width.equalTo(170)
             make.height.equalTo(30)
         }
         
@@ -246,16 +275,12 @@ class DutchUnitController: NeedingController {
             make.height.equalTo(30)
         }
         
-        
-        
-        
-        
-//        spentDateLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(40)
-//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
-//            make.trailing.equalToSuperview().inset(20)
-//            make.height.equalTo(30)
-//        }
+        currenyLabel.snp.makeConstraints { make in
+            make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
+            make.height.equalTo(spentAmountTF.snp.height)
+            make.centerY.equalTo(spentAmountTF.snp.centerY)
+            make.width.equalTo(15)
+        }
         
         spentDatePicker.snp.makeConstraints { make in
             make.leading.equalTo(spentAmountLabel.snp.trailing).offset(25)
@@ -264,23 +289,22 @@ class DutchUnitController: NeedingController {
             make.height.equalTo(50)
         }
         
+        divider.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(5)
+            make.height.equalTo(1)
+            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
+        }
+        
         
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
-            make.top.equalTo(spentDatePicker.snp.bottom).offset(40)
+//            make.top.equalTo(spentDatePicker.snp.bottom).offset(40)
+            make.top.equalTo(divider.snp.bottom).offset(30)
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
-        
-//        cancelBtn.snp.makeConstraints { make in
-//            make.leading.equalTo(view)
-//            make.bottom.equalTo(view)
-//            make.width.equalTo(view.snp.width).dividedBy(2)
-//            make.height.equalTo(50)
-//        }
-        
+    
         confirmBtn.snp.makeConstraints { make in
-//            make.trailing.bottom.equalTo(view)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view).inset(20)
             make.width.equalTo(view.snp.width).dividedBy(2)
@@ -292,31 +316,31 @@ class DutchUnitController: NeedingController {
     
     /// Should not be here.
     // FIXME: remove after testing
-    private let addPersonBtn = UIButton().then {
-        $0.setTitle("Add Person", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.layer.cornerRadius = 5
-        $0.layer.borderWidth = 1
-    }
+//    private let addPersonBtn = UIButton().then {
+//        $0.setTitle("Add Person", for: .normal)
+//        $0.setTitleColor(.black, for: .normal)
+//        $0.layer.cornerRadius = 5
+//        $0.layer.borderWidth = 1
+//    }
     
     private func setupTargets() {
 //        cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
         
-        dismissBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+        dismissBtn.addTarget(nil, action: #selector(dismissTapped(_:)), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
-        addPersonBtn.addTarget(nil, action: #selector(addPersonTapped(_:)), for: .touchUpInside)
+//        addPersonBtn.addTarget(nil, action: #selector(addPersonTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func addPersonTapped(_ sender: UIButton) {
-        let count = gathering.people.count
-        let newPerson = Person.save(name: "person \(count + 1)", index: Int64(count))
-        gathering.people.update(with: newPerson)
-        
-        initializePersonDetails()
-    }
+//    @objc func addPersonTapped(_ sender: UIButton) {
+//        let count = gathering.people.count
+//        let newPerson = Person.save(name: "person \(count + 1)", index: Int64(count))
+//        gathering.people.update(with: newPerson)
+//
+//        initializePersonDetails()
+//    }
     
     
-    @objc func cancelTapped(_ sender: UIButton) {
+    @objc func dismissTapped(_ sender: UIButton) {
         print("cancel action")
         // dutchpayController
         addingDelegate?.dismissChildVC()
@@ -366,7 +390,7 @@ class DutchUnitController: NeedingController {
         
         costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
         
-        let remainingStr = costRemaining.withCommas()
+        let remainingStr = costRemaining.addComma()
         textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
         
 //        selectedPriceTF.text = String(costRemaining)
@@ -410,12 +434,14 @@ class DutchUnitController: NeedingController {
     }
     
     // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
-    // TODO: 띄우는 것만 우선 하는게 필요.
+    // TODO: 띄우는 것만 우선 하는게 필요. ?? 뭔소리 ??
+    
     private func initializePersonDetails() {
         
         self.participants = gathering.sortedPeople
         self.personDetails = []
         participants.forEach { person in
+            // FIXME: 이거.. 뭐지?? PersonDetail 을 왜 계속 생성하지 ??
             let personDetail = PersonDetail.save(person: person)
             self.personDetails.append(personDetail)
         }
@@ -464,16 +490,11 @@ class DutchUnitController: NeedingController {
             print("tag: \(tag), number: \(number)")
             sumOfIndividual += number
         }
-        
+        print("condition: \nsumofIndividual: \(sumOfIndividual) \nspentAmount: \(spentAmount)")
         let condition = (sumOfIndividual == spentAmount) && (sumOfIndividual != 0)
         
         isConditionSatisfied = condition
         setupConfirmBtn(condition: isConditionSatisfied)
-        
-        print("sumOfIndividual: \(sumOfIndividual)")
-        print("spentAmount: \(spentAmount)")
-        print("condition: \(condition)")
-        
     }
     
     private func setupConfirmBtn(condition: Bool) {
@@ -506,13 +527,26 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.delegate = self
         print("indexPath.row : \(indexPath.row)")
         
+        
         if let initialDutchUnit = initialDutchUnit {
             print("initialDutchUnit: \(initialDutchUnit)")
             let peopleDetail = initialDutchUnit.personDetails.sorted { $0.person!.name < $1.person!.name }
-            cell.spentAmountTF.text = String(peopleDetail[indexPath.row].spentAmount)
+            
+            cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
+            
+            textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
+            print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
+            
+            if indexPath.row == (participants.count) - 1 {
+                spentAmount = initialDutchUnit.spentAmount
+                changeConfirmBtn()
+            }
+            
         } else {
             print("initialDutchUnit is nil ")
         }
+        
+        
         // index out of range ??
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
         // personDetails 가 아직 없는 듯 ??
@@ -572,7 +606,6 @@ extension DutchUnitController: UITextFieldDelegate {
             spentAmountTF.becomeFirstResponder()
         }
         
-        
         changeConfirmBtn()
         return true
     }
@@ -599,10 +632,7 @@ extension DutchUnitController: UITextFieldDelegate {
             return true
         }
         
-//        return true
-//        changeConfirmBtn()
     }
-    
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

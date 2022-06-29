@@ -10,6 +10,20 @@ import UIKit
 import CoreData
 extension DutchUnit {
     
+    public var id: UUID {
+        get {
+            if let validId = self.id_ {
+                return validId
+            } else {
+                self.id_ = UUID()
+                return self.id_!
+            }
+        }
+        set {
+            self.id_ = UUID()
+        }
+    }
+    
     var personDetails: Set<PersonDetail> {
         get {
             self.personDetails_ as? Set<PersonDetail> ?? []

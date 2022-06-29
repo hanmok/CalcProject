@@ -380,7 +380,7 @@ class DutchpayController: UIViewController {
         
         guard let coreGathering = coreGathering else { fatalError() }
         
-        let addingUnitController = DutchUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering)
+        let addingUnitController = DutchUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering, initialDutchUnit: selectedUnit)
 
         addingUnitController.addingDelegate = self
         
@@ -704,7 +704,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
         
         let selectedDutchUnit = dutchUnits[indexPath.row]
-        
+        print("tableView tapped, \(selectedDutchUnit)")
         presentDutchUnitController(selectedUnit: selectedDutchUnit)
     }
     

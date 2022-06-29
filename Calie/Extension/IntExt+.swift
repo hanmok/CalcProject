@@ -10,7 +10,7 @@ import Foundation
 
 
 extension Int {
-    func withCommas() -> String {
+    func addCommas() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         return numberFormatter.string(from: NSNumber(value:self))!
@@ -18,7 +18,7 @@ extension Int {
 }
 
 extension Double {
-    func withCommas() -> String {
+    func addComma() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         return numberFormatter.string(from: NSNumber(value:self))!
