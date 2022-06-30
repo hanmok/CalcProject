@@ -354,13 +354,19 @@ class DutchUnitController: NeedingController {
             personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
-        
+        if let initialDutchUnit = initialDutchUnit {
+            dutchUnit = DutchUnit.update(spentTo: spentPlaceTF.text!, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
+            
+        } else {
         dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
                                    spentAmount: spentAmount,
                                    personDetails: personDetails,
                                    spentDate: spentDatePicker.date)
+        }
+        
         guard let dutchUnit = dutchUnit else { fatalError() }
         
+        // gathering need to differentiate each dutchUnit by its `id`
         gathering.dutchUnits.update(with: dutchUnit)
         gathering.updatedAt = Date()
         gathering.managedObjectContext?.saveCoreData()
@@ -442,8 +448,10 @@ class DutchUnitController: NeedingController {
         self.personDetails = []
         participants.forEach { person in
             // FIXME: 이거.. 뭐지?? PersonDetail 을 왜 계속 생성하지 ??
-            let personDetail = PersonDetail.save(person: person)
-            self.personDetails.append(personDetail)
+            if initialDutchUnit == nil {
+                let personDetail = PersonDetail.save(person: person)
+                self.personDetails.append(personDetail)
+            }
         }
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
@@ -546,9 +554,14 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
             print("initialDutchUnit is nil ")
         }
         
+        print("personDetails.count: \(personDetails.count)")
+        print("indexPath.row: \(indexPath.row)")
+        // index out of range ?? 둘다 왜 0이지??  personDetail 은 왜 없음?
+        // 초기화가 정상적으로 되지 않았음.
         
-        // index out of range ??
+        
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
+        
         // personDetails 가 아직 없는 듯 ??
         return cell
     }
