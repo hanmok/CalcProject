@@ -156,7 +156,7 @@ class DutchUnitController: NeedingController {
         self.gathering = gathering
         self.participants = gathering.sortedPeople
         super.init(nibName: nil, bundle: nil)
-        initializePersonDetails()
+        initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -442,17 +442,23 @@ class DutchUnitController: NeedingController {
     // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
     // TODO: 띄우는 것만 우선 하는게 필요. ?? 뭔소리 ??
     
-    private func initializePersonDetails() {
+    private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
         
         self.participants = gathering.sortedPeople
         self.personDetails = []
-        participants.forEach { person in
-            // FIXME: 이거.. 뭐지?? PersonDetail 을 왜 계속 생성하지 ??
-            if initialDutchUnit == nil {
-                let personDetail = PersonDetail.save(person: person)
-                self.personDetails.append(personDetail)
-            }
+
+//        if initialDutchUnit == nil {
+        if let initialDutchUnit = initialDutchUnit {
+            self.personDetails = initialDutchUnit.personDetails.sorted { $0.person!.index < $1.person!.index }
+        } else {
+            participants.forEach { person in
+                // FIXME: 이거.. 뭐지?? PersonDetail 을 왜 계속 생성하지 ??
+                    let personDetail = PersonDetail.save(person: person)
+                    self.personDetails.append(personDetail)
+                }
         }
+        
+        
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
         }
@@ -559,7 +565,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         // index out of range ?? 둘다 왜 0이지??  personDetail 은 왜 없음?
         // 초기화가 정상적으로 되지 않았음.
         
-        
+        // FIXME: Crash !!
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
         
         // personDetails 가 아직 없는 듯 ??
