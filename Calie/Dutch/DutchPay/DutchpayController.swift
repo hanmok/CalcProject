@@ -108,7 +108,7 @@ class DutchpayController: UIViewController {
     
     private let titleLabelInHeader = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        $0.backgroundColor = .magenta
+//        $0.backgroundColor = .magenta
         $0.textAlignment = .center
     }
     
@@ -121,7 +121,7 @@ class DutchpayController: UIViewController {
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
-        $0.backgroundColor = .cyan
+//        $0.backgroundColor = .cyan
     }
     
     private let renameBtnInHeader = UIButton().then {
@@ -133,7 +133,7 @@ class DutchpayController: UIViewController {
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
-        $0.backgroundColor = .yellow
+//        $0.backgroundColor = .yellow
     }
     
 //    private let memberNameLabelInHeader = UILabel().then {
@@ -143,7 +143,8 @@ class DutchpayController: UIViewController {
 //    }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-        $0.backgroundColor = .orange
+//        $0.backgroundColor = .orange
+        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
     }
     
     
@@ -158,6 +159,7 @@ class DutchpayController: UIViewController {
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
+        $0.isHidden = true
     }
     
     private let gatheringPlusBtn: UIButton = {
@@ -236,9 +238,17 @@ class DutchpayController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        AppUtility.lockOrientation(.portrait)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        AppUtility.lockOrientation(.portrait)
+//        contentinset
+//        self.contentinset
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
         fetchDefaultGathering()
@@ -250,7 +260,7 @@ class DutchpayController: UIViewController {
         setupAddTargets()
         
         fetchAll()
-
+        
         view.insetsLayoutMarginsFromSafeArea = false
     }
     
@@ -317,15 +327,15 @@ class DutchpayController: UIViewController {
     
     @objc func groupBtnTapped(_ sender: UIButton) {
         print("groupBtn Tapped")
-        guard let coreGathering = coreGathering else {
-            return
-        }
+//        guard let coreGathering = coreGathering else {
+//            return
+//        }
 
-        print("coreInfo: \(coreGathering)")
-        print("totalCost: \(coreGathering.totalCost)")
-        print("people: \(coreGathering.people)")
-        print("title: \(coreGathering.title)")
-        print("numOfPeople: \(coreGathering.people.count)")
+//        print("coreInfo: \(coreGathering)")
+//        print("totalCost: \(coreGathering.totalCost)")
+//        print("people: \(coreGathering.people)")
+//        print("title: \(coreGathering.title)")
+//        print("numOfPeople: \(coreGathering.people.count)")
     }
     
     @objc func historyBtnTapped(_ sender: UIButton) {
@@ -487,7 +497,7 @@ class DutchpayController: UIViewController {
                 
         UINavigationBar.appearance().barTintColor = .red
 
-        UINavigationBar.appearance().tintColor = .magenta // chevron Color
+//        UINavigationBar.appearance().tintColor = .magenta // chevron Color
         
         self.addChild(navParticipantsController)
         
@@ -579,24 +589,30 @@ class DutchpayController: UIViewController {
         
         historyBtn.snp.makeConstraints { make in
             make.leading.equalTo(containerView.snp.leading).offset(20)
-            make.top.equalTo(containerView.snp.top).offset(70)
-            make.height.width.equalTo(60)
+//            make.top.equalTo(containerView.snp.top).offset(70)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.height.width.equalTo(30)
         }
         
         groupBtn.snp.makeConstraints { make in
             make.trailing.equalTo(containerView.snp.trailing).inset(20)
-            make.top.equalTo(containerView.snp.top).offset(70)
-            make.height.width.equalTo(060)
+//            make.top.equalTo(containerView.snp.top).offset(70)
+//            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(historyBtn.snp.top)
+            make.height.width.equalTo(30)
         }
         
         if coreGathering != nil {
             containerView.addSubview(dutchTableView)
             
             dutchTableView.snp.makeConstraints { make in
-                make.top.equalTo(historyBtn.snp.bottom).offset(10)
+                make.top.equalTo(historyBtn.snp.bottom).offset(30)
                 make.leading.equalToSuperview().offset(10)
                 make.trailing.equalToSuperview().offset(-10)
-                make.bottom.equalToSuperview().inset(100)
+//                make.bottom.equalToSuperview().inset(60)
+//                make.bottom.equalToSuperview().inset(tabBarController?.tabBar.bounds.size.height ?? 50)
+                make.bottom.equalToSuperview().inset(60)
+//                make.bottom.equalToSuperview()
             }
             
             containerView.addSubview(dutchUnitPlusBtn)
@@ -614,6 +630,8 @@ class DutchpayController: UIViewController {
                 make.top.equalTo(dutchTableView.snp.bottom)
                 make.leading.trailing.equalToSuperview().inset(11)
                 make.height.equalTo(50)
+//                make.bottom.equalTo(tabBarController?.tabBar.bounds.size.height ?? 50)
+//                make.bottom.equalToSuperview().inset(tabBarController?.tabBar.bounds.size.height ?? 50)
             }
             
 //            containerView.addSubview(totalPriceLabel)

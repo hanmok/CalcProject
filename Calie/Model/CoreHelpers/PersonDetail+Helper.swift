@@ -38,3 +38,4 @@ extension PersonDetail {
 //    var spentAmount: Double = 0
 //    var isAttended: Bool = true
 //}
+
