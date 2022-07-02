@@ -10,18 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-/*
- struct PersonDetail2 {
- var person: Person2
- var spentAmount: Double = 0
- var isAttended: Bool = true
- }
- */
-
-//protocol AddingUnitControllerDelegate: AnyObject {
-//    func dismissChildVC()
-//}
-
 protocol AddingUnitControllerDelegate: AnyObject {
     func updateDutchUnits()
     func dismissChildVC()
@@ -83,8 +71,7 @@ class DutchUnitController: NeedingController {
     private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
     
     private let spentAmountTF = PriceTextField(placeHolder: "비용").then {
-        //        $0.backgroundColor = .magenta
-        //        $0.backgroundColor =
+        
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
         $0.isTotalPrice = true
@@ -93,15 +80,12 @@ class DutchUnitController: NeedingController {
     
     
     private let spentDateLabel = UILabel().then {
-        //        $0.text = "시각"
-        //        $0.text = "일자"
         $0.textAlignment = .center
     }
     
     private let spentDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .compact
         $0.locale = Locale(identifier: "ko-KR")
-        //        $0.datePickerMode = .dateAndTime
         $0.datePickerMode = .date
     }
     
@@ -113,32 +97,20 @@ class DutchUnitController: NeedingController {
     }()
     
     
-    //    private let cancelBtn = UIButton().then {
-    //        $0.setTitle("Cancel", for: .normal)
-    //        $0.setTitleColor(.red, for: .normal)
-    //        $0.addBorders(edges: [.top], color: .black)
-    //    }
-    
-    //    private var dismissBtn = UIButton().then {
     private let dismissBtn: UIButton = {
         let btn = UIButton()
-        //        let image = UIImage(systemName: "chevron.left")
         let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        //        image.contentMode = .scaleToFill
         imageView.contentMode = .scaleToFill
         btn.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
         }
-        //        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         return btn
     }()
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
-        //        $0.addBorders(edges: [.top, .left], color: .black)
-        //        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
         $0.backgroundColor = .orange
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
@@ -307,7 +279,7 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissTapped(_ sender: UIButton) {
         print("cancel action")
-        // dutchpayController
+        
         addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
@@ -358,15 +330,13 @@ class DutchUnitController: NeedingController {
         }
         
         var costRemaining = spentAmount - sumOfIndividual
-        // 값이 없을 수 있다..
         
         costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
         
         let remainingStr = costRemaining.addComma()
         textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
         
-        //        selectedPriceTF.text = String(costRemaining)
-        //
+        
         selectedPriceTF.text = remainingStr
         changeConfirmBtn()
     }
@@ -393,7 +363,7 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissKeyboard() {
         print("dismissKeyboard triggered!!")
-        //        dismissNumberPadAction()
+        
         changeConfirmBtn()
         
         view.endEditing(true)
@@ -491,8 +461,7 @@ class DutchUnitController: NeedingController {
     
     private func setupConfirmBtn(condition: Bool) {
         confirmBtn.isUserInteractionEnabled = condition
-        //        confirmBtn.backgroundColor = condition ? .white : .gray
-        //        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
+        
         confirmBtn.backgroundColor = condition ? .green : .orange
     }
 }
@@ -517,12 +486,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.spentAmountTF.delegate = self
         
         cell.delegate = self
-        print("indexPath.row : \(indexPath.row)")
         
-        
-            print("initialDutchUnit: \(initialDutchUnit)")
-        
-//        let peopleDetail = initialDutchUnit.personDetails.sorted {
         
         let peopleDetail = self.personDetails.sorted {
         $0.person!.name < $1.person!.name }
@@ -539,13 +503,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
             }
         }
         
-        
-        print("personDetails.count: \(personDetails.count)")
-        print("indexPath.row: \(indexPath.row)")
-        // index out of range ?? 둘다 왜 0이지??  personDetail 은 왜 없음?
-        // 초기화가 정상적으로 되지 않았음.
-        
-        // FIXME: Crash !!
         cell.viewModel = PersonDetailViewModel(personDetail: personDetails[indexPath.row])
         
         // personDetails 가 아직 없는 듯 ??
