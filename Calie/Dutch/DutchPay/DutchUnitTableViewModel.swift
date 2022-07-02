@@ -52,7 +52,9 @@ struct CoreDutchUnitViewModel {
     
 
     var peopleList: String {
-        return dutchUnit.personDetails.map { $0.person!.name}.joined(separator: ", ")
+        
+        return dutchUnit.personDetails.map { $0.person!.name }.sorted { $0 < $1 }.joined(separator: ", ")
+        
     }
     
     private func convertIntoKoreanPrice(number: Double) -> String {

@@ -11,12 +11,12 @@ import SnapKit
 import Then
 
 /*
-struct PersonDetail2 {
-    var person: Person2
-    var spentAmount: Double = 0
-    var isAttended: Bool = true
-}
-*/
+ struct PersonDetail2 {
+ var person: Person2
+ var spentAmount: Double = 0
+ var isAttended: Bool = true
+ }
+ */
 
 //protocol AddingUnitControllerDelegate: AnyObject {
 //    func dismissChildVC()
@@ -65,7 +65,7 @@ class DutchUnitController: NeedingController {
     private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목"}
     
     // MARK: - UI Properties
-
+    
     private let spentPlaceTF = UITextField(withPadding: true).then {
         $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .right
@@ -83,8 +83,8 @@ class DutchUnitController: NeedingController {
     private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
     
     private let spentAmountTF = PriceTextField(placeHolder: "비용").then {
-//        $0.backgroundColor = .magenta
-//        $0.backgroundColor =
+        //        $0.backgroundColor = .magenta
+        //        $0.backgroundColor =
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
         $0.isTotalPrice = true
@@ -93,15 +93,15 @@ class DutchUnitController: NeedingController {
     
     
     private let spentDateLabel = UILabel().then {
-//        $0.text = "시각"
-//        $0.text = "일자"
+        //        $0.text = "시각"
+        //        $0.text = "일자"
         $0.textAlignment = .center
     }
     
     private let spentDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .compact
         $0.locale = Locale(identifier: "ko-KR")
-//        $0.datePickerMode = .dateAndTime
+        //        $0.datePickerMode = .dateAndTime
         $0.datePickerMode = .date
     }
     
@@ -113,32 +113,32 @@ class DutchUnitController: NeedingController {
     }()
     
     
-//    private let cancelBtn = UIButton().then {
-//        $0.setTitle("Cancel", for: .normal)
-//        $0.setTitleColor(.red, for: .normal)
-//        $0.addBorders(edges: [.top], color: .black)
-//    }
+    //    private let cancelBtn = UIButton().then {
+    //        $0.setTitle("Cancel", for: .normal)
+    //        $0.setTitleColor(.red, for: .normal)
+    //        $0.addBorders(edges: [.top], color: .black)
+    //    }
     
-//    private var dismissBtn = UIButton().then {
+    //    private var dismissBtn = UIButton().then {
     private let dismissBtn: UIButton = {
         let btn = UIButton()
-//        let image = UIImage(systemName: "chevron.left")
+        //        let image = UIImage(systemName: "chevron.left")
         let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-//        image.contentMode = .scaleToFill
+        //        image.contentMode = .scaleToFill
         imageView.contentMode = .scaleToFill
         btn.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
         }
-//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-       return btn
+        //        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        return btn
     }()
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
-//        $0.addBorders(edges: [.top, .left], color: .black)
-//        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
+        //        $0.addBorders(edges: [.top, .left], color: .black)
+        //        $0.backgroundColor = UIColor(white: 0.7, alpha: 1)
         $0.backgroundColor = .orange
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
@@ -150,7 +150,7 @@ class DutchUnitController: NeedingController {
         }
     }
     
-    init(participants: [Person], gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
+    init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
         
         self.initialDutchUnit = initialDutchUnit
         self.gathering = gathering
@@ -165,26 +165,24 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad in dutchunitController called")
         view.backgroundColor = .white
-//        view.layer.cornerRadius = 10
-//        view.layer.borderWidth = 1
-//        view.clipsToBounds = true
         
         // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
+
         registerCollectionView()
         setupLayout()
         setupTargets()
-        
-        initializePersonDetails()
-        
-
+    
         if let initialDutchUnit = initialDutchUnit {
             setupInitialState(dutchUnit: initialDutchUnit)
             print("initialDutchUnit is valid")
@@ -201,9 +199,6 @@ class DutchUnitController: NeedingController {
         spentPlaceTF.text = dutchUnit.placeName
         spentAmountTF.text = dutchUnit.spentAmount.addComma()
         // TODO: set people Spent Amount
-        // personDetailCollectionView
-        
-//        textFieldWithPriceDic
         
         changeConfirmBtn()
     }
@@ -220,14 +215,11 @@ class DutchUnitController: NeedingController {
         [
             dismissBtn,
             spentPlaceLabel, spentPlaceTF,
-         spentAmountLabel, spentAmountTF, currenyLabel,
-//         spentDateLabel,
+            spentAmountLabel, spentAmountTF, currenyLabel,
             spentDatePicker,
             divider,
-         personDetailCollectionView,
-//         addPersonBtn,
-//         cancelBtn,
-         confirmBtn
+            personDetailCollectionView,
+            confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
         }
@@ -244,7 +236,6 @@ class DutchUnitController: NeedingController {
         
         spentPlaceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalToSuperview().inset(20)
             make.top.equalTo(dismissBtn.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(20)
@@ -253,13 +244,9 @@ class DutchUnitController: NeedingController {
         spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
-//            make.width.equalToSuperview().dividedBy(2)
             make.width.equalTo(170)
             make.height.equalTo(30)
         }
-        
-        
-        
         
         spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
@@ -299,11 +286,10 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
-//            make.top.equalTo(spentDatePicker.snp.bottom).offset(40)
             make.top.equalTo(divider.snp.bottom).offset(30)
             make.height.equalTo(60 * participants.count - 10 + 50)
         }
-    
+        
         confirmBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view).inset(20)
@@ -312,33 +298,12 @@ class DutchUnitController: NeedingController {
         }
     }
     
-//    private func setupIni
-    
-    /// Should not be here.
-    // FIXME: remove after testing
-//    private let addPersonBtn = UIButton().then {
-//        $0.setTitle("Add Person", for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
-//        $0.layer.cornerRadius = 5
-//        $0.layer.borderWidth = 1
-//    }
     
     private func setupTargets() {
-//        cancelBtn.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
         
         dismissBtn.addTarget(nil, action: #selector(dismissTapped(_:)), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
-//        addPersonBtn.addTarget(nil, action: #selector(addPersonTapped(_:)), for: .touchUpInside)
     }
-    
-//    @objc func addPersonTapped(_ sender: UIButton) {
-//        let count = gathering.people.count
-//        let newPerson = Person.save(name: "person \(count + 1)", index: Int64(count))
-//        gathering.people.update(with: newPerson)
-//
-//        initializePersonDetails()
-//    }
-    
     
     @objc func dismissTapped(_ sender: UIButton) {
         print("cancel action")
@@ -349,19 +314,21 @@ class DutchUnitController: NeedingController {
     
     @objc func confirmTapped(_ sender: UIButton) {
         print("success action")
-
+        
         for personIndex in 0 ..< participants.count {
             personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
         if let initialDutchUnit = initialDutchUnit {
+            
             dutchUnit = DutchUnit.update(spentTo: spentPlaceTF.text!, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
             
         } else {
-        dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
-                                   spentAmount: spentAmount,
-                                   personDetails: personDetails,
-                                   spentDate: spentDatePicker.date)
+            
+            dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
+                                       spentAmount: spentAmount,
+                                       personDetails: personDetails,
+                                       spentDate: spentDatePicker.date)
         }
         
         guard let dutchUnit = dutchUnit else { fatalError() }
@@ -381,7 +348,6 @@ class DutchUnitController: NeedingController {
             fatalError()
         }
         
-//        let totalAmount = Double(spentAmountTF.text!)!
         let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
         
         sumOfIndividual = 0
@@ -399,19 +365,19 @@ class DutchUnitController: NeedingController {
         let remainingStr = costRemaining.addComma()
         textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
         
-//        selectedPriceTF.text = String(costRemaining)
-//
+        //        selectedPriceTF.text = String(costRemaining)
+        //
         selectedPriceTF.text = remainingStr
         changeConfirmBtn()
     }
     
     override func updateNumber(with numberText: String) {
         print("hi, \(numberText)")
-
+        
         guard let selectedPriceTF = selectedPriceTF else {
             return
         }
-
+        
         selectedPriceTF.text = numberText
         
         let selectedTag = selectedPriceTF.tag
@@ -427,9 +393,9 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissKeyboard() {
         print("dismissKeyboard triggered!!")
-//        dismissNumberPadAction()
+        //        dismissNumberPadAction()
         changeConfirmBtn()
-
+        
         view.endEditing(true)
         
         needingDelegate?.hideNumberPad()
@@ -439,30 +405,43 @@ class DutchUnitController: NeedingController {
         view.endEditing(true)
     }
     
-    // 바로 여기서 PersonDetail 을 Initialize 할 필요 없음..
-    // TODO: 띄우는 것만 우선 하는게 필요. ?? 뭔소리 ??
     
     private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
         
         self.participants = gathering.sortedPeople
         self.personDetails = []
 
-//        if initialDutchUnit == nil {
-        if let initialDutchUnit = initialDutchUnit {
-            self.personDetails = initialDutchUnit.personDetails.sorted { $0.person!.index < $1.person!.index }
-        } else {
-            participants.forEach { person in
-                // FIXME: 이거.. 뭐지?? PersonDetail 을 왜 계속 생성하지 ??
-                    let personDetail = PersonDetail.save(person: person)
-                    self.personDetails.append(personDetail)
-                }
+        var allNames = Set<String>()
+        var initializedNames = Set<String>()
+        var notInitializedNames = Set<String>()
+        
+        gathering.people.map { $0.name }.forEach {
+            allNames.insert($0)
         }
         
+        if let initialDutchUnit = initialDutchUnit {
+            self.personDetails = initialDutchUnit.personDetails.sorted { $0.person!.name < $1.person!.name }
+            
+            self.personDetails.forEach {
+                initializedNames.update(with: $0.person!.name)
+            }
+        }
+        
+        notInitializedNames = allNames.subtracting(initializedNames)
+        
+        notInitializedNames.sorted().forEach {
+            let newPerson = Person.save(name: $0)
+            let personDetail = PersonDetail.save(person: newPerson)
+            self.personDetails.append(personDetail)
+        }
+        
+        self.personDetails = self.personDetails.sorted { $0.person!.name < $1.person!.name }
         
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
         }
     }
+    
     
     @objc func textDidBegin(_ textField: UITextField) {
         if textField == spentAmountTF {
@@ -471,15 +450,15 @@ class DutchUnitController: NeedingController {
             print("it's spentPlaceTF")
         }
         
-
+        
         if let tf = textField as? PriceTextField {
             print("tag: \(tf.tag)")
             print("it's pricetextfield!, textDidBegin")
         } else {
             print("it's not priceTextField!")
         }
-//        setupConfirmBtn(condition: <#T##Bool#>)
     }
+    
     
     @objc func textDidChange(_ textField: PriceTextField) {
         print("tag: \(textField.tag)")
@@ -492,9 +471,8 @@ class DutchUnitController: NeedingController {
     }
     
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    
     
     private func changeConfirmBtn() {
         print("changeConfirmBtn called ")
@@ -513,8 +491,8 @@ class DutchUnitController: NeedingController {
     
     private func setupConfirmBtn(condition: Bool) {
         confirmBtn.isUserInteractionEnabled = condition
-//        confirmBtn.backgroundColor = condition ? .white : .gray
-//        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
+        //        confirmBtn.backgroundColor = condition ? .white : .gray
+        //        confirmBtn.backgroundColor = condition ? .white : UIColor(white: 0.7, alpha: 1)
         confirmBtn.backgroundColor = condition ? .green : .orange
     }
 }
@@ -542,23 +520,25 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         print("indexPath.row : \(indexPath.row)")
         
         
-        if let initialDutchUnit = initialDutchUnit {
             print("initialDutchUnit: \(initialDutchUnit)")
-            let peopleDetail = initialDutchUnit.personDetails.sorted { $0.person!.name < $1.person!.name }
+        
+//        let peopleDetail = initialDutchUnit.personDetails.sorted {
+        
+        let peopleDetail = self.personDetails.sorted {
+        $0.person!.name < $1.person!.name }
             
             cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
             
             textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
             print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
-            
-            if indexPath.row == (participants.count) - 1 {
+        
+        if indexPath.row == (participants.count) - 1 {
+            if let initialDutchUnit = initialDutchUnit {
                 spentAmount = initialDutchUnit.spentAmount
                 changeConfirmBtn()
             }
-            
-        } else {
-            print("initialDutchUnit is nil ")
         }
+        
         
         print("personDetails.count: \(personDetails.count)")
         print("indexPath.row: \(indexPath.row)")
@@ -598,18 +578,18 @@ extension DutchUnitController: PersonDetailCellDelegate {
         for (tag, amount) in textFieldWithPriceDic {
             print("tag: \(tag), amount: \(amount)")
         }
-
+        
         let prev = textFieldWithPriceDic[peopleIndex] ?? 0
         
         let remaining = spentAmount - sumOfIndividual - prev
         
         if remaining != 0 {
             textFieldWithPriceDic[peopleIndex] = remaining
-
+            
             var strRemaining = String(remaining)
             strRemaining.applyNumberFormatter()
             cell.spentAmountTF.text = strRemaining
-
+            
         }
     }
 }

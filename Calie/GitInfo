@@ -2,3 +2,13 @@
 develop 
 
 
+
+FixingEnteringDutchUnitError
+
+기존 DutchUnit 으로 TableView 선택 후 이동시 버그 일부 해결
+정산하기 버튼 추가
+
+
+
+
+

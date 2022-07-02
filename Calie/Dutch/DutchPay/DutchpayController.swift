@@ -221,7 +221,14 @@ class DutchpayController: UIViewController {
     private let totalPriceValueLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24)
         $0.textAlignment = .right
-        
+    }
+    
+    private let calculateBtn = UIButton().then {
+//        $0.setTitle("정산하기", for: .normal)
+//        $0.font = UIFont.systemFont(ofSize: 24)
+        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .bold)])
+        $0.setAttributedTitle(attr, for: .normal)
+        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
     }
     
     
@@ -280,11 +287,15 @@ class DutchpayController: UIViewController {
         renameBtnInHeader.addTarget(self, action: #selector(changeGroupAction(_:)), for: .touchUpInside)
         
         groupBtnInHeader.addTarget(self, action: #selector(coreGroupBtnTapped(_:)), for: .touchUpInside)
+        
+        calculateBtn.addTarget(self, action: #selector(calculateTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func calculateTapped(_ sender: UIButton) {
+        print("calculateBtn Tapped !!")
     }
     
     @objc func coreGroupBtnTapped(_ sender: UIButton) {
-//        print("coreGroupBtnTapped")
-//        presentaddingpeop
         presentAddingPeopleAlert()
     }
     
@@ -390,7 +401,9 @@ class DutchpayController: UIViewController {
         
         guard let coreGathering = coreGathering else { fatalError() }
         
-        let addingUnitController = DutchUnitController(participants: coreGathering.sortedPeople, gathering: coreGathering, initialDutchUnit: selectedUnit)
+        let addingUnitController = DutchUnitController(
+             gathering: coreGathering,
+             initialDutchUnit: selectedUnit)
 
         addingUnitController.addingDelegate = self
         
@@ -578,6 +591,7 @@ class DutchpayController: UIViewController {
         containerView.addSubview(groupBtn)
         containerView.addSubview(gatheringPlusBtn)
         containerView.addSubview(totalPriceContainerView)
+        containerView.addSubview(calculateBtn)
         
         // safeArea on the bottom
         containerView.snp.makeConstraints { make in
@@ -611,7 +625,7 @@ class DutchpayController: UIViewController {
                 make.trailing.equalToSuperview().offset(-10)
 //                make.bottom.equalToSuperview().inset(60)
 //                make.bottom.equalToSuperview().inset(tabBarController?.tabBar.bounds.size.height ?? 50)
-                make.bottom.equalToSuperview().inset(60)
+                make.bottom.equalToSuperview().inset(120)
 //                make.bottom.equalToSuperview()
             }
             
@@ -655,6 +669,13 @@ class DutchpayController: UIViewController {
                 make.trailing.equalToSuperview().inset(10)
                 make.leading.equalTo(totalPriceLabel.snp.trailing)
                 make.height.equalTo(50)
+            }
+            
+            calculateBtn.snp.makeConstraints { make in
+                make.top.equalTo(totalPriceLabel.snp.bottom).offset(5)
+                make.leading.equalToSuperview().inset(11)
+                make.trailing.equalToSuperview().inset(10)
+                make.height.equalTo(55)
             }
             
             
