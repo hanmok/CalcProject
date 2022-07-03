@@ -9,6 +9,13 @@ FixingEnteringDutchUnitError
 정산하기 버튼 추가
 
 
+ModifyingParticipants
+
+1. mainContainer 생성, 같은 디자인으로 새로운 순서의 Layout 작성.
+(TableView 의 bottom inset 설정해주지 않아도 됨, Device 별로 일관된 Layout)
+
+2. ParticipantsLayout 생성 (같은 Main Table 화면에서 Participants 편집)
+
 
 
 

@@ -69,9 +69,9 @@ class DutchpayController: UIViewController {
         totalPriceValueLabel.text = coreGathering.totalCost
     }
 
-    private let containerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-        
+    private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+//        $0.backgroundColor = .magenta
      }
     
     private let totalPriceContainerView = UIView().then {
@@ -136,18 +136,12 @@ class DutchpayController: UIViewController {
 //        $0.backgroundColor = .yellow
     }
     
-//    private let memberNameLabelInHeader = UILabel().then {
-//        $0.textColor = .gray
-//        $0.font = UIFont.systemFont(ofSize: 10)
-//        $0.backgroundColor = .blue
-//    }
+    private let mainContainer = UIView()
+    
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-//        $0.backgroundColor = .orange
         $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
     }
-    
-    
     
     private let groupBtn = UIButton().then {
         
@@ -307,7 +301,6 @@ class DutchpayController: UIViewController {
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
-//            guard let newPersonName = textFieldInput.text
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
         
             let somePerson = Person.save(name: textFieldInput.text!)
@@ -317,8 +310,8 @@ class DutchpayController: UIViewController {
             }
 
             coreGathering.people.update(with: somePerson)
-            
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
         
@@ -538,15 +531,18 @@ class DutchpayController: UIViewController {
             $0.removeFromSuperview()
         }
         
-        view.addSubview(containerView)
-        containerView.addSubview(historyBtn)
-        containerView.addSubview(groupBtn)
-        containerView.addSubview(gatheringPlusBtn)
-        containerView.addSubview(totalPriceContainerView)
-        containerView.addSubview(calculateBtn)
+        view.addSubview(wholeContainerView)
+        wholeContainerView.addSubview(historyBtn)
+        wholeContainerView.addSubview(groupBtn)
+        wholeContainerView.addSubview(gatheringPlusBtn)
+        
+        wholeContainerView.addSubview(mainContainer)
+        
+        mainContainer.addSubview(totalPriceContainerView)
+        mainContainer.addSubview(calculateBtn)
         
         // safeArea on the bottom
-        containerView.snp.makeConstraints { make in
+        wholeContainerView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
@@ -554,69 +550,77 @@ class DutchpayController: UIViewController {
         }
         
         historyBtn.snp.makeConstraints { make in
-            make.leading.equalTo(containerView.snp.leading).offset(20)
+            make.leading.equalTo(wholeContainerView.snp.leading).offset(20)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.height.width.equalTo(30)
         }
         
         groupBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(containerView.snp.trailing).inset(20)
+            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
             make.top.equalTo(historyBtn.snp.top)
             make.height.width.equalTo(30)
         }
         
         if coreGathering != nil {
-            containerView.addSubview(dutchTableView)
-            dutchTableView.snp.makeConstraints { make in
+            
+            mainContainer.snp.makeConstraints { make in
+                make.leading.trailing.equalToSuperview().inset(10)
                 make.top.equalTo(historyBtn.snp.bottom).offset(30)
-                make.leading.equalToSuperview().offset(10)
-                make.trailing.equalToSuperview().offset(-10)
-                make.bottom.equalToSuperview().inset(120)
+                make.bottom.equalToSuperview().inset(10)
             }
             
-            containerView.addSubview(dutchUnitPlusBtn)
-            dutchUnitPlusBtn.snp.makeConstraints { make in
-                make.centerY.equalTo(dutchTableView.snp.bottom)
-                make.centerX.equalToSuperview()
-                make.width.height.equalTo(50)
+            
+            calculateBtn.snp.makeConstraints { make in
+                make.height.equalTo(60)
+                make.leading.trailing.equalToSuperview()
+                make.bottom.equalToSuperview()
             }
             
             [totalPriceLabel, totalPriceValueLabel].forEach {
                 self.totalPriceContainerView.addSubview($0)
             }
-            
+
             totalPriceContainerView.snp.makeConstraints { make in
-                make.top.equalTo(dutchTableView.snp.bottom)
-                make.leading.trailing.equalToSuperview().inset(11)
+                make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
+                make.leading.trailing.equalToSuperview()
                 make.height.equalTo(50)
             }
-            
+
             totalPriceLabel.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.leading.equalToSuperview()
-                make.trailing.equalTo(dutchUnitPlusBtn.snp.leading)
+                make.width.equalToSuperview().dividedBy(2.1)
                 make.height.equalTo(50)
             }
-            
+
             totalPriceValueLabel.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.trailing.equalToSuperview().inset(10)
-                make.leading.equalTo(totalPriceLabel.snp.trailing)
+                make.width.equalToSuperview().dividedBy(2.1)
                 make.height.equalTo(50)
             }
             
-            calculateBtn.snp.makeConstraints { make in
-                make.top.equalTo(totalPriceLabel.snp.bottom).offset(5)
-                make.leading.equalToSuperview().inset(11)
-                make.trailing.equalToSuperview().inset(10)
-                make.height.equalTo(55)
+            
+
+            mainContainer.addSubview(dutchTableView)
+            dutchTableView.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.leading.trailing.equalToSuperview()
+                make.bottom.equalTo(totalPriceContainerView.snp.top)
             }
             
             
+            mainContainer.addSubview(dutchUnitPlusBtn)
+            dutchUnitPlusBtn.snp.makeConstraints { make in
+                make.centerY.equalTo(totalPriceContainerView.snp.top)
+                make.centerX.equalToSuperview()
+                make.width.height.equalTo(50)
+            }
+            
         } else {
             gatheringPlusBtn.snp.makeConstraints { make in
-                make.width.height.equalTo(containerView.snp.width).dividedBy(3)
-                make.center.equalTo(containerView)
+                make.width.height.equalTo(wholeContainerView.snp.width).dividedBy(3)
+                make.center.equalTo(wholeContainerView)
             }
         }
     }
