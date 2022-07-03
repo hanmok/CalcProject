@@ -23,372 +23,440 @@ private let footerIdentifier = "ProfileFooter" // Plus Button
 
 protocol ParticipantsVCDelegate: AnyObject {
 //    func removeChildrenControllers()
-    func removeParticipantsController()
-    func initializeGathering(with gathering: Gathering)
+    func hideParticipantsController()
+//    func initializeGathering(with gathering: Gathering)
+    func updateParticipants()
 }
 
-class ParticipantsController: UIViewController {
+extension ParticipantsController: DutchpayToParticipantsDelegate {
+    func updateParticipants3(gathering: Gathering) {
+        self.gathering = gathering
+        self.participants = gathering.people.sorted { $0.name < $1.name }
+        DispatchQueue.main.async {
+            self.participantsTableView.reloadData()
+        }
+        print("updating flag!!")
+    }
+}
+
+class ParticipantsController: UIViewController{
+    
+    
     // MARK: - Properties
     var dutchController: DutchpayController
     weak var delegate: ParticipantsVCDelegate?
+
+    var gathering: Gathering
     
-    init(dutchController: DutchpayController) {
+    init(dutchController: DutchpayController, gathering: Gathering) {
         self.dutchController = dutchController
+        self.gathering = gathering
+        self.participants = gathering.people.sorted { $0.name < $1.name }
         super.init(nibName: nil, bundle: nil)
-//        dutchController
+        self.dutchController.dutchToPartiDelegate = self
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private var participants: [Person] = [] {
-        willSet {
-            if newValue.count != 0 {
-                confirmBtn.isUserInteractionEnabled = true
-                confirmBtn.setTitleColor(.white, for: .normal)
-            } else {
-                confirmBtn.isUserInteractionEnabled = false
-                confirmBtn.setTitleColor(.gray, for: .normal)
-            }
-            print("numOfParticipants: \(newValue.count)")
-        }
-    }
-    
-    private var selectedGroup: Group? {
-        didSet {
-            setGroup()
-            // TODO: Setup Height each time num of people changed?
-            //            setupCollectionViewHeight()
-            //            setupLayout()
-            reloadCollectionView()
-        }
-    }
-    
-    private func setGroup() {
-        print("setGroup triggered!")
-        guard let selectedGroup = selectedGroup else { return }
-        print("flag1")
-        participants.removeAll()
-        print("flag2")
-        selectedGroup.people.forEach {
-            participants.append($0)
-            print("append!")
-            print($0.name)
-        }
-        print("flag3")
-        reloadCollectionView()
-    }
-    
-    private func setupCollectionViewHeight() {
-        participantsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(groupStackView.snp.bottom).offset(30)
-            make.leading.trailing.equalToSuperview().inset(10)
-            //            make.height.equalTo(0)
-            make.height.equalTo(participants.count * 40 - 10)
-        }
-    }
-    
+
+    private var participants: [Person] = []
+
+//    private var selectedGroup: Group? {
+//        didSet {
+//            setGroup()
+//            // TODO: Setup Height each time num of people changed?
+//            //            setupCollectionViewHeight()
+//            //            setupLayout()
+//            reloadCollectionView()
+//        }
+//    }
+
+//    private func setGroup() {
+//        print("setGroup triggered!")
+//        guard let selectedGroup = selectedGroup else { return }
+//        print("flag1")
+//        participants.removeAll()
+//        print("flag2")
+//        selectedGroup.people.forEach {
+//            participants.append($0)
+//            print("append!")
+//            print($0.name)
+//        }
+//        print("flag3")
+//        reloadCollectionView()
+//    }
+
+//    private func setupCollectionViewHeight() {
+//
+//    }
+
     private func reloadCollectionView() {
         print("flag4")
         DispatchQueue.main.async {
-            self.participantsCollectionView.reloadData()
+            self.participantsTableView.reloadData()
             print("what the..")
         }
         print("flag5")
     }
-    
-    // TODO: make it dynamically with CollectionView,
-//    lazy var groupBtn1 = GroupButton(group: sampleGroups[0])
-//    lazy var groupBtn2 = GroupButton(group: sampleGroups[1])
-    
-    let groupStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 5
-        $0.distribution = .fillEqually
-    }
-    
-    let groupTitleLabel =  UILabel().then {$0.text = "Group: "}
-    
-    let decisionStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 0
-        $0.distribution = .fillEqually
-    }
-    
+
+//    let groupStackView = UIStackView().then {
+//        $0.axis = .horizontal
+//        $0.spacing = 5
+//        $0.distribution = .fillEqually
+//    }
+
+//    let groupTitleLabel =  UILabel().then {$0.text = "Group: "}
+
+//    let decisionStackView = UIStackView().then {
+//        $0.axis = .horizontal
+//        $0.spacing = 0
+//        $0.distribution = .fillEqually
+//    }
+
     private let containerView = UIView().then {
-        $0.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+//        $0.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
     }
     
-    private let cancelBtn = UIButton().then {
-        $0.setTitle("Cancel", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
-        $0.addBorders(edges: [.top], color: .white)
-        $0.addTarget(nil, action: #selector(cancelTapped(_:)), for: .touchUpInside)
-    }
-    
-    private let confirmBtn = UIButton().then {
-        $0.setTitle("Confirm", for: .normal)
-        $0.addBorders(edges: [.top, .left], color: .white)
+    private let titleLabel = UILabel().then {
+//        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+//        let attrTitle = NSAttributedString(string: "참가 인원 수정", attributes: [
+//            .font: UIFont.preferredFont(forTextStyle: .largeTitle)])
         
-        $0.isUserInteractionEnabled = false
-        $0.setTitleColor(.gray, for: .normal)
-    }
-    
-    
-    
-    private let participantsCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        return cv
-    }()
-    
-    private let addPeopleBtn = UIButton().then {
-        let someImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-        someImage.contentMode = .scaleAspectFit
-        $0.addSubview(someImage)
+        let attrTitle = NSAttributedString(string: "참가 인원 수정", attributes: [
+//            .font: UIFont.preferredFont(forTextStyle: .headline)
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+        ])
         
-        someImage.tintColor = .blue
-        someImage.snp.makeConstraints { make in
-            make.top.bottom.left.right.equalToSuperview()
+        $0.attributedText = attrTitle
+        $0.textAlignment = .center
+    }
+
+    private let dismissBtn: UIButton = {
+        let btn = UIButton()
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
+        
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
         }
         
-        $0.backgroundColor = .magenta
+//        btn.backgroundColor = .magenta
+        return btn
+    }()
+    
+    private let sortingBtn: UIButton = {
+        let btn = UIButton()
+        let imageView = UIImageView(image: UIImage(systemName: "arrow.up.arrow.down"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
+        
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+        
+//        btn.backgroundColor = .magenta
+        return btn
+    }()
+    
+
+    private let confirmBtn = UIButton().then {
+        $0.setTitle("Confirm", for: .normal)
+//        $0.addBorders(edges: [.top, .left], color: .white)
+        $0.backgroundColor = .white
+        $0.isUserInteractionEnabled = false
+//        $0.setTitleColor(.gray, for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.white.cgColor
     }
+
+
+
+//    private let participantsTableView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .vertical
+//        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        return cv
+//    }()
     
-    
+    private let participantsTableView = UITableView().then {
+        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+        $0.layer.borderWidth = 1
+    }
+
+    private let addPeopleBtn = UIButton().then {
+        let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
+        plusImage.contentMode = .scaleAspectFit
+        $0.addSubview(plusImage)
+
+        plusImage.tintColor = .blue
+        plusImage.snp.makeConstraints { make in
+//            make.top.bottom.left.right.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+
+//        $0.backgroundColor = .magenta
+    }
+
     private let bottomView = UIView().then {
         $0.backgroundColor = .clear
     }
-    
+
     private let showBtn = UIButton().then {
         $0.setTitle("show", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .black
     }
-    
+
     private let hideBtn = UIButton().then {
         $0.setTitle("hide", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .black
     }
-    
-    
-    
+
+
+
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
         
-        setupNavigation()
+//        view.backgroundColor = .gray
+        view.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        navigationController?.navigationBar.isHidden = true
+        
+        setupParticipants()
+        
         registerCollectionView()
         setupLayout()
         setupAddTargets()
     }
     
-    
-    private func setupNavigation() {
-        self.title = "참가 인원"
-        
-        self.navigationController?.navigationBar.tintColor = .brown
-        self.navigationController?.navigationBar.barTintColor = .blue
+    private func setupParticipants() {
+//        gathering.people
+        participants = gathering.people.sorted { $0.name < $1.name }
     }
-    
-    
+
     private func registerCollectionView() {
+
+//        self.participantsTableView.register(
+//            ParticipantCollectionViewCell.self,
+//            forCellWithReuseIdentifier: cellIdentifier)
+
         
-        self.participantsCollectionView.register(
-            ParticipantCollectionViewCell.self,
-            forCellWithReuseIdentifier: cellIdentifier)
-        
-        participantsCollectionView.delegate = self
-        participantsCollectionView.dataSource = self
+        participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
+//        participantsTableView.delegate = self
+//        participantsTableView.dataSource = self
+        participantsTableView.delegate = self
+        participantsTableView.dataSource = self
     }
-    
-    
-    
+
+
+
     private func setupLayout() {
-        
+
         view.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.leading.trailing.bottom.top.equalToSuperview()
         }
+
+        [confirmBtn, addPeopleBtn, participantsTableView,
+         titleLabel, dismissBtn, sortingBtn ]
+            .forEach { containerView.addSubview($0)}
         
-        [ groupTitleLabel, groupStackView].forEach { v in
-            self.containerView.addSubview(v)
-        }
-        
-//        let testGroupBtns = [groupBtn1, groupBtn2]
-//        groupStackView.addArranged(testGroupBtns)
-        
-        groupTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().offset(20)
-            make.height.equalTo(30)
-            make.width.equalTo(60)
-        }
-        
-        groupStackView.snp.makeConstraints { make in
-            make.leading.equalTo(groupTitleLabel.snp.trailing).offset(5)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(30)
-            make.trailing.equalToSuperview().offset(-10)
-        }
-        
-        containerView.addSubview(participantsCollectionView)
-        
-        participantsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(groupStackView.snp.bottom).offset(30)
-            make.leading.trailing.equalToSuperview().inset(10)
-            
-            make.bottom.equalToSuperview().offset(-200)
-        }
-        
-        
-        containerView.addSubview(addPeopleBtn)
-        addPeopleBtn.snp.makeConstraints { make in
-            make.top.equalTo(participantsCollectionView.snp.bottom).offset(10)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        
-        // Bottom, Decision Buttons
-        containerView.addSubview(decisionStackView)
-        
-        let decisionBtns = [cancelBtn, confirmBtn]
-        
-        decisionStackView.addArranged(decisionBtns)
-        
-        decisionStackView.snp.makeConstraints { make in
+        confirmBtn.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            //            make.bottom.equalToSuperview().offset(-70)
-            make.top.equalTo(addPeopleBtn.snp.bottom).offset(10)
+            make.bottom.equalToSuperview()
             make.height.equalTo(50)
         }
         
-    }
-    
-    private func setupAddTargets() {
-//        let btns = [groupBtn1,groupBtn2]
-        
-//        btns.forEach { btn in
-//            btn.addTarget(self, action: #selector(groupBtnTapped(_:)), for: .touchUpInside)
-//        }
-        
-        addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
-        
-        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
-    }
-    
-    
-    
-    @objc func cancelTapped(_ sender: UIButton) {
-        print("cancel tapped!")
-//        delegate?.removeChildrenControllers()
-        delegate?.removeParticipantsController()
-        //        delegate?.removeBlurredBGView()
-    }
-    
-    
-    @objc func confirmTapped(_ sender: UIButton) {
-            print("next Tapped!")
-            if participants.count != 0 {
-                // Pass participants
-                var gatheringTitle = ""
-                var names = ""
-                for eachName in participants.map({$0.name}) {
-                    names += eachName + ", "
-                }
-                
-                if names.count != 0 {
-                    names.removeLast()
-                    names.removeLast()
-                }
-                
-                let gathering = Gathering.save(title: gatheringTitle, people: participants)
-                
-                delegate?.initializeGathering(with: gathering)
-            }
+        addPeopleBtn.snp.makeConstraints { make in
+            make.bottom.equalTo(confirmBtn.snp.top).offset(-5)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(50)
         }
         
-    
+        participantsTableView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+//            make.leading.trailing.equalToSuperview().inset(10)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(addPeopleBtn.snp.top).offset(-10)
+//            make.bottom.equalTo(addPeopleBtn.snp.centerY)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+//            make.height.equalTo(30)
+            make.height.equalTo(34)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.top.equalToSuperview().offset(10)
+        }
+        
+        dismissBtn.snp.makeConstraints { make in
+            make.height.equalTo(30)
+//            make.height.equalTo(38)
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalTo(30)
+        }
+        
+        sortingBtn.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(30)
+        }
+    }
+
+    private func setupAddTargets() {
+        
+        dismissBtn.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+
+        sortingBtn.addTarget(self, action: #selector(didTapSort), for: .touchUpInside)
+        addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
+
+        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+    }
+
+
+
+    @objc func cancelTapped(_ sender: UIButton) {
+        print("cancel tapped!")
+        delegate?.hideParticipantsController()
+    }
+
+
+    @objc func confirmTapped(_ sender: UIButton) {
+            print("next Tapped!")
+//            if participants.count != 0 {
+//                // Pass participants
+//
+//                var gatheringTitle = ""
+//                var names = ""
+//                for eachName in participants.map({$0.name}) {
+//                    names += eachName + ", "
+//                }
+//
+//                if names.count != 0 {
+//                    names.removeLast()
+//                    names.removeLast()
+//                }
+//
+//                let gathering = Gathering.save(title: gatheringTitle, people: participants)
+//
+//                delegate?.initializeGathering(with: gathering)
+//            }
+        delegate?.hideParticipantsController()
+        delegate?.updateParticipants()
+        
+        }
+
+
     @objc func groupBtnTapped(_ sender: UIButton) {
         print("btn Tapped!")
-        //        let selectedGroupBtn = sender as! GroupButton
-        //        let groupTitle = selectedGroupBtn.title
-        //        let selectedPeople = selectedGroupBtn.people
         
         guard let selectedGroupBtn = sender as? GroupButton else { return }
-        
-        //        let groupTitle = selectedGroupBtn.title // 어디쓰지? .. ;;
-        //        let selectedPeople = selectedGroupBtn.people
-        
+
         // TODO: set other btn backgroundColor different from the selected one
-        
+
         if !selectedGroupBtn.isSelected_ {
             selectedGroupBtn.isSelected_ = true
         }
-        
-        selectedGroup = selectedGroupBtn.group
-        print("selectedGroup : \(selectedGroup?.title)")
-        
-        
+
+//        selectedGroup = selectedGroupBtn.group
+//        print("selectedGroup : \(selectedGroup?.title)")
+
+
     }
-    
+
     @objc func addPersonBtnTapped(_ sender: UIButton) {
         presentAddingPeopleAlert()
         //        showNumberController()
     }
-    
+
     private func presentAddingPeopleAlert() {
         let alertController = UIAlertController(title: "Add People", message: "추가할 사람을 입력해주세요", preferredStyle: .alert)
-        
+
         alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "Person Name"
+            textField.placeholder = "Name"
         }
-        
+
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
-            
+
 //            guard let newPersonName = textFieldInput.text
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
-        
+
             let somePerson = Person.save(name: textFieldInput.text!)
-            
+
+//            self.participants.append(somePerson)
             self.participants.append(somePerson)
-            
             self.reloadCollectionView()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
-        
+
         alertController.addAction(cancelAction)
         alertController.addAction(saveAction)
-        
+
         self.present(alertController, animated: true)
     }
     
+    @objc func didTapSort() {
+        if participantsTableView.isEditing {
+            showBottomBtns()
+            participantsTableView.setEditing(false, animated: true)
+        } else {
+            hideBottomBtns()
+            participantsTableView.setEditing(true, animated: true)
+        }
+    }
+    
+    private func hideBottomBtns() {
+        UIView.animate(withDuration: 1.0) {
+            self.addPeopleBtn.isHidden = true
+//            self.addPeopleBtn.tintColor = .clear
+            self.confirmBtn.isHidden = true
+        }
+    }
+    
+    private func showBottomBtns() {
+        UIView.animate(withDuration: 1.0) {
+            self.addPeopleBtn.isHidden = false
+            self.confirmBtn.isHidden = false
+        }
+    }
+
 }
 
-
+/*
 extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return participants.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ParticipantCollectionViewCell
         cell.viewModel = ParticipantViewModel(person: participants[indexPath.row])
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width - 100
         return CGSize(width: width, height: 30)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
@@ -396,4 +464,64 @@ extension ParticipantsController : UICollectionViewDelegate, UICollectionViewDel
         return 10
     }
 }
+*/
 
+extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return participants.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: ParticipantTableViewCell.identifier, for: indexPath) as! ParticipantTableViewCell
+        
+//        cell.viewModel = ParticipantViewModel(person: participants[indexPath.row])
+//        cell.description = participants[indexPath.row]
+        cell.textLabel?.text = participants[indexPath.row].name
+//        UIListContentConfiguration =
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
+            
+            let selectedPerson = self.gathering.people.sorted { $0.name < $1.name }[indexPath.row]
+            
+            self.gathering.people.remove(selectedPerson)
+
+            
+            DispatchQueue.main.async {
+                self.participantsTableView.reloadData()
+            }
+            
+            completionhandler(true)
+        }
+        
+        delete.image = UIImage(systemName: "trash.fill")
+        delete.backgroundColor = .red
+        
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        
+        return rightSwipe
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        participants.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+    }
+}

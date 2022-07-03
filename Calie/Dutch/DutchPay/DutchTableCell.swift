@@ -39,11 +39,9 @@ class DutchTableCell: UITableViewCell {
         $0.textAlignment = .right
     }
 
-//    override init(frame: CGRect) {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-//        backgroundColor = .cyan
         setupLayout()
     }
 

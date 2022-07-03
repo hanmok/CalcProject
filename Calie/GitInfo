@@ -16,6 +16,12 @@ ModifyingParticipants
 
 2. ParticipantsLayout 생성 (같은 Main Table 화면에서 Participants 편집)
 
+3. ParticipantsController 에서 사람 순서 변경, 삭제 / 추가 가능
+(But 근본적인 Sorting 방법이 아직 구현되지 못함)
+
+4. DutchUnitController 에서 사람 생성 가능, But ParticipantsController 에 전달 못하는 상태.
+
+
 
 
 
@@ -25,6 +31,8 @@ DutchUnit Table 위치에 그대로 넣으면 좋을 것 같은데..
 
 
 이름 정렬도  . 추가한 순서대로 / 본인이 Sorting 한 순서대로. (이름 순서 변경도  ;;)
+
+
 
 ******************************************
 

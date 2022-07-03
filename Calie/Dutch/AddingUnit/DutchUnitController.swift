@@ -13,10 +13,12 @@ import Then
 protocol AddingUnitControllerDelegate: AnyObject {
     func updateDutchUnits()
     func dismissChildVC()
+    func updateParticipants2()
 }
 
 protocol AddingUnitNavDelegate: AnyObject {
     func dismissWithInfo(dutchUnit: DutchUnit)
+   
 }
 
 class DutchUnitController: NeedingController {
@@ -26,7 +28,7 @@ class DutchUnitController: NeedingController {
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
-    
+    /// 10
     private let smallPadding: CGFloat = 10
     
     var participants: [Person]
@@ -93,6 +95,7 @@ class DutchUnitController: NeedingController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        cv.backgroundColor = .magenta
         return cv
     }()
     
@@ -107,6 +110,14 @@ class DutchUnitController: NeedingController {
         }
         return btn
     }()
+    
+    private let addPersonBtn = UIButton().then {
+        
+        $0.setTitle("인원 추가", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.layer.cornerRadius = 8
+        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+    }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
@@ -184,6 +195,10 @@ class DutchUnitController: NeedingController {
     
     private func setupLayout() {
         
+        for subview in view.subviews{
+            subview.removeFromSuperview()
+        }
+        
         [
             dismissBtn,
             spentPlaceLabel, spentPlaceTF,
@@ -191,6 +206,7 @@ class DutchUnitController: NeedingController {
             spentDatePicker,
             divider,
             personDetailCollectionView,
+            addPersonBtn,
             confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
@@ -259,7 +275,14 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            make.height.equalTo(60 * participants.count - 10 + 50)
+            
+            make.height.equalTo(45 * participants.count - 20)
+        }
+
+        addPersonBtn.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
+            make.height.equalTo(40)
+            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
         }
         
         confirmBtn.snp.makeConstraints { make in
@@ -270,14 +293,61 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    @objc private func presentAddingPeopleAlert() {
+        let alertController = UIAlertController(title: "Add People", message: "추가할 사람의 이름을 입력해주세요", preferredStyle: .alert)
+
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Name"
+        }
+
+        let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
+            let textFieldInput = alertController.textFields![0] as UITextField
+
+            guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
+
+            let newPerson = Person.save(name: textFieldInput.text!)
+
+
+            self.participants.append(newPerson)
+
+            let newDetail = PersonDetail.save(person: newPerson)
+            self.personDetails.append(newDetail)
+            self.personDetailCollectionView.reloadData()
+            self.gathering.people.insert(newPerson)
+//            self.setupLayout()
+            self.addingDelegate?.updateParticipants2()
+            
+            self.personDetailCollectionView.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding)
+                make.trailing.equalToSuperview().inset(self.smallPadding)
+                make.top.equalTo(self.divider.snp.bottom).offset(30)
+                make.height.equalTo(45 * self.participants.count - 20)
+            }
+
+            self.addPersonBtn.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+
+        self.present(alertController, animated: true)
+    }
+
     
     private func setupTargets() {
-        
-        dismissBtn.addTarget(nil, action: #selector(dismissTapped(_:)), for: .touchUpInside)
+        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
+        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func dismissTapped(_ sender: UIButton) {
+    @objc func dismissTapped() {
         print("cancel action")
         
         addingDelegate?.dismissChildVC()
