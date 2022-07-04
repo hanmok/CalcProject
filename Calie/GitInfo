@@ -21,7 +21,9 @@ ModifyingParticipants
 
 4. DutchUnitController 에서 사람 생성 가능, But ParticipantsController 에 전달 못하는 상태.
 
-
+5. Conform Comparable extension, by using
+    date for dutchunit,
+    order for person
 
 
 

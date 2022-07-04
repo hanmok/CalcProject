@@ -18,7 +18,8 @@ class GroupButton: UIButton {
     }
 
     public var people: [Person] {
-        return group.people.sorted { $0.index < $1.index }
+//        return group.people.sorted { $0.index < $1.index }
+        return group.people.sorted()
     }
     
     init(group: Group, _ frame: CGRect = .zero) {

@@ -31,7 +31,7 @@ protocol ParticipantsVCDelegate: AnyObject {
 extension ParticipantsController: DutchpayToParticipantsDelegate {
     func updateParticipants3(gathering: Gathering) {
         self.gathering = gathering
-        self.participants = gathering.people.sorted { $0.name < $1.name }
+        self.participants = gathering.people.sorted()
         DispatchQueue.main.async {
             self.participantsTableView.reloadData()
         }
@@ -51,7 +51,8 @@ class ParticipantsController: UIViewController{
     init(dutchController: DutchpayController, gathering: Gathering) {
         self.dutchController = dutchController
         self.gathering = gathering
-        self.participants = gathering.people.sorted { $0.name < $1.name }
+
+        self.participants = gathering.people.sorted()
         super.init(nibName: nil, bundle: nil)
         self.dutchController.dutchToPartiDelegate = self
     }
@@ -244,7 +245,7 @@ class ParticipantsController: UIViewController{
     
     private func setupParticipants() {
 //        gathering.people
-        participants = gathering.people.sorted { $0.name < $1.name }
+        participants = gathering.people.sorted()
     }
 
     private func registerCollectionView() {
@@ -479,6 +480,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
 //        cell.viewModel = ParticipantViewModel(person: participants[indexPath.row])
 //        cell.description = participants[indexPath.row]
         cell.textLabel?.text = participants[indexPath.row].name
+//        cell.textLabel?.textAlignment = .right
 //        UIListContentConfiguration =
         return cell
     }
@@ -487,7 +489,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
             
-            let selectedPerson = self.gathering.people.sorted { $0.name < $1.name }[indexPath.row]
+            let selectedPerson = self.gathering.people.sorted()[indexPath.row]
             
             self.gathering.people.remove(selectedPerson)
 
@@ -523,5 +525,14 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         participants.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+//        let tempOrder = sourceIndexPath.row
+        
+        let sourcePerson = participants[sourceIndexPath.row]
+        let destinationPerson = participants[destinationIndexPath.row]
+        
+        sourcePerson.setValue(destinationIndexPath.row, forKey: .Person.order)
+        destinationPerson.setValue(sourceIndexPath.row, forKey: .Person.order)
+        // save CoreData !!
+        
     }
 }

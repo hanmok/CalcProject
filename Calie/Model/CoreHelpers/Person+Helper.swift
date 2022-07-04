@@ -13,7 +13,6 @@ extension Person {
     
     var name: String {
         get {
-//            return self.name_ ?? "default person"
             return self.name_ ?? "가나다라마바사아자차카타파하"
         }
         set {
@@ -24,7 +23,8 @@ extension Person {
 
 extension Person {
     @discardableResult
-    static func save(name: String, index: Int64 = 0) -> Person {
+    static func save(name: String, gathering: Gathering? = nil ) -> Person {
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -33,26 +33,39 @@ extension Person {
         guard let person = NSManagedObject(entity: entity, insertInto: managedContext) as? Person else {
             fatalError("failed to case to Subject during saving ")
         }
+        var order: Int64 = 100
+        if let gathering = gathering {
+            order = Int64(gathering.people.count)
+        }
         
         person.setValue(name, forKey: .Person.name)
-        person.setValue(index, forKey: .Person.index)
+        person.setValue(order, forKey: .Person.order)
         
         managedContext.saveCoreData()
         return person
-        
     }
 }
 
-//extension Person: Hashable {}
 
-//struct Person2 {
-//    let name: String
-//
-//    init(_ name: String) {
-//        self.name = name
-//    }
-//
-//    init(name: String) {
-//        self.name = name
-//    }
-//}
+extension Person {
+    @discardableResult
+    static func changeOrder(first: Person, second: Person ) {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let firstOrder = first.order
+        
+        first.setValue(second.order, forKey: .Person.order)
+        second.setValue(firstOrder, forKey: .Person.order)
+        
+        managedContext.saveCoreData()
+    }
+}
+
+extension Person: Comparable {
+    public static func <(lhs: Person, rhs: Person) -> Bool {
+        return lhs.order < rhs.order
+    }
+}

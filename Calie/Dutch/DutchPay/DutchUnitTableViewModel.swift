@@ -53,7 +53,7 @@ struct CoreDutchUnitViewModel {
 
     var peopleList: String {
         
-        return dutchUnit.personDetails.map { $0.person!.name }.sorted { $0 < $1 }.joined(separator: ", ")
+        return dutchUnit.personDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
         
     }
     
@@ -64,12 +64,6 @@ struct CoreDutchUnitViewModel {
         return numberFormatter.string(from: NSNumber(value: number))! + " 원"
     }
 }
-
-
-//struct Price: Int && Double { }
-//struct Price: Int {
-//
-//}
 
 public func convertIntoKoreanPrice(number: Double) -> String {
     let numberFormatter = NumberFormatter()

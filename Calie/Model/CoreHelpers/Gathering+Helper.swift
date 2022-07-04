@@ -40,7 +40,7 @@ extension Gathering {
     
     var sortedPeople: [Person] {
         get {
-            self.people.sorted { $0.index < $1.index }
+            self.people.sorted()
         }
     }
     

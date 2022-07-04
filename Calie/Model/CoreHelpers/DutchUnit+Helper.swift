@@ -112,3 +112,10 @@ extension DutchUnit {
 //}
 
 extension DutchUnit: RemovableProtocol {}
+
+
+extension DutchUnit: Comparable {
+    public static func <(lhs: DutchUnit, rhs: DutchUnit) -> Bool {
+        return lhs.date < rhs.date
+    }
+}

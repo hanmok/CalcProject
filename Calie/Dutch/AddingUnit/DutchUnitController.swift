@@ -460,7 +460,7 @@ class DutchUnitController: NeedingController {
         }
         
         if let initialDutchUnit = initialDutchUnit {
-            self.personDetails = initialDutchUnit.personDetails.sorted { $0.person!.name < $1.person!.name }
+            self.personDetails = initialDutchUnit.personDetails.sorted()
             
             self.personDetails.forEach {
                 initializedNames.update(with: $0.person!.name)
@@ -475,7 +475,7 @@ class DutchUnitController: NeedingController {
             self.personDetails.append(personDetail)
         }
         
-        self.personDetails = self.personDetails.sorted { $0.person!.name < $1.person!.name }
+        self.personDetails = self.personDetails.sorted()
         
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
@@ -557,9 +557,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-        
-        let peopleDetail = self.personDetails.sorted {
-        $0.person!.name < $1.person!.name }
+        let peopleDetail = self.personDetails.sorted()
             
             cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
             

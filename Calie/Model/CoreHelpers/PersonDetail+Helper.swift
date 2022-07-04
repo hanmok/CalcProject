@@ -39,3 +39,9 @@ extension PersonDetail {
 //    var isAttended: Bool = true
 //}
 
+
+extension PersonDetail : Comparable {
+    public static func <(lhs: PersonDetail, rhs: PersonDetail) -> Bool {
+        return lhs.person! < rhs.person!
+    }
+}

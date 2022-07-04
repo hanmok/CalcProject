@@ -717,7 +717,8 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         print("cutchpay cell has appeared")
 
         guard let coreGathering = gathering else { fatalError() }
-        let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
+        let dutchUnits = coreGathering.dutchUnits.sorted()
+        
         cell.viewModel = CoreDutchUnitViewModel(dutchUnit: dutchUnits[indexPath.row])
         return cell
     }
@@ -728,7 +729,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
             
             guard let coreGathering = self.gathering else { fatalError() }
             
-            let selectedDutchUnit = coreGathering.dutchUnits.sorted { $0.date < $1.date }[indexPath.row]
+            let selectedDutchUnit = coreGathering.dutchUnits.sorted()[indexPath.row]
             
             coreGathering.dutchUnits.remove(selectedDutchUnit)
 
@@ -755,7 +756,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         
         guard let coreGathering = gathering else { fatalError() }
         
-        let dutchUnits = coreGathering.dutchUnits.sorted { $0.date < $1.date }
+        let dutchUnits = coreGathering.dutchUnits.sorted()
         
         let selectedDutchUnit = dutchUnits[indexPath.row]
         print("tableView tapped, \(selectedDutchUnit)")
