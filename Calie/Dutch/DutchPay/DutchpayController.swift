@@ -785,19 +785,54 @@ extension DutchpayController: ParticipantsVCDelegate {
          isShowingParticipants = false
      }
     
-
-//    func initializeGathering(with gathering: Gathering) {
-//        self.coreGathering = gathering
-//        dutchTableView.reloadData()
-////        removeChildrenControllers()
-//        fetchDefaultGathering()
-//        setupLayout()
-//    }
-    
-    // TODO: 각 DutchUnit 에 새로운 person 생성 or 기존 사람 제거. (Count 로 판별 불가.)
+    // TODO: 각 DutchUnit 에 새로운 person 생성 or 기존 사람 제거. (Count 로 판별 불가.), 현재 정상작동 하지 않음. 이미 데이터가 임의로 많이 생성되었기 때문에;;  새로 만들 필요 있음.
     func updateParticipants() {
         guard let gathering = gathering else { fatalError() }
-        dutchToPartiDelegate?.updateParticipants3(gathering: gathering)
+        let prevMembers = gathering.dutchUnits.first!.personDetails.map { $0.person! }
+        
+        let prevPeopleSet = Set(prevMembers)
+        
+        print("prevMembers: ")
+        prevPeopleSet.forEach {
+            print($0.name)
+        }
+        
+        let newPeopleSet = gathering.people
+        
+        print("newMembers: ")
+        newPeopleSet.forEach {
+            print($0.name)
+        }
+        
+        let addedPeopleSet = newPeopleSet.subtracting(prevMembers)
+        print("addedPeople: ")
+        addedPeopleSet.forEach {
+            print($0.name)
+        }
+        
+        let subtractedPeople = prevPeopleSet.subtracting(newPeopleSet)
+        
+        print("subtractedPeople: ")
+        subtractedPeople.forEach {
+            print($0.name)
+        }
+        
+        gathering.dutchUnits.forEach { eachUnit in
+            // add each added person to dutchUnits' personDetails
+            if addedPeopleSet.count != 0 {
+                addedPeopleSet.forEach { eachPerson in
+                    let newDetail = PersonDetail.save(person: eachPerson, isAttended: false, spentAmount: 0)
+                    eachUnit.personDetails.insert(newDetail)
+                }
+            }
+            
+            if subtractedPeople.count != 0 {
+                subtractedPeople.forEach { eachPerson in
+                    let subtractedPersonDetail = eachUnit.personDetails.filter { $0.person! == eachPerson }.first!
+                    eachUnit.personDetails.remove(subtractedPersonDetail)
+                }
+            }
+        }
     }
 }
 
@@ -872,4 +907,11 @@ extension DutchpayController {
 
 extension DutchpayController: NumberLayerDelegateToSuperVC {
     
+}
+
+
+extension Set {
+    func setmap<U>(transform: (Element) -> U) -> Set<U> {
+        return Set<U>(self.lazy.map(transform))
+    }
 }

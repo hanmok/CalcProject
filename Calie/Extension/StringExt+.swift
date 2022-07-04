@@ -83,7 +83,7 @@ extension String {
     
     struct Person {
         static let name = "name_"
-        static let order = "order"
+        static let order = "order_"
     }
     
     struct PersonDetail {

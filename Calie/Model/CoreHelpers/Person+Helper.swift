@@ -19,6 +19,18 @@ extension Person {
             self.name_ = newValue
         }
     }
+    
+    public var order: Int64 {
+        get {
+            return self.order_
+        }
+        set {
+            self.order_ = newValue
+        }
+    }
+    
+    
+    
 }
 
 extension Person {

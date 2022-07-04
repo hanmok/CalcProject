@@ -57,7 +57,7 @@ class DutchUnitController: NeedingController {
     // MARK: - UI Properties
     
     private let spentPlaceTF = UITextField(withPadding: true).then {
-        $0.placeholder = "지출한 곳을 입력해주세요."
+//        $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .right
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = 1
@@ -82,14 +82,36 @@ class DutchUnitController: NeedingController {
     
     
     private let spentDateLabel = UILabel().then {
-        $0.textAlignment = .center
+        $0.textAlignment = .right
+//        $0.text = "지출 일자"
+//        $0.text = "지출 시점"
     }
     
-    private let spentDatePicker = UIDatePicker().then {
-        $0.preferredDatePickerStyle = .compact
-        $0.locale = Locale(identifier: "ko-KR")
-        $0.datePickerMode = .date
-    }
+//    private let spentDatePicker = UIDatePicker().then {
+////        $0.preferredDatePickerStyle = .compact
+//        $0.preferredDatePickerStyle = .wheels
+//        $0.locale = Locale(identifier: "ko-KR")
+////        $0.datePickerMode = .date
+////        $0.datePickerStyle = .inline
+//        $0.datePickerMode = .dateAndTime
+//        $0.backgroundColor = .magenta
+//        $0.sizeToFit()
+//        $0.frame = .init(x: 0, y: 0, width: 150, height: 30)
+//    }
+    
+    private let spentDatePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+//        picker.preferredDatePickerStyle = .inline
+//        picker
+        picker.datePickerMode = .dateAndTime
+//        picker.preferredDatePickerStyle = .inline
+//        picker.
+        picker.sizeToFit()
+        picker.frame = .init(x: 0, y: 0, width: 200, height: 30)
+//        picker.datePickerStyle = .inline
+//        picker.preferredDatePickerStyle = .inline
+        return picker
+    }()
     
     private let personDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -203,6 +225,7 @@ class DutchUnitController: NeedingController {
             dismissBtn,
             spentPlaceLabel, spentPlaceTF,
             spentAmountLabel, spentAmountTF, currenyLabel,
+            spentDateLabel,
             spentDatePicker,
             divider,
             personDetailCollectionView,
@@ -231,21 +254,24 @@ class DutchUnitController: NeedingController {
         
         spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
-            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
+//            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
+            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
             make.width.equalTo(170)
             make.height.equalTo(30)
         }
         
         spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
+//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
+            make.top.equalTo(spentPlaceTF.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(30)
         }
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
-            make.top.equalTo(spentAmountLabel.snp.bottom).offset(10)
+//            make.top.equalTo(spentAmountLabel.snp.bottom).offset(10)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
             make.width.equalTo(170)
             make.height.equalTo(30)
         }
@@ -257,11 +283,22 @@ class DutchUnitController: NeedingController {
             make.width.equalTo(15)
         }
         
+        spentDateLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(spentPlaceTF.snp.centerY)
+            make.height.equalTo(30)
+            make.width.equalTo(170)
+            make.trailing.equalToSuperview().inset(15)
+        }
+        
         spentDatePicker.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(25)
-            make.top.equalTo(spentAmountLabel.snp.bottom)
+//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(25)
+            make.width.equalToSuperview().dividedBy(2)
+//            make.top.equalTo(spentAmountLabel.snp.bottom)
+//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(10)
+            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
             make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(50)
+//            make.height.equalTo(50)
+            make.height.equalTo(40)
         }
         
         divider.snp.makeConstraints { make in

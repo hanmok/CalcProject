@@ -30,6 +30,7 @@ extension DutchUnit {
         }
         set {
             self.personDetails_ = newValue as NSSet
+            managedObjectContext?.saveCoreData()
         }
     }
     
@@ -38,6 +39,7 @@ extension DutchUnit {
             return self.placeName_ ?? "default place"
         }
         set {
+//            managed
             self.placeName_ = newValue
         }
     }

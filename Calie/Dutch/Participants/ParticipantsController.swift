@@ -173,7 +173,7 @@ class ParticipantsController: UIViewController{
         $0.setTitle("Confirm", for: .normal)
 //        $0.addBorders(edges: [.top, .left], color: .white)
         $0.backgroundColor = .white
-        $0.isUserInteractionEnabled = false
+//        $0.isUserInteractionEnabled = false
 //        $0.setTitleColor(.gray, for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.layer.borderWidth = 1
@@ -206,8 +206,16 @@ class ParticipantsController: UIViewController{
             make.centerX.equalToSuperview()
             make.width.equalToSuperview()
         }
-
+    }
+    
+    private let finishEditingBtn = UIButton().then {
+        $0.setTitle("Done", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.isHidden = true
 //        $0.backgroundColor = .magenta
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.white.cgColor
+        $0.backgroundColor = .white
     }
 
     private let bottomView = UIView().then {
@@ -271,11 +279,19 @@ class ParticipantsController: UIViewController{
             make.leading.trailing.bottom.top.equalToSuperview()
         }
 
-        [confirmBtn, addPeopleBtn, participantsTableView,
+        [confirmBtn,
+         addPeopleBtn, finishEditingBtn,
+         participantsTableView,
          titleLabel, dismissBtn, sortingBtn ]
             .forEach { containerView.addSubview($0)}
         
         confirmBtn.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(50)
+        }
+        
+        finishEditingBtn.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             make.height.equalTo(50)
@@ -286,6 +302,8 @@ class ParticipantsController: UIViewController{
             make.centerX.equalToSuperview()
             make.width.height.equalTo(50)
         }
+        
+
         
         participantsTableView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(15)
@@ -311,6 +329,8 @@ class ParticipantsController: UIViewController{
             make.width.equalTo(30)
         }
         
+        
+        
         sortingBtn.snp.makeConstraints { make in
             make.height.equalTo(30)
             make.centerY.equalTo(titleLabel.snp.centerY)
@@ -325,7 +345,8 @@ class ParticipantsController: UIViewController{
 
         sortingBtn.addTarget(self, action: #selector(didTapSort), for: .touchUpInside)
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
-
+        finishEditingBtn.addTarget(self, action: #selector(didTapSort), for: .touchUpInside)
+        
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
 
@@ -334,6 +355,7 @@ class ParticipantsController: UIViewController{
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel tapped!")
         delegate?.hideParticipantsController()
+        delegate?.updateParticipants()
     }
 
 
@@ -357,6 +379,7 @@ class ParticipantsController: UIViewController{
 //
 //                delegate?.initializeGathering(with: gathering)
 //            }
+        
         delegate?.hideParticipantsController()
         delegate?.updateParticipants()
         
@@ -402,8 +425,10 @@ class ParticipantsController: UIViewController{
 
 //            self.participants.append(somePerson)
             self.participants.append(somePerson)
+            self.gathering.people.insert(somePerson)
             self.reloadCollectionView()
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
 
@@ -415,26 +440,41 @@ class ParticipantsController: UIViewController{
     
     @objc func didTapSort() {
         if participantsTableView.isEditing {
+            showDismissBtn()
             showBottomBtns()
             participantsTableView.setEditing(false, animated: true)
         } else {
+            hideDismissBtn()
             hideBottomBtns()
             participantsTableView.setEditing(true, animated: true)
         }
     }
     
     private func hideBottomBtns() {
-        UIView.animate(withDuration: 1.0) {
+        DispatchQueue.main.async {
             self.addPeopleBtn.isHidden = true
-//            self.addPeopleBtn.tintColor = .clear
             self.confirmBtn.isHidden = true
+            self.finishEditingBtn.isHidden = false
+        }
+    }
+
+    private func hideDismissBtn() {
+        DispatchQueue.main.async {
+            self.dismissBtn.isHidden = true
         }
     }
     
     private func showBottomBtns() {
-        UIView.animate(withDuration: 1.0) {
+        
+        DispatchQueue.main.async {
+            self.finishEditingBtn.isHidden = true
             self.addPeopleBtn.isHidden = false
             self.confirmBtn.isHidden = false
+        }
+    }
+    private func showDismissBtn() {
+        DispatchQueue.main.async {
+            self.dismissBtn.isHidden = false
         }
     }
 
