@@ -48,8 +48,8 @@ extension Person {
 
 
 extension Person {
-    @discardableResult
-    static func changeOrder(first: Person, second: Person ) {
+
+    static func changeOrder(of first: Person, with second: Person ) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         

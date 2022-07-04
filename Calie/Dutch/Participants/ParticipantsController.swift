@@ -530,9 +530,11 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         let sourcePerson = participants[sourceIndexPath.row]
         let destinationPerson = participants[destinationIndexPath.row]
         
-        sourcePerson.setValue(destinationIndexPath.row, forKey: .Person.order)
-        destinationPerson.setValue(sourceIndexPath.row, forKey: .Person.order)
+//        sourcePerson.setValue(destinationIndexPath.row, forKey: .Person.order)
+//        destinationPerson.setValue(sourceIndexPath.row, forKey: .Person.order)
         // save CoreData !!
+        
+        Person.changeOrder(of: sourcePerson, with: destinationPerson)
         
     }
 }
