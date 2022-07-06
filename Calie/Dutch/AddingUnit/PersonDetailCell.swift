@@ -41,6 +41,10 @@ class PersonDetailCell: UICollectionViewCell {
         $0.layer.cornerRadius = 5
     }
     
+    private let currencyLabel = UILabel().then {
+        $0.text = "원"
+    }
+    
     public let attendingBtn = AttendingButton()
     
     public let fullPriceBtn = UIButton().then {
@@ -58,8 +62,6 @@ class PersonDetailCell: UICollectionViewCell {
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
         delegate?.cell(self, from: sender.tag)
-//        delegate?.updatePriceState(with: sender.tag)
-        
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
@@ -91,22 +93,17 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        [nameLabel, spentAmountTF, fullPriceBtn, attendingBtn].forEach { v in
+        [nameLabel, spentAmountTF, currencyLabel, fullPriceBtn, attendingBtn].forEach { v in
             addSubview(v)
         }
         
         spentAmountTF.delegate = self
         
         nameLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(20)
-//            make.leading.equalToSuperview()
-//            make.top.bottom.equalToSuperview()
-//            make.leading.top.bottom.equalToSuperview()
             make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().inset(10)
             make.width.equalTo(100)
         }
-        
         
         attendingBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
@@ -114,18 +111,16 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
-//        fullPriceBtn.snp.makeConstraints { make in
-//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-5)
-//            make.width.equalTo(60)
-//            make.top.bottom.equalToSuperview()
-//        }
+        currencyLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-35)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(15)
+        }
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-            // prev code
-//            make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-10)
-            // new code (without fullprice btn on cell)
-            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
+//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
+            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
             make.top.bottom.equalToSuperview()
         }
     }

@@ -10,12 +10,27 @@ import UIKit
 import CoreData
 extension DutchUnit {
     
+    public var id: UUID {
+        get {
+            if let validId = self.id_ {
+                return validId
+            } else {
+                self.id_ = UUID()
+                return self.id_!
+            }
+        }
+        set {
+            self.id_ = UUID()
+        }
+    }
+    
     var personDetails: Set<PersonDetail> {
         get {
             self.personDetails_ as? Set<PersonDetail> ?? []
         }
         set {
             self.personDetails_ = newValue as NSSet
+            managedObjectContext?.saveCoreData()
         }
     }
     
@@ -24,6 +39,7 @@ extension DutchUnit {
             return self.placeName_ ?? "default place"
         }
         set {
+//            managed
             self.placeName_ = newValue
         }
     }
@@ -47,7 +63,9 @@ extension DutchUnit {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
         
         let managedContext = appDelegate.persistentContainer.viewContext
+        
         guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.DutchUnit, in: managedContext) else { fatalError("failed to get entity from DutchUnit ")}
+        
         guard let dutchUnit = NSManagedObject(entity: entity, insertInto: managedContext) as? DutchUnit else {
             fatalError("failed to case to Subject during saving ")
         }
@@ -61,6 +79,30 @@ extension DutchUnit {
         managedContext.saveCoreData()
         return dutchUnit
     }
+    
+    static func update(spentTo placeName: String,
+                       spentAmount: Double,
+                       personDetails: [PersonDetail],
+                       spentDate: Date = Date(), from dutchUnit: DutchUnit) -> DutchUnit {
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let convertedDetails = Array<Any>.convertToSet(items: personDetails)
+        
+        dutchUnit.setValue(placeName, forKey: .DutchUnit.placeName)
+        dutchUnit.setValue(spentAmount, forKey: .DutchUnit.spentAmount)
+        
+        dutchUnit.setValue(convertedDetails, forKey: .DutchUnit.personDetails)
+        dutchUnit.setValue(spentDate, forKey: .DutchUnit.date)
+        
+        managedContext.saveCoreData()
+        
+        return dutchUnit
+    }
+    
 }
 
 
@@ -72,3 +114,10 @@ extension DutchUnit {
 //}
 
 extension DutchUnit: RemovableProtocol {}
+
+
+extension DutchUnit: Comparable {
+    public static func <(lhs: DutchUnit, rhs: DutchUnit) -> Bool {
+        return lhs.date < rhs.date
+    }
+}

@@ -66,12 +66,15 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         dutchController.delegate = self
 //        let uiNav = UINavigationController(rootViewController: dutchController)
         
-
+        
+        
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
             rootViewController: dutchController)
 //            rootViewController: uiNav)
+        
+//        let dutchNav = UINavigationController(rootViewController: dutch)
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
@@ -88,6 +91,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 #if DEBUG
 //        viewControllers = [calculator, dutch, settings]
         viewControllers = [dutch, calculator, settings]
+//        viewControllers = [dutchNav, calculator, settings]
 #else
         viewControllers = [calculator, settings]
 #endif

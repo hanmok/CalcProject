@@ -1,0 +1,87 @@
+
+develop 
+
+
+
+FixingEnteringDutchUnitError
+
+기존 DutchUnit 으로 TableView 선택 후 이동시 버그 일부 해결
+정산하기 버튼 추가
+
+
+ModifyingParticipants
+
+1. mainContainer 생성, 같은 디자인으로 새로운 순서의 Layout 작성.
+(TableView 의 bottom inset 설정해주지 않아도 됨, Device 별로 일관된 Layout)
+
+2. ParticipantsLayout 생성 (같은 Main Table 화면에서 Participants 편집)
+
+3. ParticipantsController 에서 사람 순서 변경, 삭제 / 추가 가능
+(But 근본적인 Sorting 방법이 아직 구현되지 못함)
+
+4. DutchUnitController 에서 사람 생성 가능, But ParticipantsController 에 전달 못하는 상태.
+
+5. Conform Comparable extension, by using
+    date for dutchunit,
+    order for person
+
+6. Date Label 추가, DatePicker 다르게 레이아웃, Sorting Done 버튼 추가. 
+
+** TODO
+
+Person Model 에 문제가 있음..
+Person 은 Gathering 의 인원을 추가할 때만 사용할 것.
+PersonDetail 을 생성하는 데에 하나하나 만들지 말 것.
+
+
+**************  인원편집 기능  **************
+완료.
+DutchUnit Table 위치에 그대로 넣으면 좋을 것 같은데..
+
+이름 정렬도  . 추가한 순서대로 / 본인이 Sorting 한 순서대로. (이름 순서 변경도  ;;)
+******************************************
+
+
+
+
+
+**************  정산 기능  **************
+
+정산하기 버튼에 대한 Action 추가
+
+***************************************
+
+
+
+
+
+**************  TODO  **************
+
+Test 작성...
+
+개인 비용 누르다가 전액 누르면 에러.
+(누르던 비용이 고려된 상태로 계산함. 기존 입력값이 있는지 확인 )
+
+
+미완성된 DutchUnit 을 임시저장하는 기능 ?
+
+DutchUnit Table 의 인원 표시하는 Label 에서, 낸 사람, 불참한 사람 을 색상으로 표시 기능  .
+
+**********************************
+
+
+
+
+
+
+
+
+**************  완료  **************
+수정 완료
+지출한 곳을 입력해주... 수정하기
+날짜별로 정렬
+날짜도 DutchUnitTableCell 에 넣기.
+전체적인 사이즈 조정
+
+**********************************
+ㄴ

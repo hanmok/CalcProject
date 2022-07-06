@@ -38,3 +38,10 @@ extension PersonDetail {
 //    var spentAmount: Double = 0
 //    var isAttended: Bool = true
 //}
+
+
+extension PersonDetail : Comparable {
+    public static func <(lhs: PersonDetail, rhs: PersonDetail) -> Bool {
+        return lhs.person! < rhs.person!
+    }
+}

@@ -24,7 +24,6 @@ extension Gathering {
     }
     
     var totalCost: String {
-//        return getTotalPrice(dutchUnits: self.dutchUnits)
         let cost = getTotalPrice(dutchUnits: self.dutchUnits)
         return convertIntoKoreanPrice(number: cost)
     }
@@ -41,7 +40,7 @@ extension Gathering {
     
     var sortedPeople: [Person] {
         get {
-            self.people.sorted { $0.index < $1.index }
+            self.people.sorted()
         }
     }
     

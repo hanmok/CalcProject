@@ -53,6 +53,8 @@
 		9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */; };
 		9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */; };
 		9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */; };
+		9AA150EB2870D15700DC4CED /* GitInfo in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150EA2870D15700DC4CED /* GitInfo */; };
+		9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */; };
 		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
 		9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsTableCell.swift */; };
@@ -152,6 +154,8 @@
 		9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionCell.swift; sourceTree = "<group>"; };
 		9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToFix_Dutchpay; sourceTree = "<group>"; };
+		9AA150EA2870D15700DC4CED /* GitInfo */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitInfo; sourceTree = "<group>"; };
+		9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableViewCell.swift; sourceTree = "<group>"; };
 		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9AA5C431271701190021975C /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 				9A1C84F52814E39F001020EF /* ColorMemo */,
 				9A1C84F62814E3A6001020EF /* DutchpayMemo */,
 				9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */,
+				9AA150EA2870D15700DC4CED /* GitInfo */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
@@ -363,6 +368,7 @@
 				9A1C85022815A865001020EF /* ParticipantsController.swift */,
 				9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */,
 				9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */,
+				9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */,
 			);
 			path = Participants;
 			sourceTree = "<group>";
@@ -543,6 +549,7 @@
 			files = (
 				9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */,
 				9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */,
+				9AA150EB2870D15700DC4CED /* GitInfo in Resources */,
 				9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */,
 				9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */,
 				9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */,
@@ -654,6 +661,7 @@
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
 				9A2DBC312826DCDF00CF4E86 /* CollectionTestViewController.swift in Sources */,
+				9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */,
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9AD2FB252847D24B0075551B /* Gathering+Helper.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,

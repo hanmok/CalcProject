@@ -86,6 +86,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     lazy var multiplier = 1 - 0.108*5 - tabbarheight/frameView.frame.height
     
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
+    // 83 이 아닌데 ?? 
     
 //    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 98
     
@@ -630,6 +631,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         for subview in frameView.subviews{
             subview.removeFromSuperview()
         }
+        
         for subview in view.subviews{
             subview.removeFromSuperview()
         }
