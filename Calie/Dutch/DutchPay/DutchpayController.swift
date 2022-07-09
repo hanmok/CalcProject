@@ -325,13 +325,13 @@ class DutchpayController: UIViewController {
             
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
         
-            let somePerson = Person.save(name: textFieldInput.text!)
+            let newPerson = Person.save(name: textFieldInput.text!)
             
             guard let coreGathering = self.gathering else {
                 return
             }
 
-            coreGathering.people.update(with: somePerson)
+            coreGathering.people.insert(newPerson)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

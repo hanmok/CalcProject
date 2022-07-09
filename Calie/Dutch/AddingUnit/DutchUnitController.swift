@@ -344,14 +344,23 @@ class DutchUnitController: NeedingController {
 
             let newPerson = Person.save(name: textFieldInput.text!)
 
-
             self.participants.append(newPerson)
 
+            self.gathering.people.forEach({ eachPerson in
+                if eachPerson.name == newPerson.name {
+                    //TODO: Popup alert
+                } else {
+                    self.gathering.people.insert(newPerson)
+                }
+            })
+            
+
+            
             let newDetail = PersonDetail.save(person: newPerson)
             self.personDetails.append(newDetail)
             self.personDetailCollectionView.reloadData()
             self.gathering.people.insert(newPerson)
-//            self.setupLayout()
+            
             self.addingDelegate?.updateParticipants2()
             
             self.personDetailCollectionView.snp.remakeConstraints { make in
@@ -507,7 +516,9 @@ class DutchUnitController: NeedingController {
         notInitializedNames = allNames.subtracting(initializedNames)
         
         notInitializedNames.sorted().forEach {
+      // TODO: Comment line below. Instead, get Person objc from gathering. 
             let newPerson = Person.save(name: $0)
+        
             let personDetail = PersonDetail.save(person: newPerson)
             self.personDetails.append(personDetail)
         }
