@@ -83,8 +83,8 @@ class DutchUnitController: NeedingController {
     
     private let spentDateLabel = UILabel().then {
         $0.textAlignment = .right
-//        $0.text = "지출 일자"
-//        $0.text = "지출 시점"
+        
+        
     }
     
 //    private let spentDatePicker = UIDatePicker().then {
@@ -107,7 +107,17 @@ class DutchUnitController: NeedingController {
 //        picker.preferredDatePickerStyle = .inline
 //        picker.
         picker.sizeToFit()
-        picker.frame = .init(x: 0, y: 0, width: 200, height: 30)
+//        picker.frame = .init(x: 0, y: 0, width: 200, height: 30)
+        
+        picker.semanticContentAttribute = .forceRightToLeft
+        picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
+//        picker.subviews.first.seman
+        
+        //        picker.semanticContentAttribute = .forceLeftToRight
+
+//        picker.subviews.first?.semanticContentAttribute = .forceLeftToRight
+        
+//        picker.alignmentRectInsets = .
 //        picker.datePickerStyle = .inline
 //        picker.preferredDatePickerStyle = .inline
         return picker
@@ -283,28 +293,20 @@ class DutchUnitController: NeedingController {
             make.width.equalTo(15)
         }
         
-        spentDateLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(spentPlaceTF.snp.centerY)
-            make.height.equalTo(30)
-            make.width.equalTo(170)
-            make.trailing.equalToSuperview().inset(15)
-        }
         
         spentDatePicker.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(25)
-            make.width.equalToSuperview().dividedBy(2)
-//            make.top.equalTo(spentAmountLabel.snp.bottom)
-//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(10)
-            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
-            make.trailing.equalToSuperview().inset(20)
-//            make.height.equalTo(50)
+            make.width.equalToSuperview().dividedBy(1.5)
+            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
+//            make.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(15)
             make.height.equalTo(40)
         }
         
         divider.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
             make.height.equalTo(1)
-            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
+//            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
+            make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
         }
         
         
@@ -337,7 +339,7 @@ class DutchUnitController: NeedingController {
             textField.placeholder = "Name"
         }
 
-        let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
+        let saveAction = UIAlertAction(title: "Add", style: .default) { [self] alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
 
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
@@ -358,7 +360,26 @@ class DutchUnitController: NeedingController {
             
             let newDetail = PersonDetail.save(person: newPerson)
             self.personDetails.append(newDetail)
+            
+            
+            // 구조를 바꿔야해.. Reload 될때, 어떻게 할건지, 합리적으로.
+            // 1.사람을 생성한 후 Reload 된다. reload 될 때, 현재까지의 personDetails 를 반영한다.
+            // 2. 그러려면, 입력이 들어올 때마다 personDetails 가 바뀌어야한다.
+            // init 은 되어있는 상황.
+            
+//            for personIndex in 0 ..< self.participants.count {
+//                self.personDetails[personIndex].isAttended = self.attendingDic[personIndex] ?? true
+//                self.self.personDetails[personIndex].spentAmount = self.self.textFieldWithPriceDic[personIndex] ?? 0
+//            }
+            
+//            self.personDetails =
+            // 음.. ;; reload 후에, 기존에 저장되어 있던 textFieldWithPriceDic 값에 따라 업데이트 시켜줘야 할 것 같은데?
+            // currentDutchUnit
+//            self.personDetails =
+            
             self.personDetailCollectionView.reloadData()
+            
+            
             self.gathering.people.insert(newPerson)
             
             self.addingDelegate?.updateParticipants2()
@@ -407,6 +428,8 @@ class DutchUnitController: NeedingController {
             personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
+        
+        
         if let initialDutchUnit = initialDutchUnit {
             
             dutchUnit = DutchUnit.update(spentTo: spentPlaceTF.text!, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
@@ -430,6 +453,7 @@ class DutchUnitController: NeedingController {
         
     }
     
+    
     override func fullPriceAction2() {
         print("fullprice from addingUnitController!")
         guard let selectedPriceTF = selectedPriceTF else {
@@ -452,9 +476,13 @@ class DutchUnitController: NeedingController {
         let remainingStr = costRemaining.addComma()
         textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
         
+        self.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
         
         selectedPriceTF.text = remainingStr
+        
         changeConfirmBtn()
+        
+        
     }
     
     override func updateNumber(with numberText: String) {
@@ -470,7 +498,9 @@ class DutchUnitController: NeedingController {
         
         switch selectedTag {
         case -1: spentAmount = numberText.convertStrToDouble()
-        default: textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
+        default:
+            textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
+            personDetails[selectedTag].spentAmount = numberText.convertStrToDouble()
         }
         
         changeConfirmBtn()
@@ -491,7 +521,7 @@ class DutchUnitController: NeedingController {
         view.endEditing(true)
     }
     
-    
+
     private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
         
         self.participants = gathering.sortedPeople
