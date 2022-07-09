@@ -116,13 +116,7 @@ class DutchpayController: UIViewController {
     }()
     
     
-    private let titleLabelInHeader = UILabel().then {
-//        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-//        $0.backgroundColor = .magenta
-        $0.textAlignment = .center
-    }
+    private let titleLabelBtnInHeader = UIButton()
     
     private let groupBtnInHeader = UIButton().then {
         let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
@@ -135,17 +129,17 @@ class DutchpayController: UIViewController {
         }
     }
     
-    private let renameBtnInHeader = UIButton().then {
-        let innerImage = UIImageView(image: UIImage(systemName: "pencil")!)
-        innerImage.contentMode = .scaleAspectFit
-
-        innerImage.tintColor = .black
-        $0.addSubview(innerImage)
-        innerImage.snp.makeConstraints { make in
-            make.top.leading.bottom.trailing.equalToSuperview()
-        }
-//        $0.backgroundColor = .yellow
-    }
+//    private let renameBtnInHeader = UIButton().then {
+//        let innerImage = UIImageView(image: UIImage(systemName: "pencil")!)
+//        innerImage.contentMode = .scaleAspectFit
+//
+//        innerImage.tintColor = .black
+//        $0.addSubview(innerImage)
+//        innerImage.snp.makeConstraints { make in
+//            make.top.leading.bottom.trailing.equalToSuperview()
+//        }
+////        $0.backgroundColor = .yellow
+//    }
     
     private let mainContainer = UIView()
     
@@ -294,7 +288,8 @@ class DutchpayController: UIViewController {
         
 
         
-        renameBtnInHeader.addTarget(self, action: #selector(changeGroupAction(_:)), for: .touchUpInside)
+//        renameBtnInHeader.addTarget(self, action: #selector(changeGroupAction(_:)), for: .touchUpInside)
+        titleLabelBtnInHeader.addTarget(self, action: #selector(changeGroupAction(_:)), for: .touchUpInside)
         
         groupBtnInHeader.addTarget(self, action: #selector(coreGroupBtnTapped(_:)), for: .touchUpInside)
         
@@ -458,13 +453,17 @@ class DutchpayController: UIViewController {
         }
         
         //        let attrTitle = NSAttributedString(string: coreGathering.title, attributes: [.font: UIFont.preferredFont(forTextStyle: .largeTitle)])
+        let styleCenter = NSMutableParagraphStyle()
+        styleCenter.alignment = NSTextAlignment.center
         let attrTitle = NSAttributedString(string: coreGathering.title, attributes: [
             //            .font: UIFont.preferredFont(forTextStyle: .largeTitle)
-            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
+            .paragraphStyle: styleCenter
         ])
         
         DispatchQueue.main.async {
-            self.titleLabelInHeader.attributedText = attrTitle
+//            self.titleLabelBtnInHeader.attributedText = attrTitle
+            self.titleLabelBtnInHeader.setAttributedTitle(attrTitle, for: .normal)
         }
     }
     
@@ -570,12 +569,13 @@ class DutchpayController: UIViewController {
     
     private func setupHeaderView() {
         [
-        titleLabelInHeader,
-        renameBtnInHeader,
+//        titleLabelInHeader,
+            titleLabelBtnInHeader,
+//        renameBtnInHeader,
         groupBtnInHeader,
         ].forEach { self.headerContainer.addSubview($0) }
         
-        titleLabelInHeader.snp.makeConstraints { make in
+        titleLabelBtnInHeader.snp.makeConstraints { make in
             make.center.equalToSuperview()
 //            make.height.equalTo(30)
             make.height.equalTo(24)
@@ -590,12 +590,12 @@ class DutchpayController: UIViewController {
 //            make.width.equalTo(24)
         }
         
-        renameBtnInHeader.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(groupBtnInHeader.snp.leading).offset(-10)
-//            make.height.width.equalTo(30)
-            make.height.width.equalTo(24)
-        }
+//        renameBtnInHeader.snp.makeConstraints { make in
+//            make.centerY.equalToSuperview()
+//            make.trailing.equalTo(groupBtnInHeader.snp.leading).offset(-10)
+////            make.height.width.equalTo(30)
+//            make.height.width.equalTo(24)
+//        }
     }
     
     
@@ -767,6 +767,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
 //        return 40
         return 30
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
