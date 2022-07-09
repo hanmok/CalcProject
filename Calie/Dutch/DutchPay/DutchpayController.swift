@@ -786,6 +786,7 @@ extension DutchpayController: ParticipantsVCDelegate {
      }
     
     // TODO: 각 DutchUnit 에 새로운 person 생성 or 기존 사람 제거. (Count 로 판별 불가.), 현재 정상작동 하지 않음. 이미 데이터가 임의로 많이 생성되었기 때문에;;  새로 만들 필요 있음.
+    
     func updateParticipants() {
         guard let gathering = gathering else { fatalError() }
         let prevMembers = gathering.dutchUnits.first!.personDetails.map { $0.person! }
