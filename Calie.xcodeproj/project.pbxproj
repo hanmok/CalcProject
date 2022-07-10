@@ -55,6 +55,7 @@
 		9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */; };
 		9AA150EB2870D15700DC4CED /* GitInfo in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150EA2870D15700DC4CED /* GitInfo */; };
 		9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */; };
+		9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150F0287A91D400DC4CED /* SideViewController.swift */; };
 		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
 		9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsTableCell.swift */; };
@@ -156,6 +157,7 @@
 		9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToFix_Dutchpay; sourceTree = "<group>"; };
 		9AA150EA2870D15700DC4CED /* GitInfo */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitInfo; sourceTree = "<group>"; };
 		9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableViewCell.swift; sourceTree = "<group>"; };
+		9AA150F0287A91D400DC4CED /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
 		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9AA5C431271701190021975C /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				9A1C84F62814E3A6001020EF /* DutchpayMemo */,
 				9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */,
 				9AA150EA2870D15700DC4CED /* GitInfo */,
+				9AA150F0287A91D400DC4CED /* SideViewController.swift */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
@@ -675,6 +678,7 @@
 				9AFB9505281EF5F200A9DEAA /* DutchCollectionCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
+				9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */,
 				9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
 				9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */,

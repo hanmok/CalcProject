@@ -8,7 +8,7 @@ FixingEnteringDutchUnitError
 기존 DutchUnit 으로 TableView 선택 후 이동시 버그 일부 해결
 정산하기 버튼 추가
 
-
+----------------------------------------------
 ModifyingParticipants
 
 1. mainContainer 생성, 같은 디자인으로 새로운 순서의 Layout 작성.
@@ -35,8 +35,17 @@ PersonDetail 이 생성되는 시기도 수정.
 9. 초기화 버튼 생성
 
 뭔가.. 많이 이것저것 수정해야겠다... 불완정성이 높음.. ㅠㅠ
+----------------------------------------------
 
 
+----------------------------------------------
+AddingNewScreens
+
+SideViewController 를 MainTabViewController 위에서 호출해야함
+SideViewController 에 Animation 적용할 것.
+
+
+----------------------------------------------
 
 
 ** TODO
@@ -57,7 +66,7 @@ DutchUnit Table 위치에 그대로 넣으면 좋을 것 같은데..
 
 
 
-**************  정산 기능  **************
+**************  정산  기능  **************
 
 정산하기 버튼에 대한 Action 추가
 

@@ -23,7 +23,7 @@ protocol DutchUnitDelegate: AnyObject {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
-    
+
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
@@ -169,6 +169,8 @@ class DutchUnitController: NeedingController {
         self.initialDutchUnit = initialDutchUnit
         self.gathering = gathering
         self.participants = gathering.sortedPeople
+
+//        prepareSideController()
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
@@ -187,6 +189,7 @@ class DutchUnitController: NeedingController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad in dutchunitController called")
+        
         view.backgroundColor = .white
         
         // Recognizer for resigning keyboards
@@ -206,6 +209,7 @@ class DutchUnitController: NeedingController {
         
         personDetailCollectionView.reloadData()
         changeConfirmBtn()
+        
     }
     
     private func setupInitialState(dutchUnit: DutchUnit) {
@@ -323,7 +327,11 @@ class DutchUnitController: NeedingController {
             make.width.equalTo(view.snp.width).dividedBy(2)
             make.height.equalTo(50)
         }
+        
+
     }
+
+    
     
     @objc private func presentAddingPeopleAlert() {
         let alertController = UIAlertController(title: "Add People", message: "추가할 사람의 이름을 입력해주세요", preferredStyle: .alert)

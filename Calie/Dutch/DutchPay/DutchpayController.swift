@@ -30,6 +30,8 @@ protocol DutchpayToParticipantsDelegate: AnyObject {
 
 class DutchpayController: UIViewController {
     
+    var sideViewController: SideViewController
+    
     // MARK: - Properties
     weak var delegate: DutchpayControllerDelegate?
     weak var dutchToPartiDelegate: DutchpayToParticipantsDelegate?
@@ -261,6 +263,7 @@ class DutchpayController: UIViewController {
     
     init(persistenceManager: PersistenceController) {
         self.persistenceManager = persistenceManager
+        sideViewController = SideViewController()
         super.init(nibName: nil, bundle: nil)
         fetchDefaultGathering()
     }
@@ -451,7 +454,6 @@ class DutchpayController: UIViewController {
         dutchTableView.tableHeaderView = headerContainer
         
         guard let coreGathering = gathering else {
-//            fatalError()
             return
         }
         
@@ -548,6 +550,22 @@ class DutchpayController: UIViewController {
         
         participantsNavController.view.isHidden = true
         
+    }
+    
+    private func prepareSideController() {
+//        sideViewController = SideViewController()
+        self.addChild(sideViewController)
+        self.view.addSubview(sideViewController.view)
+        sideViewController.didMove(toParent: self)
+        
+        
+        sideViewController.view.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+//            make.width.equalToSuperview().dividedBy(3)
+            make.width.equalTo(0)
+            make.height.equalToSuperview()
+            make.top.equalToSuperview()
+        }
     }
     
     private func showParticipantsController() {
@@ -752,6 +770,8 @@ class DutchpayController: UIViewController {
                 make.center.equalTo(wholeContainerView)
             }
         }
+        
+        prepareSideController()
     }
 }
 
