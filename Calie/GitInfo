@@ -27,10 +27,16 @@ ModifyingParticipants
 
 6. Date Label 추가, DatePicker 다르게 레이아웃, Sorting Done 버튼 추가.
 7. 인원 생성할 때 낸 비용 초기화됨 ;; 고침.
-PersonDetail 이 생성되는 시기도 수정. 
+PersonDetail 이 생성되는 시기도 수정.
 
 8. 날짜 다 보이지 않음.. 레이아웃도 별로임 ㅠㅠ 고침.
 지출 금액 아래로 , 왼쪽 정렬
+
+9. 초기화 버튼 생성
+
+뭔가.. 많이 이것저것 수정해야겠다... 불완정성이 높음.. ㅠㅠ
+
+
 
 
 ** TODO

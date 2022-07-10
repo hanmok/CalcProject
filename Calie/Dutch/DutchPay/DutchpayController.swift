@@ -115,6 +115,30 @@ class DutchpayController: UIViewController {
         return btn
     }()
     
+    let resetGatheringBtn: UIButton = {
+        let btn = UIButton()
+        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
+        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+        
+        circle.tintColor = .white
+        innerImage.tintColor = .black
+        
+        btn.addSubview(circle)
+        circle.addSubview(innerImage)
+        
+        circle.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
+            make.center.equalTo(btn)
+        }
+        
+        innerImage.snp.makeConstraints { make in
+            make.width.height.equalTo(30)
+            make.center.equalTo(circle)
+        }
+        
+        return btn
+    }()
+    
     
     private let titleLabelBtnInHeader = UIButton()
     
@@ -273,6 +297,23 @@ class DutchpayController: UIViewController {
     }
     
     // MARK: - Actions
+    @objc func resetGatheringBtnAction() {
+        guard let gathering = gathering else { return }
+        let currentTitle = gathering.title
+//        let newGathering = Gathering.save(title: currentTitle, people: [])
+//        gathering = newGathering
+        gathering.people = []
+        gathering.dutchUnits = []
+        gathering.totalCost_ = 0
+        gathering.createdAt = Date()
+        gathering.updatedAt = Date()
+        gathering.title = currentTitle
+        
+        DispatchQueue.main.async {
+            self.dutchTableView.reloadData()
+        }
+
+    }
     
     private func setupAddTargets() {
         print("setupAddTargets Called !")
@@ -281,6 +322,8 @@ class DutchpayController: UIViewController {
 
         historyBtn.addTarget(self, action: #selector(historyBtnTapped), for: .touchUpInside)
 //        historyBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
+        
+        resetGatheringBtn.addTarget(self, action: #selector(resetGatheringBtnAction), for: .touchUpInside)
         
         dutchUnitPlusBtn.addTarget(self, action: #selector(handleAddDutchUnit(_:)), for: .touchUpInside)
         
@@ -375,7 +418,7 @@ class DutchpayController: UIViewController {
              initialDutchUnit: selectedUnit)
 
         addingUnitController.addingDelegate = self
-        
+        addingUnitController.dutchDelegate = self
 
         let numLayerController = NumberLayerController(
             bgColor: UIColor(white: 0.7, alpha: 1),
@@ -432,6 +475,7 @@ class DutchpayController: UIViewController {
     private func fetchDefaultGathering() {
         let allGatherings = Gathering.fetchAll()
         print("numOfAllGatherings : \(allGatherings.count)")
+        
         if let latestGathering = Gathering.fetchLatest() {
             gathering = latestGathering
         }
@@ -610,6 +654,8 @@ class DutchpayController: UIViewController {
         
         view.addSubview(wholeContainerView)
         wholeContainerView.addSubview(historyBtn)
+        wholeContainerView.addSubview(resetGatheringBtn)
+        
         wholeContainerView.addSubview(groupBtn)
         wholeContainerView.addSubview(gatheringPlusBtn)
         
@@ -628,6 +674,12 @@ class DutchpayController: UIViewController {
         
         historyBtn.snp.makeConstraints { make in
             make.leading.equalTo(wholeContainerView.snp.leading).offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.height.width.equalTo(30)
+        }
+        
+        resetGatheringBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.height.width.equalTo(30)
         }
@@ -839,11 +891,16 @@ extension DutchpayController: ParticipantsVCDelegate {
 }
 
 
-extension DutchpayController: AddingUnitNavDelegate {
-    func dismissWithInfo(dutchUnit: DutchUnit) {
+extension DutchpayController: DutchUnitDelegate {
+//    func dismissWithInfo(dutchUnit: DutchUnit) {
+    func dismissWithInfo(gathering: Gathering) {
+        
+        // new gathering
+        self.gathering = gathering
+        
         print("dismiss Tapped from aDutchpayController triggered!!")
+        
     }
-
 }
 
 
@@ -863,9 +920,9 @@ extension DutchpayController: AddingUnitControllerDelegate {
         fetchDefaultGathering()
     }
     
-    func updateParticipants2() {
-        
-    }
+//    func updateParticipants2() {
+//
+//    }
 }
 
 

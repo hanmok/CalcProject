@@ -13,12 +13,11 @@ import Then
 protocol AddingUnitControllerDelegate: AnyObject {
     func updateDutchUnits()
     func dismissChildVC()
-    func updateParticipants2()
+//    func updateParticipants2()
 }
 
-protocol AddingUnitNavDelegate: AnyObject {
-    func dismissWithInfo(dutchUnit: DutchUnit)
-   
+protocol DutchUnitDelegate: AnyObject {
+    func dismissWithInfo(gathering: Gathering)
 }
 
 class DutchUnitController: NeedingController {
@@ -43,7 +42,7 @@ class DutchUnitController: NeedingController {
     
     weak var addingDelegate: AddingUnitControllerDelegate?
     
-    weak var navDelegate: AddingUnitNavDelegate?
+    weak var dutchDelegate: DutchUnitDelegate?
     
     private var spentAmount: Double = 0
     
@@ -166,7 +165,7 @@ class DutchUnitController: NeedingController {
     }
     
     init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
-        
+        print("participants count: \(gathering.people.count)")
         self.initialDutchUnit = initialDutchUnit
         self.gathering = gathering
         self.participants = gathering.sortedPeople
@@ -264,7 +263,6 @@ class DutchUnitController: NeedingController {
         
         spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
-//            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
             make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
             make.width.equalTo(170)
             make.height.equalTo(30)
@@ -272,7 +270,6 @@ class DutchUnitController: NeedingController {
         
         spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(30)
             make.top.equalTo(spentPlaceTF.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(30)
@@ -280,7 +277,6 @@ class DutchUnitController: NeedingController {
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
-//            make.top.equalTo(spentAmountLabel.snp.bottom).offset(10)
             make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
             make.width.equalTo(170)
             make.height.equalTo(30)
@@ -297,7 +293,6 @@ class DutchUnitController: NeedingController {
         spentDatePicker.snp.makeConstraints { make in
             make.width.equalToSuperview().dividedBy(1.5)
             make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
-//            make.trailing.equalToSuperview().inset(20)
             make.leading.equalToSuperview().inset(15)
             make.height.equalTo(40)
         }
@@ -305,7 +300,6 @@ class DutchUnitController: NeedingController {
         divider.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
             make.height.equalTo(1)
-//            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
             make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
         }
         
@@ -314,7 +308,6 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            
             make.height.equalTo(45 * participants.count - 20)
         }
 
@@ -382,7 +375,10 @@ class DutchUnitController: NeedingController {
             
             self.gathering.people.insert(newPerson)
             
-            self.addingDelegate?.updateParticipants2()
+            
+            self.dutchDelegate?.dismissWithInfo(gathering: gathering)
+            
+//            self.addingDelegate?.updateParticipants2()
             
             self.personDetailCollectionView.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(self.smallPadding)
