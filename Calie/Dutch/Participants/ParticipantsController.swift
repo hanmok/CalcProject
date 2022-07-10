@@ -25,13 +25,13 @@ protocol ParticipantsVCDelegate: AnyObject {
 //    func removeChildrenControllers()
     func hideParticipantsController()
 //    func initializeGathering(with gathering: Gathering)
-    func updateParticipants()
+    func updateParticipants(with participants: [Person])
 }
 
 extension ParticipantsController: DutchpayToParticipantsDelegate {
     func updateParticipants3(gathering: Gathering) {
-        self.gathering = gathering
-        self.participants = gathering.people.sorted()
+//        self.gathering = gathering
+//        self.participants = gathering.people.sorted()
         DispatchQueue.main.async {
             self.participantsTableView.reloadData()
         }
@@ -41,27 +41,24 @@ extension ParticipantsController: DutchpayToParticipantsDelegate {
 
 class ParticipantsController: UIViewController{
     
-    
     // MARK: - Properties
-    var dutchController: DutchpayController
+    
     weak var delegate: ParticipantsVCDelegate?
 
-    var gathering: Gathering
+    private var participants: [Person]
+    private var names: [String]
     
-    init(dutchController: DutchpayController, gathering: Gathering) {
-        self.dutchController = dutchController
-        self.gathering = gathering
-
-        self.participants = gathering.people.sorted()
+    init(participants: [Person]) {
+        self.participants = participants
+        self.names = participants.map { $0.name }
         super.init(nibName: nil, bundle: nil)
-        self.dutchController.dutchToPartiDelegate = self
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var participants: [Person] = []
+
 
     private func reloadCollectionView() {
         print("flag4")
@@ -136,7 +133,6 @@ class ParticipantsController: UIViewController{
             make.width.equalToSuperview()
         }
     }
-    
 
     private let bottomView = UIView().then {
         $0.backgroundColor = .clear
@@ -171,12 +167,10 @@ class ParticipantsController: UIViewController{
     }
     
     private func setupParticipants() {
-        participants = gathering.people.sorted()
+        
     }
 
     private func registerTableView() {
-
-        
         participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
         
         participantsTableView.delegate = self
@@ -250,21 +244,17 @@ class ParticipantsController: UIViewController{
         confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
 
-
-
     @objc func cancelTapped(_ sender: UIButton) {
         print("cancel tapped!")
+        delegate?.updateParticipants(with: participants)
         delegate?.hideParticipantsController()
-        delegate?.updateParticipants()
     }
     
     
     @objc func confirmTapped(_ sender: UIButton) {
         print("next Tapped!")
-        
+        delegate?.updateParticipants(with: participants)
         delegate?.hideParticipantsController()
-        delegate?.updateParticipants()
-        
     }
     
     
@@ -294,14 +284,19 @@ class ParticipantsController: UIViewController{
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
 
-//            guard let newPersonName = textFieldInput.text
-            guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
+            let newName = textFieldInput.text!
+            
+            guard newName.count != 0 else { fatalError("Name must have at least one character") }
 
-            let somePerson = Person.save(name: textFieldInput.text!)
-
-            self.participants.append(somePerson)
-            self.gathering.people.insert(somePerson)
-            self.reloadCollectionView()
+            if self.names.contains(newName) {
+                // TODO: show message
+                print("same name exist!")
+            } else {
+                let somePerson = Person.save(name: newName)
+                self.participants.append(somePerson)
+                
+                self.reloadCollectionView()
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
@@ -377,9 +372,9 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
             
-            let selectedPerson = self.gathering.people.sorted()[indexPath.row]
+//            let selectedPerson = self.gathering.people.sorted()[indexPath.row]
             
-            self.gathering.people.remove(selectedPerson)
+//            self.gathering.people.remove(selectedPerson)
             
             
             DispatchQueue.main.async {

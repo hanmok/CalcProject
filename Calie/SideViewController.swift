@@ -99,31 +99,28 @@ class SideViewController: UIViewController {
         gatheringTableView.dataSource = self
     }
     
-    private let editingBtn: UIButton = {
-        let btn = UIButton()
-//        btn.setTitle("EDIT", for: .normal)
-        btn.setTitle("", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        return btn
-    }()
+//    private let editingBtn: UIButton = {
+//        let btn = UIButton()
+//        btn.setTitle("", for: .normal)
+//        btn.setTitleColor(.black, for: .normal)
+//        return btn
+//    }()
     
     private func setupLayout() {
         view.addSubview(dismissBtn)
         dismissBtn.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
             make.width.height.equalTo(40)
-//            make.top.equalToSuperview().inset(15)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
         }
         
-        view.addSubview(editingBtn)
-        editingBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(10)
-            make.width.equalTo(70)
-            make.height.equalTo(30)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
-        }
+//        view.addSubview(editingBtn)
+//        editingBtn.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().inset(10)
+//            make.width.equalTo(70)
+//            make.height.equalTo(30)
+//            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+//        }
         
         view.addSubview(gatheringPlusBtn)
         gatheringPlusBtn.snp.makeConstraints { make in
@@ -135,12 +132,10 @@ class SideViewController: UIViewController {
         view.addSubview(gatheringTableView)
         gatheringTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
-            make.top.equalTo(editingBtn.snp.bottom).offset(10)
+//            make.top.equalTo(editingBtn.snp.bottom).offset(10)
+            make.top.equalTo(dismissBtn.snp.bottom).offset(10)
             make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
         }
-        
-       
-        
     }
     
 
@@ -150,24 +145,24 @@ class SideViewController: UIViewController {
         
         gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
         
-        editingBtn.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
+//        editingBtn.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
     }
     
     @objc func dismissSelf() {
         sideDelegate?.dismissSideController()
     }
     
-    @objc func didTapEdit() {
-        if gatheringTableView.isEditing {
-            // turn not on Editing
-            editingBtn.setTitle("EDIT", for: .normal)
-            gatheringTableView.setEditing(false, animated: true)
-        } else {
-            // turn on Editing Mode
-            editingBtn.setTitle("Done", for: .normal)
-            gatheringTableView.setEditing(true, animated: true)
-        }
-    }
+//    @objc func didTapEdit() {
+//        if gatheringTableView.isEditing {
+//            // turn not on Editing
+////            editingBtn.setTitle("EDIT", for: .normal)
+//            gatheringTableView.setEditing(false, animated: true)
+//        } else {
+//            // turn on Editing Mode
+////            editingBtn.setTitle("Done", for: .normal)
+//            gatheringTableView.setEditing(true, animated: true)
+//        }
+//    }
     
     @objc func addGaterhing() {
         sideDelegate?.addNewGathering()
@@ -186,6 +181,7 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sideDelegate?.updateGathering(with: gatherings[indexPath.row])
     }

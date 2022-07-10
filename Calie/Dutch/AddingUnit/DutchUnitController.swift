@@ -29,16 +29,16 @@ class DutchUnitController: NeedingController {
     weak var needingDelegate: NeedingControllerDelegate?
     /// 10
     private let smallPadding: CGFloat = 10
-    
-    var participants: [Person]
+
     let gathering: Gathering
     var dutchUnit: DutchUnit?
+    
+    var participants: [Person]
+
     var personDetails: [PersonDetail] = []
     var selectedPriceTF: PriceTextField?
     
-    private let currenyLabel = UILabel().then {
-        $0.text = "원"
-    }
+
     
     weak var addingDelegate: AddingUnitControllerDelegate?
     
@@ -51,10 +51,16 @@ class DutchUnitController: NeedingController {
     private var attendingDic: [Int: Bool] = [:]
     private var isConditionSatisfied = false
     
-    private let spentPlaceLabel = UILabel().then {
-        $0.text = "지출 항목"}
     
     // MARK: - UI Properties
+    
+    private let currenyLabel = UILabel().then {
+        $0.text = "원"
+    }
+
+    private let spentPlaceLabel = UILabel().then {
+        $0.text = "지출 항목"}
+
     
     private let spentPlaceTF = UITextField(withPadding: true).then {
 //        $0.placeholder = "지출한 곳을 입력해주세요."
