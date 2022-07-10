@@ -51,7 +51,8 @@ class DutchUnitController: NeedingController {
     private var attendingDic: [Int: Bool] = [:]
     private var isConditionSatisfied = false
     
-    private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목"}
+    private let spentPlaceLabel = UILabel().then {
+        $0.text = "지출 항목"}
     
     // MARK: - UI Properties
     
@@ -86,39 +87,13 @@ class DutchUnitController: NeedingController {
         
     }
     
-//    private let spentDatePicker = UIDatePicker().then {
-////        $0.preferredDatePickerStyle = .compact
-//        $0.preferredDatePickerStyle = .wheels
-//        $0.locale = Locale(identifier: "ko-KR")
-////        $0.datePickerMode = .date
-////        $0.datePickerStyle = .inline
-//        $0.datePickerMode = .dateAndTime
-//        $0.backgroundColor = .magenta
-//        $0.sizeToFit()
-//        $0.frame = .init(x: 0, y: 0, width: 150, height: 30)
-//    }
-    
     private let spentDatePicker: UIDatePicker = {
         let picker = UIDatePicker()
-//        picker.preferredDatePickerStyle = .inline
-//        picker
         picker.datePickerMode = .dateAndTime
-//        picker.preferredDatePickerStyle = .inline
-//        picker.
         picker.sizeToFit()
-//        picker.frame = .init(x: 0, y: 0, width: 200, height: 30)
-        
         picker.semanticContentAttribute = .forceRightToLeft
         picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
-//        picker.subviews.first.seman
-        
-        //        picker.semanticContentAttribute = .forceLeftToRight
 
-//        picker.subviews.first?.semanticContentAttribute = .forceLeftToRight
-        
-//        picker.alignmentRectInsets = .
-//        picker.datePickerStyle = .inline
-//        picker.preferredDatePickerStyle = .inline
         return picker
     }()
     
@@ -126,7 +101,6 @@ class DutchUnitController: NeedingController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        cv.backgroundColor = .magenta
         return cv
     }()
     
@@ -170,7 +144,6 @@ class DutchUnitController: NeedingController {
         self.gathering = gathering
         self.participants = gathering.sortedPeople
 
-//        prepareSideController()
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
@@ -200,6 +173,9 @@ class DutchUnitController: NeedingController {
         setupLayout()
         setupTargets()
     
+//        gathering.dutchUnits
+        setPlaceHolderForSpentPlace()
+        
         if let initialDutchUnit = initialDutchUnit {
             setupInitialState(dutchUnit: initialDutchUnit)
             print("initialDutchUnit is valid")
@@ -210,6 +186,11 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.reloadData()
         changeConfirmBtn()
         
+    }
+    
+    private func setPlaceHolderForSpentPlace() {
+        let count = gathering.dutchUnits.count
+        spentPlaceTF.placeholder = "항목 \(count + 1)"
     }
     
     private func setupInitialState(dutchUnit: DutchUnit) {
@@ -433,26 +414,34 @@ class DutchUnitController: NeedingController {
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
         
+        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(gathering.dutchUnits.count + 1)"
         
         if let initialDutchUnit = initialDutchUnit {
             
-            dutchUnit = DutchUnit.update(spentTo: spentPlaceTF.text!, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
+
+            
+            dutchUnit = DutchUnit.update(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
+            gathering.dutchUnits.update(with: dutchUnit!)
             
         } else {
             
-            dutchUnit = DutchUnit.save(spentTo: spentPlaceTF.text!,
+            dutchUnit = DutchUnit.save(spentTo: spentPlace,
                                        spentAmount: spentAmount,
                                        personDetails: personDetails,
                                        spentDate: spentDatePicker.date)
+            
+            gathering.dutchUnits.insert(dutchUnit!)
         }
-        
-        guard let dutchUnit = dutchUnit else { fatalError() }
+        print("dutchUnitControlller, confirmTapped, ")
+//        guard let dutchUnit = dutchUnit else { fatalError() }
         
         // gathering need to differentiate each dutchUnit by its `id`
-        gathering.dutchUnits.update(with: dutchUnit)
+//        gathering.dutchUnits.update(with: dutchUnit)
+        
         gathering.updatedAt = Date()
         gathering.managedObjectContext?.saveCoreData()
         
+        addingDelegate?.updateDutchUnits()
         needingDelegate?.dismissNumberLayer()
         
     }

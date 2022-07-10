@@ -96,6 +96,8 @@ extension Gathering {
             fatalError("failed to case to Subject during saving ")
         }
         let convertedPeople = Array<Any>.convertToSet(items: people)
+        
+        gathering.setValue(Date(), forKey: .Gathering.createdAt)
         gathering.setValue(title, forKey: .Gathering.title)
         gathering.setValue(convertedPeople, forKey: .Gathering.people)
         gathering.setValue(true, forKey: .Gathering.isOnWorking)

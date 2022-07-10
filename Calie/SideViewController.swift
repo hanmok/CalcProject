@@ -11,35 +11,167 @@ import UIKit
 import Then
 import SnapKit
 
+protocol SideControllerDelegate: AnyObject {
+    func dismissSideController()
+    func addNewGathering()
+    func updateGathering(with gathering: Gathering)
+}
+
 class SideViewController: UIViewController {
     
+    private let dismissBtn: UIButton = {
+        let btn = UIButton()
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+        imageView.tintColor = .black
+//        imageView.contentMode = .scaleToFit
+        imageView.contentMode = .scaleAspectFit
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+        }
+        return btn
+    }()
+    weak var sideDelegate: SideControllerDelegate?
     
     var gatherings: [Gathering] = []
-    // tableview
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        view.backgroundColor = .magenta
+        navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        
+        updateGatherings()
+        
         registerTableView()
+        
+        setupLayout()
+        setupAddTargets()
     }
     
-    private let sideTableView = UITableView().then {
+    public func updateGatherings() {
+        let allGatherings = Gathering.fetchAll()
+        
+        gatherings = allGatherings.sorted {$0.createdAt < $1.createdAt }
+        // not registered yet ;;
+        DispatchQueue.main.async {
+            self.gatheringTableView.reloadData()
+        }
+    }
+    
+    private let gatheringTableView = UITableView().then {
         $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
         $0.layer.borderWidth = 1
     }
     
-    private func registerTableView() {
-        sideTableView.register(DutchTableCell.self, forCellReuseIdentifier: DutchTableCell.identifier)
-        sideTableView.delegate = self
-        sideTableView.dataSource = self
-        sideTableView.rowHeight = 70
+    private let gatheringPlusBtn: UIButton = {
+        let btn = UIButton()
+        // 왜.. 아래에서 보이지 ?
+       let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
+//        let plusImage = UIImageView(image: UIImage(systemName: "folder"))
         
-//        sideTableView.tableHeaderView = headerContainer
+        let removingLineView = UIView()
+        removingLineView.backgroundColor = .white
+        
+        btn.addSubview(removingLineView)
+        removingLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(3)
+            make.centerY.equalToSuperview()
+        }
+        
+        btn.addSubview(plusImage)
+        plusImage.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+    
+        return btn
+    }()
+//    private let gathieringTableView = UITableView().then {
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+//        $0.layer.borderWidth = 1
+//    }
+    
+    private func registerTableView() {
+        gatheringTableView.register(SideTableCell.self, forCellReuseIdentifier: SideTableCell.identifier)
+        
+        gatheringTableView.delegate = self
+        gatheringTableView.dataSource = self
+    }
+    
+    private let editingBtn: UIButton = {
+        let btn = UIButton()
+//        btn.setTitle("EDIT", for: .normal)
+        btn.setTitle("", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        return btn
+    }()
+    
+    private func setupLayout() {
+        view.addSubview(dismissBtn)
+        dismissBtn.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(15)
+            make.leading.equalToSuperview().inset(10)
+            make.width.height.equalTo(40)
+//            make.top.equalToSuperview().inset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+        }
+        
+        view.addSubview(editingBtn)
+        editingBtn.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
+            make.width.equalTo(70)
+            make.height.equalTo(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+        }
+        
+        view.addSubview(gatheringPlusBtn)
+        gatheringPlusBtn.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(40)
+            make.bottom.equalToSuperview().inset(100)
+        }
+        
+        view.addSubview(gatheringTableView)
+        gatheringTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(5)
+            make.top.equalTo(editingBtn.snp.bottom).offset(10)
+            make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
+        }
+        
+       
         
     }
     
+
     
+    private func setupAddTargets() {
+        dismissBtn.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
+        
+        gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
+        
+        editingBtn.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
+    }
+    
+    @objc func dismissSelf() {
+        sideDelegate?.dismissSideController()
+    }
+    
+    @objc func didTapEdit() {
+        if gatheringTableView.isEditing {
+            // turn not on Editing
+            editingBtn.setTitle("EDIT", for: .normal)
+            gatheringTableView.setEditing(false, animated: true)
+        } else {
+            // turn on Editing Mode
+            editingBtn.setTitle("Done", for: .normal)
+            gatheringTableView.setEditing(true, animated: true)
+        }
+    }
+    
+    @objc func addGaterhing() {
+        sideDelegate?.addNewGathering()
+    }
 }
 
 extension SideViewController : UITableViewDelegate, UITableViewDataSource {
@@ -48,12 +180,42 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! SideTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: SideTableCell.identifier, for: indexPath) as! SideTableCell
         
-        cell.viewModel = SideViewModel(gathering: gatherings[indexPath.row])
+        cell.textLabel?.text = gatherings[indexPath.row].title
         
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        sideDelegate?.updateGathering(with: gatherings[indexPath.row])
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
+            
+            let selectedGathering = self.gatherings[indexPath.row]
+
+            Gathering.deleteSelf(selectedGathering)
+
+            self.gatherings.remove(at: indexPath.row)
+            
+            DispatchQueue.main.async {
+                self.gatheringTableView.reloadData()
+            }
+            
+            completionhandler(true)
+        }
+        
+        delete.image = UIImage(systemName: "trash.fill")
+        delete.backgroundColor = .red
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        
+        return rightSwipe
+    }
+    
+    
 }
 
 
@@ -66,36 +228,32 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
 class SideTableCell: UITableViewCell {
     
     static let identifier = "sideTableCell"
-    var viewModel: SideViewModel? {
-        didSet {
-            self.loadView()
-        }
-    }
+    
+//    private let titleLabel = UILabel().then {
+////        $0.backgroundColor
+//        $0.textColor = .black
+//    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupLayout()
+//        setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupLayout() {
-        
-    }
+//    private func setupLayout() {
+//        addSubview(titleLabel)
+//
+//    }
     
-    private func loadView() {
-        guard let viewModel = viewModel else {
-            return
-        }
-    }
+//    private func loadView() {
+//    }
 }
 
 
-struct SideViewModel {
-    var gathering: Gathering
-    
-    
-}
+//struct SideViewModel {
+//    var gathering: Gathering
+//}

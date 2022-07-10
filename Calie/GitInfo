@@ -41,8 +41,10 @@ PersonDetail 이 생성되는 시기도 수정.
 ----------------------------------------------
 AddingNewScreens
 
-SideViewController 를 MainTabViewController 위에서 호출해야함
-SideViewController 에 Animation 적용할 것.
+SideViewController 를 MainTabViewController 위에서 호출해야함 아직.
+SideViewController 에 Animation 적용할 것. 완료
+SideViewCOntroller 기능 어느정도 완성
+전부다 Table Header, Footer 로 바꿀 것.
 
 
 ----------------------------------------------

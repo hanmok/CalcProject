@@ -23,18 +23,12 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
-//        print(#function, #file)
+
         print("viewDidLoad in MainTabController called")
         
-        //        var tabFrame = self.tabBar.frame
-        //        tabFrame.size.height = 200
-        //            tabFrame.origin.y = self.view.frame.size.height - 200
-        //            self.tabBar.frame = tabFrame
         createObservers()
         configureColors()
-//        viewControllers.inde
-        //        view.backgroundColor = userDefaultSetup.getIsDarkModeOn() ? .white : .black
-//        self.delega
+        
         print("flag darkMode: \(isDarkMode)")
         print("userdefault: \(userDefaultSetup.darkModeOn)")
     }
@@ -55,7 +49,6 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     
     func configureViewControllers() {
-//                self.delegate = self
         
         let calculator = templateNavigationController(
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
@@ -64,8 +57,6 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         let dutchController = DutchpayController(persistenceManager: PersistenceController.shared)
         dutchController.delegate = self
-//        let uiNav = UINavigationController(rootViewController: dutchController)
-        
         
         
         let dutch = templateNavigationController(

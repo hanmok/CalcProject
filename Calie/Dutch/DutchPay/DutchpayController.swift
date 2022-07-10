@@ -29,6 +29,11 @@ protocol DutchpayToParticipantsDelegate: AnyObject {
 
 
 class DutchpayController: UIViewController {
+    var isShowingSideController = false
+    let screenRect = UIScreen.main.bounds
+//    let screenWidth = screenRect.size.width
+
+//    let screenHeight = screenRect.size.height
     
     var sideViewController: SideViewController
     
@@ -38,6 +43,8 @@ class DutchpayController: UIViewController {
     let customAlert = MyAlert()
     
     var popupToShow: PopupScreens?
+    
+    var participantsController: ParticipantsController?
     
     let persistenceManager: PersistenceController
     
@@ -53,15 +60,18 @@ class DutchpayController: UIViewController {
         }
     }
     
-    var gathering: Gathering? {
-        didSet {
-            printCurrentState()
-            DispatchQueue.main.async {
-                self.dutchTableView.reloadData()
-            }
-            print("coregathering has assigned, title: \(oldValue?.title)")
-        }
-    }
+//    var gathering: Gathering? {
+//        didSet {
+//            printCurrentState()
+//            DispatchQueue.main.async {
+//                self.dutchTableView.reloadData()
+//            }
+//            print("coregathering has assigned, title: \(oldValue?.title)")
+//        }
+//    }
+    
+    var gathering: Gathering?
+    
     
     private func printCurrentState() {
         guard let gathering = gathering else { fatalError() }
@@ -72,19 +82,26 @@ class DutchpayController: UIViewController {
     
     // MARK: - UI Properties
     
-    private func setupTotalPrice() {
+    private func updateSpentTotalPrice() {
         guard let coreGathering = gathering else {
             return
         }
-        
-//        totalPriceValueLabel.text = convertIntoKoreanPrice(number: coreGathering.totalCost)
-        totalPriceValueLabel.text = coreGathering.totalCost
+        DispatchQueue.main.async {
+            self.totalPriceValueLabel.text = coreGathering.totalCost
+        }
+
     }
 
     private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
 //        $0.backgroundColor = .magenta
      }
+    
+    private let blurredView = UIButton().then {
+        $0.isHidden = true
+        $0.backgroundColor = UIColor(white: 0.2, alpha: 0.9)
+//        $0.backgroundColor = .green
+    }
     
     private let totalPriceContainerView = UIView().then {
 //        $0.backgroundColor = UIColor(white: 1, alpha: 1)
@@ -121,6 +138,30 @@ class DutchpayController: UIViewController {
         let btn = UIButton()
         let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
         let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+        
+        circle.tintColor = .white
+        innerImage.tintColor = .black
+        
+        btn.addSubview(circle)
+        circle.addSubview(innerImage)
+        
+        circle.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
+            make.center.equalTo(btn)
+        }
+        
+        innerImage.snp.makeConstraints { make in
+            make.width.height.equalTo(30)
+            make.center.equalTo(circle)
+        }
+        
+        return btn
+    }()
+    
+    let addGatheringBtn: UIButton = {
+        let btn = UIButton()
+        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
+        let innerImage = UIImageView(image: UIImage(systemName: "plus")!)
         
         circle.tintColor = .white
         innerImage.tintColor = .black
@@ -262,9 +303,16 @@ class DutchpayController: UIViewController {
     // MARK: - LifeCycle
     
     init(persistenceManager: PersistenceController) {
+        
+//        screenWidth = screenRect.width
+//        screenHeight = screenRect.height
+        
         self.persistenceManager = persistenceManager
         sideViewController = SideViewController()
+
+
         super.init(nibName: nil, bundle: nil)
+        sideViewController.sideDelegate = self
         fetchDefaultGathering()
     }
     
@@ -280,6 +328,9 @@ class DutchpayController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        AppUtility.lockOrientation(.portrait)
+        screenWidth
+//        screenWidth = screenRect.width
+//        screenHeight = screenRect.height
         
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
@@ -294,7 +345,7 @@ class DutchpayController: UIViewController {
         
         fetchAll()
         
-        prepareParticipantsController()
+        prepareParticipantsController(with: gathering)
         
         view.insetsLayoutMarginsFromSafeArea = false
     }
@@ -340,6 +391,16 @@ class DutchpayController: UIViewController {
         groupBtnInHeader.addTarget(self, action: #selector(coreGroupBtnTapped(_:)), for: .touchUpInside)
         
         calculateBtn.addTarget(self, action: #selector(calculateTapped(_:)), for: .touchUpInside)
+        
+        blurredView.addTarget(self, action: #selector(blurredViewTapped), for: .touchUpInside)
+    }
+    
+    @objc func blurredViewTapped() {
+        if isShowingSideController {
+            self.hideSideController()
+            isShowingSideController = false
+            print("isShowingSideController : \(isShowingSideController)")
+        }
     }
     
     @objc func calculateTapped(_ sender: UIButton) {
@@ -391,11 +452,12 @@ class DutchpayController: UIViewController {
     
     @objc func historyBtnTapped(_ sender: UIButton) {
         print("historyBtnTapped")
+        showSideController()
     }
     
     
     @objc private func changeGroupAction(_ sender: UIButton) {
-        self.presentEditingGroupName()
+        self.presentEditingGatheringName()
     }
     
     @objc func addBtnTapped(_ sender: UIButton) {
@@ -416,6 +478,12 @@ class DutchpayController: UIViewController {
         
         guard let coreGathering = gathering else { fatalError() }
         
+        if coreGathering.title == "" {
+            presentEditingGatheringName()
+            return
+        }
+        
+        print("current gathering name: \(coreGathering.title)")
         let addingUnitController = DutchUnitController(
              gathering: coreGathering,
              initialDutchUnit: selectedUnit)
@@ -486,29 +554,23 @@ class DutchpayController: UIViewController {
             gathering = Gathering.save(title: "default gathering", people: [])
         }
         
-        setupTotalPrice()
+        updateSpentTotalPrice()
     }
     
-    
-    
-//    updateGroupname
+
     private func updateGroupName() {
         guard let coreGathering = gathering else {
-//            return
             fatalError()
         }
         
-        //        let attrTitle = NSAttributedString(string: coreGathering.title, attributes: [.font: UIFont.preferredFont(forTextStyle: .largeTitle)])
         let styleCenter = NSMutableParagraphStyle()
         styleCenter.alignment = NSTextAlignment.center
         let attrTitle = NSAttributedString(string: coreGathering.title, attributes: [
-            //            .font: UIFont.preferredFont(forTextStyle: .largeTitle)
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
             .paragraphStyle: styleCenter
         ])
         
         DispatchQueue.main.async {
-//            self.titleLabelBtnInHeader.attributedText = attrTitle
             self.titleLabelBtnInHeader.setAttributedTitle(attrTitle, for: .normal)
         }
     }
@@ -525,14 +587,18 @@ class DutchpayController: UIViewController {
         }
     }
     
-    private func prepareParticipantsController() {
+    private func prepareParticipantsController(with gathering: Gathering? ) {
         
         guard let gathering = gathering else {
             fatalError()
         }
 
-         let participantsController = ParticipantsController(dutchController: self, gathering: gathering)
+        participantsController = ParticipantsController(dutchController: self, gathering: gathering)
         
+        guard let participantsController = participantsController else {
+            fatalError()
+        }
+
         participantsController.delegate = self
   
         participantsNavController = UINavigationController(rootViewController: participantsController)
@@ -553,18 +619,50 @@ class DutchpayController: UIViewController {
     }
     
     private func prepareSideController() {
-//        sideViewController = SideViewController()
         self.addChild(sideViewController)
         self.view.addSubview(sideViewController.view)
         sideViewController.didMove(toParent: self)
         
+        sideViewController.view.frame = CGRect(x: -screenWidth / 3, y: 0, width: screenWidth / 3 , height: screenHeight)
         
-        sideViewController.view.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-//            make.width.equalToSuperview().dividedBy(3)
-            make.width.equalTo(0)
-            make.height.equalToSuperview()
-            make.top.equalToSuperview()
+//        sideViewController.view.snp.makeConstraints { make in
+//            make.leading.equalToSuperview()
+////            make.width.equalToSuperview().dividedBy(3)
+//            make.width.equalTo(0)
+//            make.height.equalToSuperview()
+//            make.top.equalToSuperview()
+//        }
+        
+    }
+    private func hideSideController() {
+        
+        UIView.animate(withDuration: 0.3) {
+            
+            self.blurredView.isHidden = true
+            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
+//            self.blurredView.alpha =
+            self.sideViewController.view.frame = CGRect(x: -self.screenWidth / 3, y: 0, width: self.screenWidth / 3 , height: self.screenHeight)
+        } completion: { done in
+            if done {
+                self.isShowingSideController = false
+            }
+        }
+    }
+    
+    private func showSideController() {
+        UIView.animate(withDuration: 0.3) {
+            
+            self.blurredView.isHidden = false
+            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
+            
+            self.sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
+            
+        } completion: { done in
+            if done {
+                self.isShowingSideController = true
+                self.sideViewController.updateGatherings()
+                print("isShowingSideController : \(self.isShowingSideController)")
+            }
         }
     }
     
@@ -671,7 +769,10 @@ class DutchpayController: UIViewController {
         }
         
         view.addSubview(wholeContainerView)
+
         wholeContainerView.addSubview(historyBtn)
+        
+        wholeContainerView.addSubview(addGatheringBtn)
         wholeContainerView.addSubview(resetGatheringBtn)
         
         wholeContainerView.addSubview(groupBtn)
@@ -681,7 +782,7 @@ class DutchpayController: UIViewController {
         
         mainContainer.addSubview(totalPriceContainerView)
         mainContainer.addSubview(calculateBtn)
-        
+        wholeContainerView.addSubview(blurredView)
         // safeArea on the bottom
         wholeContainerView.snp.makeConstraints { make in
             make.left.equalToSuperview()
@@ -696,8 +797,15 @@ class DutchpayController: UIViewController {
             make.height.width.equalTo(30)
         }
         
+
         resetGatheringBtn.snp.makeConstraints { make in
             make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.height.width.equalTo(30)
+        }
+        
+        addGatheringBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(resetGatheringBtn.snp.leading).offset(-10)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.height.width.equalTo(30)
         }
@@ -771,7 +879,20 @@ class DutchpayController: UIViewController {
             }
         }
         
+        blurredView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+        
         prepareSideController()
+    }
+    
+    private func updateGatheringInfo() {
+        DispatchQueue.main.async {
+            self.dutchTableView.reloadData()
+        }
+        updateSpentTotalPrice()
+        updateGroupName()
+        
     }
 }
 
@@ -808,7 +929,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
             DutchUnit.deleteSelf(selectedDutchUnit)
             DispatchQueue.main.async {
                 self.dutchTableView.reloadData()
-                self.setupTotalPrice()
+                self.updateSpentTotalPrice()
             }
             
             completionhandler(true)
@@ -816,7 +937,6 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = .red
-        
         
         let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
         
@@ -860,8 +980,15 @@ extension DutchpayController: ParticipantsVCDelegate {
     
     // TODO: 각 DutchUnit 에 새로운 person 생성 or 기존 사람 제거. (Count 로 판별 불가.), 현재 정상작동 하지 않음. 이미 데이터가 임의로 많이 생성되었기 때문에;;  새로 만들 필요 있음.
     
+    // fatal Error!
+//    let prevMembers = gathering.dutchUnits.first!
     func updateParticipants() {
         guard let gathering = gathering else { fatalError() }
+//        if gathering.dutchUnits.count
+        guard gathering.dutchUnits.count != 0 else {
+            return
+        }
+        
         let prevMembers = gathering.dutchUnits.first!.personDetails.map { $0.person! }
         
         let prevPeopleSet = Set(prevMembers)
@@ -918,6 +1045,12 @@ extension DutchpayController: DutchUnitDelegate {
         // new gathering
         self.gathering = gathering
         
+        DispatchQueue.main.async {
+            self.dutchTableView.reloadData()
+        }
+        
+        updateSpentTotalPrice()
+
         print("dismiss Tapped from aDutchpayController triggered!!")
         
     }
@@ -937,23 +1070,23 @@ extension DutchpayController: AddingUnitControllerDelegate {
     }
 
     func updateDutchUnits() {
-        fetchDefaultGathering()
+
+        DispatchQueue.main.async {
+            self.dutchTableView.reloadData()
+        }
+        updateSpentTotalPrice()
     }
-    
-//    func updateParticipants2() {
-//
-//    }
 }
 
 
 //extension DutchpayController: HeaderDelegate {
 extension DutchpayController {
-    func didTapGroupName() {
-        print("Groupname Tapped!")
-        self.presentEditingGroupName()
-    }
+//    func didTapGroupName() {
+//        print("Groupname Tapped!")
+//        self.presentEditingGroupName()
+//    }
     
-    private func presentEditingGroupName() {
+    private func presentEditingGatheringName() {
         let alertController = UIAlertController(title: "Edit Group Name", message: "새로운 그룹 이름을 입력해주세요", preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
@@ -981,6 +1114,45 @@ extension DutchpayController {
         
         self.present(alertController, animated: true)
     }
+    
+    private func presentMakingGroup() {
+        let alertController = UIAlertController(title: "Edit Group Name", message: "새로운 그룹 이름을 입력해주세요", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Group Name"
+        }
+        
+        let saveAction = UIAlertAction(title: "Done", style: .default) { alert -> Void in
+            let textFieldInput = alertController.textFields![0] as UITextField
+            
+            let newGroupName = textFieldInput.text!
+            
+            guard newGroupName.count != 0 else { fatalError("Name must have at least one character") }
+        
+            let newGroup = Gathering.save(title: newGroupName, people: [])
+            
+            self.gathering = newGroup
+            
+            self.updateGroupName()
+            
+            DispatchQueue.main.async {
+                self.dutchTableView.reloadData()
+            }
+//            coreGathering.title = newGroupName
+            
+//            self.updateGroupName()
+            // TODO: Initialize new Group
+            // TODO:
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true)
+    }
 }
 
 
@@ -992,5 +1164,27 @@ extension DutchpayController: NumberLayerDelegateToSuperVC {
 extension Set {
     func setmap<U>(transform: (Element) -> U) -> Set<U> {
         return Set<U>(self.lazy.map(transform))
+    }
+}
+
+extension DutchpayController: SideControllerDelegate {
+    func updateGathering(with gathering: Gathering) {
+        hideSideController()
+        
+        self.gathering = gathering
+        updateGroupName()
+        prepareParticipantsController(with: gathering)
+        hideParticipantsController()
+    }
+    
+    func dismissSideController() {
+        hideSideController()
+    }
+    
+    func addNewGathering() {
+        hideSideController()
+        // ask new gathering's name
+        presentMakingGroup()
+        
     }
 }
