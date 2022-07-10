@@ -352,20 +352,18 @@ class DutchpayController: UIViewController {
     // MARK: - Actions
     @objc func resetGatheringBtnAction() {
         guard let gathering = gathering else { return }
-        let currentTitle = gathering.title
-//        let newGathering = Gathering.save(title: currentTitle, people: [])
-//        gathering = newGathering
+        
         gathering.people = []
         gathering.dutchUnits = []
         gathering.totalCost_ = 0
 
         gathering.createdAt = Date()
         gathering.updatedAt = Date()
-        gathering.title = currentTitle
         
         DispatchQueue.main.async {
             self.dutchTableView.reloadData()
         }
+        
         updateSpentTotalPrice()
         updateGatheringName()
     }
@@ -474,10 +472,11 @@ class DutchpayController: UIViewController {
             return
         }
         
-        print("current gathering name: \(coreGathering.title)")
         let addingUnitController = DutchUnitController(
-             gathering: coreGathering,
-             initialDutchUnit: selectedUnit)
+            initialDutchUnit: selectedUnit,
+            numOfAllUnits: coreGathering.dutchUnits.count,
+            participants: coreGathering.sortedPeople
+        )
 
         addingUnitController.addingDelegate = self
         addingUnitController.dutchDelegate = self
@@ -917,9 +916,6 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
 
 
 extension DutchpayController: ParticipantsVCDelegate {
-//    func updateParticipants(with participants: [Person]) {
-//
-//    }
     
     func hideParticipantsController() {
     
@@ -938,17 +934,11 @@ extension DutchpayController: ParticipantsVCDelegate {
 
     // TODO: 각 DutchUnit 에 새로운 person 생성 or 기존 사람 제거. (Count 로 판별 불가.), 현재 정상작동 하지 않음. 이미 데이터가 임의로 많이 생성되었기 때문에;;  새로 만들 필요 있음.
     
-    // fatal Error!
-//    let prevMembers = gathering.dutchUnits.first!
     
     func updateParticipants(with participants: [Person]) {
+
         guard let gathering = gathering else { fatalError() }
         
-        guard gathering.dutchUnits.count != 0 else {
-            return
-        }
-        
-//        let prevMembers = gathering.dutchUnits.first!.personDetails.map { $0.person! }
         let prevMembers = gathering.people.sorted()
         
         let prevPeopleSet = Set(prevMembers)
@@ -958,19 +948,24 @@ extension DutchpayController: ParticipantsVCDelegate {
             print($0.name)
         }
         
-        let newPeopleSet = gathering.people
+//        let newPeopleSet = gathering.people
+        
+        let newPeopleSet = Set(participants)
         
         print("newMembers: ")
         newPeopleSet.forEach {
             print($0.name)
         }
+
+//        let addedPeopleSet = newPeopleSet.subtracting(prevMembers)
+        /// 새로 생긴 사람들
+        let addedPeopleSet = newPeopleSet.subtracting(prevPeopleSet)
         
-        let addedPeopleSet = newPeopleSet.subtracting(prevMembers)
         print("addedPeople: ")
         addedPeopleSet.forEach {
             print($0.name)
         }
-        
+        /// 없어진 사람들
         let subtractedPeople = prevPeopleSet.subtracting(newPeopleSet)
         
         print("subtractedPeople: ")
@@ -990,24 +985,66 @@ extension DutchpayController: ParticipantsVCDelegate {
             if subtractedPeople.count != 0 {
                 subtractedPeople.forEach { eachPerson in
                     
-//                    Thread 1: Fatal error: Unexpectedly found nil while unwrapping an Optional value (.first!)
+//                    Thread 1: Fatal error: Unexpectedly found nil while unwrapping an Optional value (.first!) 7.11 아직도 발생
+                    // 이건.. personDetails 가 덜 생성되었기 때문에 발생.
                     
                     let subtractedPersonDetail = eachUnit.personDetails.filter { $0.person! == eachPerson }.first!
+                    
                     eachUnit.personDetails.remove(subtractedPersonDetail)
+                    print("personDetails.count: \(eachUnit.personDetails.count)")
                 }
             }
         }
+        
+        gathering.people = Set(participants)
+        dutchTableView.reloadData()
+        
     }
 }
 
 
 extension DutchpayController: DutchUnitDelegate {
-//    func dismissWithInfo(dutchUnit: DutchUnit) {
-    func dismissWithInfo(gathering: Gathering) {
+
+    func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool) {
         
-        // new gathering
-        self.gathering = gathering
         
+        guard let gathering = gathering else { fatalError() }
+        if isNew {
+            gathering.dutchUnits.insert(dutchUnit)
+        } else {
+//            guard let prev = gathering.dutchUnits.filter { $0.id == dutchUnit.id }.first else { fatalError() }
+            
+//            gathering.dutchUnits
+//            prev.update
+//            gathering.dutchUnits.
+        }
+        
+        let updatedPeopleArr = dutchUnit.personDetails.map { $0.person! }
+        let updatedPeopleSet = Set(updatedPeopleArr)
+        
+        let prevPeople = gathering.people
+        
+        let newPeople = updatedPeopleSet.subtracting(prevPeople)
+        
+        if newPeople.count != 0 {
+            for newPerson in newPeople {
+                gathering.people.insert(newPerson)
+            }
+
+            
+            for eachUnit in gathering.dutchUnits {
+                if eachUnit.personDetails.count != updatedPeopleSet.count {
+                    for newPerson in newPeople {
+//                        let newDetail = PersonDetail.save(person: newPerson)
+                        let newDetail = PersonDetail.save(person: newPerson, isAttended: false, spentAmount: 0)
+                        eachUnit.personDetails.insert(newDetail)
+                        print("person added to another DutchUnit, title: \(eachUnit.placeName), personName: \(newPerson.name)")
+                    }
+                }
+            }
+        }
+
+    
         DispatchQueue.main.async {
             self.dutchTableView.reloadData()
         }
@@ -1027,18 +1064,19 @@ extension DutchpayController: AddingUnitControllerDelegate {
         print("dismissChildVC 1")
         
         navigationController?.popViewController(animated: true)
-        updateDutchUnits()
+//        updateDutchUnits()
+        
         delegate?.dutchpayController(shouldHideMainTab: false)
 
     }
 
-    func updateDutchUnits() {
-
-        DispatchQueue.main.async {
-            self.dutchTableView.reloadData()
-        }
-        updateSpentTotalPrice()
-    }
+//    func updateDutchUnits() {
+//
+//        DispatchQueue.main.async {
+//            self.dutchTableView.reloadData()
+//        }
+//        updateSpentTotalPrice()
+//    }
 }
 
 

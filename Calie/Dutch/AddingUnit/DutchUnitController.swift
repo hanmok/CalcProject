@@ -11,13 +11,13 @@ import SnapKit
 import Then
 
 protocol AddingUnitControllerDelegate: AnyObject {
-    func updateDutchUnits()
+//    func updateDutchUnits()
     func dismissChildVC()
 //    func updateParticipants2()
 }
 
 protocol DutchUnitDelegate: AnyObject {
-    func dismissWithInfo(gathering: Gathering)
+    func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool)
 }
 
 class DutchUnitController: NeedingController {
@@ -30,15 +30,14 @@ class DutchUnitController: NeedingController {
     /// 10
     private let smallPadding: CGFloat = 10
 
-    let gathering: Gathering
+//    let gathering: Gathering
     var dutchUnit: DutchUnit?
     
+    // need to handle both
     var participants: [Person]
-
     var personDetails: [PersonDetail] = []
-    var selectedPriceTF: PriceTextField?
     
-
+    var selectedPriceTF: PriceTextField?
     
     weak var addingDelegate: AddingUnitControllerDelegate?
     
@@ -138,18 +137,21 @@ class DutchUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
+    private var numOfAllUnits: Int?
+    
     var initialDutchUnit: DutchUnit? {
         didSet {
             print("initialDutchUnit set, : \(oldValue)")
         }
     }
     
-    init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
-        print("participants count: \(gathering.people.count)")
+//    init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
+    init(initialDutchUnit: DutchUnit? = nil, numOfAllUnits: Int? = nil, participants: [Person]) {
+        
         self.initialDutchUnit = initialDutchUnit
-        self.gathering = gathering
-        self.participants = gathering.sortedPeople
-
+        self.participants = participants
+        self.numOfAllUnits = numOfAllUnits
+        
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
@@ -192,11 +194,19 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.reloadData()
         changeConfirmBtn()
         
+        print("numOfPeople: \(participants.count)")
+        for participant in participants {
+            print(participant.name)
+        }
     }
     
     private func setPlaceHolderForSpentPlace() {
-        let count = gathering.dutchUnits.count
-        spentPlaceTF.placeholder = "항목 \(count + 1)"
+//        let count = gathering.dutchUnits.count
+        guard let numOfAllUnits = numOfAllUnits else {
+            return
+        }
+
+        spentPlaceTF.placeholder = "항목 \(numOfAllUnits + 1)"
     }
     
     private func setupInitialState(dutchUnit: DutchUnit) {
@@ -331,55 +341,36 @@ class DutchUnitController: NeedingController {
             let textFieldInput = alertController.textFields![0] as UITextField
 
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
-
-            let newPerson = Person.save(name: textFieldInput.text!)
-
-            self.participants.append(newPerson)
-
-            self.gathering.people.forEach({ eachPerson in
-                if eachPerson.name == newPerson.name {
+            
+            let newPersonName = textFieldInput.text!
+            var isDuplicateName = false
+            for eachPerson in self.participants {
+                
+                if eachPerson.name == newPersonName {
                     //TODO: Popup alert
-                } else {
-                    self.gathering.people.insert(newPerson)
+                    isDuplicateName = true
+                    break
                 }
-            })
+            }
+            
+            if isDuplicateName == false {
+                let newPerson = Person.save(name: textFieldInput.text!)
+                self.participants.append(newPerson)
+                
+                let newDetail = PersonDetail.save(person: newPerson)
+                self.personDetails.append(newDetail)
+            }
+            
             
 
-            
-            let newDetail = PersonDetail.save(person: newPerson)
-            self.personDetails.append(newDetail)
-            
-            
-            // 구조를 바꿔야해.. Reload 될때, 어떻게 할건지, 합리적으로.
-            // 1.사람을 생성한 후 Reload 된다. reload 될 때, 현재까지의 personDetails 를 반영한다.
-            // 2. 그러려면, 입력이 들어올 때마다 personDetails 가 바뀌어야한다.
-            // init 은 되어있는 상황.
-            
-//            for personIndex in 0 ..< self.participants.count {
-//                self.personDetails[personIndex].isAttended = self.attendingDic[personIndex] ?? true
-//                self.self.personDetails[personIndex].spentAmount = self.self.textFieldWithPriceDic[personIndex] ?? 0
-//            }
-            
-//            self.personDetails =
-            // 음.. ;; reload 후에, 기존에 저장되어 있던 textFieldWithPriceDic 값에 따라 업데이트 시켜줘야 할 것 같은데?
-            // currentDutchUnit
-//            self.personDetails =
             
             self.personDetailCollectionView.reloadData()
-            
-            
-            self.gathering.people.insert(newPerson)
-            
-            
-            self.dutchDelegate?.dismissWithInfo(gathering: gathering)
-            
-//            self.addingDelegate?.updateParticipants2()
             
             self.personDetailCollectionView.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(self.smallPadding)
                 make.trailing.equalToSuperview().inset(self.smallPadding)
                 make.top.equalTo(self.divider.snp.bottom).offset(30)
-                make.height.equalTo(45 * self.participants.count - 20)
+                make.height.equalTo(50 * self.participants.count - 20)
             }
 
             self.addPersonBtn.snp.remakeConstraints { make in
@@ -407,12 +398,12 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissTapped() {
         print("cancel action")
-        
+        exitAction()
         addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
     
-    @objc func confirmTapped(_ sender: UIButton) {
+    private func exitAction() {
         print("success action")
         
         for personIndex in 0 ..< participants.count {
@@ -420,15 +411,16 @@ class DutchUnitController: NeedingController {
             personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
         }
         
-        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(gathering.dutchUnits.count + 1)"
+        guard let numOfAllUnits = numOfAllUnits else { return }
+
+        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
         
         if let initialDutchUnit = initialDutchUnit {
             
-
-            
             dutchUnit = DutchUnit.update(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
-            gathering.dutchUnits.update(with: dutchUnit!)
             
+            dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: false)
+    
         } else {
             
             dutchUnit = DutchUnit.save(spentTo: spentPlace,
@@ -436,19 +428,14 @@ class DutchUnitController: NeedingController {
                                        personDetails: personDetails,
                                        spentDate: spentDatePicker.date)
             
-            gathering.dutchUnits.insert(dutchUnit!)
+            dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: true)
         }
-        print("dutchUnitControlller, confirmTapped, ")
-//        guard let dutchUnit = dutchUnit else { fatalError() }
-        
-        // gathering need to differentiate each dutchUnit by its `id`
-//        gathering.dutchUnits.update(with: dutchUnit)
-        
-        gathering.updatedAt = Date()
-        gathering.managedObjectContext?.saveCoreData()
-        
-        addingDelegate?.updateDutchUnits()
+
         needingDelegate?.dismissNumberLayer()
+    }
+    
+    @objc func confirmTapped(_ sender: UIButton) {
+        exitAction()
         
     }
     
@@ -523,40 +510,55 @@ class DutchUnitController: NeedingController {
 
     private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
         
-        self.participants = gathering.sortedPeople
-        self.personDetails = []
-
-        var allNames = Set<String>()
-        var initializedNames = Set<String>()
-        var notInitializedNames = Set<String>()
-        
-        gathering.people.map { $0.name }.forEach {
-            allNames.insert($0)
-        }
-        
-        if let initialDutchUnit = initialDutchUnit {
-            self.personDetails = initialDutchUnit.personDetails.sorted()
+        if let dutchUnit = initialDutchUnit {
+            personDetails = dutchUnit.personDetails.sorted()
+        } else {
             
-            self.personDetails.forEach {
-                initializedNames.update(with: $0.person!.name)
+            for participant in participants {
+                let newPersonDetail = PersonDetail.save(person: participant)
+                personDetails.append(newPersonDetail)
             }
         }
-        
-        notInitializedNames = allNames.subtracting(initializedNames)
-        
-        notInitializedNames.sorted().forEach {
-      // TODO: Comment line below. Instead, get Person objc from gathering. 
-            let newPerson = Person.save(name: $0)
-        
-            let personDetail = PersonDetail.save(person: newPerson)
-            self.personDetails.append(personDetail)
-        }
-        
-        self.personDetails = self.personDetails.sorted()
         
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
         }
+        
+//        self.personDetails = []
+//
+//        var allNames = Set<String>()
+//        var initializedNames = Set<String>()
+//        var notInitializedNames = Set<String>()
+//
+//
+//        participants.map { $0.name }.forEach {
+//            allNames.insert($0)
+//        }
+//
+//        if let initialDutchUnit = initialDutchUnit {
+//            self.personDetails = initialDutchUnit.personDetails.sorted()
+//
+//            self.personDetails.forEach {
+//                initializedNames.update(with: $0.person!.name)
+//            }
+//        }
+//
+//        notInitializedNames = allNames.subtracting(initializedNames)
+//
+//        notInitializedNames.sorted().forEach {
+//      // TODO: Comment line below. Instead, get Person objc from gathering.
+//            let newPerson = Person.save(name: $0)
+//
+//            let personDetail = PersonDetail.save(person: newPerson)
+//            self.personDetails.append(personDetail)
+//        }
+//
+//        self.personDetails = self.personDetails.sorted()
+//
+//        DispatchQueue.main.async {
+//            self.personDetailCollectionView.reloadData()
+//        }
+        
     }
     
     
@@ -635,7 +637,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.delegate = self
         
         let peopleDetail = self.personDetails.sorted()
-            
+        
+        // FIXME: index out of range, 7.11
             cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
             
             textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount

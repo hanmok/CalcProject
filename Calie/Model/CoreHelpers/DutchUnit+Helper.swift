@@ -71,6 +71,7 @@ extension DutchUnit {
         }
         
         let convertedDetails = Array<Any>.convertToSet(items: personDetails)
+        dutchUnit.setValue(UUID(), forKey: .DutchUnit.id)
         dutchUnit.setValue(placeName, forKey: .DutchUnit.placeName)
         dutchUnit.setValue(spentAmount, forKey: .DutchUnit.spentAmount)
         dutchUnit.setValue(convertedDetails, forKey: .DutchUnit.personDetails)

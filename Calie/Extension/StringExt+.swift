@@ -64,6 +64,7 @@ extension String {
         static let placeName = "placeName_"
         static let spentAmount = "spentAmount"
         static let date = "date_"
+        static let id = "id_"
     }
     
     struct Gathering {

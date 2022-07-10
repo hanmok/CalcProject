@@ -159,16 +159,16 @@ class ParticipantsController: UIViewController{
         view.backgroundColor = UIColor(white: 0.93, alpha: 1)
         navigationController?.navigationBar.isHidden = true
         
-        setupParticipants()
+//        setupParticipants()
         
         registerTableView()
         setupLayout()
         setupAddTargets()
     }
     
-    private func setupParticipants() {
-        
-    }
+//    private func setupParticipants() {
+//
+//    }
 
     private func registerTableView() {
         participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
@@ -375,7 +375,9 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
 //            let selectedPerson = self.gathering.people.sorted()[indexPath.row]
             
 //            self.gathering.people.remove(selectedPerson)
+//            let selectedPerson = self.participants.sorted()[indexPath.row]
             
+            self.participants.remove(at: indexPath.row)
             
             DispatchQueue.main.async {
                 self.participantsTableView.reloadData()
@@ -417,3 +419,14 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
+
+//extension Set {
+//    func printAllElement() {
+//        for eachMember in self where Element.self is Person {
+////            print(eachMember.name)
+//            print(eachMember.)
+//        }
+//    }
+//}
+
+
