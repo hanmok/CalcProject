@@ -1,4 +1,9 @@
 
+
+
+
+
+
 import UIKit
 class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
     let colorList = ColorList()

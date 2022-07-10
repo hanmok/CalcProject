@@ -10,25 +10,25 @@ import Foundation
 import UIKit
 
 
-struct DutchUnitTableViewModel {
-    public var dutchUnit: DutchUnit2
-    
-    var placeName: String { return dutchUnit.placeName}
-    var spentAmount: String {
-        // TODO: Apply Global Currency
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        if let intValue = dutchUnit.spentAmount.convertToInt() {
-            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
-        } else {
-            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
-        }
-    }
-    
-    var peopleList: String {
-        return dutchUnit.personDetails.map { $0.person.name}.joined(separator: ", ")
-    }
-}
+//struct DutchUnitTableViewModel {
+//    public var dutchUnit: DutchUnit2
+//
+//    var placeName: String { return dutchUnit.placeName}
+//    var spentAmount: String {
+//        // TODO: Apply Global Currency
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//        if let intValue = dutchUnit.spentAmount.convertToInt() {
+//            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
+//        } else {
+//            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
+//        }
+//    }
+//
+//    var peopleList: String {
+//        return dutchUnit.personDetails.map { $0.person.name}.joined(separator: ", ")
+//    }
+//}
 
 
 
@@ -36,25 +36,24 @@ struct CoreDutchUnitViewModel {
     public var dutchUnit: DutchUnit
     
     var placeName: String { return dutchUnit.placeName}
+    
+    var date: String { return dutchUnit.date.getFormattedDate(format: "yyyy.MM.dd HH:mm") }
+    
     var spentAmount: String {
         // TODO: Apply Global Currency
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
+        
         if let intValue = dutchUnit.spentAmount.convertToInt() {
-            
-//            return numberFormatter.string(from: NSNumber(value: intValue))! + " 원"
             return convertIntoKoreanPrice(number: Double(intValue))
         } else {
-//            return numberFormatter.string(from: NSNumber(value: dutchUnit.spentAmount))! + " 원"
             return convertIntoKoreanPrice(number: dutchUnit.spentAmount)
         }
     }
     
 
     var peopleList: String {
-        
-        return dutchUnit.personDetails.map { $0.person!.name }.sorted { $0 < $1 }.joined(separator: ", ")
-        
+        return dutchUnit.personDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
     }
     
     private func convertIntoKoreanPrice(number: Double) -> String {
@@ -64,12 +63,6 @@ struct CoreDutchUnitViewModel {
         return numberFormatter.string(from: NSNumber(value: number))! + " 원"
     }
 }
-
-
-//struct Price: Int && Double { }
-//struct Price: Int {
-//
-//}
 
 public func convertIntoKoreanPrice(number: Double) -> String {
     let numberFormatter = NumberFormatter()

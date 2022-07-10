@@ -631,6 +631,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         for subview in frameView.subviews{
             subview.removeFromSuperview()
         }
+        
         for subview in view.subviews{
             subview.removeFromSuperview()
         }

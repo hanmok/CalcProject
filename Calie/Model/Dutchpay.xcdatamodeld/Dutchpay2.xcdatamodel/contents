@@ -22,8 +22,8 @@
         <relationship name="people_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person"/>
     </entity>
     <entity name="Person" representedClassName="Person" syncable="YES" codeGenerationType="class">
-        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
+        <attribute name="order_" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="PersonDetail" representedClassName="PersonDetail" syncable="YES" codeGenerationType="class">
         <attribute name="isAttended" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
