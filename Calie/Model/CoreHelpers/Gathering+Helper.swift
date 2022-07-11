@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 extension Gathering {
-    
+
     var dutchUnits: Set<DutchUnit> {
         get {
             self.dutchUnits_ as? Set<DutchUnit> ?? []
@@ -22,12 +22,12 @@ extension Gathering {
 //            self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
         }
     }
-    
+
     var totalCost: String {
         let cost = getTotalPrice(dutchUnits: self.dutchUnits)
         return convertIntoKoreanPrice(number: cost)
     }
-    
+
     var people: Set<Person> {
         get {
             self.people_ as? Set<Person> ?? []
@@ -37,13 +37,13 @@ extension Gathering {
             self.managedObjectContext?.saveCoreData()
         }
     }
-    
+
     var sortedPeople: [Person] {
         get {
             self.people.sorted()
         }
     }
-    
+
     var createdAt: Date {
         get {
             self.createdAt_ ?? Date()
@@ -53,7 +53,7 @@ extension Gathering {
             self.managedObjectContext?.saveCoreData()
         }
     }
-    
+
     var updatedAt: Date {
         get {
             self.updatedAt_ ?? Date()
@@ -63,7 +63,7 @@ extension Gathering {
             self.managedObjectContext?.saveCoreData()
         }
     }
-    
+
     var title: String {
         get {
             self.title_ ?? ""
@@ -77,7 +77,7 @@ extension Gathering {
 }
 
 extension Gathering {
-    
+
     private func getTotalPrice(dutchUnits: Set<DutchUnit>) -> Double{
         var price = 0.0
         for eachUnit in dutchUnits {
@@ -85,25 +85,25 @@ extension Gathering {
         }
         return price
     }
-    
+
     @discardableResult
     static func save(title: String, people: [Person]) -> Gathering{
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-        
+
         let managedContext = appDelegate.persistentContainer.viewContext
         guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.Gathering, in: managedContext) else { fatalError("failed to get entity from entity ")}
         guard let gathering = NSManagedObject(entity: entity, insertInto: managedContext) as? Gathering else {
             fatalError("failed to case to Subject during saving ")
         }
         let convertedPeople = Array<Any>.convertToSet(items: people)
-        
+
         gathering.setValue(Date(), forKey: .Gathering.createdAt)
         gathering.setValue(title, forKey: .Gathering.title)
         gathering.setValue(convertedPeople, forKey: .Gathering.people)
         gathering.setValue(true, forKey: .Gathering.isOnWorking)
-        
+
         managedContext.saveCoreData()
-        
+
 
         return gathering
     }
@@ -119,13 +119,13 @@ extension Gathering {
         request.predicate = predicate
         return request
     }
-    
+
     static func fetchLatest() -> Gathering? {
-        
+
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-        
+
         let managedContext = appDelegate.persistentContainer.viewContext
-        
+
         let req = Gathering.fetch(.all)
         if let gatherings = try? managedContext.fetch(req) {
             if gatherings.count != 0 {
@@ -135,20 +135,20 @@ extension Gathering {
         }
         fatalError("failed to get gathering ")
     }
-    
+
     static func fetchAll() -> [Gathering] {
-        
+
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-        
+
         let managedContext = appDelegate.persistentContainer.viewContext
-        
+
         let req = Gathering.fetch(.all)
         if let gatherings = try? managedContext.fetch(req) {
             return gatherings.sorted{$0.createdAt < $1.createdAt }
         }
-        
+
         fatalError("failed to get gathering ")
-        
+
     }
 }
 
@@ -187,7 +187,7 @@ protocol RemovableProtocol: AnyObject {
 
 extension RemovableProtocol {
     static func deleteSelf(_ target: NSManagedObject) {
-        
+
         if let context = target.managedObjectContext {
             context.delete(target)
             context.saveCoreData()

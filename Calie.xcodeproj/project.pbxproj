@@ -56,6 +56,10 @@
 		9AA150EB2870D15700DC4CED /* GitInfo in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150EA2870D15700DC4CED /* GitInfo */; };
 		9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */; };
 		9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150F0287A91D400DC4CED /* SideViewController.swift */; };
+		9AA1510A287C7E9700DC4CED /* DutchpayManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */; };
+		9AA1510E287C7EE800DC4CED /* DutchpayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */; };
+		9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */; };
+		9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15113287C833000DC4CED /* CoreDataTestStack.swift */; };
 		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
 		9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsTableCell.swift */; };
@@ -91,6 +95,16 @@
 		E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7715282790AB001C0CCE /* StringExt+.swift */; };
 		E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7717282790B7001C0CCE /* IntExt+.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9AA15105287C7E3E00DC4CED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A083F9A24CCD55D001057D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A083FA124CCD55D001057D2;
+			remoteInfo = Calie;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -158,6 +172,11 @@
 		9AA150EA2870D15700DC4CED /* GitInfo */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitInfo; sourceTree = "<group>"; };
 		9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableViewCell.swift; sourceTree = "<group>"; };
 		9AA150F0287A91D400DC4CED /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
+		9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayManagerTest.swift; sourceTree = "<group>"; };
+		9AA15101287C7E3E00DC4CED /* CalieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayManager.swift; sourceTree = "<group>"; };
+		9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		9AA15113287C833000DC4CED /* CoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestStack.swift; sourceTree = "<group>"; };
 		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9AA5C431271701190021975C /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
@@ -209,6 +228,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9AA150FE287C7E3E00DC4CED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -230,6 +256,7 @@
 			children = (
 				9A2DBC0C28258DF400CF4E86 /* SelectableButton.swift */,
 				9A083FA424CCD55D001057D2 /* Calie */,
+				9AA15102287C7E3E00DC4CED /* CalieTests */,
 				9A083FA324CCD55D001057D2 /* Products */,
 				E626D36DB9E65AF30BED8735 /* Pods */,
 				3E15720660FED9FFA29DB295 /* Frameworks */,
@@ -240,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				9A083FA224CCD55D001057D2 /* Calie.app */,
+				9AA15101287C7E3E00DC4CED /* CalieTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -296,6 +324,8 @@
 			isa = PBXGroup;
 			children = (
 				9AF62EF62702051B00E183AB /* BasicCalculator.swift */,
+				9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */,
+				9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */,
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
@@ -354,6 +384,15 @@
 				9A2DBC2E2826DBB400CF4E86 /* PersonDetailTestCell.swift */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		9AA15102287C7E3E00DC4CED /* CalieTests */ = {
+			isa = PBXGroup;
+			children = (
+				9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */,
+				9AA15113287C833000DC4CED /* CoreDataTestStack.swift */,
+			);
+			path = CalieTests;
 			sourceTree = "<group>";
 		};
 		9AC3CC572819922F00C9A37F /* Model */ = {
@@ -511,18 +550,40 @@
 			productReference = 9A083FA224CCD55D001057D2 /* Calie.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9AA15100287C7E3E00DC4CED /* CalieTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AA15107287C7E3E00DC4CED /* Build configuration list for PBXNativeTarget "CalieTests" */;
+			buildPhases = (
+				9AA150FD287C7E3E00DC4CED /* Sources */,
+				9AA150FE287C7E3E00DC4CED /* Frameworks */,
+				9AA150FF287C7E3E00DC4CED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AA15106287C7E3E00DC4CED /* PBXTargetDependency */,
+			);
+			name = CalieTests;
+			productName = CalieTests;
+			productReference = 9AA15101287C7E3E00DC4CED /* CalieTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		9A083F9A24CCD55D001057D2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1160;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = "Mac mini";
 				TargetAttributes = {
 					9A083FA124CCD55D001057D2 = {
 						CreatedOnToolsVersion = 11.6;
+					};
+					9AA15100287C7E3E00DC4CED = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 9A083FA124CCD55D001057D2;
 					};
 				};
 			};
@@ -541,6 +602,7 @@
 			projectRoot = "";
 			targets = (
 				9A083FA124CCD55D001057D2 /* Calie */,
+				9AA15100287C7E3E00DC4CED /* CalieTests */,
 			);
 		};
 /* End PBXProject section */
@@ -557,6 +619,13 @@
 				9A083FFD24CCDF6A001057D2 /* Localizable.strings in Resources */,
 				9AF62EE426FF251900E183AB /* BaseVCMemo in Resources */,
 				9A083FB224CCD55E001057D2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AA150FF287C7E3E00DC4CED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +693,7 @@
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
 				9A1C84FB2814E822001020EF /* PersistenceController.swift in Sources */,
+				9AA1510E287C7EE800DC4CED /* DutchpayManager.swift in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */,
 				9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */,
@@ -653,6 +723,7 @@
 				9AFB9507281EF60500A9DEAA /* DutchUnitTableViewModel.swift in Sources */,
 				9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
+				9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */,
 				9A2DBBFD281F024200CF4E86 /* DutchCollectionHeader.swift in Sources */,
 				9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
@@ -685,7 +756,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9AA150FD287C7E3E00DC4CED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AA1510A287C7E9700DC4CED /* DutchpayManagerTest.swift in Sources */,
+				9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9AA15106287C7E3E00DC4CED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A083FA124CCD55D001057D2 /* Calie */;
+			targetProxy = 9AA15105287C7E3E00DC4CED /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9A083FB324CCD55E001057D2 /* LaunchScreen.storyboard */ = {
@@ -871,6 +959,46 @@
 			};
 			name = Release;
 		};
+		9AA15108287C7E3E00DC4CED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F23GD77ZRK;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CalieTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calie.app/Calie";
+			};
+			name = Debug;
+		};
+		9AA15109287C7E3E00DC4CED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F23GD77ZRK;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "hanmok-main.CalieTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calie.app/Calie";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -888,6 +1016,15 @@
 			buildConfigurations = (
 				9A083FD024CCD55E001057D2 /* Debug */,
 				9A083FD124CCD55E001057D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AA15107287C7E3E00DC4CED /* Build configuration list for PBXNativeTarget "CalieTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AA15108287C7E3E00DC4CED /* Debug */,
+				9AA15109287C7E3E00DC4CED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
