@@ -60,6 +60,11 @@
 		9AA1510E287C7EE800DC4CED /* DutchpayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */; };
 		9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */; };
 		9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15113287C833000DC4CED /* CoreDataTestStack.swift */; };
+		9AA15117287DDBE700DC4CED /* SampleModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */; };
+		9AA15119287DDC2300DC4CED /* SampleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15118287DDC2300DC4CED /* SampleManager.swift */; };
+		9AA1511B287DDC4000DC4CED /* SampleCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1511A287DDC4000DC4CED /* SampleCoreDataStack.swift */; };
+		9AA1511D287DDD1E00DC4CED /* SampleManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */; };
+		9AA1511F287DDD3F00DC4CED /* SampleCoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1511E287DDD3F00DC4CED /* SampleCoreDataTestStack.swift */; };
 		9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42D2716FDB20021975C /* MainTabController.swift */; };
 		9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C42F2716FE320021975C /* SettingsViewController.swift */; };
 		9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5C431271701190021975C /* SettingsTableCell.swift */; };
@@ -177,6 +182,11 @@
 		9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayManager.swift; sourceTree = "<group>"; };
 		9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		9AA15113287C833000DC4CED /* CoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestStack.swift; sourceTree = "<group>"; };
+		9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SampleModel.xcdatamodel; sourceTree = "<group>"; };
+		9AA15118287DDC2300DC4CED /* SampleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleManager.swift; sourceTree = "<group>"; };
+		9AA1511A287DDC4000DC4CED /* SampleCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCoreDataStack.swift; sourceTree = "<group>"; };
+		9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleManagerTest.swift; sourceTree = "<group>"; };
+		9AA1511E287DDD3F00DC4CED /* SampleCoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCoreDataTestStack.swift; sourceTree = "<group>"; };
 		9AA5C42D2716FDB20021975C /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		9AA5C42F2716FE320021975C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9AA5C431271701190021975C /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
@@ -325,7 +335,9 @@
 			children = (
 				9AF62EF62702051B00E183AB /* BasicCalculator.swift */,
 				9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */,
+				9AA1511A287DDC4000DC4CED /* SampleCoreDataStack.swift */,
 				9AA1510D287C7EE800DC4CED /* DutchpayManager.swift */,
+				9AA15118287DDC2300DC4CED /* SampleManager.swift */,
 				9A083FE224CCDC7B001057D2 /* HistoryRecord.swift */,
 				9AA5C433271701FD0021975C /* SettingsSection.swift */,
 				9A083FE424CCDC88001057D2 /* UserDefaultSetup.swift */,
@@ -333,6 +345,7 @@
 				9AD2FB2C2847D2B20075551B /* CoreHelpers */,
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 				9AD2FB212847CF3B0075551B /* Dutchpay.xcdatamodeld */,
+				9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -390,7 +403,9 @@
 			isa = PBXGroup;
 			children = (
 				9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */,
+				9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */,
 				9AA15113287C833000DC4CED /* CoreDataTestStack.swift */,
+				9AA1511E287DDD3F00DC4CED /* SampleCoreDataTestStack.swift */,
 			);
 			path = CalieTests;
 			sourceTree = "<group>";
@@ -700,6 +715,8 @@
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
+				9AA15119287DDC2300DC4CED /* SampleManager.swift in Sources */,
+				9AA1511B287DDC4000DC4CED /* SampleCoreDataStack.swift in Sources */,
 				22F65E782845D0AB00646FCD /* Person+Helper.swift in Sources */,
 				9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */,
 				E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */,
@@ -749,6 +766,7 @@
 				9AFB9505281EF5F200A9DEAA /* DutchCollectionCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
+				9AA15117287DDBE700DC4CED /* SampleModel.xcdatamodeld in Sources */,
 				9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */,
 				9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
@@ -760,8 +778,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AA1511D287DDD1E00DC4CED /* SampleManagerTest.swift in Sources */,
 				9AA1510A287C7E9700DC4CED /* DutchpayManagerTest.swift in Sources */,
 				9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */,
+				9AA1511F287DDD3F00DC4CED /* SampleCoreDataTestStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1039,6 +1059,16 @@
 			);
 			currentVersion = 9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */;
 			path = BasicCalc.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */,
+			);
+			currentVersion = 9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */;
+			path = SampleModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
