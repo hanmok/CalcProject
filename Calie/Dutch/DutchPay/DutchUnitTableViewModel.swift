@@ -37,7 +37,7 @@ struct CoreDutchUnitViewModel {
     
     var placeName: String { return dutchUnit.placeName}
     
-    var date: String { return dutchUnit.date.getFormattedDate(format: "yyyy.MM.dd HH:mm") }
+    var date: String { return dutchUnit.spentDate.getFormattedDate(format: "yyyy.MM.dd HH:mm") }
     
     var spentAmount: String {
         // TODO: Apply Global Currency

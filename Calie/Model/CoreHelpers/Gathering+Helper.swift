@@ -18,7 +18,6 @@ extension Gathering {
         set {
             self.dutchUnits_ = newValue as NSSet
             print("gathering dutchUnits set triggered")
-//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -33,7 +32,6 @@ extension Gathering {
         }
         set {
             self.people_ = newValue as NSSet
-//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -49,7 +47,6 @@ extension Gathering {
         }
         set {
             self.createdAt_ = newValue
-//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -59,7 +56,6 @@ extension Gathering {
         }
         set {
             self.updatedAt_ = newValue
-//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -70,7 +66,6 @@ extension Gathering {
         set {
             self.title_ = newValue
             print("title has changed to \(newValue)")
-//            self.managedObjectContext?.saveCoreData()
         }
     }
 }
@@ -109,16 +104,18 @@ extension Gathering {
 }
 
 extension Gathering {
-    static func fetch(_ predicate: NSPredicate)-> NSFetchRequest<Gathering> {
-        let request = NSFetchRequest<Gathering>(entityName: String.EntityName.Gathering)
-//        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.order, ascending: true)]
-        request.sortDescriptors = [NSSortDescriptor(key: String.GatheringKeys.createdAt, ascending: true)]
-        // temp
-//        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.title, ascending: true)]
-        request.predicate = predicate
-        return request
-    }
+    
+//    static func fetch(_ predicate: NSPredicate)-> NSFetchRequest<Gathering> {
+//        let request = NSFetchRequest<Gathering>(entityName: String.EntityName.Gathering)
+////        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.order, ascending: true)]
+//        request.sortDescriptors = [NSSortDescriptor(key: String.GatheringKeys.createdAt, ascending: true)]
+//        // temp
+////        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.title, ascending: true)]
+//        request.predicate = predicate
+//        return request
+//    }
 
+    
 //    static func fetchLatest() -> Gathering? {
 //
 //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
@@ -135,33 +132,34 @@ extension Gathering {
 //        fatalError("failed to get gathering ")
 //    }
 
-    static func fetchAll() -> [Gathering] {
-
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
-        let req = Gathering.fetch(.all)
-
-        if let gatherings = try? managedContext.fetch(req) {
-            return gatherings.sorted{$0.createdAt < $1.createdAt }
-        } else {
-//            fatalError(<#T##() -> String#>, file: <#T##StaticString#>, line: <#T##UInt#>)
-        fatalError("hi")
-        }
-
-        fatalError("failed t o get gathering ")
-
-    }
+//    static func fetchAll() -> [Gathering] {
+//
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//
+//        let req = Gathering.fetch(.all)
+//
+//        if let gatherings = try? managedContext.fetch(req) {
+//            return gatherings.sorted{$0.createdAt < $1.createdAt }
+//        } else {
+////            fatalError(<#T##() -> String#>, file: <#T##StaticString#>, line: <#T##UInt#>)
+//        fatalError("hi")
+//        }
+//
+//        fatalError("failed t o get gathering ")
+//
+//    }
+    
 }
 
 extension NSManagedObjectContext {
-    func saveCoreData() {
+    func saveCoreData(msg: String = "" ) {
         print("saveCoreData called")
         do {
             try self.save()
         } catch {
-            fatalError("failed to save gathering coreData")
+            fatalError("failed to save coreData \(msg)")
         }
     }
 }

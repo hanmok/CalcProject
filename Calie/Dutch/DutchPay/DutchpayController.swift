@@ -30,7 +30,7 @@ protocol DutchpayToParticipantsDelegate: AnyObject {
 
 class DutchpayController: UIViewController {
     
-    let dutchManager = DutchpayManager()
+    let dutchManager = DutchManager()
     var isShowingSideController = false
 
     var sideViewController: SideViewController?
@@ -421,7 +421,10 @@ class DutchpayController: UIViewController {
             
             guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
         
-            let newPerson = Person.save(name: textFieldInput.text!)
+            let newPersonName = textFieldInput.text!
+            
+//            let newPerson = Person.save(name: textFieldInput.text!)
+            let newPerson = self.dutchManager.createPerson(name: newPersonName)
             
             guard let coreGathering = self.gathering else {
                 return
@@ -476,7 +479,8 @@ class DutchpayController: UIViewController {
         let addingUnitController = DutchUnitController(
             initialDutchUnit: selectedUnit,
             numOfAllUnits: coreGathering.dutchUnits.count,
-            participants: coreGathering.sortedPeople
+            participants: coreGathering.sortedPeople,
+            dutchManager: dutchManager
         )
 
         addingUnitController.addingDelegate = self
@@ -522,7 +526,8 @@ class DutchpayController: UIViewController {
     
     // 현재, 제대로 저장도 안됐다.
     private func fetchAll() {
-        let gatherings = Gathering.fetchAll()
+//        let gatherings = Gathering.fetchAll()
+        let gatherings = dutchManager.fetchGatherings()
         for eachGathering in gatherings {
             print("--------------------------------")
             print(eachGathering)
@@ -534,7 +539,8 @@ class DutchpayController: UIViewController {
     }
     
     private func fetchDefaultGathering() {
-        let allGatherings = Gathering.fetchAll()
+//        let allGatherings = Gathering.fetchAll()
+        let allGatherings = dutchManager.fetchGatherings()
         print("numOfAllGatherings : \(allGatherings.count)")
         
 //        if let latestGathering = Gathering.fetchLatest() {
@@ -588,7 +594,7 @@ class DutchpayController: UIViewController {
         }
 
 //        participantsController = ParticipantsController(dutchController: self, gathering: gathering)
-        participantsController = ParticipantsController(participants: gathering.sortedPeople)
+        participantsController = ParticipantsController(participants: gathering.sortedPeople, dutchManager: dutchManager)
         
         
         guard let participantsController = participantsController else {
@@ -637,7 +643,7 @@ class DutchpayController: UIViewController {
     }
     
     private func showSideController() {
-        sideViewController = SideViewController()
+        sideViewController = SideViewController(dutchManager: dutchManager)
         sideViewController?.sideDelegate = self
         guard let sideViewController = sideViewController else {
             return
@@ -981,7 +987,8 @@ extension DutchpayController: ParticipantsVCDelegate {
             // add each added person to dutchUnits' personDetails
             if addedPeopleSet.count != 0 {
                 addedPeopleSet.forEach { eachPerson in
-                    let newDetail = PersonDetail.save(person: eachPerson, isAttended: false, spentAmount: 0)
+//                    let newDetail = PersonDetail.save(person: eachPerson, isAttended: false, spentAmount: 0)
+                    let newDetail = dutchManager.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
                     eachUnit.personDetails.insert(newDetail)
                 }
             }
@@ -1039,8 +1046,8 @@ extension DutchpayController: DutchUnitDelegate {
             for eachUnit in gathering.dutchUnits {
                 if eachUnit.personDetails.count != updatedPeopleSet.count {
                     for newPerson in newPeople {
-//                        let newDetail = PersonDetail.save(person: newPerson)
-                        let newDetail = PersonDetail.save(person: newPerson, isAttended: false, spentAmount: 0)
+                        
+                        let newDetail = dutchManager.createPersonDetail(person: newPerson, isAttended: false, spentAmount: 0)
                         eachUnit.personDetails.insert(newDetail)
                         print("person added to another DutchUnit, title: \(eachUnit.placeName), personName: \(newPerson.name)")
                     }

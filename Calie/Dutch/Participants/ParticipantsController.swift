@@ -48,9 +48,12 @@ class ParticipantsController: UIViewController{
     private var participants: [Person]
     private var names: [String]
     
-    init(participants: [Person]) {
+    var dutchManager: DutchManager
+    
+    init(participants: [Person], dutchManager: DutchManager) {
         self.participants = participants
         self.names = participants.map { $0.name }
+        self.dutchManager = dutchManager
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -292,8 +295,9 @@ class ParticipantsController: UIViewController{
                 // TODO: show message
                 print("same name exist!")
             } else {
-                let somePerson = Person.save(name: newName)
-                self.participants.append(somePerson)
+//                let somePerson = Person.save(name: newName)
+                let newPerson = self.dutchManager.createPerson(name: newName)
+                self.participants.append(newPerson)
                 
                 self.reloadCollectionView()
             }
@@ -415,7 +419,8 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         let destinationPerson = participants[destinationIndexPath.row]
         
         
-        Person.changeOrder(of: sourcePerson, with: destinationPerson)
+//        Person.changeOrder(of: sourcePerson, with: destinationPerson)
+//        dutch
         
     }
 }

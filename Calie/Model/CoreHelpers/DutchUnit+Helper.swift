@@ -30,7 +30,6 @@ extension DutchUnit {
         }
         set {
             self.personDetails_ = newValue as NSSet
-            managedObjectContext?.saveCoreData()
         }
     }
     
@@ -39,70 +38,79 @@ extension DutchUnit {
             return self.placeName_ ?? "default place"
         }
         set {
-//            managed
             self.placeName_ = newValue
         }
     }
     
-    var date: Date {
+    var spentDate: Date {
         get {
-            return self.date_ ?? Date()
+            return self.spentDate_ ?? Date()
         }
         set {
-            self.date_ = newValue
+            self.spentDate_ = newValue
         }
     }
 }
 
+extension DutchUnit: RemovableProtocol {}
+
+
+extension DutchUnit: Comparable {
+    public static func <(lhs: DutchUnit, rhs: DutchUnit) -> Bool {
+        return lhs.spentDate < rhs.spentDate
+    }
+}
+
 extension DutchUnit {
-    @discardableResult
-    static func save(spentTo placeName: String,
-                     spentAmount:Double,
-                     personDetails: [PersonDetail],
-                     spentDate: Date = Date()) -> DutchUnit {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.DutchUnit, in: managedContext) else { fatalError("failed to get entity from DutchUnit ")}
-        
-        guard let dutchUnit = NSManagedObject(entity: entity, insertInto: managedContext) as? DutchUnit else {
-            fatalError("failed to case to Subject during saving ")
-        }
-        
-        let convertedDetails = Array<Any>.convertToSet(items: personDetails)
-        dutchUnit.setValue(UUID(), forKey: .DutchUnitKeys.id)
-        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
-        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
-        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
-        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
-        
-        managedContext.saveCoreData()
-        return dutchUnit
-    }
     
-    static func update(spentTo placeName: String,
-                       spentAmount: Double,
-                       personDetails: [PersonDetail],
-                       spentDate: Date = Date(), from dutchUnit: DutchUnit) -> DutchUnit {
-
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let convertedDetails = Array<Any>.convertToSet(items: personDetails)
-        
-        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
-        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
-        
-        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
-        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
-        
-        managedContext.saveCoreData()
-        
-        return dutchUnit
-    }
+//    @discardableResult
+//    static func save(spentTo placeName: String,
+//                     spentAmount:Double,
+//                     personDetails: [PersonDetail],
+//                     spentDate: Date = Date()) -> DutchUnit {
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//
+//        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.DutchUnit, in: managedContext) else { fatalError("failed to get entity from DutchUnit ")}
+//
+//        guard let dutchUnit = NSManagedObject(entity: entity, insertInto: managedContext) as? DutchUnit else {
+//            fatalError("failed to case to Subject during saving ")
+//        }
+//
+//        let convertedDetails = Array<Any>.convertToSet(items: personDetails)
+//        dutchUnit.setValue(UUID(), forKey: .DutchUnitKeys.id)
+//        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
+//        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
+//        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
+//        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
+//
+//        managedContext.saveCoreData()
+//        return dutchUnit
+//    }
+    
+//    static func update(spentTo placeName: String,
+//                       spentAmount: Double,
+//                       personDetails: [PersonDetail],
+//                       spentDate: Date = Date(), from dutchUnit: DutchUnit) -> DutchUnit {
+//
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+//
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//
+//        let convertedDetails = Array<Any>.convertToSet(items: personDetails)
+//
+//        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
+//        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
+//
+//        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
+//        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
+//
+//        managedContext.saveCoreData()
+//
+//        return dutchUnit
+//    }
     
 }
 
@@ -114,11 +122,4 @@ extension DutchUnit {
 //    var personDetails: [PersonDetail2]
 //}
 
-extension DutchUnit: RemovableProtocol {}
 
-
-extension DutchUnit: Comparable {
-    public static func <(lhs: DutchUnit, rhs: DutchUnit) -> Bool {
-        return lhs.date < rhs.date
-    }
-}

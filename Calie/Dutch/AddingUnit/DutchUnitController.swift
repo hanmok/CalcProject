@@ -137,6 +137,8 @@ class DutchUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
+    var dutchManager: DutchManager
+    
     private var numOfAllUnits: Int?
     
     var initialDutchUnit: DutchUnit? {
@@ -146,12 +148,12 @@ class DutchUnitController: NeedingController {
     }
     
 //    init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
-    init(initialDutchUnit: DutchUnit? = nil, numOfAllUnits: Int? = nil, participants: [Person]) {
+    init(initialDutchUnit: DutchUnit? = nil, numOfAllUnits: Int? = nil, participants: [Person], dutchManager: DutchManager) {
         
         self.initialDutchUnit = initialDutchUnit
         self.participants = participants
         self.numOfAllUnits = numOfAllUnits
-        
+        self.dutchManager = dutchManager
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
@@ -354,10 +356,12 @@ class DutchUnitController: NeedingController {
             }
             
             if isDuplicateName == false {
-                let newPerson = Person.save(name: textFieldInput.text!)
+//                let newPerson = Person.save(name: textFieldInput.text!)
+                let newPerson = dutchManager.createPerson(name: newPersonName)
                 self.participants.append(newPerson)
                 
-                let newDetail = PersonDetail.save(person: newPerson)
+//                let newDetail = PersonDetail.save(person: newPerson)
+                let newDetail = dutchManager.createPersonDetail(person: newPerson)
                 self.personDetails.append(newDetail)
             }
             
@@ -417,16 +421,23 @@ class DutchUnitController: NeedingController {
         
         if let initialDutchUnit = initialDutchUnit {
             
-            dutchUnit = DutchUnit.update(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
+//            dutchUnit = DutchUnit.update(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
+            dutchManager.updateDutchUnit(
+                target: initialDutchUnit,
+                spentTo: spentPlace,
+                spentAmount: spentAmount,
+                personDetails: personDetails,
+                spentDate: spentDatePicker.date)
             
             dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: false)
     
         } else {
+            dutchUnit = dutchManager.createDutchUnit(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date)
             
-            dutchUnit = DutchUnit.save(spentTo: spentPlace,
-                                       spentAmount: spentAmount,
-                                       personDetails: personDetails,
-                                       spentDate: spentDatePicker.date)
+//            dutchUnit = DutchUnit.save(spentTo: spentPlace,
+//                                       spentAmount: spentAmount,
+//                                       personDetails: personDetails,
+//                                       spentDate: spentDatePicker.date)
             
             dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: true)
         }
@@ -515,7 +526,8 @@ class DutchUnitController: NeedingController {
         } else {
             
             for participant in participants {
-                let newPersonDetail = PersonDetail.save(person: participant)
+//                let newPersonDetail = PersonDetail.save(person: participant)
+                let newPersonDetail = dutchManager.createPersonDetail(person: participant)
                 personDetails.append(newPersonDetail)
             }
         }

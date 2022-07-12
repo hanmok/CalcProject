@@ -12,7 +12,7 @@ import CoreData
 
 class DutchpayManagerTest: XCTestCase {
 
-    var dutchpayManager: DutchpayManager!
+    var dutchpayManager: DutchManager!
     var coreDataStack: CoreDataTestStack!
 
     override func setUp() {
@@ -21,7 +21,7 @@ class DutchpayManagerTest: XCTestCase {
 //        Thread 1: Fatal error: Unexpectedly found nil while implicitly unwrapping an Optional value
         // coreDatStack
         
-        dutchpayManager = DutchpayManager(mainContext: coreDataStack.mainContext)
+        dutchpayManager = DutchManager(mainContext: coreDataStack.mainContext)
         }
 
     func testCreateGathering() {
@@ -39,9 +39,11 @@ class DutchpayManagerTest: XCTestCase {
 
     func test_update_gathering() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
+        
         gathering.title = "jiwon"
 //        gathering.setValue("jiwon", forKey: .Gathering.title)
-        dutchpayManager.updateGathering(gathering: gathering)
+//        dutchpayManager.updateGathering(gathering: gathering)
+        dutchpayManager.update()
 
 //        let testUpdated = dutchpayManager.fetchGathering(withTitle: "jiwon")
 //        XCTAssertNil(testUpdated)
@@ -63,7 +65,7 @@ class DutchpayManagerTest: XCTestCase {
 //        let testGatherings = dutchpayManager.fetchGatherings()
 //        XCTAssertNil(testGatherings)
         
-        let gatherings = dutchpayManager.fetchGatherings()!
+        let gatherings = dutchpayManager.fetchGatherings()
 
         XCTAssertEqual(gatherings.count, 2)
         XCTAssertTrue(gatherings.contains(gatheringA))
