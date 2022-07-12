@@ -50,8 +50,8 @@ extension Person {
             order = Int64(gathering.people.count)
         }
         
-        person.setValue(name, forKey: .Person.name)
-        person.setValue(order, forKey: .Person.order)
+        person.setValue(name, forKey: .PersonKeys.name)
+        person.setValue(order, forKey: .PersonKeys.order)
         
         managedContext.saveCoreData()
         return person
@@ -69,8 +69,8 @@ extension Person {
         
         let firstOrder = first.order
         
-        first.setValue(second.order, forKey: .Person.order)
-        second.setValue(firstOrder, forKey: .Person.order)
+        first.setValue(second.order, forKey: .PersonKeys.order)
+        second.setValue(firstOrder, forKey: .PersonKeys.order)
         
         managedContext.saveCoreData()
     }

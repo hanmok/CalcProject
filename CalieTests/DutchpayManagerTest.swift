@@ -27,13 +27,14 @@ class DutchpayManagerTest: XCTestCase {
     func testCreateGathering() {
         dutchpayManager.createGathering(title: "developers")
 
-        let gathering = dutchpayManager.fetchGatherings()
+//        let gathering = dutchpayManager.fetchGatherings()
         
-        XCTAssertNil(gathering)
+//        XCTAssertNil(gathering)
         
 //        let gathering = dutchpayManager.fetchGathering(withTitle: "developers")!
+        let gathering = dutchpayManager.fetchGathering(.title("developers"))!
 
-//        XCTAssertEqual("developers", gathering.title)
+        XCTAssertEqual("developers", gathering.title)
     }
 
     func test_update_gathering() {
@@ -42,13 +43,14 @@ class DutchpayManagerTest: XCTestCase {
 //        gathering.setValue("jiwon", forKey: .Gathering.title)
         dutchpayManager.updateGathering(gathering: gathering)
 
-        let testUpdated = dutchpayManager.fetchGathering(withTitle: "jiwon")
-        XCTAssertNil(testUpdated)
+//        let testUpdated = dutchpayManager.fetchGathering(withTitle: "jiwon")
+//        XCTAssertNil(testUpdated)
         
 //        let updated = dutchpayManager.fetchGathering(withTitle: "jiwon")!
+        let updated = dutchpayManager.fetchGathering(.title("jiwon"))!
 
 //        XCTAssertNil(dutchpayManager.fetchGathering(withTitle:"developers"))
-//        XCTAssertEqual("jiwon", updated.title)
+        XCTAssertEqual("jiwon", updated.title)
     }
 
     func test_delete_gathering() {
@@ -58,14 +60,14 @@ class DutchpayManagerTest: XCTestCase {
 
         dutchpayManager.deleteGathering(gathering: gatheringB)
 
-        let testGatherings = dutchpayManager.fetchGatherings()
-        XCTAssertNil(testGatherings)
+//        let testGatherings = dutchpayManager.fetchGatherings()
+//        XCTAssertNil(testGatherings)
         
-//        let gatherings = dutchpayManager.fetchGatherings()!
+        let gatherings = dutchpayManager.fetchGatherings()!
 
-//        XCTAssertEqual(gatherings.count, 2)
-//        XCTAssertTrue(gatherings.contains(gatheringA))
-//        XCTAssertTrue(gatherings.contains(gatheringC))
+        XCTAssertEqual(gatherings.count, 2)
+        XCTAssertTrue(gatherings.contains(gatheringA))
+        XCTAssertTrue(gatherings.contains(gatheringC))
     }
 
     override func setUpWithError() throws {

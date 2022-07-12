@@ -71,11 +71,11 @@ extension DutchUnit {
         }
         
         let convertedDetails = Array<Any>.convertToSet(items: personDetails)
-        dutchUnit.setValue(UUID(), forKey: .DutchUnit.id)
-        dutchUnit.setValue(placeName, forKey: .DutchUnit.placeName)
-        dutchUnit.setValue(spentAmount, forKey: .DutchUnit.spentAmount)
-        dutchUnit.setValue(convertedDetails, forKey: .DutchUnit.personDetails)
-        dutchUnit.setValue(spentDate, forKey: .DutchUnit.date)
+        dutchUnit.setValue(UUID(), forKey: .DutchUnitKeys.id)
+        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
+        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
+        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
+        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
         
         managedContext.saveCoreData()
         return dutchUnit
@@ -93,11 +93,11 @@ extension DutchUnit {
         
         let convertedDetails = Array<Any>.convertToSet(items: personDetails)
         
-        dutchUnit.setValue(placeName, forKey: .DutchUnit.placeName)
-        dutchUnit.setValue(spentAmount, forKey: .DutchUnit.spentAmount)
+        dutchUnit.setValue(placeName, forKey: .DutchUnitKeys.placeName)
+        dutchUnit.setValue(spentAmount, forKey: .DutchUnitKeys.spentAmount)
         
-        dutchUnit.setValue(convertedDetails, forKey: .DutchUnit.personDetails)
-        dutchUnit.setValue(spentDate, forKey: .DutchUnit.date)
+        dutchUnit.setValue(convertedDetails, forKey: .DutchUnitKeys.personDetails)
+        dutchUnit.setValue(spentDate, forKey: .DutchUnitKeys.date)
         
         managedContext.saveCoreData()
         

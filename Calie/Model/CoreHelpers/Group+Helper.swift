@@ -41,8 +41,8 @@ extension Group {
             fatalError("failed to case to Group during saving ")
         }
         let convertedPeople = Array<Any>.convertToSet(items: people)
-        group.setValue(title, forKey: .Group.title)
-        group.setValue(convertedPeople, forKey: .Group.people)
+        group.setValue(title, forKey: .GroupKeys.title)
+        group.setValue(convertedPeople, forKey: .GroupKeys.people)
         
         managedContext.saveCoreData()
         return group

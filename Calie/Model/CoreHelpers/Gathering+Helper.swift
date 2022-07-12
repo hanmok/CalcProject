@@ -18,8 +18,7 @@ extension Gathering {
         set {
             self.dutchUnits_ = newValue as NSSet
             print("gathering dutchUnits set triggered")
-            self.managedObjectContext?.saveCoreData()
-//            self.totalCost = getTotalPrice(dutchUnits: dutchUnits_ as! Set<DutchUnit>)
+//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -34,7 +33,7 @@ extension Gathering {
         }
         set {
             self.people_ = newValue as NSSet
-            self.managedObjectContext?.saveCoreData()
+//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -50,7 +49,7 @@ extension Gathering {
         }
         set {
             self.createdAt_ = newValue
-            self.managedObjectContext?.saveCoreData()
+//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -60,7 +59,7 @@ extension Gathering {
         }
         set {
             self.updatedAt_ = newValue
-            self.managedObjectContext?.saveCoreData()
+//            self.managedObjectContext?.saveCoreData()
         }
     }
 
@@ -71,7 +70,7 @@ extension Gathering {
         set {
             self.title_ = newValue
             print("title has changed to \(newValue)")
-            self.managedObjectContext?.saveCoreData()
+//            self.managedObjectContext?.saveCoreData()
         }
     }
 }
@@ -86,55 +85,55 @@ extension Gathering {
         return price
     }
 
-    @discardableResult
-    static func save(title: String, people: [Person]) -> Gathering{
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.Gathering, in: managedContext) else { fatalError("failed to get entity from entity ")}
-        guard let gathering = NSManagedObject(entity: entity, insertInto: managedContext) as? Gathering else {
-            fatalError("failed to case to Subject during saving ")
-        }
-        let convertedPeople = Array<Any>.convertToSet(items: people)
-
-        gathering.setValue(Date(), forKey: .Gathering.createdAt)
-        gathering.setValue(title, forKey: .Gathering.title)
-        gathering.setValue(convertedPeople, forKey: .Gathering.people)
-        gathering.setValue(true, forKey: .Gathering.isOnWorking)
-
-        managedContext.saveCoreData()
-
-
-        return gathering
-    }
+//    @discardableResult
+//    static func save(title: String, people: [Person]) -> Gathering{
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//        guard let entity = NSEntityDescription.entity(forEntityName: .EntityName.Gathering, in: managedContext) else { fatalError("failed to get entity from entity ")}
+//        guard let gathering = NSManagedObject(entity: entity, insertInto: managedContext) as? Gathering else {
+//            fatalError("failed to case to Subject during saving ")
+//        }
+//        let convertedPeople = Array<Any>.convertToSet(items: people)
+//
+//        gathering.setValue(Date(), forKey: .Gathering.createdAt)
+//        gathering.setValue(title, forKey: .Gathering.title)
+//        gathering.setValue(convertedPeople, forKey: .Gathering.people)
+//        gathering.setValue(true, forKey: .Gathering.isOnWorking)
+//
+//        managedContext.saveCoreData()
+//
+//
+//        return gathering
+//    }
 }
 
 extension Gathering {
     static func fetch(_ predicate: NSPredicate)-> NSFetchRequest<Gathering> {
         let request = NSFetchRequest<Gathering>(entityName: String.EntityName.Gathering)
 //        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.order, ascending: true)]
-        request.sortDescriptors = [NSSortDescriptor(key: String.Gathering.createdAt, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: String.GatheringKeys.createdAt, ascending: true)]
         // temp
 //        request.sortDescriptors = [NSSortDescriptor(key: FolderProperties.title, ascending: true)]
         request.predicate = predicate
         return request
     }
 
-    static func fetchLatest() -> Gathering? {
-
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
-        let req = Gathering.fetch(.all)
-        if let gatherings = try? managedContext.fetch(req) {
-            if gatherings.count != 0 {
-                return gatherings.sorted{$0.updatedAt < $1.updatedAt }.last!
-            } else {
-                return nil }
-        }
-        fatalError("failed to get gathering ")
-    }
+//    static func fetchLatest() -> Gathering? {
+//
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//
+//        let req = Gathering.fetch(.all)
+//        if let gatherings = try? managedContext.fetch(req) {
+//            if gatherings.count != 0 {
+//                return gatherings.sorted{$0.updatedAt < $1.updatedAt }.last!
+//            } else {
+//                return nil }
+//        }
+//        fatalError("failed to get gathering ")
+//    }
 
     static func fetchAll() -> [Gathering] {
 
@@ -168,15 +167,6 @@ extension NSManagedObjectContext {
 }
 
 
-//struct Gathering2 {
-//    let title: String
-//    var totalCost: Double
-//    var dutchUnits: [DutchUnit2]
-//    let people: [Person2]
-//}
-
-
-//extension Gathering: Removable
 
 extension NSPredicate {
     static var all = NSPredicate(format: "TRUEPREDICATE")

@@ -59,7 +59,7 @@ extension String {
     }
     
     
-    struct DutchUnit {
+    struct DutchUnitKeys {
         static let personDetails = "personDetails_"
         static let placeName = "placeName_"
         static let spentAmount = "spentAmount"
@@ -67,7 +67,7 @@ extension String {
         static let id = "id_"
     }
     
-    struct Gathering {
+    struct GatheringKeys {
         static let totalCost = "totalCost"
         static let title = "title_"
         static let isOnWorking = "isOnWorking"
@@ -77,17 +77,17 @@ extension String {
         static let people = "people_"
     }
     
-    struct Group {
+    struct GroupKeys {
         static let title = "title_"
         static let people = "people_"
     }
     
-    struct Person {
+    struct PersonKeys {
         static let name = "name_"
         static let order = "order_"
     }
     
-    struct PersonDetail {
+    struct PersonDetailKeys {
         static let spentAmount = "spentAmount"
         static let isAttended = "isAttended"
         static let person = "person"

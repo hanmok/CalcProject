@@ -22,9 +22,9 @@ extension PersonDetail {
             fatalError("failed to case to Subject during saving ")
         }
         
-        personDetail.setValue(person, forKey: .PersonDetail.person)
-        personDetail.setValue(isAttended, forKey: .PersonDetail.isAttended)
-        personDetail.setValue(spentAmount, forKey: .PersonDetail.spentAmount)
+        personDetail.setValue(person, forKey: .PersonDetailKeys.person)
+        personDetail.setValue(isAttended, forKey: .PersonDetailKeys.isAttended)
+        personDetail.setValue(spentAmount, forKey: .PersonDetailKeys.spentAmount)
         
         managedContext.saveCoreData()
         return personDetail

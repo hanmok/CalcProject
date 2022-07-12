@@ -18,7 +18,7 @@ class CoreDataStack {
 
 //    private init() {
     public init() {
-        persistentContainer = NSPersistentContainer(name: "Dutchpay")
+        persistentContainer = NSPersistentContainer(name: "Dutch")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.type = NSSQLiteStoreType
 

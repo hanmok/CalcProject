@@ -27,7 +27,7 @@ struct CoreDataTestStack {
     init() {
 //        persistentContainer = NSPersistentContainer(name: "Dutchpay2")
 //        persistentContainer = NSPersistentContainer(name: "Dutchpay2")
-        persistentContainer = NSPersistentContainer(name: "Dutchpay")
+        persistentContainer = NSPersistentContainer(name: "Dutch")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.type = NSInMemoryStoreType
 

@@ -30,6 +30,7 @@ protocol DutchpayToParticipantsDelegate: AnyObject {
 
 class DutchpayController: UIViewController {
     
+    let dutchManager = DutchpayManager()
     var isShowingSideController = false
 
     var sideViewController: SideViewController?
@@ -536,12 +537,15 @@ class DutchpayController: UIViewController {
         let allGatherings = Gathering.fetchAll()
         print("numOfAllGatherings : \(allGatherings.count)")
         
-        if let latestGathering = Gathering.fetchLatest() {
+//        if let latestGathering = Gathering.fetchLatest() {
+//        if let latestGathering = dutchManager.fetchLatestGathering() {
+        if let latestGathering = dutchManager.fetchGathering(.latest) {
             gathering = latestGathering
         }
         
         if gathering == nil {
-            gathering = Gathering.save(title: "default gathering", people: [])
+//            gathering = Gathering.save(title: "default gathering", people: [])
+            gathering = dutchManager.createGathering(title: "default gathering")
         }
         
         updateSpentTotalPrice()
@@ -1130,7 +1134,8 @@ extension DutchpayController {
             
             guard newGroupName.count != 0 else { fatalError("Name must have at least one character") }
         
-            let newGroup = Gathering.save(title: newGroupName, people: [])
+//            let newGroup = Gathering.save(title: newGroupName, people: [])
+            let newGroup = self.dutchManager.createGathering(title: newGroupName)
             
             self.gathering = newGroup
             
