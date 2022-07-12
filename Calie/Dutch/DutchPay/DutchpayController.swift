@@ -312,7 +312,7 @@ class DutchpayController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 //        sideViewController.sideDelegate = self
-        fetchDefaultGathering()
+//        fetchDefaultGathering()
     }
     
     required init?(coder: NSCoder) {
@@ -334,7 +334,7 @@ class DutchpayController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
-        fetchDefaultGathering()
+//        fetchDefaultGathering()
         
         setupHeaderView()
         

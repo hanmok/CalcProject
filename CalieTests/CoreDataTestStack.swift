@@ -19,23 +19,24 @@ import CoreData
  Note: This can't be a shared singleton. Else tests would collide with each other.
  */
 struct CoreDataTestStack {
-        
+
     let persistentContainer: NSPersistentContainer
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
-    
+
     init() {
 //        persistentContainer = NSPersistentContainer(name: "Dutchpay2")
-        persistentContainer = NSPersistentContainer(name: "Dutchpay2")
+//        persistentContainer = NSPersistentContainer(name: "Dutchpay2")
+        persistentContainer = NSPersistentContainer(name: "Dutchpay")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.type = NSInMemoryStoreType
-        
+
         persistentContainer.loadPersistentStores { description, error in
             guard error == nil else {
                 fatalError("was unable to load store \(error!)")
             }
         }
-        
+
         mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         mainContext.automaticallyMergesChangesFromParent = true
         mainContext.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator

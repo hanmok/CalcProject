@@ -143,11 +143,15 @@ extension Gathering {
         let managedContext = appDelegate.persistentContainer.viewContext
 
         let req = Gathering.fetch(.all)
+
         if let gatherings = try? managedContext.fetch(req) {
             return gatherings.sorted{$0.createdAt < $1.createdAt }
+        } else {
+//            fatalError(<#T##() -> String#>, file: <#T##StaticString#>, line: <#T##UInt#>)
+        fatalError("hi")
         }
 
-        fatalError("failed to get gathering ")
+        fatalError("failed t o get gathering ")
 
     }
 }
