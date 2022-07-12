@@ -369,7 +369,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForOperatorsDM
             case 21 ... 30 :
 //                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-                sender.backgroundColor = colorList.bgColorForExtrasDM
+//                sender.backgroundColor = colorList.bgColorForExtrasDM
+//                sender.backgroundColor = .magenta
+//                sender.backgroundColor =
+                sender.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
                 basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
@@ -382,8 +385,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForOperatorsLM
 
             case 21 ... 30 :
+                sender.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
 //                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-                sender.backgroundColor = colorList.bgColorForExtrasLM
+//                sender.backgroundColor = colorList.bgColorForExtrasLM
+//                sender.backgroundColor = .magenta
                 basicCalc.invalidateAllTimers()
             default :
                 sender.backgroundColor = .magenta
@@ -942,12 +947,13 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         openParenthesis.addTarget(self, action: #selector( handlePerenthesisTapped), for: .touchUpInside)
         closeParenthesis.addTarget(self, action: #selector( handlePerenthesisTapped), for: .touchUpInside)
         
-        deleteButton.addTarget(self, action: #selector( handleDeletePressedDown), for: .touchDown)
+        deleteButton.addTarget(self, action: #selector(handleDeletePressedDown), for: .touchDown)
         deleteButton.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
-        deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
+        deleteButton.addTarget(self, action: #selector(handleColorChangeAction), for: .touchDown)
         
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
