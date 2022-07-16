@@ -89,14 +89,12 @@ class DutchpayController: UIViewController {
         DispatchQueue.main.async {
             self.totalPriceValueLabel.text = coreGathering.totalCost
         }
-
     }
     
     var participantsController: ParticipantsController?
     
     private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
-//        $0.backgroundColor = .magenta
      }
     
     private let blurredView = UIButton().then {
@@ -335,7 +333,7 @@ class DutchpayController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
-//        fetchDefaultGathering()
+        fetchDefaultGathering()
         
         setupHeaderView()
         
@@ -343,7 +341,9 @@ class DutchpayController: UIViewController {
         setupLayout()
         setupAddTargets()
         
-        fetchAll()
+//        fetchAll()
+        
+        updateGatheringInfo()
         
 //        prepareParticipantsController(with: gathering)
         
@@ -468,18 +468,25 @@ class DutchpayController: UIViewController {
     }
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
-        
-        guard let coreGathering = gathering else { fatalError() }
-        
-        if coreGathering.title == "" {
-            presentEditingGatheringName()
-            return
+        if gathering == nil {
+            let newGatheringName = String(dutchManager.fetchGatherings().count + 1)
+            let newGathering = dutchManager.createGathering(title: "모임 \(newGatheringName)")
+            gathering = newGathering
         }
+        
+        guard let gathering = gathering else { fatalError("gathering not exist") }
+
+        
+        
+//        if gathering.title == "" {
+//            presentEditingGatheringName()
+//            return
+//        }
         
         let addingUnitController = DutchUnitController(
             initialDutchUnit: selectedUnit,
-            numOfAllUnits: coreGathering.dutchUnits.count,
-            participants: coreGathering.sortedPeople,
+            numOfAllUnits: gathering.dutchUnits.count,
+            participants: gathering.sortedPeople,
             dutchManager: dutchManager
         )
 
@@ -525,36 +532,33 @@ class DutchpayController: UIViewController {
     }
     
     // 현재, 제대로 저장도 안됐다.
-    private func fetchAll() {
-//        let gatherings = Gathering.fetchAll()
-        let gatherings = dutchManager.fetchGatherings()
-        for eachGathering in gatherings {
-            print("--------------------------------")
-            print(eachGathering)
-            for eachPerson in eachGathering.sortedPeople {
-                print("personName: \(eachPerson.name)")
-            }
-            print("--------------------------------")
-        }
-    }
+//    private func fetchAll() {
+////        let gatherings = Gathering.fetchAll()
+//        let gatherings = dutchManager.fetchGatherings()
+//        for eachGathering in gatherings {
+//            print("--------------------------------")
+//            print(eachGathering)
+//            for eachPerson in eachGathering.sortedPeople {
+//                print("personName: \(eachPerson.name)")
+//            }
+//            print("--------------------------------")
+//        }
+//    }
     
     private func fetchDefaultGathering() {
-//        let allGatherings = Gathering.fetchAll()
-        let allGatherings = dutchManager.fetchGatherings()
-        print("numOfAllGatherings : \(allGatherings.count)")
         
-//        if let latestGathering = Gathering.fetchLatest() {
-//        if let latestGathering = dutchManager.fetchLatestGathering() {
         if let latestGathering = dutchManager.fetchGathering(.latest) {
             gathering = latestGathering
         }
         
         if gathering == nil {
-//            gathering = Gathering.save(title: "default gathering", people: [])
             gathering = dutchManager.createGathering(title: "default gathering")
         }
         
+        print("current gathering title: \(gathering!.title)")
+        
         updateSpentTotalPrice()
+        updateGatheringName()
     }
     
 
@@ -763,19 +767,21 @@ class DutchpayController: UIViewController {
             make.height.width.equalTo(30)
         }
         
-        addGatheringBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(resetGatheringBtn.snp.leading).offset(-10)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.width.equalTo(30)
-        }
+//        addGatheringBtn.snp.makeConstraints { make in
+//            make.trailing.equalTo(resetGatheringBtn.snp.leading).offset(-10)
+//            make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.height.width.equalTo(30)
+//        }
         
-        groupBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
-            make.top.equalTo(historyBtn.snp.top)
-            make.height.width.equalTo(30)
-        }
+//        groupBtn.snp.makeConstraints { make in
+//            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
+//            make.top.equalTo(historyBtn.snp.top)
+//            make.height.width.equalTo(30)
+//        }
         
-        if gathering != nil {
+        // 여기부터 잘못됨 .
+        
+//        if gathering != nil {
             
             mainContainer.snp.makeConstraints { make in
                 make.leading.trailing.equalToSuperview().inset(10)
@@ -830,18 +836,16 @@ class DutchpayController: UIViewController {
                 make.width.height.equalTo(50)
             }
             
-        } else {
-            gatheringPlusBtn.snp.makeConstraints { make in
-                make.width.height.equalTo(wholeContainerView.snp.width).dividedBy(3)
-                make.center.equalTo(wholeContainerView)
-            }
-        }
+//        } else {
+//            gatheringPlusBtn.snp.makeConstraints { make in
+//                make.width.height.equalTo(wholeContainerView.snp.width).dividedBy(3)
+//                make.center.equalTo(wholeContainerView)
+//            }
+//        }
         
         blurredView.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
-        
-//        prepareSideController()
     }
     
     private func updateGatheringInfo() {
@@ -850,7 +854,6 @@ class DutchpayController: UIViewController {
         }
         updateSpentTotalPrice()
         updateGatheringName()
-        
     }
 }
 
@@ -1114,8 +1117,9 @@ extension DutchpayController {
         
             guard let coreGathering = self.gathering else { fatalError() }
             coreGathering.title = newGroupName
-            
+            self.dutchManager.update()
             self.updateGatheringName()
+        
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

@@ -36,6 +36,15 @@ class DutchpayManagerTest: XCTestCase {
 
         XCTAssertEqual("developers", gathering.title)
     }
+    
+    func fetchingLatestGathering() {
+        dutchpayManager.createGathering(title: "first")
+        dutchpayManager.createGathering(title: "second")
+        
+        let latestGathering = dutchpayManager.fetchGathering(.latest)
+        
+        XCTAssertEqual(latestGathering!.title, "second")
+    } 
 
     func test_update_gathering() {
         let gathering = dutchpayManager.createGathering(title: "developers")!

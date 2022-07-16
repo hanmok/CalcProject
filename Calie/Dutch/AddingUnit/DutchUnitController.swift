@@ -62,11 +62,11 @@ class DutchUnitController: NeedingController {
 
     
     private let spentPlaceTF = UITextField(withPadding: true).then {
-//        $0.placeholder = "지출한 곳을 입력해주세요."
         $0.textAlignment = .right
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = 1
         $0.layer.cornerRadius = 5
+        $0.autocorrectionType = .no
     }
     
     private let divider = UIView().then {
@@ -74,22 +74,17 @@ class DutchUnitController: NeedingController {
         $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
     }
     
-    
     private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
     
     private let spentAmountTF = PriceTextField(placeHolder: "비용").then {
-        
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
         $0.isTotalPrice = true
         $0.layer.cornerRadius = 5
     }
     
-    
     private let spentDateLabel = UILabel().then {
         $0.textAlignment = .right
-        
-        
     }
     
     private let spentDatePicker: UIDatePicker = {
