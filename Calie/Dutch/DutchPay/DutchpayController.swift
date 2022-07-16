@@ -43,8 +43,6 @@ class DutchpayController: UIViewController {
     
     var popupToShow: PopupScreens?
     
-//    var participantsController: ParticipantsController?
-    
     let persistenceManager: PersistenceController
     
     var userDefaultSetup = UserDefaultSetup()
@@ -59,15 +57,6 @@ class DutchpayController: UIViewController {
         }
     }
     
-//    var gathering: Gathering? {
-//        didSet {
-//            printCurrentState()
-//            DispatchQueue.main.async {
-//                self.dutchTableView.reloadData()
-//            }
-//            print("coregathering has assigned, title: \(oldValue?.title)")
-//        }
-//    }
     
     var gathering: Gathering?
     
@@ -87,7 +76,7 @@ class DutchpayController: UIViewController {
         }
         
         DispatchQueue.main.async {
-            self.totalPriceValueLabel.text = coreGathering.totalCost
+            self.totalPriceValueLabel.text = coreGathering.totalCostStr
         }
     }
     
@@ -465,6 +454,7 @@ class DutchpayController: UIViewController {
         
         // TODO: Add DutchUnit
         presentDutchUnitController()
+    
     }
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
@@ -1023,9 +1013,11 @@ extension DutchpayController: DutchUnitDelegate {
         
         
         guard let gathering = gathering else { fatalError() }
+        
         if isNew {
             gathering.dutchUnits.insert(dutchUnit)
         } else {
+            
 //            guard let prev = gathering.dutchUnits.filter { $0.id == dutchUnit.id }.first else { fatalError() }
             
 //            gathering.dutchUnits
@@ -1064,9 +1056,8 @@ extension DutchpayController: DutchUnitDelegate {
         }
         
         updateSpentTotalPrice()
-
-        print("dismiss Tapped from aDutchpayController triggered!!")
         
+        dutchManager.update()
     }
 }
 
@@ -1114,12 +1105,12 @@ extension DutchpayController {
             let newGroupName = textFieldInput.text!
             
             guard newGroupName.count != 0 else { fatalError("Name must have at least one character") }
-        
+            
             guard let coreGathering = self.gathering else { fatalError() }
+            
             coreGathering.title = newGroupName
             self.dutchManager.update()
             self.updateGatheringName()
-        
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {

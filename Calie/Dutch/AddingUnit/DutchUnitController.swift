@@ -411,12 +411,11 @@ class DutchUnitController: NeedingController {
         }
         
         guard let numOfAllUnits = numOfAllUnits else { return }
-
+        
         let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
         
         if let initialDutchUnit = initialDutchUnit {
             
-//            dutchUnit = DutchUnit.update(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date, from: initialDutchUnit)
             dutchManager.updateDutchUnit(
                 target: initialDutchUnit,
                 spentTo: spentPlace,
@@ -424,25 +423,19 @@ class DutchUnitController: NeedingController {
                 personDetails: personDetails,
                 spentDate: spentDatePicker.date)
             
-            dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: false)
-    
+            dutchDelegate?.updateDutchUnit(initialDutchUnit, isNew: false)
+            
         } else {
             dutchUnit = dutchManager.createDutchUnit(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date)
             
-//            dutchUnit = DutchUnit.save(spentTo: spentPlace,
-//                                       spentAmount: spentAmount,
-//                                       personDetails: personDetails,
-//                                       spentDate: spentDatePicker.date)
-            
             dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: true)
         }
-
+        
         needingDelegate?.dismissNumberLayer()
     }
     
     @objc func confirmTapped(_ sender: UIButton) {
         exitAction()
-        
     }
     
     

@@ -24,6 +24,15 @@ extension DutchUnit {
         }
     }
     
+    public var isAmountEqual: Bool {
+        get {
+            return self.isAmountEqual_
+        }
+        set {
+            self.isAmountEqual_ = newValue
+        }
+    }
+    
     var personDetails: Set<PersonDetail> {
         get {
             self.personDetails_ as? Set<PersonDetail> ?? []

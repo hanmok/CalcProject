@@ -21,7 +21,11 @@ extension Gathering {
         }
     }
 
-    var totalCost: String {
+    var totalCost: Double {
+        return getTotalPrice(dutchUnits: self.dutchUnits)
+    }
+    
+    var totalCostStr: String {
         let cost = getTotalPrice(dutchUnits: self.dutchUnits)
         return convertIntoKoreanPrice(number: cost)
     }
