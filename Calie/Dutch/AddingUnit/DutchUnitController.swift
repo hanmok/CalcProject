@@ -11,9 +11,9 @@ import SnapKit
 import Then
 
 protocol AddingUnitControllerDelegate: AnyObject {
-//    func updateDutchUnits()
+    //    func updateDutchUnits()
     func dismissChildVC()
-//    func updateParticipants2()
+    //    func updateParticipants2()
 }
 
 protocol DutchUnitDelegate: AnyObject {
@@ -23,19 +23,22 @@ protocol DutchUnitDelegate: AnyObject {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
-
+    
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
     /// 10
     private let smallPadding: CGFloat = 10
-
-//    let gathering: Gathering
+    
+    //    let gathering: Gathering
     var dutchUnit: DutchUnit?
     
     // need to handle both
+    
     var participants: [Person]
     var personDetails: [PersonDetail] = []
+    
+    var initialParticipants: [Person]
     
     var selectedPriceTF: PriceTextField?
     
@@ -56,10 +59,10 @@ class DutchUnitController: NeedingController {
     private let currenyLabel = UILabel().then {
         $0.text = "원"
     }
-
+    
     private let spentPlaceLabel = UILabel().then {
         $0.text = "지출 항목"}
-
+    
     
     private let spentPlaceTF = UITextField(withPadding: true).then {
         $0.textAlignment = .right
@@ -93,7 +96,7 @@ class DutchUnitController: NeedingController {
         picker.sizeToFit()
         picker.semanticContentAttribute = .forceRightToLeft
         picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
-
+        
         return picker
     }()
     
@@ -124,6 +127,13 @@ class DutchUnitController: NeedingController {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
     }
     
+    private let resetBtn = UIButton().then {
+        $0.setTitle("초기화", for: .normal)
+        $0.setTitleColor(.red, for: .normal)
+        $0.layer.cornerRadius = 8
+        $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
+    }
+    
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.setTitleColor(.blue, for: .normal)
@@ -142,10 +152,10 @@ class DutchUnitController: NeedingController {
         }
     }
     
-//    init(gathering: Gathering, initialDutchUnit: DutchUnit? = nil) {
     init(initialDutchUnit: DutchUnit? = nil, numOfAllUnits: Int? = nil, participants: [Person], dutchManager: DutchManager) {
         
         self.initialDutchUnit = initialDutchUnit
+        self.initialParticipants = participants
         self.participants = participants
         self.numOfAllUnits = numOfAllUnits
         self.dutchManager = dutchManager
@@ -173,12 +183,12 @@ class DutchUnitController: NeedingController {
         // Recognizer for resigning keyboards
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-
+        
         registerCollectionView()
         setupLayout()
         setupTargets()
-    
-//        gathering.dutchUnits
+        
+        
         setPlaceHolderForSpentPlace()
         
         if let initialDutchUnit = initialDutchUnit {
@@ -198,11 +208,11 @@ class DutchUnitController: NeedingController {
     }
     
     private func setPlaceHolderForSpentPlace() {
-//        let count = gathering.dutchUnits.count
+        
         guard let numOfAllUnits = numOfAllUnits else {
             return
         }
-
+        
         spentPlaceTF.placeholder = "항목 \(numOfAllUnits + 1)"
     }
     
@@ -236,7 +246,7 @@ class DutchUnitController: NeedingController {
             spentDatePicker,
             divider,
             personDetailCollectionView,
-            addPersonBtn,
+            resetBtn, addPersonBtn,
             confirmBtn
         ].forEach { v in
             self.view.addSubview(v)
@@ -308,12 +318,23 @@ class DutchUnitController: NeedingController {
             make.top.equalTo(divider.snp.bottom).offset(30)
             make.height.equalTo(45 * participants.count - 20)
         }
-
+        
+        resetBtn.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(smallPadding * 1.5)
+            make.width.equalTo(80)
+            make.height.equalTo(40)
+            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
+            
+        }
+        
         addPersonBtn.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
+            make.leading.equalToSuperview().inset(smallPadding * 1.5)
+            make.trailing.equalTo(resetBtn.snp.leading).offset(-10)
             make.height.equalTo(40)
             make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
         }
+        
+        
         
         confirmBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -321,83 +342,120 @@ class DutchUnitController: NeedingController {
             make.width.equalTo(view.snp.width).dividedBy(2)
             make.height.equalTo(50)
         }
-        
-
     }
-
+    
     
     
     @objc private func presentAddingPeopleAlert() {
         let alertController = UIAlertController(title: "Add People", message: "추가할 사람의 이름을 입력해주세요", preferredStyle: .alert)
-
+        
         alertController.addTextField { (textField: UITextField!) -> Void in
             textField.placeholder = "Name"
+            textField.tag = 100
+            textField.delegate = self
         }
-
+        
         let saveAction = UIAlertAction(title: "Add", style: .default) { [self] alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
-
-            guard textFieldInput.text!.count != 0 else { fatalError("Name must have at least one character") }
             
             let newPersonName = textFieldInput.text!
-            var isDuplicateName = false
-            for eachPerson in self.participants {
-                
-                if eachPerson.name == newPersonName {
-                    //TODO: Popup alert
-                    isDuplicateName = true
-                    break
-                }
-            }
             
-            if isDuplicateName == false {
-//                let newPerson = Person.save(name: textFieldInput.text!)
-                let newPerson = dutchManager.createPerson(name: newPersonName)
-                self.participants.append(newPerson)
-                
-//                let newDetail = PersonDetail.save(person: newPerson)
-                let newDetail = dutchManager.createPersonDetail(person: newPerson)
-                self.personDetails.append(newDetail)
-            }
+            addPersonAction(with: newPersonName)
             
-            
-
-            
-            self.personDetailCollectionView.reloadData()
-            
+            //            guard newPersonName.count != 0 else { fatalError("Name must have at least one character") }
+            //
+            //            var isDuplicateName = false
+            //            for eachPerson in self.participants {
+            //
+            //                if eachPerson.name == newPersonName {
+            //                    //TODO: Popup alert
+            //                    isDuplicateName = true
+            //                    break
+            //                }
+            //            }
+            //
+            //            if isDuplicateName == false {
+            //                let newPerson = dutchManager.createPerson(name: newPersonName, prevPeople: participants)
+            //                self.participants.append(newPerson)
+            //
+            //                let newDetail = dutchManager.createPersonDetail(person: newPerson)
+            //                self.personDetails.append(newDetail)
+            //            }
+            //
+            //
+            //            self.personDetailCollectionView.reloadData()
+            //
+            //            self.personDetailCollectionView.snp.remakeConstraints { make in
+            //                make.leading.equalToSuperview().inset(self.smallPadding)
+            //                make.trailing.equalToSuperview().inset(self.smallPadding)
+            //                make.top.equalTo(self.divider.snp.bottom).offset(30)
+            //                make.height.equalTo(50 * self.participants.count - 20)
+            //            }
+            //
+            //            self.addPersonBtn.snp.remakeConstraints { make in
+            //                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+            //                make.height.equalTo(40)
+            //                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+            //            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
+    
+    private func setupTargets() {
+        resetBtn.addTarget(self, action: #selector(resetState), for: .touchUpInside)
+        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
+        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
+        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+    }
+    
+    
+    @objc func resetState() {
+        //        self.participants =
+        //        self.personDetails =
+        
+        self.participants = initialParticipants
+        personDetails = []
+        textFieldWithPriceDic = [:]
+        initializePersonDetails(initialDutchUnit: initialDutchUnit)
+        
+        
+        // set layout again
+        DispatchQueue.main.async {
             self.personDetailCollectionView.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(self.smallPadding)
                 make.trailing.equalToSuperview().inset(self.smallPadding)
                 make.top.equalTo(self.divider.snp.bottom).offset(30)
                 make.height.equalTo(50 * self.participants.count - 20)
             }
-
-            self.addPersonBtn.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+            
+            self.resetBtn.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.width.equalTo(80)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+                
+            }
+            
+            self.addPersonBtn.snp.makeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
                 make.height.equalTo(40)
                 make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
             }
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
-            (action : UIAlertAction!) -> Void in })
-
-        alertController.addAction(cancelAction)
-        alertController.addAction(saveAction)
-
-        self.present(alertController, animated: true)
-    }
-
-    
-    private func setupTargets() {
-        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
-        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
-        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
     }
     
     @objc func dismissTapped() {
         print("cancel action")
-        exitAction()
+        
         addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
@@ -466,9 +524,8 @@ class DutchUnitController: NeedingController {
         selectedPriceTF.text = remainingStr
         
         changeConfirmBtn()
-        
-        
     }
+    
     
     override func updateNumber(with numberText: String) {
         print("hi, \(numberText)")
@@ -506,7 +563,7 @@ class DutchUnitController: NeedingController {
         view.endEditing(true)
     }
     
-
+    
     private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
         
         if let dutchUnit = initialDutchUnit {
@@ -514,7 +571,6 @@ class DutchUnitController: NeedingController {
         } else {
             
             for participant in participants {
-//                let newPersonDetail = PersonDetail.save(person: participant)
                 let newPersonDetail = dutchManager.createPersonDetail(person: participant)
                 personDetails.append(newPersonDetail)
             }
@@ -523,42 +579,6 @@ class DutchUnitController: NeedingController {
         DispatchQueue.main.async {
             self.personDetailCollectionView.reloadData()
         }
-        
-//        self.personDetails = []
-//
-//        var allNames = Set<String>()
-//        var initializedNames = Set<String>()
-//        var notInitializedNames = Set<String>()
-//
-//
-//        participants.map { $0.name }.forEach {
-//            allNames.insert($0)
-//        }
-//
-//        if let initialDutchUnit = initialDutchUnit {
-//            self.personDetails = initialDutchUnit.personDetails.sorted()
-//
-//            self.personDetails.forEach {
-//                initializedNames.update(with: $0.person!.name)
-//            }
-//        }
-//
-//        notInitializedNames = allNames.subtracting(initializedNames)
-//
-//        notInitializedNames.sorted().forEach {
-//      // TODO: Comment line below. Instead, get Person objc from gathering.
-//            let newPerson = Person.save(name: $0)
-//
-//            let personDetail = PersonDetail.save(person: newPerson)
-//            self.personDetails.append(personDetail)
-//        }
-//
-//        self.personDetails = self.personDetails.sorted()
-//
-//        DispatchQueue.main.async {
-//            self.personDetailCollectionView.reloadData()
-//        }
-        
     }
     
     
@@ -589,10 +609,6 @@ class DutchUnitController: NeedingController {
         }
     }
     
-    
-    
-    
-    
     private func changeConfirmBtn() {
         print("changeConfirmBtn called ")
         sumOfIndividual = 0
@@ -612,6 +628,57 @@ class DutchUnitController: NeedingController {
         confirmBtn.isUserInteractionEnabled = condition
         
         confirmBtn.backgroundColor = condition ? .green : .orange
+    }
+    
+    private func addPersonAction(with newName: String) {
+        guard newName.count != 0 else { fatalError("Name must have at least one character") }
+        
+        var isDuplicateName = false
+        for eachPerson in self.participants {
+            
+            if eachPerson.name == newName {
+                self.showToast(message: "Duplicate name", defaultWidthSize: screenWidth, defaultHeightSize: screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
+                isDuplicateName = true
+                break
+            }
+        }
+        
+        if isDuplicateName == false {
+            // TODO: reset 누르면 이것들 초기화 해주기..
+            let newPerson = dutchManager.createPerson(name: newName, prevPeople: participants)
+            self.participants.append(newPerson)
+            
+            let newDetail = dutchManager.createPersonDetail(person: newPerson)
+            self.personDetails.append(newDetail)
+            
+            self.showToast(message: "\(newName) has added", defaultWidthSize: screenWidth, defaultHeightSize: screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
+        }
+        
+        DispatchQueue.main.async {
+            self.personDetailCollectionView.reloadData()
+            
+            self.personDetailCollectionView.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding)
+                make.trailing.equalToSuperview().inset(self.smallPadding)
+                make.top.equalTo(self.divider.snp.bottom).offset(30)
+                make.height.equalTo(50 * self.participants.count - 20)
+            }
+            
+            self.resetBtn.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.width.equalTo(80)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+                
+            }
+            
+            self.addPersonBtn.snp.makeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+            }
+        }
     }
 }
 
@@ -638,11 +705,13 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         let peopleDetail = self.personDetails.sorted()
         
-        // FIXME: index out of range, 7.11
-            cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
-            
-            textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
-            print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
+        // FIXME: index out of range, 7.11, 7.18
+        print("indexPath.row: \(indexPath.row)")
+        cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
+        // personDetail 이 존재하지 않음. why? 모름 ;;
+        textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
+        
+        print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
         
         if indexPath.row == (participants.count) - 1 {
             if let initialDutchUnit = initialDutchUnit {
@@ -710,8 +779,18 @@ extension DutchUnitController: UITextFieldDelegate {
             spentAmountTF.becomeFirstResponder()
         }
         
-        changeConfirmBtn()
-        return true
+        if textField.tag == 100 {
+            print("hi")
+            addPersonAction(with: textField.text!)
+
+            textField.text = ""
+            return false
+        } else {
+            changeConfirmBtn()
+            return true
+        }
+        
+
     }
     
     
@@ -735,7 +814,6 @@ extension DutchUnitController: UITextFieldDelegate {
             changeConfirmBtn()
             return true
         }
-        
     }
     
     

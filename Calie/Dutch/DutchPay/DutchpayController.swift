@@ -74,6 +74,7 @@ class DutchpayController: UIViewController {
         guard let coreGathering = gathering else {
             return
         }
+//        dutchManager.con
         
         DispatchQueue.main.async {
             self.totalPriceValueLabel.text = coreGathering.totalCostStr
@@ -330,11 +331,8 @@ class DutchpayController: UIViewController {
         setupLayout()
         setupAddTargets()
         
-//        fetchAll()
-        
         updateGatheringInfo()
         
-//        prepareParticipantsController(with: gathering)
         
         view.insetsLayoutMarginsFromSafeArea = false
     }
@@ -356,15 +354,13 @@ class DutchpayController: UIViewController {
         
         updateSpentTotalPrice()
         updateGatheringName()
+        dutchManager.update()
     }
     
     private func setupAddTargets() {
         print("setupAddTargets Called !")
 
-//        gatheringPlusBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
-
         historyBtn.addTarget(self, action: #selector(historyBtnTapped), for: .touchUpInside)
-//        historyBtn.addTarget(self, action: #selector(addBtnTapped(_:)), for: .touchUpInside)
         
         resetGatheringBtn.addTarget(self, action: #selector(resetGatheringBtnAction), for: .touchUpInside)
         
@@ -395,7 +391,13 @@ class DutchpayController: UIViewController {
     
     @objc func editPeopleTapped(_ sender: UIButton) {
         
-        presentParticipantsController(with: gathering)
+//        presentParticipantsController(with: gathering?.sortedPeople)
+//        presentParticipantsController(with: <#T##Gathering?#>)
+        guard let gathering = gathering else {
+            return
+        }
+
+        presentParticipantsController(with: gathering.sortedPeople)
     }
     
     private func presentAddingPeopleAlert() {
@@ -581,15 +583,13 @@ class DutchpayController: UIViewController {
         }
     }
     
-    private func presentParticipantsController(with gathering: Gathering? ) {
+    private func presentParticipantsController(with people: [Person]) {
         
         guard let gathering = gathering else {
             fatalError()
         }
 
-//        participantsController = ParticipantsController(dutchController: self, gathering: gathering)
         participantsController = ParticipantsController(participants: gathering.sortedPeople, dutchManager: dutchManager)
-        
         
         guard let participantsController = participantsController else {
             fatalError()
@@ -941,67 +941,75 @@ extension DutchpayController: ParticipantsVCDelegate {
     func updateParticipants(with participants: [Person]) {
 
         guard let gathering = gathering else { fatalError() }
-        
-        let prevMembers = gathering.people.sorted()
-        
-        let prevPeopleSet = Set(prevMembers)
-        
-        print("prevMembers: ")
-        prevPeopleSet.forEach {
-            print($0.name)
-        }
-        
-//        let newPeopleSet = gathering.people
-        
-        let newPeopleSet = Set(participants)
-        
-        print("newMembers: ")
-        newPeopleSet.forEach {
-            print($0.name)
-        }
 
-//        let addedPeopleSet = newPeopleSet.subtracting(prevMembers)
-        /// 새로 생긴 사람들
-        let addedPeopleSet = newPeopleSet.subtracting(prevPeopleSet)
+        dutchManager.updatePeople(updatedPeople: participants, currentGathering: gathering)
         
-        print("addedPeople: ")
-        addedPeopleSet.forEach {
-            print($0.name)
-        }
-        /// 없어진 사람들
-        let subtractedPeople = prevPeopleSet.subtracting(newPeopleSet)
-        
-        print("subtractedPeople: ")
-        subtractedPeople.forEach {
-            print($0.name)
-        }
-        
-        gathering.dutchUnits.forEach { eachUnit in
-            // add each added person to dutchUnits' personDetails
-            if addedPeopleSet.count != 0 {
-                addedPeopleSet.forEach { eachPerson in
-//                    let newDetail = PersonDetail.save(person: eachPerson, isAttended: false, spentAmount: 0)
-                    let newDetail = dutchManager.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
-                    eachUnit.personDetails.insert(newDetail)
-                }
-            }
-            
-            if subtractedPeople.count != 0 {
-                subtractedPeople.forEach { eachPerson in
-                    
-//                    Thread 1: Fatal error: Unexpectedly found nil while unwrapping an Optional value (.first!) 7.11 아직도 발생
-                    // 이건.. personDetails 가 덜 생성되었기 때문에 발생.
-                    
-                    let subtractedPersonDetail = eachUnit.personDetails.filter { $0.person! == eachPerson }.first!
-                    
-                    eachUnit.personDetails.remove(subtractedPersonDetail)
-                    print("personDetails.count: \(eachUnit.personDetails.count)")
-                }
-            }
-        }
-        
-        gathering.people = Set(participants)
         dutchTableView.reloadData()
+        dutchManager.update()
+//        updateGatheringName()
+//        updateSpentTotalPrice()
+        
+//        let prevMembers = gathering.people.sorted()
+//
+//        let prevPeopleSet = Set(prevMembers)
+//
+//        print("prevMembers: ")
+//        prevPeopleSet.forEach {
+//            print($0.name)
+//        }
+//
+////        let newPeopleSet = gathering.people
+//
+//        let newPeopleSet = Set(participants)
+//
+//        print("newMembers: ")
+//        newPeopleSet.forEach {
+//            print($0.name)
+//        }
+//
+////        let addedPeopleSet = newPeopleSet.subtracting(prevMembers)
+//        /// 새로 생긴 사람들
+//        let addedPeopleSet = newPeopleSet.subtracting(prevPeopleSet)
+//
+//        print("addedPeople: ")
+//        addedPeopleSet.forEach {
+//            print($0.name)
+//        }
+//        /// 없어진 사람들
+//        let subtractedPeople = prevPeopleSet.subtracting(newPeopleSet)
+//
+//        print("subtractedPeople: ")
+//        subtractedPeople.forEach {
+//            print($0.name)
+//        }
+//
+//        gathering.dutchUnits.forEach { eachUnit in
+//            // add each added person to dutchUnits' personDetails
+//            if addedPeopleSet.count != 0 {
+//                addedPeopleSet.forEach { eachPerson in
+////                    let newDetail = PersonDetail.save(person: eachPerson, isAttended: false, spentAmount: 0)
+//                    let newDetail = dutchManager.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
+//                    eachUnit.personDetails.insert(newDetail)
+//                }
+//            }
+//
+//            if subtractedPeople.count != 0 {
+//                subtractedPeople.forEach { eachPerson in
+//
+////                    Thread 1: Fatal error: Unexpectedly found nil while unwrapping an Optional value (.first!) 7.11 아직도 발생
+//                    // 이건.. personDetails 가 덜 생성되었기 때문에 발생.
+//
+//                    let subtractedPersonDetail = eachUnit.personDetails.filter { $0.person! == eachPerson }.first!
+//
+//                    eachUnit.personDetails.remove(subtractedPersonDetail)
+//                    print("personDetails.count: \(eachUnit.personDetails.count)")
+//                }
+//            }
+//        }
+//
+//        gathering.people = Set(participants)
+        
+//        dutchTableView.reloadData()
         
     }
 }
@@ -1146,6 +1154,7 @@ extension DutchpayController {
             DispatchQueue.main.async {
                 self.dutchTableView.reloadData()
             }
+            self.updateSpentTotalPrice()
 //            coreGathering.title = newGroupName
             
 //            self.updateGroupName()
@@ -1181,8 +1190,12 @@ extension DutchpayController: SideControllerDelegate {
         
         self.gathering = gathering
         updateGatheringName()
-        presentParticipantsController(with: gathering)
-        hideParticipantsController()
+        DispatchQueue.main.async {
+            self.dutchTableView.reloadData()
+        }
+
+//        hideParticipantsController()
+        
     }
     
     func dismissSideController() {
@@ -1192,7 +1205,7 @@ extension DutchpayController: SideControllerDelegate {
     func addNewGathering() {
         hideSideController()
         // ask new gathering's name
-        presentMakingGroup()
+        presentMakingGroup() // include updating totalPrice
         
     }
 }

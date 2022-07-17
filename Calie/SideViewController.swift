@@ -172,6 +172,7 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sideDelegate?.updateGathering(with: gatherings[indexPath.row])
+        print("selectedGathering title: \(gatherings[indexPath.row].title)")
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

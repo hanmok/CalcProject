@@ -45,59 +45,20 @@ extension Person {
             self.id_ = newValue
         }
     }
-    
-    
-    
 }
 
 
 extension Person: Comparable {
-    public static func <(lhs: Person, rhs: Person) -> Bool {
+    public static func < (lhs: Person, rhs: Person) -> Bool {
         return lhs.order < rhs.order
     }
 }
 
+
+
+// 사람 구별은 id 로..
 extension Person {
-//    @discardableResult
-//    static func save(name: String, gathering: Gathering? = nil ) -> Person {
-//
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-//
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//        guard let entity = NSEntityDescription.entity(forEntityName: String.EntityName.Person, in: managedContext) else { fatalError("failed to get entity from subject ")}
-//
-//        guard let person = NSManagedObject(entity: entity, insertInto: managedContext) as? Person else {
-//            fatalError("failed to case to Subject during saving ")
-//        }
-//
-//        var order: Int64 = 100
-//        if let gathering = gathering {
-//            order = Int64(gathering.people.count)
-//        }
-//
-//        person.setValue(name, forKey: .PersonKeys.name)
-//        person.setValue(order, forKey: .PersonKeys.order)
-//
-//        managedContext.saveCoreData()
-//        return person
-//    }
+    public static func == (lhs: Person, rhs: Person) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
-
-
-extension Person {
-
-//    static func changeOrder(of first: Person, with second: Person ) {
-//
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-//
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//
-//        let firstOrder = first.order
-//
-//        first.setValue(second.order, forKey: .PersonKeys.order)
-//        second.setValue(firstOrder, forKey: .PersonKeys.order)
-//
-//        managedContext.saveCoreData()
-//    }
-}
-

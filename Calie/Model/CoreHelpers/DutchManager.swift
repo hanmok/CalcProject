@@ -28,7 +28,7 @@ extension DutchManager {
         let gathering = Gathering(context: mainContext)
         
         gathering.title = title
-
+        gathering.createdAt = Date()
         do {
             try mainContext.save()
             return gathering
@@ -45,7 +45,7 @@ extension DutchManager {
         gathering.people = Set(people)
         gathering.isOnWorking = true
         gathering.title = title
-        
+        gathering.createdAt = Date()
         do {
             try mainContext.save()
             return gathering
@@ -247,17 +247,26 @@ extension DutchManager {
 // MARK: - People Helper
 extension DutchManager {
     @discardableResult
-     func createPerson(name: String, gathering: Gathering? = nil ) -> Person {
+    func createPerson(name: String, prevPeople: [Person]? = nil, givenIndex: Int = 100 ) -> Person {
         
          let person = Person(context: mainContext)
          
          person.name = name
-
-         if let gathering = gathering {
-             person.order = Int64(gathering.people.count + 1)
-         }
-         
-         do {
+        person.id = UUID()
+        
+        if prevPeople != nil {
+            if prevPeople!.count != 0 {
+                let highestOrder = prevPeople!.max { $0.order < $1.order }!.order
+                
+                person.order = Int64(highestOrder + 1)
+            }else {
+                person.order = 0
+            }
+        } else {
+            person.order = Int64(givenIndex)
+        }
+        
+        do {
              try mainContext.save()
              return person
          } catch let error {
@@ -270,7 +279,7 @@ extension DutchManager {
         
         first.order = second.order
         second.order = tempOrder
-update()
+        update()
     }
     
     func addPeople(addedPeople: [Person], currentGathering: Gathering) {
@@ -346,24 +355,29 @@ update()
         // addedPeopleSet
         if addedPeopleSet.count != 0 {
             
-            for eachPerson in addedPeopleSet {
-                let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
-                
-                for eachUnit in currentGathering.dutchUnits {
+            for eachUnit in currentGathering.dutchUnits {
+                for eachPerson in addedPeopleSet {
+                    let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
+                    // 순서가 중요함 !! 내부에서 새로 personDetail 만든 후 update 할 것!
                     eachUnit.personDetails.update(with: newPersonDetail)
+                    currentGathering.people.update(with: eachPerson)
                 }
                 
-                currentGathering.people.update(with: eachPerson)
             }
         }
+        
+        update() // update 했는데 왜... ??
+    }
+}
+
+
+extension DutchManager {
+    func swapPersonOrder(of person1: Person, with person2: Person) {
+        let tempOrder = person2.order
+        
+        person2.order = person1.order
+        person1.order = tempOrder
         update()
     }
 }
 
-
-// 사람 구별은 id 로..
-extension Person {
-    public static func == (lhs: Person, rhs: Person) -> Bool {
-        return lhs.id == rhs.id
-    }
-}

@@ -121,34 +121,34 @@ extension DutchpayManagerTest {
     }
     
 
-    // DutchUnit 2명으로 생성 후 -> 1명으로 변경, spentAmount 는 동일
-    func test_updateDutchUnit2_removePerson() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
-        
-        let person1 = dutchpayManager.createPerson(name: "original Person")
-        let person2 = dutchpayManager.createPerson(name: "added Person")
-       
-        let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 300)
-        let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 200)
-       
-        
-        let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhereBefore", spentAmount: 500, personDetails: [personDetail1, personDetail2], spentDate: Date())
-
-        gathering.dutchUnits.update(with: originalDutchUnit)
-        
-        let updatedDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhereAfter", spentAmount: 500, personDetails: [personDetail1], spentDate: Date())
-        
-        
-        dutchpayManager.updateDutchUnit(target: originalDutchUnit, with: updatedDutchUnit)
-        
-        
-        XCTAssertEqual(gathering.dutchUnits.count, 1)
-        XCTAssertEqual(gathering.dutchUnits.first!.placeName, "somewhereAfter")
-        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 1)
-        XCTAssertEqual(gathering.totalCost, 500)
-
-        XCTAssertFalse(gathering.dutchUnits.first!.isAmountEqual)
-    }
+    // DutchUnit 2명으로 생성 후 -> 1명으로 변경, spentAmount 는 동일 (불가능한 경우)
+//    func test_updateDutchUnit2_removePerson() {
+//        let gathering = dutchpayManager.createGathering(title: "developers")!
+//
+//        let person1 = dutchpayManager.createPerson(name: "original Person")
+//        let person2 = dutchpayManager.createPerson(name: "added Person")
+//
+//        let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 300)
+//        let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 200)
+//
+//
+//        let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhereBefore", spentAmount: 500, personDetails: [personDetail1, personDetail2], spentDate: Date())
+//
+//        gathering.dutchUnits.update(with: originalDutchUnit)
+//
+//        let updatedDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhereAfter", spentAmount: 500, personDetails: [personDetail1], spentDate: Date())
+//
+//
+//        dutchpayManager.updateDutchUnit(target: originalDutchUnit, with: updatedDutchUnit)
+//
+//
+//        XCTAssertEqual(gathering.dutchUnits.count, 1)
+//        XCTAssertEqual(gathering.dutchUnits.first!.placeName, "somewhereAfter")
+//        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 1)
+//        XCTAssertEqual(gathering.totalCost, 500)
+//
+//        XCTAssertFalse(gathering.dutchUnits.first!.isAmountEqual)
+//    }
     
     // DutchUnit 제거
     func test_deleteDutchUnit() {
@@ -180,8 +180,6 @@ extension DutchpayManagerTest {
 
 extension DutchpayManagerTest {
     
-    
-    
     func test_gathering_updatePeople() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
@@ -189,21 +187,22 @@ extension DutchpayManagerTest {
         let person2 = dutchpayManager.createPerson(name: "person2")
         let person3 = dutchpayManager.createPerson(name: "person3")
 
-
-
         let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
         let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
         
         
         let originalMemberDetails = [personDetail1, personDetail2]
         
+        
         let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: originalMemberDetails, spentDate: Date())
         
+        
         dutchpayManager.addDutchUnit(of: originalDutchUnit, to: gathering)
+        
         XCTAssertEqual(gathering.people.count, 2)
         XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 2)
         
-        // remove person2, add person3
+        // remove person2 & add person3
         let updatedPeople = [person1, person3]
         
         dutchpayManager.updatePeople(updatedPeople: updatedPeople, currentGathering: gathering)
@@ -221,11 +220,22 @@ extension DutchpayManagerTest {
         XCTAssertNil(gathering.dutchUnits.first!.personDetails.filter {$0.person!.name == "person2"}.first)
     }
     
+    // MARK: - People Ordering
+//    지금 만들기가 조금 애매함.. 상황이 구체적이지 않기 때문에..
+    func test_gathering_makingPeopleInOrder() {
+        let person1 = dutchpayManager.createPerson(name: "person1")
+        let person2 = dutchpayManager.createPerson(name: "person2")
+        let person3 = dutchpayManager.createPerson(name: "person3")
+        
+        
+    }
+    
     // 음... Person 이 Gathering 의 People 에 속해있는 상태이면 people 이 변할 때마다 DutchUnit 내에 있는 PersonDetails 도 함께 변할 수 있지 않을까??
+
     func test_gathering_renamePeople() {
         
     }
-    // Ordering
+
 }
 
 
@@ -295,7 +305,19 @@ extension DutchpayManagerTest {
         XCTAssertEqual(gathering.people.count, 1)
         XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 1)
     }
+    
+    func test_swapPeopleOrder() {
+        let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
+        let person2 = dutchpayManager.createPerson(name: "person2", givenIndex: 1)
+        
+        dutchpayManager.swapPersonOrder(of: person1, with: person2)
+        
+        XCTAssertEqual(person1.order, 1)
+        XCTAssertEqual(person2.order, 0)
+    }
 }
+
+
 
 extension DutchpayManagerTest {
 
@@ -322,5 +344,7 @@ extension DutchpayManagerTest {
             // Put the code you want to measure the time of here.
         }
     }
-
 }
+
+
+

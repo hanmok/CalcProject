@@ -48,11 +48,14 @@ class ParticipantsController: UIViewController{
     private var participants: [Person]
     private var names: [String]
     
+    private var updatedParticipants: [Person]
     var dutchManager: DutchManager
     
     init(participants: [Person], dutchManager: DutchManager) {
+//    init(participants: [Person]) {
         self.participants = participants
         self.names = participants.map { $0.name }
+        self.updatedParticipants = participants
         self.dutchManager = dutchManager
         super.init(nibName: nil, bundle: nil)
     }
@@ -78,7 +81,7 @@ class ParticipantsController: UIViewController{
     }
     
     private let titleLabel = UILabel().then {
-        let attrTitle = NSAttributedString(string: "참가 인원 수정", attributes: [
+        let attrTitle = NSAttributedString(string: "참가 인원", attributes: [
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ])
         
@@ -86,21 +89,22 @@ class ParticipantsController: UIViewController{
         $0.textAlignment = .center
     }
 
-    private let dismissBtn: UIButton = {
-        let btn = UIButton()
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
-        
-        btn.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-        
-        return btn
-    }()
+//    private let dismissBtn: UIButton = {
+//        let btn = UIButton()
+//        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.tintColor = .black
+//
+//        btn.addSubview(imageView)
+//        imageView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.centerY.equalToSuperview()
+//            make.height.equalToSuperview()
+//        }
+//
+//        return btn
+//    }()
+    
     
     private let editingBtn: UIButton = {
         let btn = UIButton()
@@ -109,13 +113,20 @@ class ParticipantsController: UIViewController{
         return btn
     }()
     
-
+    private let cancelBtn = UIButton().then {
+        $0.setTitle("Cancel", for: .normal)
+        $0.backgroundColor = .white
+        $0.setTitleColor(.red, for: .normal)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
+    }
+    
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
         $0.backgroundColor = .white
         $0.setTitleColor(.black, for: .normal)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
     }
 
     
@@ -167,6 +178,12 @@ class ParticipantsController: UIViewController{
         registerTableView()
         setupLayout()
         setupAddTargets()
+        
+        print("allPerson Info:")
+        participants.forEach {
+            print("name: \($0.name), order: \($0.order)")
+            
+        }
     }
     
 //    private func setupParticipants() {
@@ -188,14 +205,28 @@ class ParticipantsController: UIViewController{
             make.leading.trailing.bottom.top.equalToSuperview()
         }
 
-        [confirmBtn,
+        [cancelBtn, confirmBtn,
          addPeopleBtn,
          participantsTableView,
-         titleLabel, dismissBtn, editingBtn ]
+         titleLabel,
+//         dismissBtn,
+         
+         editingBtn ]
             .forEach { containerView.addSubview($0)}
         
+        // TODO: Make it contained in Stack View
+        cancelBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.height.equalTo(50)
+            make.width.equalToSuperview().dividedBy(2.15)
+            make.bottom.equalToSuperview()
+        }
+        
         confirmBtn.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+//            make.leading.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().inset(10)
+//            make.leading.equalTo(cancelBtn.snp.trailing)
+            make.width.equalToSuperview().dividedBy(2.15)
             make.bottom.equalToSuperview()
             make.height.equalTo(50)
         }
@@ -221,12 +252,12 @@ class ParticipantsController: UIViewController{
             make.top.equalToSuperview().offset(10)
         }
         
-        dismissBtn.snp.makeConstraints { make in
-            make.height.equalTo(30)
-            make.centerY.equalTo(titleLabel.snp.centerY)
-            make.leading.equalToSuperview().offset(10)
-            make.width.equalTo(30)
-        }
+//        dismissBtn.snp.makeConstraints { make in
+//            make.height.equalTo(30)
+//            make.centerY.equalTo(titleLabel.snp.centerY)
+//            make.leading.equalToSuperview().offset(10)
+//            make.width.equalTo(30)
+//        }
         
         
         editingBtn.snp.makeConstraints { make in
@@ -239,23 +270,32 @@ class ParticipantsController: UIViewController{
 
     private func setupAddTargets() {
         
-        dismissBtn.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+//        dismissBtn.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
 
+        cancelBtn.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         editingBtn.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
         
-        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        confirmBtn.addTarget(nil, action: #selector(confirmAction), for: .touchUpInside)
     }
-
-    @objc func cancelTapped(_ sender: UIButton) {
-        print("cancel tapped!")
-        delegate?.updateParticipants(with: participants)
+    
+    
+    @objc func cancelAction() {
         delegate?.hideParticipantsController()
     }
+
+//    @objc func cancelTapped(_ sender: UIButton) {
+//        print("cancel tapped!")
+//        // TODO: 이거.. Cancel 인 경우인데 저장을 시켜줘야해? ㄴㄴ
+//        delegate?.updateParticipants(with: participants)
+//        delegate?.hideParticipantsController()
+//    }
     
     
-    @objc func confirmTapped(_ sender: UIButton) {
+    @objc func confirmAction() {
         print("next Tapped!")
+        print("current participants from participantsController:")
+        participants.forEach { print($0.name)}
         delegate?.updateParticipants(with: participants)
         delegate?.hideParticipantsController()
     }
@@ -282,6 +322,8 @@ class ParticipantsController: UIViewController{
 
         alertController.addTextField { (textField: UITextField!) -> Void in
             textField.placeholder = "Name"
+            textField.tag = 100
+            textField.delegate = self
         }
 
         let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
@@ -289,18 +331,8 @@ class ParticipantsController: UIViewController{
 
             let newName = textFieldInput.text!
             
-            guard newName.count != 0 else { fatalError("Name must have at least one character") }
+            self.addPerson(newName: newName)
 
-            if self.names.contains(newName) {
-                // TODO: show message
-                print("same name exist!")
-            } else {
-//                let somePerson = Person.save(name: newName)
-                let newPerson = self.dutchManager.createPerson(name: newName)
-                self.participants.append(newPerson)
-                
-                self.reloadCollectionView()
-            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
@@ -316,13 +348,13 @@ class ParticipantsController: UIViewController{
         if participantsTableView.isEditing {
             // not on Editing Mode
             editingBtn.setTitle("EDIT", for: .normal)
-            showDismissBtn()
+//            showDismissBtn()
             showBottomBtns()
             participantsTableView.setEditing(false, animated: true)
         } else {
             // on Editing Mode
             editingBtn.setTitle("Done", for: .normal)
-            hideDismissBtn()
+//            hideDismissBtn()
             hideBottomBtns()
             participantsTableView.setEditing(true, animated: true)
         }
@@ -335,11 +367,11 @@ class ParticipantsController: UIViewController{
         }
     }
 
-    private func hideDismissBtn() {
-        DispatchQueue.main.async {
-            self.dismissBtn.isHidden = true
-        }
-    }
+//    private func hideDismissBtn() {
+//        DispatchQueue.main.async {
+//            self.dismissBtn.isHidden = true
+//        }
+//    }
     
     private func showBottomBtns() {
         
@@ -348,12 +380,34 @@ class ParticipantsController: UIViewController{
             self.confirmBtn.isHidden = false
         }
     }
-    private func showDismissBtn() {
-        DispatchQueue.main.async {
-            self.dismissBtn.isHidden = false
+    
+//    private func showDismissBtn() {
+//        DispatchQueue.main.async {
+//            self.dismissBtn.isHidden = false
+//        }
+//    }
+    
+    private func addPerson(newName: String) {
+        guard newName.count != 0 else { fatalError("Name must have at least one character") }
+        
+        // TODO: Duplcicate check
+        if self.names.contains(newName) {
+            // TODO: show message
+            print("same name exist!")
+            self.showToast(message: "person with name: \(newName) already exist!", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+        } else {
+            self.names.append(newName)
+            let newPerson = self.dutchManager.createPerson(name: newName, prevPeople: self.updatedParticipants)
+            
+                self.showToast(message: "\(newName) has added", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+                               
+            self.updatedParticipants.append(newPerson)
+            
+            self.participants.append(newPerson)
+            
+            self.reloadCollectionView()
         }
     }
-
 }
 
 extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
@@ -363,7 +417,6 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ParticipantTableViewCell.identifier, for: indexPath) as! ParticipantTableViewCell
         
         cell.textLabel?.text = participants[indexPath.row].name
@@ -381,6 +434,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
 //            self.gathering.people.remove(selectedPerson)
 //            let selectedPerson = self.participants.sorted()[indexPath.row]
             
+            self.updatedParticipants.remove(at: indexPath.row)
             self.participants.remove(at: indexPath.row)
             
             DispatchQueue.main.async {
@@ -418,20 +472,18 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         let sourcePerson = participants[sourceIndexPath.row]
         let destinationPerson = participants[destinationIndexPath.row]
         
-        
-//        Person.changeOrder(of: sourcePerson, with: destinationPerson)
-//        dutch
-        
+        dutchManager.swapPersonOrder(of: sourcePerson, with: destinationPerson)
     }
 }
 
-//extension Set {
-//    func printAllElement() {
-//        for eachMember in self where Element.self is Person {
-////            print(eachMember.name)
-//            print(eachMember.)
-//        }
-//    }
-//}
-
-
+extension ParticipantsController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField.tag == 100 {
+            print("hi")
+            addPerson(newName: textField.text!)
+            textField.text = ""
+        }
+        return false
+    }
+}
