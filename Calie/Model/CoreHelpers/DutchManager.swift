@@ -97,38 +97,11 @@ extension DutchManager {
     func deleteGathering(gathering: Gathering) {
         mainContext.delete(gathering)
 
-        mainContext.saveCoreData()
+        update()
     }
     
-    func addMorePeople(addedPeople: [Person], currentGathering: Gathering) {
-        if addedPeople.count == 0 { return }
-        // name check needed each time person name input
-        
-        addedPeople.forEach { currentGathering.people.update(with: $0)}
-        print("numOfPeople: \(currentGathering.people.count)")
-        update()
-        
-        if currentGathering.dutchUnits.count == 0 { return }
-        
-        var addedPersonDetails: [PersonDetail] = []
-        
-        // make PersonDetails for added people
-        for eachPerson in addedPeople {
-            let newPersonDetail = createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
-            addedPersonDetails.append(newPersonDetail)
-        }
-        
-        // add PersonDetails to each of dutchUnits
-        for eachUnit in currentGathering.dutchUnits {
-            for eachDetail in addedPersonDetails {
-                eachUnit.personDetails.update(with: eachDetail)
-            }
-        }
-        
-
-        update()
-    }
-    /// add personDetails to existing dutchUnits when dutchUnit added with new People & update gather's people
+    
+    /// dutchUnit added with new People -> add personDetails to existing dutchUnits  & update gathering's people
     func addDutchUnit(of dutchUnit: DutchUnit, to gathering: Gathering) {
 
         let peopleInUnit = Set(dutchUnit.personDetails.map { $0.person! })
@@ -271,7 +244,7 @@ extension DutchManager {
     }
 }
 
-
+// MARK: - People Helper
 extension DutchManager {
     @discardableResult
      func createPerson(name: String, gathering: Gathering? = nil ) -> Person {
@@ -297,13 +270,100 @@ extension DutchManager {
         
         first.order = second.order
         second.order = tempOrder
-        mainContext.saveCoreData()
+update()
+    }
+    
+    func addPeople(addedPeople: [Person], currentGathering: Gathering) {
+        if addedPeople.count == 0 { return }
+        // name check needed each time person name input
+        
+        addedPeople.forEach { currentGathering.people.update(with: $0)}
+        print("numOfPeople: \(currentGathering.people.count)")
+        update()
+        
+        if currentGathering.dutchUnits.count == 0 { return }
+        
+        var addedPersonDetails: [PersonDetail] = []
+        
+        // make PersonDetails for added people
+        for eachPerson in addedPeople {
+            let newPersonDetail = createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
+            addedPersonDetails.append(newPersonDetail)
+        }
+        
+        // add PersonDetails to each of dutchUnits
+        for eachUnit in currentGathering.dutchUnits {
+            for eachDetail in addedPersonDetails {
+                eachUnit.personDetails.update(with: eachDetail)
+            }
+        }
+        update()
+    }
+    
+    func removePeople(from gathering: Gathering, removedPeople: [Person]) {
+        if removedPeople.count == 0 { return }
+        
+        for removedPerson in removedPeople {
+            for dutchUnit in gathering.dutchUnits {
+                for eachDetail in dutchUnit.personDetails {
+                    if eachDetail.person! == removedPerson {
+                        dutchUnit.personDetails.remove(eachDetail)
+                    }
+                }
+            }
+            gathering.people.remove(removedPerson)
+        }
+        update()
+    }
+    
+    func updatePeople(updatedPeople: [Person], currentGathering: Gathering) {
+        // 이름 바꾸는 경우는 어떻게 처리하지... ??
+        // 사람을 추가할 수도, 제거할 수도 있는 경우.
+        let originalMemberSet = Set(currentGathering.people)
+        let updatedMemberSet = Set(updatedPeople)
+        
+        let addedPeopleSet = updatedMemberSet.subtracting(originalMemberSet)
+        
+        let removedPeopleSet = originalMemberSet.subtracting(updatedMemberSet)
+        
+        
+        // 이 과정을 먼저 해야 Loop 를 짧게 돈다.
+        // removedPeopleSet
+        if removedPeopleSet.count != 0 {
+            for eachPerson in removedPeopleSet {
+                for eachUnit in currentGathering.dutchUnits {
+                    for eachDetail in eachUnit.personDetails {
+                        if eachDetail.person! == eachPerson {
+                            eachUnit.personDetails.remove(eachDetail)
+                        }
+                    }
+                }
+                currentGathering.people.remove(eachPerson)
+            }
+        }
+        
+        
+        // addedPeopleSet
+        if addedPeopleSet.count != 0 {
+            
+            for eachPerson in addedPeopleSet {
+                let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
+                
+                for eachUnit in currentGathering.dutchUnits {
+                    eachUnit.personDetails.update(with: newPersonDetail)
+                }
+                
+                currentGathering.people.update(with: eachPerson)
+            }
+        }
+        update()
     }
 }
 
 
+// 사람 구별은 id 로..
 extension Person {
     public static func == (lhs: Person, rhs: Person) -> Bool {
-        return lhs.name == rhs.name
+        return lhs.id == rhs.id
     }
 }

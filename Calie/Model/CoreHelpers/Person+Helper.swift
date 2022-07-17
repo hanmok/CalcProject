@@ -29,6 +29,23 @@ extension Person {
         }
     }
     
+    public var id: UUID {
+        get {
+//            return self.id_
+            if let validId = self.id_ {
+                return validId
+            } else {
+                let newId = UUID()
+//                return newId
+                self.id_ = newId
+                return self.id_!
+            }
+        }
+        set {
+            self.id_ = newValue
+        }
+    }
+    
     
     
 }

@@ -22,7 +22,8 @@ class DutchpayManagerTest: XCTestCase {
         dutchpayManager = DutchManager(mainContext: coreDataStack.mainContext)
         }
 
-    func testCreateGathering() {
+    // Gathering 생성
+    func test_createGathering() {
         dutchpayManager.createGathering(title: "developers")
 
         let gathering = dutchpayManager.fetchGathering(.title("developers"))!
@@ -30,7 +31,8 @@ class DutchpayManagerTest: XCTestCase {
         XCTAssertEqual("developers", gathering.title)
     }
     
-    func fetchingLatestGathering() {
+    
+    func test_fetchLatestGathering() {
         dutchpayManager.createGathering(title: "first")
         dutchpayManager.createGathering(title: "second")
         
@@ -71,7 +73,7 @@ class DutchpayManagerTest: XCTestCase {
 
 // Advanced features ( DutchUnit )
 extension DutchpayManagerTest {
-    // 하나 생성 후 확인
+    // DutchUnit 하나 생성
     func test_addDutchUnit() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
@@ -86,8 +88,7 @@ extension DutchpayManagerTest {
     }
     
     
-    // DutchUnit 생성 후 수정 (인원 추가.)
-    // 1 DutchUnit 1 Person -> + 1 Person, change Place name
+    // DutchUnit 생성 완료 후 -> 인원 추가, 장소명 변경
     func test_updateDutchUnit1_addPerson() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
@@ -119,7 +120,8 @@ extension DutchpayManagerTest {
         XCTAssertEqual(gathering.totalCost, 300)
     }
     
-    // 2 person -> 1 person, with the same spentAmount
+
+    // DutchUnit 2명으로 생성 후 -> 1명으로 변경, spentAmount 는 동일
     func test_updateDutchUnit2_removePerson() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
@@ -148,34 +150,45 @@ extension DutchpayManagerTest {
         XCTAssertFalse(gathering.dutchUnits.first!.isAmountEqual)
     }
     
-    // 1 dutchUnit -> 0 dutchUnit
+    // DutchUnit 제거
     func test_deleteDutchUnit() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
-        let originalPerson = dutchpayManager.createPerson(name: "original Person")
-        let originalPersonDetail = dutchpayManager.createPersonDetail(person: originalPerson, isAttended: true, spentAmount: 100)
+        let person1 = dutchpayManager.createPerson(name: "original Person")
+        let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
         
-        let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: [originalPersonDetail], spentDate: Date())
+        
+        let dutchUnit1 = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: [personDetail1], spentDate: Date())
+        
+        let dutchUnit2 = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: [personDetail1], spentDate: Date())
         
         // add dutchUnit to gathering
-        gathering.dutchUnits.update(with: originalDutchUnit)
-        
-        gathering.dutchUnits.remove(originalDutchUnit)
 
+        dutchpayManager.addDutchUnit(of: dutchUnit1, to: gathering)
+        dutchpayManager.addDutchUnit(of: dutchUnit2, to: gathering)
+        XCTAssertEqual(gathering.totalCost, 200)
+        
+        gathering.dutchUnits.remove(dutchUnit1)
+        XCTAssertEqual(gathering.totalCost, 100)
+        XCTAssertEqual(gathering.dutchUnits.count, 1)
+        
+        gathering.dutchUnits.remove(dutchUnit2)
+        XCTAssertEqual(gathering.totalCost, 0)
         XCTAssertEqual(gathering.dutchUnits.count, 0)
     }
-    // add person in participantsController,
+}
+
+extension DutchpayManagerTest {
+    
+    
     
     func test_gathering_updatePeople() {
-        
-    }
-    
-    func test_gathering_addPerson() {
         let gathering = dutchpayManager.createGathering(title: "developers")!
         
         let person1 = dutchpayManager.createPerson(name: "person1")
         let person2 = dutchpayManager.createPerson(name: "person2")
         let person3 = dutchpayManager.createPerson(name: "person3")
+
 
 
         let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
@@ -187,26 +200,102 @@ extension DutchpayManagerTest {
         let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: originalMemberDetails, spentDate: Date())
         
         dutchpayManager.addDutchUnit(of: originalDutchUnit, to: gathering)
-
+        XCTAssertEqual(gathering.people.count, 2)
         XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 2)
         
+        // remove person2, add person3
+        let updatedPeople = [person1, person3]
         
-        dutchpayManager.addMorePeople(addedPeople: [person3], currentGathering: gathering)
+        dutchpayManager.updatePeople(updatedPeople: updatedPeople, currentGathering: gathering)
         
-        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 3)
+        XCTAssertEqual(gathering.people.filter { $0.name == "person1"}.first!.name, "person1")
+        XCTAssertEqual(gathering.people.filter { $0.name == "person3"}.first!.name, "person3")
+        XCTAssertEqual(gathering.people.count, 2)
         
-        XCTAssertEqual(gathering.people.count, 3)
+        XCTAssertNil(gathering.people.filter { $0.name == "person2"}.first)
+
+        
+
+        XCTAssertNotNil(gathering.dutchUnits.first!.personDetails.filter {$0.person!.name == "person1"})
+        XCTAssertNotNil(gathering.dutchUnits.first!.personDetails.filter {$0.person!.name == "person3"})
+        XCTAssertNil(gathering.dutchUnits.first!.personDetails.filter {$0.person!.name == "person2"}.first)
     }
     
-    
-    
-    func test_gathering_removePerson() {
+    // 음... Person 이 Gathering 의 People 에 속해있는 상태이면 people 이 변할 때마다 DutchUnit 내에 있는 PersonDetails 도 함께 변할 수 있지 않을까??
+    func test_gathering_renamePeople() {
         
     }
-    
+    // Ordering
 }
 
 
+
+
+
+
+
+
+
+
+
+extension DutchpayManagerTest {
+    // Not necessary ..
+    
+    // DutchUnit 생성 후, ParticipantsController 에서 people 추가 (DutchUnit 들도 추가로 수정)
+    func test_gathering_addPerson() {
+        let gathering = dutchpayManager.createGathering(title: "developers")!
+
+        let person1 = dutchpayManager.createPerson(name: "person1")
+        let person2 = dutchpayManager.createPerson(name: "person2")
+        let person3 = dutchpayManager.createPerson(name: "person3")
+
+
+        let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
+        let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
+
+
+        let originalMemberDetails = [personDetail1, personDetail2]
+
+        let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: originalMemberDetails, spentDate: Date())
+
+        dutchpayManager.addDutchUnit(of: originalDutchUnit, to: gathering)
+
+        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 2)
+
+
+        dutchpayManager.addPeople(addedPeople: [person3], currentGathering: gathering)
+
+        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 3)
+
+        XCTAssertEqual(gathering.people.count, 3)
+    }
+    
+    func test_gathering_removePeople() {
+        let gathering = dutchpayManager.createGathering(title: "developers")!
+
+        let person1 = dutchpayManager.createPerson(name: "person1")
+        let person2 = dutchpayManager.createPerson(name: "person2")
+
+
+
+        let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
+        let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
+
+
+        let originalMemberDetails = [personDetail1, personDetail2]
+
+        let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: originalMemberDetails, spentDate: Date())
+
+        dutchpayManager.addDutchUnit(of: originalDutchUnit, to: gathering)
+        XCTAssertEqual(gathering.people.count, 2)
+        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 2)
+
+        dutchpayManager.removePeople(from: gathering, removedPeople: [person1])
+
+        XCTAssertEqual(gathering.people.count, 1)
+        XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 1)
+    }
+}
 
 extension DutchpayManagerTest {
 

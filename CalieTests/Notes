@@ -6,3 +6,27 @@ Main Screen
     dutchUnitPlusBtn
     gatheringPlusBtn
     
+
+
+
+Test Case 정리
+
+// gatherings
+testCreateGathering
+fetchingLatestGathering
+test_update_gathering
+test_delete_gathering
+
+
+// DutchUnits
+test_addDutchUnit
+test_updateDutchUnit1_addPerson      // DutchUnit 생성 완료 후 -> 인원 추가, 장소명 변경
+test_updateDutchUnit2_removePerson   // DutchUnit 2명으로 생성 후 -> 1명으로 변경, spentAmount 는 동일
+test_deleteDutchUnit                 // DutchUnit 제거
+
+
+// gatherings_people
+test_gathering_addPerson        // DutchUnit 생성 후, ParticipantsController 에서 people 추가 (DutchUnit 들도 추가로 수정)
+test_gathering_removePeople     // DutchUnit 생성 후, people 제거 -> dutchUnit 내 해당 인원 제거.
+
+
