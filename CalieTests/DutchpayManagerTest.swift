@@ -318,6 +318,40 @@ extension DutchpayManagerTest {
 }
 
 
+extension DutchpayManagerTest {
+    func test_result_simple() {
+        
+        let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
+        let person2 = dutchpayManager.createPerson(name: "person1", givenIndex: 1)
+        let person3 = dutchpayManager.createPerson(name: "person1", givenIndex: 2)
+        
+        let personDetail11 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 150)
+        let personDetail21 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
+        let personDetail31 = dutchpayManager.createPersonDetail(person: person3, isAttended: true, spentAmount: 0)
+        
+        let personDetail12 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 0)
+        let personDetail22 = dutchpayManager.createPersonDetail(person: person2, isAttended: false, spentAmount: 0)
+        let personDetail32 = dutchpayManager.createPersonDetail(person: person3, isAttended: true, spentAmount: 900)
+        
+        let dutchUnit1 = dutchpayManager.createDutchUnit(spentTo: "some1", spentAmount: 150, personDetails: [personDetail11, personDetail21, personDetail31])
+
+        let dutchUnit2 = dutchpayManager.createDutchUnit(spentTo: "some2", spentAmount: 900, personDetails: [personDetail12, personDetail22, personDetail32])
+        
+        let gathering = dutchpayManager.createGathering(title: "gathering")
+        
+        [dutchUnit1, dutchUnit2].forEach { dutchpayManager.addDutchUnit(of: $0, to: gathering!)}
+
+        XCTAssertEqual(dutchUnit1.personDetails.count, 3)
+        
+        dutchpayManager.getUnitResult(using: dutchUnit1)
+        dutchpayManager.getUnitResult(using: dutchUnit2)
+        XCTAssertEqual(gathering!.people.count, 3)
+        
+        dutchpayManager.getOverallResult(using: gathering!)
+        
+    }
+}
+
 
 extension DutchpayManagerTest {
 

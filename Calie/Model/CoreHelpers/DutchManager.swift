@@ -125,6 +125,60 @@ extension DutchManager {
         
         update()
     }
+    
+// 모든 DutchUnit 의 SpentAmount 와 PersonDetails 의 합이 같다고 가정.
+    func getOverallResult(using gathering: Gathering) -> [Double] {
+        
+
+//        [0 0 0 0 0 .. ]
+        var result = Array(repeating: 0.0, count: gathering.people.count)
+        print("\ngetOverallResult, numOfElements:\(result.count)")
+
+        // 인원 체크 굳이 안해도 ..;;
+//        if eachResult.count != result.count { fatalError() }
+        
+        for eachUnit in gathering.dutchUnits {
+            let eachResult = getUnitResult(using: eachUnit)
+
+//            result += getUnitResult(using: eachUnit)
+            for (idx, element) in eachResult.enumerated() {
+                result[idx] += element
+            }
+        }
+        
+        print("overall Result: \(result)")
+        return result
+    }
+
+    
+    
+    // 이거부터 그렇게 쉽지 않네.. 한명이 낸다고 가정하는 것부터 잘못됨..
+    // 전체 인원가지고 하는게 편할수도..
+    func getUnitResult(using dutchUnit: DutchUnit) -> [Double] {
+        // 150
+        var totalAmount: Double
+        
+        if dutchUnit.isAmountEqual {
+            totalAmount = dutchUnit.spentAmount
+        } else {
+            totalAmount = dutchUnit.isAmountEqual ? dutchUnit.spentAmount : dutchUnit.personDetails.map { $0.spentAmount }.reduce(0, { partialResult, element in
+                return partialResult + element
+            })
+        }
+        
+        // 불참 인원은 Average 계산에서 제외.
+        let average = getAverage(totalAmount: totalAmount, numOfPeople: dutchUnit.personDetails.filter { $0.isAttended }.count)
+        // 불참인 경우 -1 대입
+        let unitArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
+        // 불참인 경우 계산 없이 0, 그 외: X - Average
+        let result = unitArr.map { $0 < 0 ? 0 : $0 - average }
+        print("result: \(result)")
+        return result
+    }
+    
+    func getAverage(totalAmount: Double, numOfPeople: Int) -> Double {
+        return totalAmount / Double(numOfPeople)
+    }
 }
 
 
@@ -362,7 +416,6 @@ extension DutchManager {
                     eachUnit.personDetails.update(with: newPersonDetail)
                     currentGathering.people.update(with: eachPerson)
                 }
-                
             }
         }
         

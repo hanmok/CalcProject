@@ -387,12 +387,19 @@ class DutchpayController: UIViewController {
     
     @objc func calculateTapped(_ sender: UIButton) {
         print("calculateBtn Tapped !!")
+        guard let gathering = gathering else { return }
+        let resultVC = ResultViewController(gathering: gathering)
+//        UINavigationController.pushViewController(resultVC)
+        navigationController?.pushViewController(resultVC, animated: true)
+//        delegate
+        delegate?.dutchpayController(shouldHideMainTab: true)
     }
     
     @objc func editPeopleTapped(_ sender: UIButton) {
         
 //        presentParticipantsController(with: gathering?.sortedPeople)
 //        presentParticipantsController(with: <#T##Gathering?#>)
+        
         guard let gathering = gathering else {
             return
         }
