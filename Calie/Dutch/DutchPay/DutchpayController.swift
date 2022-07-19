@@ -21,6 +21,7 @@ private let headerIdentifier = "headerCell"
 
 protocol DutchpayControllerDelegate: AnyObject {
     func dutchpayController(shouldHideMainTab: Bool)
+    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager)
 }
 
 protocol DutchpayToParticipantsDelegate: AnyObject {
@@ -32,8 +33,9 @@ class DutchpayController: UIViewController {
     
     let dutchManager = DutchManager()
     var isShowingSideController = false
-
+    var mainTabController: MainTabController
     var sideViewController: SideViewController?
+    var shouldShowSideView = false
     
     // MARK: - Properties
     weak var delegate: DutchpayControllerDelegate?
@@ -290,16 +292,18 @@ class DutchpayController: UIViewController {
     
     // MARK: - LifeCycle
     
-    init(persistenceManager: PersistenceController) {
+    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
         
 //        screenWidth = screenRect.width
 //        screenHeight = screenRect.height
-        
+        self.mainTabController = mainTabController
         self.persistenceManager = persistenceManager
 //        sideViewController = SideViewController()
 
 
         super.init(nibName: nil, bundle: nil)
+        
+        self.mainTabController.mainToDutchDelegate = self
 //        sideViewController.sideDelegate = self
 //        fetchDefaultGathering()
     }
@@ -377,6 +381,7 @@ class DutchpayController: UIViewController {
         blurredView.addTarget(self, action: #selector(blurredViewTapped), for: .touchUpInside)
     }
     
+    // blurred View 도 Main 에 있어야겠는데 ? 글쎄다.
     @objc func blurredViewTapped() {
         if isShowingSideController {
             self.hideSideController()
@@ -389,9 +394,9 @@ class DutchpayController: UIViewController {
         print("calculateBtn Tapped !!")
         guard let gathering = gathering else { return }
         let resultVC = ResultViewController(gathering: gathering)
-//        UINavigationController.pushViewController(resultVC)
+
         navigationController?.pushViewController(resultVC, animated: true)
-//        delegate
+        
         delegate?.dutchpayController(shouldHideMainTab: true)
     }
     
@@ -622,53 +627,60 @@ class DutchpayController: UIViewController {
     
     
     private func hideSideController() {
-        guard let sideViewController = sideViewController else { return }
-    
-        UIView.animate(withDuration: 0.3) {
-
-            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
-
-            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5 , height: self.screenHeight)
-
-        } completion: { done in
-            if done {
-                self.blurredView.isHidden = true
-                
-                self.isShowingSideController = false
-                
-                sideViewController.willMove(toParent: nil)
-                sideViewController.view.removeFromSuperview()
-                sideViewController.removeFromParent()
-            }
-        }
+//        guard let sideViewController = sideViewController else { return }
+//
+//        UIView.animate(withDuration: 0.3) {
+//
+//            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
+//
+////            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5 , height: self.screenHeight)
+//            self.tabBarController?.present(sideViewController, animated: true)
+////            sideViewController.modalTransitionStyle = .
+//        } completion: { done in
+//            if done {
+//                self.blurredView.isHidden = true
+//
+//                self.isShowingSideController = false
+//
+//                sideViewController.willMove(toParent: nil)
+//                sideViewController.view.removeFromSuperview()
+//                sideViewController.removeFromParent()
+//            }
+//        }
+        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
     }
     
     private func showSideController() {
-        sideViewController = SideViewController(dutchManager: dutchManager)
-        sideViewController?.sideDelegate = self
-        guard let sideViewController = sideViewController else {
-            return
-        }
-        
-       self.addChild(sideViewController)
-       self.view.addSubview(sideViewController.view)
-       sideViewController.didMove(toParent: self)
-       
-        sideViewController.view.frame = CGRect(x: -screenWidth / 1.5, y: 0, width: screenWidth / 1.5 , height: screenHeight)
         
         
-        UIView.animate(withDuration: 0.3) {
-            self.blurredView.isHidden = false // 이거.. ;;
-            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
-            
-            sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
-            
-        } completion: { done in
-            if done {
-                self.isShowingSideController = true
-                print("isShowingSideController : \(self.isShowingSideController)")
-            }
-        }
+//        sideViewController = SideViewController(dutchManager: dutchManager)
+//        sideViewController?.sideDelegate = self
+//        guard let sideViewController = sideViewController else {
+//            return
+//        }
+//
+//       self.addChild(sideViewController)
+//       self.view.addSubview(sideViewController.view)
+//       sideViewController.didMove(toParent: self)
+//
+//        sideViewController.view.frame = CGRect(x: -screenWidth / 1.5, y: 0, width: screenWidth / 1.5 , height: screenHeight)
+//
+//
+//        UIView.animate(withDuration: 0.3) {
+//            self.blurredView.isHidden = false // 이거.. ;;
+//            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
+//
+//            sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
+//
+//        } completion: { done in
+//            if done {
+//                self.isShowingSideController = true
+//                print("isShowingSideController : \(self.isShowingSideController)")
+//            }
+//        }
+        delegate?.dutchpayController(shouldShowSideView: true, dutchManager: dutchManager)
+        
+        
     }
     
 //    private func showParticipantsController() {
@@ -1215,4 +1227,9 @@ extension DutchpayController: SideControllerDelegate {
         presentMakingGroup() // include updating totalPrice
         
     }
+}
+
+
+extension DutchpayController: MainTabDelegate {
+    
 }

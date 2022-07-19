@@ -12,6 +12,7 @@ Person Index !!
 0. 정산하기 만들기
 
 1. SideViewController 에서 MainTab 가리기
+MainTab Delegate 으로 일단 처리하자. 
 
 2. ParticipantsController 인원추가를 Footer 로 해보기.
 

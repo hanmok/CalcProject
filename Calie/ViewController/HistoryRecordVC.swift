@@ -490,6 +490,7 @@ extension HistoryRecordVC : UITableViewDataSource{
             completionHandler(true)
             
         }
+        
         editName.image = UIImage(systemName: "pencil")
         editName.backgroundColor = colorList.textColorForSemiResultDM
         

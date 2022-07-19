@@ -11,12 +11,19 @@
 
 import UIKit
 
-class MainTabController: UITabBarController, UINavigationControllerDelegate {
+
+protocol MainTabDelegate: AnyObject {
     
+}
+
+class MainTabController: UITabBarController, UINavigationControllerDelegate {
+    weak var mainToDutchDelegate: MainTabDelegate?
     let updateUserDefaultNotification = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
     
     var userDefaultSetup = UserDefaultSetup()
     let colorList = ColorList()
+    
+    var sideViewController: SideViewController?
     
     lazy var isDarkMode = userDefaultSetup.darkModeOn
     
@@ -55,7 +62,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
 
-        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared)
+        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared, mainTabController: self)
         dutchController.delegate = self
         
         
@@ -133,6 +140,57 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         
     }
+    
+    private func showSideController(dutchManager: DutchManager) {
+        sideViewController = SideViewController(dutchManager: dutchManager)
+//        sideViewController?.sideDelegate = self
+        guard let sideViewController = sideViewController else {
+            return
+        }
+        
+       self.addChild(sideViewController)
+       self.view.addSubview(sideViewController.view)
+       sideViewController.didMove(toParent: self)
+       
+        sideViewController.view.frame = CGRect(x: -screenWidth / 1.5, y: 0, width: screenWidth / 1.5 , height: screenHeight)
+        
+        
+        UIView.animate(withDuration: 0.3) {
+//            self.blurredView.isHidden = false // 이거.. ;;
+//            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
+            
+            sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
+            
+        } completion: { done in
+            if done {
+//                self.isShowingSideController = true
+//                print("isShowingSideController : \(self.isShowingSideController)")
+            }
+        }
+    }
+    
+    private func hideSideController() {
+        guard let sideViewController = sideViewController else { return }
+    
+        UIView.animate(withDuration: 0.3) {
+
+//            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
+
+//            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5 , height: self.screenHeight)
+            self.tabBarController?.present(sideViewController, animated: true)
+//            sideViewController.modalTransitionStyle = .
+        } completion: { done in
+            if done {
+//                self.blurredView.isHidden = true
+                
+//                self.isShowingSideController = false
+                
+                sideViewController.willMove(toParent: nil)
+                sideViewController.view.removeFromSuperview()
+                sideViewController.removeFromParent()
+            }
+        }
+    }
 }
 
 extension MainTabController: UITabBarControllerDelegate {
@@ -182,14 +240,31 @@ extension MainTabController: SettingsViewControllerDelegate {
 }
 
 extension MainTabController: DutchpayControllerDelegate {
-    func dutchpayController(shouldHideMainTab: Bool) {
-//        tabBar.isHidden = true
-        if shouldHideMainTab {
-            tabBar.isHidden = true
+    
+    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager) {
+        if shouldShowSideView {
+            
+            //            if #available(iOS 13.0, *) {
+            //                 if var topController = UIApplication.shared.keyWindow?.rootViewController  {
+            //                       while let presentedViewController = topController.presentedViewController {
+            //                             topController = presentedViewController
+            //                            }
+            //                 self.modalPresentationStyle = .fullScreen
+            //                 topController.present(self, animated: true, completion: nil)
+            //            }
+            
+//            sideViewController = SideViewController(dutchManager: dutchManager)
+//            self.present(sideViewController!, animated: true)
+            showSideController(dutchManager: dutchManager)
+            
         } else {
-            tabBar.isHidden = false
+            hideSideController()
         }
     }
     
+    func dutchpayController(shouldHideMainTab: Bool) {
+        //        tabBar.isHidden = true
+        
+    }
     
 }
