@@ -383,10 +383,12 @@ class DutchpayController: UIViewController {
     
     // blurred View 도 Main 에 있어야겠는데 ? 글쎄다.
     @objc func blurredViewTapped() {
+        
         if isShowingSideController {
-            self.hideSideController()
+//            self.delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
+//            self.hideSideController()
             isShowingSideController = false
-            print("isShowingSideController : \(isShowingSideController)")
+            hideSideController()
         }
     }
     
@@ -627,26 +629,16 @@ class DutchpayController: UIViewController {
     
     
     private func hideSideController() {
-//        guard let sideViewController = sideViewController else { return }
-//
-//        UIView.animate(withDuration: 0.3) {
-//
-//            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
-//
-////            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5 , height: self.screenHeight)
-//            self.tabBarController?.present(sideViewController, animated: true)
-////            sideViewController.modalTransitionStyle = .
-//        } completion: { done in
-//            if done {
-//                self.blurredView.isHidden = true
-//
-//                self.isShowingSideController = false
-//
-//                sideViewController.willMove(toParent: nil)
-//                sideViewController.view.removeFromSuperview()
-//                sideViewController.removeFromParent()
-//            }
-//        }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
+        }, completion: { done in
+            if done {
+                self.blurredView.isHidden = true
+                self.isShowingSideController = false
+            }
+        })
+        
         delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
     }
     
@@ -666,19 +658,21 @@ class DutchpayController: UIViewController {
 //        sideViewController.view.frame = CGRect(x: -screenWidth / 1.5, y: 0, width: screenWidth / 1.5 , height: screenHeight)
 //
 //
-//        UIView.animate(withDuration: 0.3) {
-//            self.blurredView.isHidden = false // 이거.. ;;
-//            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
-//
-//            sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
-//
-//        } completion: { done in
-//            if done {
-//                self.isShowingSideController = true
-//                print("isShowingSideController : \(self.isShowingSideController)")
-//            }
-//        }
+        
         delegate?.dutchpayController(shouldShowSideView: true, dutchManager: dutchManager)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.blurredView.isHidden = false // 이거.. ;;
+            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
+
+        } completion: { done in
+            if done {
+                self.isShowingSideController = true
+                print("isShowingSideController : \(self.isShowingSideController)")
+            }
+        }
+        
+
         
         
     }
@@ -857,7 +851,11 @@ class DutchpayController: UIViewController {
         }
     }
     
-    private func updateGatheringInfo() {
+    private func updateGatheringInfo(with newGathering: Gathering? = nil ) {
+        if let validGathering = newGathering {
+            gathering = validGathering
+        }
+        
         DispatchQueue.main.async {
             self.dutchTableView.reloadData()
         }
@@ -1203,33 +1201,35 @@ extension Set {
     }
 }
 
-extension DutchpayController: SideControllerDelegate {
-    func updateGathering(with gathering: Gathering) {
-        hideSideController()
-        
-        self.gathering = gathering
-        updateGatheringName()
-        DispatchQueue.main.async {
-            self.dutchTableView.reloadData()
-        }
-
-//        hideParticipantsController()
-        
-    }
-    
-    func dismissSideController() {
-        hideSideController()
-    }
-    
-    func addNewGathering() {
-        hideSideController()
-        // ask new gathering's name
-        presentMakingGroup() // include updating totalPrice
-        
-    }
-}
+//extension DutchpayController: SideControllerDelegate {
+//    func dissmissSideVC(with gathering: Gathering) {
+//        hideSideController()
+//
+//        self.gathering = gathering
+//        updateGatheringName()
+//        DispatchQueue.main.async {
+//            self.dutchTableView.reloadData()
+//        }
+//
+////        hideParticipantsController()
+//
+//    }
+//
+//    func dismissSideController() {
+//        hideSideController()
+//    }
+//
+//    func addNewGathering() {
+//        hideSideController()
+//        // ask new gathering's name
+//        presentMakingGroup() // include updating totalPrice
+//
+//    }
+//}
 
 
 extension DutchpayController: MainTabDelegate {
-    
+    func updateGatheringFromMainTab(with newGathering: Gathering) {
+        updateGatheringInfo(with: newGathering)
+    }
 }

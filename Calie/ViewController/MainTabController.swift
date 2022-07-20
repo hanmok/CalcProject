@@ -13,7 +13,7 @@ import UIKit
 
 
 protocol MainTabDelegate: AnyObject {
-    
+    func updateGatheringFromMainTab(with newGathering: Gathering)
 }
 
 class MainTabController: UITabBarController, UINavigationControllerDelegate {
@@ -142,7 +142,10 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     }
     
     private func showSideController(dutchManager: DutchManager) {
-        sideViewController = SideViewController(dutchManager: dutchManager)
+        let sidevc = SideViewController(dutchManager: dutchManager)
+        sidevc.sideDelegate = self
+//        sideViewController = SideViewController(dutchManager: dutchManager)
+        sideViewController = sidevc
 //        sideViewController?.sideDelegate = self
         guard let sideViewController = sideViewController else {
             return
@@ -174,17 +177,10 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
         UIView.animate(withDuration: 0.3) {
 
-//            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
-
-//            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5 , height: self.screenHeight)
-            self.tabBarController?.present(sideViewController, animated: true)
-//            sideViewController.modalTransitionStyle = .
+            sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
+            
         } completion: { done in
             if done {
-//                self.blurredView.isHidden = true
-                
-//                self.isShowingSideController = false
-                
                 sideViewController.willMove(toParent: nil)
                 sideViewController.view.removeFromSuperview()
                 sideViewController.removeFromParent()
@@ -242,24 +238,7 @@ extension MainTabController: SettingsViewControllerDelegate {
 extension MainTabController: DutchpayControllerDelegate {
     
     func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager) {
-        if shouldShowSideView {
-            
-            //            if #available(iOS 13.0, *) {
-            //                 if var topController = UIApplication.shared.keyWindow?.rootViewController  {
-            //                       while let presentedViewController = topController.presentedViewController {
-            //                             topController = presentedViewController
-            //                            }
-            //                 self.modalPresentationStyle = .fullScreen
-            //                 topController.present(self, animated: true, completion: nil)
-            //            }
-            
-//            sideViewController = SideViewController(dutchManager: dutchManager)
-//            self.present(sideViewController!, animated: true)
-            showSideController(dutchManager: dutchManager)
-            
-        } else {
-            hideSideController()
-        }
+        shouldShowSideView ? showSideController(dutchManager: dutchManager) : hideSideController()
     }
     
     func dutchpayController(shouldHideMainTab: Bool) {
@@ -267,4 +246,21 @@ extension MainTabController: DutchpayControllerDelegate {
         
     }
     
+}
+
+
+extension MainTabController: SideControllerDelegate {
+//    func dismissSideController() {
+//        hideSideController()
+//    }
+    
+//    func addNewGathering() {
+//        <#code#>
+//    }
+    
+    func dismissSideVC(with gathering: Gathering) {
+//        dissmissSideVC(with: gathering)
+        
+        hideSideController()
+    }
 }

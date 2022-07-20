@@ -12,12 +12,13 @@ import Then
 import SnapKit
 
 protocol SideControllerDelegate: AnyObject {
-    func dismissSideController()
-    func addNewGathering()
-    func updateGathering(with gathering: Gathering)
+//    func dismissSideController()
+//    func addNewGathering()
+    func dismissSideVC(with gathering: Gathering)
 }
 
 class SideViewController: UIViewController {
+    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     let cellIdentifier = "SideTableCell"
     var dutchManager: DutchManager
@@ -40,10 +41,23 @@ class SideViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         btn.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview()
+            make.center.equalToSuperview()
+            make.width.equalTo(20)
+            make.height.equalTo(30)
         }
+//        btn.backgroundColor = .magenta
+        btn.isHidden = true
         return btn
     }()
+    
+    private let sideLabel = UILabel().then {
+        $0.text = "지난 모임"
+        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.textColor = .black
+//        $0.textAlignment = .left
+        $0.textAlignment = .center
+    }
+    
     weak var sideDelegate: SideControllerDelegate?
     
     var gatherings: [Gathering] = []
@@ -51,7 +65,8 @@ class SideViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.isHidden = true
+        
         view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
         updateGatherings()
@@ -78,34 +93,8 @@ class SideViewController: UIViewController {
         $0.layer.borderWidth = 1
     }
     
-    private let gatheringPlusBtn: UIButton = {
-        let btn = UIButton()
-        // 왜.. 아래에서 보이지 ?
-       let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-//        let plusImage = UIImageView(image: UIImage(systemName: "folder"))
-        
-        let removingLineView = UIView()
-        removingLineView.backgroundColor = .white
-        
-        btn.addSubview(removingLineView)
-        removingLineView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(3)
-            make.centerY.equalToSuperview()
-        }
-        
-        btn.addSubview(plusImage)
-        plusImage.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
-    
-        return btn
-    }()
-    
-    
     private func registerTableView() {
-//        gatheringTableView.register(SideTableCell.self, forCellReuseIdentifier: SideTableCell.identifier)
-//        gatheringTableView.register(UITableViewCell.self, forCellReuseIdentifier: SideTableCell.identifier)
+        
         gatheringTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         
         gatheringTableView.delegate = self
@@ -114,44 +103,50 @@ class SideViewController: UIViewController {
     
     
     private func setupLayout() {
+        
         view.addSubview(dismissBtn)
         dismissBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
             make.width.height.equalTo(40)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+//            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
         }
         
-        view.addSubview(gatheringPlusBtn)
-        gatheringPlusBtn.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(40)
-            make.bottom.equalToSuperview().inset(100)
+        view.addSubview(sideLabel)
+        sideLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(dismissBtn.snp.trailing).offset(75)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+            make.height.equalTo(40)
         }
         
         view.addSubview(gatheringTableView)
         gatheringTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
             make.top.equalTo(dismissBtn.snp.bottom).offset(10)
-            make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
+//            make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview().inset(tabbarheight)
         }
     }
     
 
     
     private func setupAddTargets() {
-        dismissBtn.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
+//        dismissBtn.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
         
-        gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
+//        gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
         
     }
     
-    @objc func dismissSelf() {
-        sideDelegate?.dismissSideController()
-    }
+//    @objc func dismissSelf() {
+//        sideDelegate?.dismissSideController()
+//    }
     
     
     @objc func addGaterhing() {
-        sideDelegate?.addNewGathering()
+//        sideDelegate?.addNewGathering()
     }
 }
 
@@ -171,7 +166,7 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        sideDelegate?.updateGathering(with: gatherings[indexPath.row])
+        sideDelegate?.dismissSideVC(with: gatherings[indexPath.row])
         print("selectedGathering title: \(gatherings[indexPath.row].title)")
     }
     
@@ -199,27 +194,5 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
         
         return rightSwipe
     }
-    
-    
 }
 
-
-//import Foundation
-//import UIKit
-//import Then
-//import SnapKit
-
-
-//class SideTableCell: UITableViewCell {
-//
-//    static let identifier = "sideTableCell"
-//
-//
-//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
