@@ -393,51 +393,118 @@ extension DutchpayManagerTest {
     
     func test_createCombination() {
         let allDic = [100: [1], 200: [2,3], 50: [4], 25: [5], 10:[6]]
-        createCombination(using: allDic, numOfElements: 1)
-        createCombination(using: allDic, numOfElements: 2)
-        createCombination(using: allDic, numOfElements: 3)
-        createCombination(using: allDic, numOfElements: 4)
+        createCombination(using: allDic, numOfElementsToPick: 1)
+        createCombination(using: allDic, numOfElementsToPick: 2)
+        createCombination(using: allDic, numOfElementsToPick: 3)
+        createCombination(using: allDic, numOfElementsToPick: 4)
         
         XCTAssertEqual(0, 0)
     }
     
     
-    func createCombination(using allDic: [Int: [Int]], numOfElements: Int) -> Set<Int>{
-        
+    func createCombination(using allDic: [Int: [Int]], numOfElementsToPick: Int) -> Set<Int>{
+        // 중복된 elements 없다고 가정, Result 에는 Set 으로 (중복된 결과 넣지 않음) 우선 넣기.
         var allNums = Set<Int>()
-        var combs = Set<Int>()
+        var combinationSet = Set<Int>() // result
         
-        for (key, value) in allDic {
+        for (key, _) in allDic {
             if allNums.contains(key) == false {
                 allNums.insert(key)
             }
         }
-        
-        let allNumsArr = Array(allNums)
-        
-        var elementsToPut = 0
-        var lastElementsIndices = Array(repeating: 0, count: numOfElements)
-        while (elementsToPut < numOfElements) {
-            var inputIndexes = [Int]()
-//            var newResult: Int
-            
-//            if combs
-            
-            
-            lastElementsIndices = inputIndexes
-            elementsToPut += 1
-        }
-        
-        if numOfElements == 1 {
-//            return Set(allnu)
+
+        if numOfElementsToPick == 1 {
             return allNums
         }
+
+        
+        let allNumsArr = Array(allNums) // make elements into array form.
         
         
+        let numOfAllElements = allNumsArr.count // 총 n 개
+        let firstIndexOfLastCombination = numOfAllElements - numOfElementsToPick + 1
+
+        var inputIndexes = Array(0 ..< numOfElementsToPick) // 0, 1, 2  Set 를 구하는 데 사용된 Elements 의 Indexes.
+        var indexesOfLastElement = inputIndexes
         
-        print("allNums: \(allNums)")
         
-        return Set<Int>()
+        var firstlyUsedIndexOfLastCombination = 0
+        
+
+        var numOfElementsBePut = 0 // 넣어진 Elements의 갯수.
+        var eachCombination: (Int, [Int], Int) = (0, [0], 0)
+
+        
+        // 초기값 조건들을 어떻게 주지...??
+        while (firstIndexOfLastCombination != firstlyUsedIndexOfLastCombination ) {
+            indexesOfLastElement = inputIndexes
+            numOfElementsBePut = 0
+            
+            // 하나의 Combination 구하기. 다른 조건이 들어가야 할 것 같은데? 아니면 쓰지를 않거나..
+            
+            // get inputIndexes using indexesOfLastElement
+            
+            // get a combination using inputIndexes
+            var sum = 0
+            for idx in 0 ..< numOfElementsToPick {
+                sum += allNumsArr[inputIndexes[idx]]
+            }
+            combinationSet.insert(sum)
+            
+            
+            
+            
+            firstlyUsedIndexOfLastCombination = indexesOfLastElement.first!
+        }
+        
+        
+
+        return combinationSet
+    }
+    
+    // need to combine 2 functions below with the right above one 
+    func createCorrectSequenceOfArray(numOfElementsToPick: Int, numOfAllElements: Int)  {
+        let numOfElementsToPick = 5
+        let numOfAllElements = 10
+        var inputIndexes = Array(0 ..< numOfElementsToPick)
+        var indexesContainer = [inputIndexes]
+
+        
+        while (inputIndexes.first! != 5) {
+            print("inputIndexes: \(inputIndexes)")
+
+            inputIndexes = appendIndexes(indexes: inputIndexes, numOfElementsToPick: numOfElementsToPick, numOfAllElements: numOfAllElements)
+            indexesContainer.append(inputIndexes)
+        }
+        print("indexesContainer: \(indexesContainer)")
+        print("hello")
+        
+    }
+    
+    func appendIndexes(indexes: [Int], numOfElementsToPick: Int, numOfAllElements: Int) -> [Int] {
+        var backwardIndex = 1
+        var ans = indexes
+        while (backwardIndex <= numOfElementsToPick) {
+            if indexes[indexes.count - backwardIndex] == numOfAllElements - backwardIndex {
+                // 전 인덱스 + 1
+                // 다음거 체크 !
+                backwardIndex += 1
+                
+            } else {
+                ans = indexes
+
+                ans[indexes.count - backwardIndex] = indexes[indexes.count - backwardIndex] + 1
+                
+                var forwardIndex = 1
+                
+                while (indexes.count - backwardIndex + forwardIndex < numOfElementsToPick) {
+                ans[indexes.count - backwardIndex + forwardIndex] = ans[indexes.count - backwardIndex + forwardIndex - 1] + 1
+                    forwardIndex += 1
+                }
+                return ans
+            }
+        }
+        return ans
     }
     
 }
