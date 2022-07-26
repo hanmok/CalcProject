@@ -390,6 +390,56 @@ extension DutchpayManagerTest {
         
         
     }
+    
+    func test_createCombination() {
+        let allDic = [100: [1], 200: [2,3], 50: [4], 25: [5], 10:[6]]
+        createCombination(using: allDic, numOfElements: 1)
+        createCombination(using: allDic, numOfElements: 2)
+        createCombination(using: allDic, numOfElements: 3)
+        createCombination(using: allDic, numOfElements: 4)
+        
+        XCTAssertEqual(0, 0)
+    }
+    
+    
+    func createCombination(using allDic: [Int: [Int]], numOfElements: Int) -> Set<Int>{
+        
+        var allNums = Set<Int>()
+        var combs = Set<Int>()
+        
+        for (key, value) in allDic {
+            if allNums.contains(key) == false {
+                allNums.insert(key)
+            }
+        }
+        
+        let allNumsArr = Array(allNums)
+        
+        var elementsToPut = 0
+        var lastElementsIndices = Array(repeating: 0, count: numOfElements)
+        while (elementsToPut < numOfElements) {
+            var inputIndexes = [Int]()
+//            var newResult: Int
+            
+//            if combs
+            
+            
+            lastElementsIndices = inputIndexes
+            elementsToPut += 1
+        }
+        
+        if numOfElements == 1 {
+//            return Set(allnu)
+            return allNums
+        }
+        
+        
+        
+        print("allNums: \(allNums)")
+        
+        return Set<Int>()
+    }
+    
 }
 
 
