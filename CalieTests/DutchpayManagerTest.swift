@@ -319,7 +319,8 @@ extension DutchpayManagerTest {
 
 
 extension DutchpayManagerTest {
-    func test_result_simple() {
+    
+    func test_result_firstOverall() {
         
         let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
         let person2 = dutchpayManager.createPerson(name: "person1", givenIndex: 1)
@@ -347,11 +348,174 @@ extension DutchpayManagerTest {
         dutchpayManager.getUnitResult(using: dutchUnit2)
         XCTAssertEqual(gathering!.people.count, 3)
         
-        dutchpayManager.getOverallResult(using: gathering!)
+        dutchpayManager.getFirstOverallResult(using: gathering!) // [ -350, -50, 400]
+        // [0 0 -350 ]
+        // [0 -50 0  ]
+        // [350 50 0 ]
+    }
+    
+    func test_result_secondOverall_Step1() {
+//        typealias indexedDetail = ( Double ) // dictionary 가 나을 것 같아.
+//        let someArr = [-123.0, -523.5, 123.0 + 523.5]
+//        let someArr = createArray()
+//        var minuses: [Int: Int] = [:]
+//        var pluses: [Int: Int] = [:]
+//        var zeros: [Int] = []
+//        for (idx, val) in someArr.enumerated() {
+//            if val > 0 {
+//                pluses[idx] = val
+//            } else if val < 0 {
+//                minuses[idx] = val
+//            } else {
+//                zeros.append(val)
+//            }
+//        }
+//        print("pluses: \(pluses)")
+//        print("minuses: \(minuses)")
+//
+//        XCTAssertEqual(someArr.count, pluses.count + minuses.count + zeros.count)
+        
+        let test1Arr = [-3, -2, 0, 1, 1, 3]
+        let test1ArrResult = matchSameValues1On1(firstResult: test1Arr, msg: "test1")!.matchedPeople // [matchedPeople: [0:5]
+        XCTAssertEqual(test1ArrResult.count, 1)
+
+        let test2Arr = [-3, -2, -1, 1, 2, 3]
+        let test2ArrResult = matchSameValues1On1(firstResult: test2Arr, msg: "test2")!.matchedPeople // [matchedPeople: [2:3, 0:5, 1:4]
+        XCTAssertEqual(test2ArrResult.count, 3)
+
+        
+        let test3Arr = [-3, -2, 0, 1, 4, 7]
+        let test3ArrResult = matchSameValues1On1(firstResult: test3Arr, msg: "test3") // // [matchedPeople: [:]
+        XCTAssertNil(test3ArrResult) // validity fail
+        
         
     }
 }
 
+
+// MARK: - Test Helpers
+extension DutchpayManagerTest {
+    func createArray(of num: Int = 6, positiveRange: Int = 10) -> [Int]{
+        
+        var resultArr = [Int]()
+        var sum = 0
+        for _ in 0 ..< num - 1 {
+            let randomNum = Int.random(in: -positiveRange ... positiveRange)
+            resultArr.append(randomNum)
+            sum += randomNum
+        }
+        resultArr.append(-sum)
+        print("result of returned arr: \(resultArr)")
+        return resultArr
+    }
+    
+    
+//    func matchSameValues(firstResult: [Int], msg: String = "") -> [Int: Int]? {
+    func matchSameValues1On1(firstResult: [Int], msg: String = "") -> (remainedPeople: [Int: [Int]], matchedPeople: [Int: Int], isFinished: Bool)? {
+        // validity test
+        let sum = firstResult.reduce(0) { partialResult, value in
+            return partialResult + value
+        }
+        if sum != 0 { return nil }
+        
+        
+        var allDic = [Int: [Int]]()
+        var matchedPeople = [Int:Int]()
+        print(msg)
+        for (pIdx, spentAmount) in firstResult.enumerated() {
+            if spentAmount == 0 { continue } // filterOut 0
+            // if spentAmount has matched pair already -> create matchedPeople element, remove from allDic
+            if let validPairIdx = allDic[-spentAmount]?.first {
+                matchedPeople[validPairIdx] = pIdx
+                
+                if allDic[-spentAmount]!.count == 1 {
+                    allDic[-spentAmount] = nil
+                } else {
+                    allDic[-spentAmount]!.removeFirst()
+                }
+
+                // has no matched pair
+            } else {
+                // for duplicate spentAmount value -> append Person Index
+                if allDic[spentAmount] != nil && allDic[spentAmount]!.count != 0 {
+                    allDic[spentAmount]!.append(pIdx)
+                    // for first (or unique value) -> create one
+                } else {
+                    allDic[spentAmount] = [pIdx]
+                }
+            }
+        }
+        
+        print("allDic: \(allDic)")
+        print("matchedPeople: \(matchedPeople)")
+        
+        // if allDic is empty, all process is finished
+        let isFinished = allDic.count == 0
+        
+//        return matchedPeople
+        return (allDic, matchedPeople, isFinished)
+    }
+    
+    func matchSameValues1OnN(allDic: [Int: [Int]]) -> (matchedPeople: [Int: [Int]], isFinished: Bool) {
+        
+        
+        return ([:], false)
+    }
+    
+    
+    
+    
+    
+//    func matchSameValues(pluses: [Int: Int], minuses: [Int: Int]) -> [Int: Int] {
+//        // 중복인 경우에는 ? 이거.. 하나씩 없애야겠는데?
+//
+//        var matchedIndexes: [Int:Int] = [:]
+//
+//        var plusSet = Set<Int>()
+//        var minusSet = Set<Int>()
+//
+//        var duplicates: [Int: Int] = [:] // [n:k] : n 이 k 번
+//
+//        for (_, val) in pluses {
+//            if plusSet.contains(val) {
+//                // duplicates 에 등록이 안되었을 시 2 로 초기화
+//                if duplicates[val] == nil {
+//                    duplicates[val] = 2
+//                    // duplicates 에 이미 있는 경우 값 + 1
+//                } else {
+//                    duplicates[val] = duplicates[val]! + 1
+//                }
+//            } else {
+//                plusSet.insert(val)
+//            }
+//        }
+//
+//
+//        for (_, val) in minuses {
+//            if minusSet.contains(val) {
+//                if duplicates[val] == nil {
+//                    duplicates[val] = 2
+//                } else {
+//                    duplicates[val] = duplicates[val]! + 1
+//                }
+//            } else {
+//                minusSet.insert(val)
+//            }
+//        }
+//
+//
+//        let sameValues = plusSet.intersection(minusSet) // set
+//        // start matching
+//
+//        for value in sameValues {
+//
+//        }
+//
+//
+//        return [:]
+//    }
+    
+}
 
 extension DutchpayManagerTest {
 

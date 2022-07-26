@@ -127,7 +127,7 @@ extension DutchManager {
     }
     
 // 모든 DutchUnit 의 SpentAmount 와 PersonDetails 의 합이 같다고 가정.
-    func getOverallResult(using gathering: Gathering) -> [Double] {
+    func getFirstOverallResult(using gathering: Gathering) -> [Double] {
         
 
 //        [0 0 0 0 0 .. ]
@@ -149,6 +149,8 @@ extension DutchManager {
         print("overall Result: \(result)")
         return result
     }
+    
+    // need random Generator.. TT....
 
     
     
@@ -421,6 +423,13 @@ extension DutchManager {
         
         update() // update 했는데 왜... ??
     }
+    
+    
+    
+    // MARK: - Test Funcs
+    
+    
+    
 }
 
 
