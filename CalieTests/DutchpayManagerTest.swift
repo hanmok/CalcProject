@@ -391,76 +391,15 @@ extension DutchpayManagerTest {
         
     }
     
-    func test_createCombination() {
-        let allDic = [100: [1], 200: [2,3], 50: [4], 25: [5], 10:[6]]
-        createCombination(using: allDic, numOfElementsToPick: 1)
-        createCombination(using: allDic, numOfElementsToPick: 2)
-        createCombination(using: allDic, numOfElementsToPick: 3)
-        createCombination(using: allDic, numOfElementsToPick: 4)
-        
-        XCTAssertEqual(0, 0)
-    }
-    
-    
-    func createCombination(using allDic: [Int: [Int]], numOfElementsToPick: Int) -> Set<Int>{
-        // 중복된 elements 없다고 가정, Result 에는 Set 으로 (중복된 결과 넣지 않음) 우선 넣기.
-        var allNums = Set<Int>()
-        var combinationSet = Set<Int>() // result
-        
-        for (key, _) in allDic {
-            if allNums.contains(key) == false {
-                allNums.insert(key)
-            }
-        }
-
-        if numOfElementsToPick == 1 {
-            return allNums
-        }
-
-        
-        let allNumsArr = Array(allNums) // make elements into array form.
-        
-        
-        let numOfAllElements = allNumsArr.count // 총 n 개
-        let firstIndexOfLastCombination = numOfAllElements - numOfElementsToPick + 1
-
-        var inputIndexes = Array(0 ..< numOfElementsToPick) // 0, 1, 2  Set 를 구하는 데 사용된 Elements 의 Indexes.
-        var indexesOfLastElement = inputIndexes
-        
-        
-        var firstlyUsedIndexOfLastCombination = 0
-        
-
-        var numOfElementsBePut = 0 // 넣어진 Elements의 갯수.
-        var eachCombination: (Int, [Int], Int) = (0, [0], 0)
-
-        
-        // 초기값 조건들을 어떻게 주지...??
-        while (firstIndexOfLastCombination != firstlyUsedIndexOfLastCombination ) {
-            indexesOfLastElement = inputIndexes
-            numOfElementsBePut = 0
-            
-            // 하나의 Combination 구하기. 다른 조건이 들어가야 할 것 같은데? 아니면 쓰지를 않거나..
-            
-            // get inputIndexes using indexesOfLastElement
-            
-            // get a combination using inputIndexes
-            var sum = 0
-            for idx in 0 ..< numOfElementsToPick {
-                sum += allNumsArr[inputIndexes[idx]]
-            }
-            combinationSet.insert(sum)
-            
-            
-            
-            
-            firstlyUsedIndexOfLastCombination = indexesOfLastElement.first!
-        }
-        
-        
-
-        return combinationSet
-    }
+//    func test_createCombination() {
+//        let allDic = [100: [1], 200: [2,3], 50: [4], 25: [5], 10:[6]]
+//        createCombination(using: allDic, numOfElementsToPick: 1)
+//        createCombination(using: allDic, numOfElementsToPick: 2)
+//        createCombination(using: allDic, numOfElementsToPick: 3)
+//        createCombination(using: allDic, numOfElementsToPick: 4)
+//
+//        XCTAssertEqual(0, 0)
+//    }
     
     // need to combine 2 functions below with the right above one 
     func createCorrectSequenceOfArray(numOfElementsToPick: Int, numOfAllElements: Int)  {
@@ -473,7 +412,7 @@ extension DutchpayManagerTest {
         while (inputIndexes.first! != 5) {
             print("inputIndexes: \(inputIndexes)")
 
-            inputIndexes = appendIndexes(indexes: inputIndexes, numOfElementsToPick: numOfElementsToPick, numOfAllElements: numOfAllElements)
+            inputIndexes = returnNextdIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
             indexesContainer.append(inputIndexes)
         }
         print("indexesContainer: \(indexesContainer)")
@@ -481,31 +420,6 @@ extension DutchpayManagerTest {
         
     }
     
-    func appendIndexes(indexes: [Int], numOfElementsToPick: Int, numOfAllElements: Int) -> [Int] {
-        var backwardIndex = 1
-        var ans = indexes
-        while (backwardIndex <= numOfElementsToPick) {
-            if indexes[indexes.count - backwardIndex] == numOfAllElements - backwardIndex {
-                // 전 인덱스 + 1
-                // 다음거 체크 !
-                backwardIndex += 1
-                
-            } else {
-                ans = indexes
-
-                ans[indexes.count - backwardIndex] = indexes[indexes.count - backwardIndex] + 1
-                
-                var forwardIndex = 1
-                
-                while (indexes.count - backwardIndex + forwardIndex < numOfElementsToPick) {
-                ans[indexes.count - backwardIndex + forwardIndex] = ans[indexes.count - backwardIndex + forwardIndex - 1] + 1
-                    forwardIndex += 1
-                }
-                return ans
-            }
-        }
-        return ans
-    }
     
 }
 
@@ -663,3 +577,106 @@ extension DutchpayManagerTest {
 
 
 
+
+extension DutchpayManagerTest {
+    func createAllCombinations(using allDic: [Int: [Int]], numOfElementsToPick: Int) -> Set<Int>{
+        // 중복된 elements 없다고 가정, Result 에는 Set 으로 (중복된 결과 넣지 않음) 우선 넣기.
+        var allNums = Set<Int>()
+        var combinationSet = Set<Int>() // result
+        
+        for (key, _) in allDic {
+            if allNums.contains(key) == false {
+                allNums.insert(key)
+            }
+        }
+
+        if numOfElementsToPick == 1 {
+            return allNums
+        }
+
+        
+        let allNumsArr = Array(allNums) // make elements into array form.
+        print("\nallNumsArr: \(allNumsArr)\n\n")
+        
+        let numOfAllElements = allNumsArr.count // 총 n 개
+        let firstIndexOfLastCombination = numOfAllElements - numOfElementsToPick
+
+        var inputIndexes = Array(0 ..< numOfElementsToPick) // 0, 1, 2  Set 를 구하는 데 사용된 Elements 의 Indexes.
+    //    var indexesOfLastElement = inputIndexes
+        
+        
+        var firstlyUsedIndexOfLastCombination = 0
+        
+        let resultCombination = createCombination(using: inputIndexes, from: allNumsArr)
+        combinationSet.insert(resultCombination)
+        
+        print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
+        
+        // 초기값 조건들을 어떻게 주지...??
+        while (firstIndexOfLastCombination != firstlyUsedIndexOfLastCombination ) {
+//                print("firstIndexOfLastCombination: \(firstIndexOfLastCombination)")
+//                print("firstlyUsedIndexOfLastCombination: \(firstlyUsedIndexOfLastCombination)")
+    //            indexesOfLastElement = inputIndexes
+        
+        // update Indexes.
+            inputIndexes = returnNextdIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
+            
+            let resultCombination = createCombination(using: inputIndexes, from: allNumsArr)
+            print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
+            combinationSet.insert(resultCombination)
+            
+            
+            
+    //            firstlyUsedIndexOfLastCombination = indexesOfLastElement.first!
+            firstlyUsedIndexOfLastCombination = inputIndexes.first!
+        }
+        
+        print("\n\nprinting combinationSet: \n")
+        for element in combinationSet {
+            print(element)
+        }
+        
+        return combinationSet
+    }
+
+    func createCombination(using indexes: [Int], from targetArr: [Int]) -> Int {
+        var sum = 0
+        for idx in 0 ..< indexes.count {
+            sum += targetArr[indexes[idx]]
+        }
+        return sum
+    }
+
+
+    func returnNextdIndexes(indexes: [Int], numOfAllElements: Int) -> [Int] {
+        var backwardIndex = 1
+        var ans = indexes
+        let numOfElementsToPick = indexes.count
+        while (backwardIndex <= numOfElementsToPick) {
+            if indexes[indexes.count - backwardIndex] == numOfAllElements - backwardIndex {
+                // 전 인덱스 + 1
+                // 다음거 체크 !
+                backwardIndex += 1
+                
+            } else {
+                ans = indexes
+
+                ans[indexes.count - backwardIndex] = indexes[indexes.count - backwardIndex] + 1
+                
+                var forwardIndex = 1
+                
+                while (indexes.count - backwardIndex + forwardIndex < numOfElementsToPick) {
+                ans[indexes.count - backwardIndex + forwardIndex] = ans[indexes.count - backwardIndex + forwardIndex - 1] + 1
+                    forwardIndex += 1
+                }
+                return ans
+            }
+        }
+        return ans
+    }
+    
+    func testCode() {
+        let people = [100: [0], 200: [1], -300: [2], 50: [3], -50: [4]]
+        let _ = createAllCombinations(using: people, numOfElementsToPick: 2)
+    }
+}
