@@ -29,6 +29,13 @@ extension Gathering {
         let cost = getTotalPrice(dutchUnits: self.dutchUnits)
         return convertIntoKoreanPrice(number: cost)
     }
+    
+    private func convertIntoKoreanPrice(number: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.string(from: NSNumber(value:number))
+        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
+    }
 
     var people: Set<Person> {
         get {

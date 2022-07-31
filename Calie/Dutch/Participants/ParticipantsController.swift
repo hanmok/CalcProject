@@ -49,14 +49,15 @@ class ParticipantsController: UIViewController{
     private var names: [String]
     
     private var updatedParticipants: [Person]
-    var dutchManager: DutchManager
+//    var dutchManager: DutchManager
     
-    init(participants: [Person], dutchManager: DutchManager) {
+//    init(participants: [Person], dutchManager: DutchManager) {
+    init(currentGathering: Gathering) {
 //    init(participants: [Person]) {
-        self.participants = participants
-        self.names = participants.map { $0.name }
-        self.updatedParticipants = participants
-        self.dutchManager = dutchManager
+//        self.participants = participants
+//        self.names = participants.map { $0.name }
+//        self.updatedParticipants = participants
+//        self.dutchManager = dutchManager
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -487,3 +488,9 @@ extension ParticipantsController: UITextFieldDelegate {
         return false
     }
 }
+
+
+//enum AskingNamePurposes: String{
+//    case new = "New Gathering Name"
+//    case edit = "Edit Gathering Name"
+//}

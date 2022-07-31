@@ -76,6 +76,9 @@
 		9AADB33F2884773900DAD657 /* ToMake in Resources */ = {isa = PBXBuildFile; fileRef = 9AADB33E2884773900DAD657 /* ToMake */; };
 		9AADB3412885A94B00DAD657 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3402885A94B00DAD657 /* ResultViewController.swift */; };
 		9AADB343288C4B8300DAD657 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB342288C4B8300DAD657 /* Double+Ext.swift */; };
+		9AADB3452895E5E400DAD657 /* DutchpayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */; };
+		9AADB3472895F10A00DAD657 /* DutchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3462895F10A00DAD657 /* DutchService.swift */; };
+		9AADB34D2896C2BC00DAD657 /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
 		9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */; };
 		9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */; };
@@ -99,7 +102,6 @@
 		9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EF827020C1A00E183AB /* ToastMessage.swift */; };
 		9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF62EFA2702145A00E183AB /* InputEnums.swift */; };
 		9AFB9505281EF5F200A9DEAA /* DutchCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9504281EF5F200A9DEAA /* DutchCollectionCell.swift */; };
-		9AFB9507281EF60500A9DEAA /* DutchUnitTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9506281EF60500A9DEAA /* DutchUnitTableViewModel.swift */; };
 		E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */; };
 		E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7715282790AB001C0CCE /* StringExt+.swift */; };
 		E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7717282790B7001C0CCE /* IntExt+.swift */; };
@@ -202,6 +204,9 @@
 		9AADB33E2884773900DAD657 /* ToMake */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToMake; sourceTree = "<group>"; };
 		9AADB3402885A94B00DAD657 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		9AADB342288C4B8300DAD657 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
+		9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayViewModel.swift; sourceTree = "<group>"; };
+		9AADB3462895F10A00DAD657 /* DutchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchService.swift; sourceTree = "<group>"; };
+		9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitViewModel.swift; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewModel.swift; sourceTree = "<group>"; };
@@ -226,7 +231,6 @@
 		9AF62EF827020C1A00E183AB /* ToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessage.swift; sourceTree = "<group>"; };
 		9AF62EFA2702145A00E183AB /* InputEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEnums.swift; sourceTree = "<group>"; };
 		9AFB9504281EF5F200A9DEAA /* DutchCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchCollectionCell.swift; sourceTree = "<group>"; };
-		9AFB9506281EF60500A9DEAA /* DutchUnitTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitTableViewModel.swift; sourceTree = "<group>"; };
 		B60123ED03F0BE3CEBEE5AE0 /* Pods-CaliyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaliyTests.release.xcconfig"; path = "Target Support Files/Pods-CaliyTests/Pods-CaliyTests.release.xcconfig"; sourceTree = "<group>"; };
 		C5ADC388C2C5E9C3462154D3 /* Pods-Calie-CalieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.release.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D3D424149A509BF40824BAB9 /* Pods-Calie-CalieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie-CalieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Calie-CalieUITests/Pods-Calie-CalieUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -380,7 +384,8 @@
 			isa = PBXGroup;
 			children = (
 				9A07FF3E280DC9C2007110D8 /* DutchpayController.swift */,
-				9AFB9506281EF60500A9DEAA /* DutchUnitTableViewModel.swift */,
+				9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */,
+				9AADB3462895F10A00DAD657 /* DutchService.swift */,
 				9AD2FB54285787770075551B /* DutchTableCell.swift */,
 			);
 			path = DutchPay;
@@ -456,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC3CC622819999C00C9A37F /* DutchUnitController.swift */,
+				9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */,
 				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
 				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
 				9A2DBC322826DF6A00CF4E86 /* Tests */,
@@ -740,6 +746,7 @@
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
 				9A2DBC012820698F00CF4E86 /* PersonDetailCell.swift in Sources */,
+				9AADB3452895E5E400DAD657 /* DutchpayViewModel.swift in Sources */,
 				9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */,
 				9AADB343288C4B8300DAD657 /* Double+Ext.swift in Sources */,
 				9A0DA01B24D3B2C2006BBE95 /* FrameSizes.swift in Sources */,
@@ -751,11 +758,11 @@
 				9AD2FB5928578AC70075551B /* LayerController.swift in Sources */,
 				E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */,
 				9AD2FB2E284FC4030075551B /* NumberLayerController.swift in Sources */,
-				9AFB9507281EF60500A9DEAA /* DutchUnitTableViewModel.swift in Sources */,
 				9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */,
 				9AA5C432271701190021975C /* SettingsTableCell.swift in Sources */,
 				9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */,
 				9A2DBBFD281F024200CF4E86 /* DutchCollectionHeader.swift in Sources */,
+				9AADB34D2896C2BC00DAD657 /* DutchUnitViewModel.swift in Sources */,
 				9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
@@ -785,6 +792,7 @@
 				9AA15117287DDBE700DC4CED /* SampleModel.xcdatamodeld in Sources */,
 				9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */,
 				9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */,
+				9AADB3472895F10A00DAD657 /* DutchService.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
 				9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */,
 			);

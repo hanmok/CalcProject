@@ -8,6 +8,23 @@
 
 import Foundation
 
-public func hi() {
-    print("hello")
+//extension Double {
+//    func convertIntoStr() -> String {
+////        return String(self)
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//
+//        if let intValue = self.convertToInt() {
+//            return convertIntoKoreanPrice(number: Double(intValue))
+//        } else {
+//            return convertIntoKoreanPrice(number: dutchUnit.spentAmount)
+//        }
+//    }
+//}
+
+private func convertIntoKoreanPrice(number: Double) -> String {
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .decimal
+    numberFormatter.string(from: NSNumber(value:number))
+    return numberFormatter.string(from: NSNumber(value: number))! + " 원"
 }

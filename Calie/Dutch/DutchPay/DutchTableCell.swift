@@ -1,3 +1,4 @@
+
 //
 //  DutchTableCell.swift
 //  Calie
@@ -15,7 +16,13 @@ import SnapKit
 class DutchTableCell: UITableViewCell {
 
     static let identifier = "DutchTableCell"
-    var viewModel: CoreDutchUnitViewModel? {
+    
+//    var viewModel: NewDutchUnitCellViewModel? {
+//        didSet {
+//            self.loadView()
+//        }
+//    }
+    var dutchUnitCellComponents: DutchUnitCellComponents? {
         didSet {
             self.loadView()
         }
@@ -93,11 +100,11 @@ class DutchTableCell: UITableViewCell {
     }
 
     private func loadView() {
-        guard let viewModel = viewModel else { return }
+        guard let dutchUnitCellComponents = dutchUnitCellComponents else { return }
 
-        placeNameLabel.text = viewModel.placeName
-        priceLabel.text = viewModel.spentAmount
-        peopleLabel.text = viewModel.peopleList
-        dateLabel.text = viewModel.date
+        placeNameLabel.text = dutchUnitCellComponents.placeName
+        priceLabel.text = dutchUnitCellComponents.spentAmount
+        peopleLabel.text = dutchUnitCellComponents.peopleNameList
+        dateLabel.text = dutchUnitCellComponents.date
     }
 }

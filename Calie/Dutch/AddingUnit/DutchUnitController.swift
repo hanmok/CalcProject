@@ -13,7 +13,6 @@ import Then
 protocol AddingUnitControllerDelegate: AnyObject {
     //    func updateDutchUnits()
     func dismissChildVC()
-    //    func updateParticipants2()
 }
 
 protocol DutchUnitDelegate: AnyObject {
@@ -23,6 +22,8 @@ protocol DutchUnitDelegate: AnyObject {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
+    
+    var viewModel: DutchUnitViewModel
     
     private let cellIdentifier = "PersonDetailCell"
     
@@ -38,7 +39,7 @@ class DutchUnitController: NeedingController {
     var participants: [Person]
     var personDetails: [PersonDetail] = []
     
-    var initialParticipants: [Person]
+//    var initialParticipants: [Person]
     
     var selectedPriceTF: PriceTextField?
     
@@ -142,9 +143,9 @@ class DutchUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
-    var dutchManager: DutchManager
+//    var dutchManager: DutchManager
     
-    private var numOfAllUnits: Int?
+//    private var numOfAllUnits: Int?
     
     var initialDutchUnit: DutchUnit? {
         didSet {
@@ -152,13 +153,20 @@ class DutchUnitController: NeedingController {
         }
     }
     
-    init(initialDutchUnit: DutchUnit? = nil, numOfAllUnits: Int? = nil, participants: [Person], dutchManager: DutchManager) {
+    init(initialDutchUnit: DutchUnit? = nil,
+         gathering: Gathering
+//         , numOfAllUnits: Int? = nil, participants: [Person]
+//         dutchManager: DutchManager
         
+    ) {
+//        self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit)
+        self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
         self.initialDutchUnit = initialDutchUnit
-        self.initialParticipants = participants
-        self.participants = participants
-        self.numOfAllUnits = numOfAllUnits
-        self.dutchManager = dutchManager
+        
+//        self.initialParticipants = participants
+//        self.participants = participants
+//        self.numOfAllUnits = numOfAllUnits
+//        self.dutchManager = dutchManager
         super.init(nibName: nil, bundle: nil)
         initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
