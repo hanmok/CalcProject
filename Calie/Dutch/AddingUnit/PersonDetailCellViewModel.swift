@@ -10,7 +10,7 @@
 import UIKit
 
 
-struct PersonDetailViewModel {
+struct PersonDetailCellViewModel {
     private let personDetail: PersonDetail
     
     var name: String { return personDetail.person!.name }

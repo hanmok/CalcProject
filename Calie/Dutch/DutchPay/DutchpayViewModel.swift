@@ -12,6 +12,7 @@ class DutchpayViewModel {
     
     let dutchService = DutchService()
     
+    typealias GatheringInfo = (title: String, totalPrice: String)
     
     // MARK: - Actions when Observed Properties changed.
     
@@ -24,7 +25,7 @@ class DutchpayViewModel {
     
     var gathering: Gathering? = nil {
         didSet {
-            guard let gathering = oldValue else { return }
+            guard let gathering = gathering else { return }
             
             let gatheringInfo = GatheringInfo(title: gathering.title, totalPrice: gathering.totalCostStr)
             
@@ -34,7 +35,7 @@ class DutchpayViewModel {
     
     var dutchUnits: [DutchUnit] = [] {
         didSet {
-            let cellComponents = convertDutchUnits(dutchUnits: oldValue)
+            let cellComponents = convertDutchUnits(dutchUnits: dutchUnits)
             updateDutchUnitCells(cellComponents)
         }
     }
@@ -43,15 +44,13 @@ class DutchpayViewModel {
     
     
     
-    typealias GatheringInfo = (title: String, totalPrice: String)
+
     
     
     // MARK: - Actions
     var action: Actions = .none {
         didSet {
-            switch oldValue {
-                
-                
+            switch action {
             case .showHistory:
                 break
                 

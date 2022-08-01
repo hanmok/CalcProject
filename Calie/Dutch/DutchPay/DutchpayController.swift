@@ -45,7 +45,7 @@ class DutchpayController: UIViewController {
     
     var popupToShow: PopupScreens?
     
-    let persistenceManager: PersistenceController
+//    let persistenceManager: PersistenceController
     
     var userDefaultSetup = UserDefaultSetup()
     
@@ -66,10 +66,13 @@ class DutchpayController: UIViewController {
     
     // MARK: - LifeCycle
     
-    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
+//    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
+    init(mainTabController: MainTabController) {
         
         self.mainTabController = mainTabController
-        self.persistenceManager = persistenceManager
+        
+//        self.persistenceManager = persistenceManager
+        
         self.viewModel = DutchpayViewModel()
         
         super.init(nibName: nil, bundle: nil)
@@ -163,8 +166,6 @@ class DutchpayController: UIViewController {
         viewModel.setActions(to: .resetGathering(needGathering: true))
     }
     
-    
-    // blurred View 도 Main 에 있어야겠는데 ? 글쎄다.
     @objc func blurredViewTapped() {
         viewModel.setActions(to: .blurredViewTapped)
         
@@ -775,6 +776,7 @@ extension DutchpayController: AddingUnitControllerDelegate {
 extension DutchpayController {
     
     typealias NewNameAction = (Result<String, DutchError>) -> Void
+    
     // Done!
     private func presentAskingGatheringName( completion: @escaping (NewNameAction)) {
         let alertController = UIAlertController(title: "Edit Gathering Name", message: "새로운 모임 이름을 입력해주세요", preferredStyle: .alert)

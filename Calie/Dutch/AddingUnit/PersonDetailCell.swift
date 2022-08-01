@@ -20,7 +20,7 @@ protocol PersonDetailCellDelegate: AnyObject {
 
 class PersonDetailCell: UICollectionViewCell {
     
-    var viewModel: PersonDetailViewModel? {
+    var viewModel: PersonDetailCellViewModel? {
         didSet {
             self.loadView()
             self.setupTargets()

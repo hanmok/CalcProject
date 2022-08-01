@@ -38,7 +38,7 @@
 		9A2DBBFD281F024200CF4E86 /* DutchCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFC281F024200CF4E86 /* DutchCollectionHeader.swift */; };
 		9A2DBBFF281F02A600CF4E86 /* DutchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */; };
 		9A2DBC012820698F00CF4E86 /* PersonDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */; };
-		9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */; };
+		9A2DBC03282069AC00CF4E86 /* PersonDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC02282069AC00CF4E86 /* PersonDetailCellViewModel.swift */; };
 		9A2DBC052820717200CF4E86 /* PriceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC042820717200CF4E86 /* PriceTextField.swift */; };
 		9A2DBC0728217E2500CF4E86 /* CustomNumberPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */; };
 		9A2DBC09282181E800CF4E86 /* NumberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DBC08282181E800CF4E86 /* NumberButton.swift */; };
@@ -165,7 +165,7 @@
 		9A2DBBFC281F024200CF4E86 /* DutchCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchCollectionHeader.swift; sourceTree = "<group>"; };
 		9A2DBBFE281F02A600CF4E86 /* DutchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchFooter.swift; sourceTree = "<group>"; };
 		9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailCell.swift; sourceTree = "<group>"; };
-		9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailViewModel.swift; sourceTree = "<group>"; };
+		9A2DBC02282069AC00CF4E86 /* PersonDetailCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailCellViewModel.swift; sourceTree = "<group>"; };
 		9A2DBC042820717200CF4E86 /* PriceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTextField.swift; sourceTree = "<group>"; };
 		9A2DBC0628217E2500CF4E86 /* CustomNumberPadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPadController.swift; sourceTree = "<group>"; };
 		9A2DBC08282181E800CF4E86 /* NumberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberButton.swift; sourceTree = "<group>"; };
@@ -463,7 +463,7 @@
 				9AC3CC622819999C00C9A37F /* DutchUnitController.swift */,
 				9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */,
 				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
-				9A2DBC02282069AC00CF4E86 /* PersonDetailViewModel.swift */,
+				9A2DBC02282069AC00CF4E86 /* PersonDetailCellViewModel.swift */,
 				9A2DBC322826DF6A00CF4E86 /* Tests */,
 			);
 			path = AddingUnit;
@@ -780,7 +780,7 @@
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9AA15122287DE4AC00DC4CED /* Dutch.xcdatamodeld in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,
-				9A2DBC03282069AC00CF4E86 /* PersonDetailViewModel.swift in Sources */,
+				9A2DBC03282069AC00CF4E86 /* PersonDetailCellViewModel.swift in Sources */,
 				9AD2FB30284FD8D70075551B /* NeedingController.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
 				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
