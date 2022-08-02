@@ -189,7 +189,11 @@ class DutchpayViewModel {
     
     func fetchLatestGathering() {
         
-        dutchService.updateGathering { gathering in
+//        dutchService.updateGathering { gathering in
+//            self.gathering = gathering
+//        }
+        // TODO: What if it fails ?
+        dutchService.fetchLatestGathering { gathering in
             self.gathering = gathering
         }
     }

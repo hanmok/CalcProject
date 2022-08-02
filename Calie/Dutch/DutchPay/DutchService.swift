@@ -12,10 +12,11 @@ import Foundation
 class DutchService {
     
     var currentGathering: Gathering?
+    var currentDutchUnit: DutchUnit?
     
     let dutchManager = DutchManager()
     
-    var selectedDutchUnit: DutchUnit?
+
     
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
         
@@ -46,18 +47,19 @@ class DutchService {
         // order updating to viewmodel
     }
     
-    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetailDic: [Int: DetailState], updatedName: String?, updatedDate: Date? ) {
-        // TODO: replace personDetails using dic
-        // ex:
-        //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
-        //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
+    
+    
+    
+    
+    func fetchLatestGathering(completion: @escaping (Gathering) -> Void) {
         
+        let latestGathering = dutchManager.fetchGathering(.latest)
+        guard let latestGathering = latestGathering else {
+            return
+        }
+
+        completion(latestGathering)
     }
-    
-    func createDutchUnit(peopleDetailDic: [Int: DetailState], spentPlace: String, spentDate: Date) {
-        // TODO: create DutchUnit
-    }
-    
     
     
     func changeGatheringName(to newName: String, completion: @escaping (Gathering) -> Void) {
@@ -135,8 +137,57 @@ class DutchService {
         //            gathering = dutchManager.createGathering(title: "default gathering")
         //        }
         
+        
         let gathering = Gathering()
+        
         completion(gathering)
+    }
+}
+
+// MARK: -DutchUnitController
+extension DutchService {
+
+    
+//    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetailDic: [Int: DetailState], updatedName: String?, updatedDate: Date? ) {
+    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetail: [PersonDetail], spentPlace: String?, spentDate: Date?) {
+        
+        // TODO: replace personDetails using dic
+        // ex:
+        //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
+        //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
+        
+    }
+    
+//    func createDutchUnit(peopleDetailDic: [Int: DetailState], spentPlace: String, spentDate: Date) {
+    func createDutchUnit(peopleDetails: [PersonDetail], spentPlace: String, spentDate: Date) {
+        // TODO: create DutchUnit
+    }
+    
+    func addPerson(name: String, personDetails: [PersonDetail], completion: @escaping (Result<[PersonDetail], DutchUnitError>) -> Void) {
+        
+        for personDetail in personDetails {
+//            if eachPerson.name == name {
+            guard let person = personDetail.person else { fatalError() }
+            if person.name == name {
+                completion(.failure(.duplicateName))
+            }
+        }
+        
+        
+        
+        //TODO: Make New Person, PersonDetail
+        
+        let newPerson = dutchManager.createPerson(name: name)
+        let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
+        
+        let resultDetails = personDetails + [newPersonDetail]
+        
+        completion(.success(resultDetails))
+        
+        
+        
+        
+        
     }
 }
 

@@ -11,7 +11,6 @@ import SnapKit
 import Then
 
 protocol AddingUnitControllerDelegate: AnyObject {
-    //    func updateDutchUnits()
     func dismissChildVC()
 }
 
@@ -42,15 +41,17 @@ class DutchUnitController: NeedingController {
     
     weak var dutchDelegate: DutchUnitDelegate?
     
+
     
     init(
         initialDutchUnit: DutchUnit? = nil,
         gathering: Gathering
     ) {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
-        
+        viewModel.initializePersonDetails(dutchUnit: initialDutchUnit)
         super.init(nibName: nil, bundle: nil)
-        initializePersonDetails(initialDutchUnit: initialDutchUnit)
+//        initializePersonDetails(initialDutchUnit: initialDutchUnit)
+        
     }
     
     
@@ -105,6 +106,19 @@ class DutchUnitController: NeedingController {
         
         viewModel.personDetailCellState = { [weak self] dic in
             guard let self = self else { return }
+            // TODO: binding ~~
+            
+            DispatchQueue.main.async {
+                self.personDetailCollectionView.reloadData()
+            }
+            
+        }
+        
+        
+        viewModel.updateCollectionView = { [weak self] in
+            DispatchQueue.main.async {
+                self?.personDetailCollectionView.reloadData()
+            }
         }
     }
     
@@ -129,7 +143,7 @@ class DutchUnitController: NeedingController {
         
         let saveAction = UIAlertAction(title: "Add", style: .default) { [self] alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
-            
+        
             let newPersonName = textFieldInput.text!
             
             addPersonAction(with: newPersonName)
@@ -145,9 +159,7 @@ class DutchUnitController: NeedingController {
     }
     
     
-    
-    
-    
+
     @objc func resetState() {
         viewModel.reset {
             DispatchQueue.main.async {
@@ -155,7 +167,8 @@ class DutchUnitController: NeedingController {
                     make.leading.equalToSuperview().inset(self.smallPadding)
                     make.trailing.equalToSuperview().inset(self.smallPadding)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
-                    make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
+//                    make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
+                    make.height.equalTo(50 * self.viewModel.participants.count - 20)
                 }
                 
                 self.resetBtn.snp.makeConstraints { make in
@@ -176,25 +189,18 @@ class DutchUnitController: NeedingController {
     }
     
     @objc func dismissTapped() {
-        print("cancel action")
-        
         addingDelegate?.dismissChildVC()
         self.dismiss(animated: true)
     }
     
     
-    private func confirmAction() {
-        print("success action")
-        
-        viewModel.confirmAction { [weak self] in
-            guard let self = self else {return }
+    
+    @objc func confirmTapped() {
+        viewModel.updateDutchUnit { [weak self] in
+            guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
             self.needingDelegate?.dismissNumberLayer()
         }
-    }
-    
-    @objc func confirmTapped() {
-        confirmAction()
     }
     
     
@@ -260,24 +266,6 @@ class DutchUnitController: NeedingController {
     }
     
     
-    private func initializePersonDetails(initialDutchUnit: DutchUnit? = nil ) {
-        
-        if let dutchUnit = initialDutchUnit {
-            viewModel.personDetails = dutchUnit.personDetails.sorted()
-        } else {
-            
-            for participant in viewModel.participantsNames {
-                //                let newPersonDetail = dutchManager.createPersonDetail(person: participant)
-                //                personDetails.append(newPersonDetail)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.personDetailCollectionView.reloadData()
-        }
-    }
-    
-    
     @objc func textDidBegin(_ textField: UITextField) {
         if textField == spentAmountTF {
             print("it's spentAmountTF")
@@ -305,6 +293,8 @@ class DutchUnitController: NeedingController {
             switch result {
                 
             case .success(let msg):
+//                 participantsNames
+                
                 self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
                 
                 DispatchQueue.main.async {
@@ -314,7 +304,8 @@ class DutchUnitController: NeedingController {
                         make.leading.equalToSuperview().inset(self.smallPadding)
                         make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.top.equalTo(self.divider.snp.bottom).offset(30)
-                        make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
+//                        make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
+                        make.height.equalTo(50 * self.viewModel.participants.count - 20)
                     }
                     
                     self.resetBtn.snp.makeConstraints { make in
@@ -435,7 +426,8 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            make.height.equalTo(45 * viewModel.participantsNames.count - 20)
+//            make.height.equalTo(45 * viewModel.participantsNames.count - 20)
+            make.height.equalTo(45 * viewModel.participants.count - 20)
         }
         
         resetBtn.snp.makeConstraints { make in
@@ -558,8 +550,11 @@ class DutchUnitController: NeedingController {
 extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("numOfParticipantsInAddingUnitController: \(viewModel.participantsNames.count)")
-        return viewModel.participantsNames.count
+//        print("numOfParticipantsInAddingUnitController: \(viewModel.participantsNames.count)")
+        print("numOfParticipantsInAddingUnitController: \(viewModel.participants.count)")
+//        return viewModel.participantsNames.count
+//        return viewModel.participants.count
+        return viewModel.peopleDetail.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -573,11 +568,18 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-        let peopleDetail = self.viewModel.personDetails.sorted()
         
         // FIXME: index out of range, 7.11, 7.18
         print("indexPath.row: \(indexPath.row)")
-        cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
+        
+        let personDetail = viewModel.peopleDetail[indexPath.row]
+        
+        cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
+        
+        // FIXME: TextField 에 대해서는 View 에서의 처리가 필요해보임. 그렇게 하지 않으면 업데이트가 너무 자주될 수 있음.
+        
+//        cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
+//        cell.spentAmountTF.text = viewModel.peopleDetail[indexPath.row].spentAmount.addComma()
         
         // personDetail 이 존재하지 않음. why? 모름 ;;
         //        textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
@@ -590,9 +592,10 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         //            }
         //        }
         
-        cell.viewModel = PersonDetailCellViewModel(personDetail: viewModel.personDetails[indexPath.row])
+//        cell.viewModel = PersonDetailCellViewModel(personDetail: viewModel.personDetails[indexPath.row])
         
         // personDetails 가 아직 없는 듯 ??
+        
         return cell
     }
     
@@ -648,11 +651,11 @@ extension DutchUnitController: UITextFieldDelegate {
             spentAmountTF.becomeFirstResponder()
         }
         
+        // adding people succeessively
         if textField.tag == 100 {
-            
             addPersonAction(with: textField.text!) // alert's tag
-            
             textField.text = ""
+            
             return false
         } else {
             return true

@@ -39,6 +39,15 @@ extension Double {
     }
 }
 
+extension Double {
+    public func convertToIntString() -> String {
+        if self == Double(Int(self)) {
+            return String(Int(self))
+        }
+        return ""
+    }
+}
+
 
 
 extension StringProtocol {

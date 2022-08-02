@@ -31,14 +31,14 @@ class DutchUnitViewModel {
             return
         }
         
-        initialParticipantsNames = selectedDutchUnit.personDetails.sorted().map { $0.person!.name }
+//        initialParticipantsNames = selectedDutchUnit.personDetails.sorted().map { $0.person!.name }
     }
     
-//    var initialParticipants: [Person] = [] // shouldn't be real model ??
-    var initialParticipantsNames: [String] = [] // shouldn't be real model ??
-    var personDetails: [PersonDetail] = []
-//    var participants: [Person] = []
-    var participantsNames: [String] = []
+    var initialParticipants: [Person] = [] // shouldn't be real model ??
+//    var initialParticipantsNames: [String] = [] // shouldn't be real model ??
+//    var personDetails: [PersonDetail] = []
+    var participants: [Person] = []
+//    var participantsNames: [String] = []
     
     // MARK: - Actions when Observed Properties changed.
     
@@ -46,11 +46,13 @@ class DutchUnitViewModel {
 
     var personDetailCellState: ([Int: DetailState]) -> Void = { _ in }
 
-
+    var updateCollectionView: () -> Void = { }
+    
     // MARK: - Properties To be Observed
 
     private var isConditionSatisfied = false {
         willSet {
+            print("condition flag 1, \(newValue)")
             changeableConditionState(newValue)
         }
     }
@@ -58,20 +60,28 @@ class DutchUnitViewModel {
     private var spentAmount: Double = 0 {
         willSet {
             let condition = (newValue == sumOfIndividual) && (newValue != 0)
+            print("condition flag 2, \(condition)")
             isConditionSatisfied = condition
         }
     }
     
     private var sumOfIndividual: Double = 0 {
         willSet {
-            isConditionSatisfied = newValue == spentAmount
+            let condition = (sumOfIndividual == spentAmount) && (newValue != 0)
+            isConditionSatisfied = condition
+            print("condition flag 3, \(condition)")
         }
     }
     
-    private var peopleStateDic: [Int : DetailState] = [:] {
+    public var peopleDetail: [PersonDetail] = [] {
         willSet {
-            sumOfIndividual = self.addDictionaryValue(dic: newValue)
-            personDetailCellState(newValue)
+            var sum = 0.0
+            for (_, value) in newValue.enumerated() {
+                sum += value.spentAmount
+            }
+            sumOfIndividual = sum
+            updateCollectionView()
+//            personDetailCellState
         }
     }
     
@@ -79,13 +89,12 @@ class DutchUnitViewModel {
     // MARK: - Main Functions
     
     // TODO: using service layer, store or update dutchUnit
-    // Properties to use: textFieldWithStateDic, spentAmount( + spentPlace, spentDate)
     
-    public func confirmAction(completion: @escaping () -> Void) {
+    public func updateDutchUnit(completion: @escaping () -> Void) {
         
 //        for personIndex in 0 ..< participants.count {
 //        for personNameIndex in 0 ..< participantsNames.count {
-
+        
 //        }
         
         //        guard let numOfAllUnits = numOfAllUnits else { return }
@@ -94,10 +103,10 @@ class DutchUnitViewModel {
         
         if let initialDutchUnit = selectedDutchUnit {
             
-            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetailDic: peopleStateDic, updatedName: "updated Name", updatedDate: nil)
+            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetail: peopleDetail, spentPlace: "", spentDate: Date())
             
         } else {
-            dutchService.createDutchUnit(peopleDetailDic: peopleStateDic, spentPlace: "spent place", spentDate: Date())
+            dutchService.createDutchUnit(peopleDetails: peopleDetail, spentPlace: "spent place", spentDate: Date())
         }
         
         completion()
@@ -105,8 +114,9 @@ class DutchUnitViewModel {
     
     public func reset(completion: @escaping () -> Void ) {
         
-        participantsNames = initialParticipantsNames
-        personDetails = []
+//        participantsNames = initialParticipantsNames
+        participants = initialParticipants
+        peopleDetail = []
         completion()
             
         //        textFieldWithPriceDic = [:]
@@ -116,40 +126,30 @@ class DutchUnitViewModel {
     
     }
     
+    public func initializePersonDetails(dutchUnit: DutchUnit?) {
+        
+    }
+    
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {
         // TODO: Set personDetails
-        var isDuplicateName = false
         
-//        for eachPerson in participants {
-        for eachName in participantsNames {
-//            if eachPerson.name == name {
-            if eachName == name {
+        dutchService.addPerson(name: name, personDetails: peopleDetail) { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let peopleDetail):
+                self.peopleDetail = peopleDetail
+                guard let lastPersonDetail = peopleDetail.last,
+                      let lastPerson = lastPersonDetail.person else { fatalError() }
+                
+                self.participants.append(lastPerson)
+                completion(.success("\(name) has added"))
+                
+            case .failure(let e):
+                print(e.localizedDescription)
                 completion(.failure(.duplicateName))
-                isDuplicateName = true
-                break
             }
-        }
-        
-        if isDuplicateName == false {
-            // TODO: Make New Person, PersonDetail.
-//            textFieldWithStateDic[participants.count] = DetailState(spentAmount: 0, isAttended: true)
-            peopleStateDic[participantsNames.count] = DetailState(spentAmount: 0, isAttended: true)
-//            dutchService.addPerson() ?? 결정 되지도 않았음 ;; 음.. 일단 생성??
-//            let newPerson = Person(
-            // FIXME: 여기서 생성하면 안됨.
-            
-//            participants.append(<#T##newElement: Person##Person#>)
-            // TODO: reset 누르면 이것들 초기화 해주기..
-            
-            
-            //            let newPerson = dutchManager.createPerson(name: newName, prevPeople: participants)
-            //            self.participants.append(newPerson)
-            
-            //            let newDetail = dutchManager.createPersonDetail(person: newPerson)
-            //            self.personDetails.append(newDetail)
-            
-            completion(.success("\(name) has added"))
-
         }
     }
     

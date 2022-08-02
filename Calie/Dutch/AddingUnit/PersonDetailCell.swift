@@ -79,6 +79,8 @@ class PersonDetailCell: UICollectionViewCell {
         attendingBtn.setTitle(viewModel.attendingBtnTitle, for: .normal)
         attendingBtn.setTitleColor(viewModel.attendingBtnColor, for: .normal)
         
+        spentAmountTF.text = viewModel.spentAmount
+        
     }
     
     override init(frame: CGRect) {

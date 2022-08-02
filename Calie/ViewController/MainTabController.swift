@@ -13,7 +13,7 @@ import UIKit
 
 
 protocol MainTabDelegate: AnyObject {
-    func updateGatheringFromMainTab(with newGathering: Gathering)
+//    func updateGatheringFromMainTab(with newGathering: Gathering)
 }
 
 class MainTabController: UITabBarController, UINavigationControllerDelegate {
@@ -62,7 +62,10 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
 
-        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared, mainTabController: self)
+//        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared, mainTabController: self)
+        
+        let dutchController = DutchpayController(mainTabController: self)
+        
         dutchController.delegate = self
         
         
@@ -237,14 +240,23 @@ extension MainTabController: SettingsViewControllerDelegate {
 
 extension MainTabController: DutchpayControllerDelegate {
     
-    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager) {
-        shouldShowSideView ? showSideController(dutchManager: dutchManager) : hideSideController()
-    }
-    
-    func dutchpayController(shouldHideMainTab: Bool) {
-        //        tabBar.isHidden = true
+//    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager) {
+//        shouldShowSideView ? showSideController(dutchManager: dutchManager) : hideSideController()
+//    }
+//    func shouldshow
+    func shouldShowSideView(_ bool: Bool) {
         
     }
+    
+//    func shouldShowSideView(_ bool: Bool) {
+//        //        tabBar.isHidden = true
+//
+//    }
+    func shouldHideMainTab(_ bool: Bool) {
+        
+    }
+    
+//    func dutchpayController(
     
 }
 

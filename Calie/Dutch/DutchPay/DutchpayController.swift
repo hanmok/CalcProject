@@ -17,9 +17,10 @@ enum PopupScreens {
 
 
 protocol DutchpayControllerDelegate: AnyObject {
-    func dutchpayController(shouldHideMainTab: Bool)
+    func shouldHideMainTab(_ bool: Bool)
 //    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager)
-    func dutchpayController(shouldShowSideView: Bool)
+
+    func shouldShowSideView(_ bool: Bool)
 }
 
 protocol DutchpayToParticipantsDelegate: AnyObject {
@@ -186,7 +187,8 @@ class DutchpayController: UIViewController {
 
         navigationController?.pushViewController(resultVC, animated: true)
         // TODO: Handle this!
-        delegate?.dutchpayController(shouldHideMainTab: true)
+//        delegate?.dutchpayController(shouldHideMainTab: true)
+        delegate?.shouldHideMainTab(true)
     }
     
     @objc func editPeopleBtnAction() {
@@ -255,7 +257,7 @@ class DutchpayController: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         
-        delegate?.dutchpayController(shouldHideMainTab: true)
+        delegate?.shouldHideMainTab(true)
         
         numLayerController.parentDelegate = self
     }
@@ -343,13 +345,15 @@ class DutchpayController: UIViewController {
         })
         
 //        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
-        delegate?.dutchpayController(shouldShowSideView: false)
+//        delegate?.shouldShowSideView(_ bool: false)
+        delegate?.shouldShowSideView(false)
     }
     
     private func showSideController() {
         
 //        delegate?.dutchpayController(shouldShowSideView: true, dutchManager: dutchManager)
-        delegate?.dutchpayController(shouldShowSideView: true)
+//        delegate?.shouldShowSideView(_ bool: true)
+        delegate?.shouldShowSideView(true)
         
         UIView.animate(withDuration: 0.3) {
             self.blurredView.isHidden = false // 이거.. ;;
@@ -767,7 +771,8 @@ extension DutchpayController: AddingUnitControllerDelegate {
         
         navigationController?.popViewController(animated: true)
         
-        delegate?.dutchpayController(shouldHideMainTab: false)
+//        delegate?.dutchpayController(shouldHideMainTab: false)
+        delegate?.shouldHideMainTab(false)
     }
 }
 
@@ -824,8 +829,8 @@ extension Set {
 
 
 extension DutchpayController: MainTabDelegate {
-    func updateGatheringFromMainTab(with newGathering: Gathering) {
+//    func updateGatheringFromMainTab(with newGathering: Gathering) {
 //        updateGatheringInfo(with: newGathering)
-        viewModel.setActions(to: .replaceGathering(with: newGathering))
-    }
+//        viewModel.setActions(to: .replaceGathering(with: newGathering))
+//    }
 }

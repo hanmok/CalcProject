@@ -45,10 +45,14 @@ class ParticipantsController: UIViewController{
     
     weak var delegate: ParticipantsVCDelegate?
 
-    private var participants: [Person]
-    private var names: [String]
+//    private var participants: [Person]
+    private var participants: [Person] = []
+//    private var names: [String]
     
-    private var updatedParticipants: [Person]
+    private var names: [String] = []
+    
+//    private var updatedParticipants: [Person]
+    private var updatedParticipants: [Person] = []
 //    var dutchManager: DutchManager
     
 //    init(participants: [Person], dutchManager: DutchManager) {
@@ -398,13 +402,13 @@ class ParticipantsController: UIViewController{
             self.showToast(message: "person with name: \(newName) already exist!", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
         } else {
             self.names.append(newName)
-            let newPerson = self.dutchManager.createPerson(name: newName, prevPeople: self.updatedParticipants)
+//            let newPerson = self.dutchManager.createPerson(name: newName, prevPeople: self.updatedParticipants)
             
                 self.showToast(message: "\(newName) has added", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
                                
-            self.updatedParticipants.append(newPerson)
+//            self.updatedParticipants.append(newPerson)
             
-            self.participants.append(newPerson)
+//            self.participants.append(newPerson)
             
             self.reloadCollectionView()
         }
@@ -473,7 +477,8 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         let sourcePerson = participants[sourceIndexPath.row]
         let destinationPerson = participants[destinationIndexPath.row]
         
-        dutchManager.swapPersonOrder(of: sourcePerson, with: destinationPerson)
+//        dutchManager.swapPersonOrder(of: sourcePerson, with: destinationPerson)
+        
     }
 }
 
