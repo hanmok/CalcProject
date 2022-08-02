@@ -113,7 +113,7 @@ class DutchUnitController: NeedingController {
         resetBtn.addTarget(self, action: #selector(resetState), for: .touchUpInside)
         addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
         dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
-        confirmBtn.addTarget(nil, action: #selector(confirmTapped(_:)), for: .touchUpInside)
+        confirmBtn.addTarget(nil, action: #selector(confirmTapped), for: .touchUpInside)
     }
     
     
@@ -155,7 +155,7 @@ class DutchUnitController: NeedingController {
                     make.leading.equalToSuperview().inset(self.smallPadding)
                     make.trailing.equalToSuperview().inset(self.smallPadding)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
-                    make.height.equalTo(50 * self.viewModel.participants.count - 20)
+                    make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
                 }
                 
                 self.resetBtn.snp.makeConstraints { make in
@@ -193,7 +193,7 @@ class DutchUnitController: NeedingController {
         }
     }
     
-    @objc func confirmTapped(_ sender: UIButton) {
+    @objc func confirmTapped() {
         confirmAction()
     }
     
@@ -266,7 +266,7 @@ class DutchUnitController: NeedingController {
             viewModel.personDetails = dutchUnit.personDetails.sorted()
         } else {
             
-            for participant in viewModel.participants {
+            for participant in viewModel.participantsNames {
                 //                let newPersonDetail = dutchManager.createPersonDetail(person: participant)
                 //                personDetails.append(newPersonDetail)
             }
@@ -314,7 +314,7 @@ class DutchUnitController: NeedingController {
                         make.leading.equalToSuperview().inset(self.smallPadding)
                         make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.top.equalTo(self.divider.snp.bottom).offset(30)
-                        make.height.equalTo(50 * self.viewModel.participants.count - 20)
+                        make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
                     }
                     
                     self.resetBtn.snp.makeConstraints { make in
@@ -435,7 +435,7 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            make.height.equalTo(45 * viewModel.participants.count - 20)
+            make.height.equalTo(45 * viewModel.participantsNames.count - 20)
         }
         
         resetBtn.snp.makeConstraints { make in
@@ -452,8 +452,6 @@ class DutchUnitController: NeedingController {
             make.height.equalTo(40)
             make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
         }
-        
-        
         
         confirmBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -560,8 +558,8 @@ class DutchUnitController: NeedingController {
 extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("numOfParticipantsInAddingUnitController: \(viewModel.participants.count)")
-        return viewModel.participants.count
+        print("numOfParticipantsInAddingUnitController: \(viewModel.participantsNames.count)")
+        return viewModel.participantsNames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -586,7 +584,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         //        print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
         
-        //        if indexPath.row == (viewModel.participants.count) - 1 {
+        //        if indexPath.row == (viewModel.participantsNames.count) - 1 {
         //            if let initialDutchUnit = initialDutchUnit {
         //                spentAmount = initialDutchUnit.spentAmount
         //            }
@@ -651,8 +649,8 @@ extension DutchUnitController: UITextFieldDelegate {
         }
         
         if textField.tag == 100 {
-            print("hi")
-            addPersonAction(with: textField.text!)
+            
+            addPersonAction(with: textField.text!) // alert's tag
             
             textField.text = ""
             return false

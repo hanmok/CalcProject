@@ -8,7 +8,14 @@
 
 import Foundation
 
+typealias DetailState = (spentAmount: Double, isAttended: Bool)
+
+typealias InitialState = (place: String, amount: String, date: Date)
+
+
 class DutchUnitViewModel {
+    
+
     
     var selectedDutchUnit: DutchUnit?
     var gathering: Gathering
@@ -24,31 +31,29 @@ class DutchUnitViewModel {
             return
         }
         
-        initialParticipants = selectedDutchUnit.personDetails.sorted().map { $0.person!}
+        initialParticipantsNames = selectedDutchUnit.personDetails.sorted().map { $0.person!.name }
     }
     
-    var initialParticipants: [Person] = []
+//    var initialParticipants: [Person] = [] // shouldn't be real model ??
+    var initialParticipantsNames: [String] = [] // shouldn't be real model ??
     var personDetails: [PersonDetail] = []
-    var participants: [Person] = []
-    
+//    var participants: [Person] = []
+    var participantsNames: [String] = []
     
     // MARK: - Actions when Observed Properties changed.
     
     var changeableConditionState: (Bool) -> Void = { _ in }
 
     var personDetailCellState: ([Int: DetailState]) -> Void = { _ in }
-    // MARK: - Properties To be Observed
-    
 
-    
+
+    // MARK: - Properties To be Observed
+
     private var isConditionSatisfied = false {
         willSet {
             changeableConditionState(newValue)
         }
     }
-    
-    
-
     
     private var spentAmount: Double = 0 {
         willSet {
@@ -63,47 +68,7 @@ class DutchUnitViewModel {
         }
     }
     
-    public func confirmAction(completion: @escaping () -> Void) {
-        
-        for personIndex in 0 ..< participants.count {
-            //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
-            //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
-        }
-        
-        //        guard let numOfAllUnits = numOfAllUnits else { return }
-        let numOfAllUnits = 0
-//        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
-        
-        if let initialDutchUnit = selectedDutchUnit {
-            
-            //            dutchManager.updateDutchUnit(
-            //                target: initialDutchUnit,
-            //                spentTo: spentPlace,
-            //                spentAmount: spentAmount,
-            //                personDetails: personDetails,
-            //                spentDate: spentDatePicker.date)
-//            viewModel.setAction(to: .update)
-            updateDutchUnit()
-            
-//            dutchDelegate?.updateDutchUnit(initialDutchUnit, isNew: false)
-            
-        } else {
-            //            dutchUnit = dutchManager.createDutchUnit(spentTo: spentPlace, spentAmount: spentAmount, personDetails: personDetails, spentDate: spentDatePicker.date)
-//            viewModel.setAction(to: .createDutchUnit)
-            
-            createDutchUnit()
-            
-//            dutchDelegate?.updateDutchUnit(dutchUnit!, isNew: true)
-        }
-        
-        completion()
-    }
-    
-    typealias DetailState = (spentAmount: Double, isAttended: Bool)
-    
-    typealias InitialState = (place: String, amount: String, date: Date)
-    
-    private var textFieldWithStateDic: [Int : DetailState] = [:] {
+    private var peopleStateDic: [Int : DetailState] = [:] {
         willSet {
             sumOfIndividual = self.addDictionaryValue(dic: newValue)
             personDetailCellState(newValue)
@@ -112,32 +77,53 @@ class DutchUnitViewModel {
     
     
     // MARK: - Main Functions
+    
+    // TODO: using service layer, store or update dutchUnit
+    // Properties to use: textFieldWithStateDic, spentAmount( + spentPlace, spentDate)
+    
+    public func confirmAction(completion: @escaping () -> Void) {
+        
+//        for personIndex in 0 ..< participants.count {
+//        for personNameIndex in 0 ..< participantsNames.count {
+
+//        }
+        
+        //        guard let numOfAllUnits = numOfAllUnits else { return }
+        let numOfAllUnits = 0
+//        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
+        
+        if let initialDutchUnit = selectedDutchUnit {
+            
+            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetailDic: peopleStateDic, updatedName: "updated Name", updatedDate: nil)
+            
+        } else {
+            dutchService.createDutchUnit(peopleDetailDic: peopleStateDic, spentPlace: "spent place", spentDate: Date())
+        }
+        
+        completion()
+    }
+    
     public func reset(completion: @escaping () -> Void ) {
-        //        self.participants = initialParticipants
-        participants = initialParticipants
+        
+        participantsNames = initialParticipantsNames
         personDetails = []
         completion()
+            
         //        textFieldWithPriceDic = [:]
 //        setAction(to: .initializePriceDic)
         // TODO: Initialize Price Dic
 //                initializePersonDetails(initialDutchUnit: initialDutchUnit)
-    }
     
-    public func updateDutchUnit() {
-        
-    }
-    
-    public func createDutchUnit() {
-        
     }
     
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {
         // TODO: Set personDetails
         var isDuplicateName = false
         
-        for eachPerson in participants {
-            if eachPerson.name == name {
-//                completion("Duplicate name")
+//        for eachPerson in participants {
+        for eachName in participantsNames {
+//            if eachPerson.name == name {
+            if eachName == name {
                 completion(.failure(.duplicateName))
                 isDuplicateName = true
                 break
@@ -146,8 +132,16 @@ class DutchUnitViewModel {
         
         if isDuplicateName == false {
             // TODO: Make New Person, PersonDetail.
+//            textFieldWithStateDic[participants.count] = DetailState(spentAmount: 0, isAttended: true)
+            peopleStateDic[participantsNames.count] = DetailState(spentAmount: 0, isAttended: true)
+//            dutchService.addPerson() ?? 결정 되지도 않았음 ;; 음.. 일단 생성??
+//            let newPerson = Person(
+            // FIXME: 여기서 생성하면 안됨.
             
+//            participants.append(<#T##newElement: Person##Person#>)
             // TODO: reset 누르면 이것들 초기화 해주기..
+            
+            
             //            let newPerson = dutchManager.createPerson(name: newName, prevPeople: participants)
             //            self.participants.append(newPerson)
             

@@ -19,32 +19,46 @@ class DutchService {
     
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
         
-        
     }
     
     
     
     typealias ResultTest = (Result<Gathering, DutchError>) -> Void
+    
     func resetGathering(completion: @escaping ResultTest) {
-//        currentGathering
+        //        currentGathering
         guard let gathering = currentGathering else {
-//            completion(nil)
+            //            completion(nil)
             completion(.failure(.failedToGetGathering))
             return }
         
         gathering.people = []
         gathering.dutchUnits = []
         gathering.totalCost_ = 0
-
+        
         gathering.createdAt = Date()
         gathering.updatedAt = Date()
         
         dutchManager.update()
-//        completion(gathering)
+        //        completion(gathering)
         completion(.success(gathering))
         
         // order updating to viewmodel
     }
+    
+    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetailDic: [Int: DetailState], updatedName: String?, updatedDate: Date? ) {
+        // TODO: replace personDetails using dic
+        // ex:
+        //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
+        //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
+        
+    }
+    
+    func createDutchUnit(peopleDetailDic: [Int: DetailState], spentPlace: String, spentDate: Date) {
+        // TODO: create DutchUnit
+    }
+    
+    
     
     func changeGatheringName(to newName: String, completion: @escaping (Gathering) -> Void) {
         guard let gathering = currentGathering else { return }
@@ -71,7 +85,7 @@ class DutchService {
             for newPerson in newPeople {
                 gathering.people.insert(newPerson)
             }
-
+            
             
             for eachUnit in gathering.dutchUnits {
                 if eachUnit.personDetails.count != updatedPeopleSet.count {
@@ -91,9 +105,9 @@ class DutchService {
         guard let currentGathering = currentGathering else {
             return
         }
-
+        
         dutchManager.updatePeople(updatedPeople: newPeople, currentGathering: currentGathering)
-         let newGathering = currentGathering
+        let newGathering = currentGathering
         completion(newGathering)
         
     }
@@ -102,7 +116,7 @@ class DutchService {
         guard let currentGathering = currentGathering else {
             fatalError()
         }
-
+        
         DutchUnit.deleteSelf(currentGathering.dutchUnits.sorted()[idx])
         completion(currentGathering)
     }
@@ -113,13 +127,13 @@ class DutchService {
     }
     
     func updateGathering(completion: @escaping (Gathering) -> Void) {
-//        if let latestGathering = dutchManager.fetchGathering(.latest) {
-//            gathering = latestGathering
-//        }
+        //        if let latestGathering = dutchManager.fetchGathering(.latest) {
+        //            gathering = latestGathering
+        //        }
         
-//        if gathering == nil {
-//            gathering = dutchManager.createGathering(title: "default gathering")
-//        }
+        //        if gathering == nil {
+        //            gathering = dutchManager.createGathering(title: "default gathering")
+        //        }
         
         let gathering = Gathering()
         completion(gathering)
