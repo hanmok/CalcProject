@@ -20,7 +20,8 @@ class DutchpayViewModel {
     
     var updateGathering: (GatheringInfo) -> Void = { _ in }
     
-
+    var updateDutchUnits: () -> Void = { }
+    
     // MARK: - Properties To be Observed
     
     var gathering: Gathering? = nil {
@@ -35,8 +36,9 @@ class DutchpayViewModel {
     
     var dutchUnits: [DutchUnit] = [] {
         didSet {
-            let cellComponents = convertDutchUnits(dutchUnits: dutchUnits)
-            updateDutchUnitCells(cellComponents)
+//            let cellComponents = convertDutchUnits(dutchUnits: dutchUnits)
+//            updateDutchUnitCells(cellComponents)
+            updateDutchUnits()
         }
     }
     

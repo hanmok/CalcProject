@@ -108,19 +108,26 @@ class DutchpayController: UIViewController {
     
     // need to be sorted
     
-    var cellData: [DutchUnitCellComponents] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.dutchTableView.reloadData()
-            }
-        }
-    }
+//    var cellData: [DutchUnitCellComponents] = [] {
+//        didSet {
+//            DispatchQueue.main.async {
+//                self.dutchTableView.reloadData()
+//            }
+//        }
+//    }
     
     private func setupBindings() {
 
-        viewModel.updateDutchUnitCells = { [weak self] dutchCellComponents in
+//        viewModel.updateDutchUnitCells = { [weak self] dutchCellComponents in
+//            guard let self = self else { return }
+//            self.cellData = dutchCellComponents
+//        }
+        
+        viewModel.updateDutchUnits = { [weak self] in
             guard let self = self else { return }
-            self.cellData = dutchCellComponents
+            DispatchQueue.main.async {
+                self.dutchTableView.reloadData()
+            }
         }
         
         viewModel.updateGathering = { [weak self] gatheringInfo in
@@ -128,6 +135,8 @@ class DutchpayController: UIViewController {
             self.updateGatheringName(with: gatheringInfo.title)
             self.updateSpentTotalPrice(to: gatheringInfo.totalPrice)
         }
+        
+        
         
 //        viewModel.createGathering = { [weak self ] in
 //            guard let self = self else { return }
@@ -681,18 +690,27 @@ class DutchpayController: UIViewController {
 }
 
 
-
+// FIXME: Replace cellData with viewModel.xxx
 extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return cellData.count
+//        return cellData.count
+        return viewModel.dutchUnits.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
         print("cutchpay cell has appeared")
         
-        cell.dutchUnitCellComponents = cellData[indexPath.row]
+        
+        // cell.dutchUnitCellComponents = cellData[indexPath.row]
+        // TODO: Use Cell's ViewModel
+        
+//        cell.viewModel = viewModel.dutch
+        let dutchUnit = viewModel.dutchUnits[indexPath.row]
+        
+        cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
+        
         return cell
     }
     

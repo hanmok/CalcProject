@@ -22,11 +22,18 @@ class DutchTableCell: UITableViewCell {
 //            self.loadView()
 //        }
 //    }
-    var dutchUnitCellComponents: DutchUnitCellComponents? {
+    
+    var viewModel: DutchTableCellViewModel? {
         didSet {
             self.loadView()
         }
     }
+    
+//    var dutchUnitCellComponents: DutchUnitCellComponents? {
+//        didSet {
+//            self.loadView()
+//        }
+//    }
 
     private let placeNameLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20)
@@ -100,11 +107,28 @@ class DutchTableCell: UITableViewCell {
     }
 
     private func loadView() {
-        guard let dutchUnitCellComponents = dutchUnitCellComponents else { return }
+//        guard let dutchUnitCellComponents = dutchUnitCellComponents else { return }
+//
+//        placeNameLabel.text = dutchUnitCellComponents.placeName
+//        priceLabel.text = dutchUnitCellComponents.spentAmount
+//        peopleLabel.text = dutchUnitCellComponents.peopleNameList
+//        dateLabel.text = dutchUnitCellComponents.date
+        
+        guard let viewModel = viewModel else { return }
 
-        placeNameLabel.text = dutchUnitCellComponents.placeName
-        priceLabel.text = dutchUnitCellComponents.spentAmount
-        peopleLabel.text = dutchUnitCellComponents.peopleNameList
-        dateLabel.text = dutchUnitCellComponents.date
+        placeNameLabel.text = viewModel.placeName
+        priceLabel.text = viewModel.spentAmount
+        peopleLabel.text = viewModel.peopleNameList
+        dateLabel.text = viewModel.date
+        
     }
 }
+
+
+
+//struct DutchUnitCellComponents {
+//    var placeName: String
+//    var spentAmount: String
+//    var peopleNameList: String
+//    var date: String
+//}

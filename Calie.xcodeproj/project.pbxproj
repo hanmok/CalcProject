@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		226A46F4289A078700CCF29C /* DutchTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */; };
 		22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E732845D08D00646FCD /* Group+Helper.swift */; };
 		22F65E782845D0AB00646FCD /* Person+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E772845D0AB00646FCD /* Person+Helper.swift */; };
 		5833A01F4BB1956F1EF0970C /* Pods_Calie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5931D4062B3225906FE3C994 /* Pods_Calie.framework */; };
@@ -121,6 +122,7 @@
 		07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.release.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.debug.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.debug.xcconfig"; sourceTree = "<group>"; };
+		226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchTableCellViewModel.swift; sourceTree = "<group>"; };
 		22F65E732845D08D00646FCD /* Group+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+Helper.swift"; sourceTree = "<group>"; };
 		22F65E772845D0AB00646FCD /* Person+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Helper.swift"; sourceTree = "<group>"; };
 		2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie.debug.xcconfig"; path = "Target Support Files/Pods-Calie/Pods-Calie.debug.xcconfig"; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */,
 				9AADB3462895F10A00DAD657 /* DutchService.swift */,
 				9AD2FB54285787770075551B /* DutchTableCell.swift */,
+				226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */,
 			);
 			path = DutchPay;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 				9A2DBC09282181E800CF4E86 /* NumberButton.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
+				226A46F4289A078700CCF29C /* DutchTableCellViewModel.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
 				9A1C84FB2814E822001020EF /* PersistenceController.swift in Sources */,
 				9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */,
