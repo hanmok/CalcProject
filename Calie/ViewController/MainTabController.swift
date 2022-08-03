@@ -66,7 +66,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         let dutchController = DutchpayController(mainTabController: self)
         
-        dutchController.delegate = self
+        dutchController.dutchToMainTapDelegate = self
         
         
         let dutch = templateNavigationController(
@@ -144,11 +144,17 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
     }
     
-    private func showSideController(dutchManager: DutchManager) {
-        let sidevc = SideViewController(dutchManager: dutchManager)
-        sidevc.sideDelegate = self
+    
+    
+    
+//    private func showSideController(dutchManager: DutchManager) {
+    private func showSideController() {
+//        let sidevc = SideViewController(dutchManager: dutchManager)
+        
+        let sideVC = SideViewController()
+        sideVC.sideDelegate = self
 //        sideViewController = SideViewController(dutchManager: dutchManager)
-        sideViewController = sidevc
+        sideViewController = sideVC
 //        sideViewController?.sideDelegate = self
         guard let sideViewController = sideViewController else {
             return
@@ -240,24 +246,17 @@ extension MainTabController: SettingsViewControllerDelegate {
 
 extension MainTabController: DutchpayControllerDelegate {
     
-//    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager) {
-//        shouldShowSideView ? showSideController(dutchManager: dutchManager) : hideSideController()
-//    }
-//    func shouldshow
     func shouldShowSideView(_ bool: Bool) {
-        
+        if bool {
+            showSideController()
+        } else {
+            hideSideController()
+        }
     }
     
-//    func shouldShowSideView(_ bool: Bool) {
-//        //        tabBar.isHidden = true
-//
-//    }
     func shouldHideMainTab(_ bool: Bool) {
-        
+        tabBar.isHidden = bool
     }
-    
-//    func dutchpayController(
-    
 }
 
 

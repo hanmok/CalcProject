@@ -55,7 +55,3 @@ class PriceTextField: UITextField {
     }
 }
 
-
-class ZombieTextField: UITextField {
-    
-}

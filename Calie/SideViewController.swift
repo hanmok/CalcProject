@@ -21,10 +21,11 @@ class SideViewController: UIViewController {
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     let cellIdentifier = "SideTableCell"
-    var dutchManager: DutchManager
+//    var dutchManager: DutchManager
     
-    init(dutchManager: DutchManager) {
-        self.dutchManager = dutchManager
+//    init(dutchManager: DutchManager) {
+    init() {
+//        self.dutchManager = dutchManager
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -79,13 +80,13 @@ class SideViewController: UIViewController {
     
     public func updateGatherings() {
 //        let allGatherings = Gathering.fetchAll()
-        let allGatherings = dutchManager.fetchGatherings()
+//        let allGatherings = dutchManager.fetchGatherings()
         
-        gatherings = allGatherings.sorted {$0.createdAt < $1.createdAt }
-        // not registered yet ;;
-        DispatchQueue.main.async {
-            self.gatheringTableView.reloadData()
-        }
+//        gatherings = allGatherings.sorted {$0.createdAt < $1.createdAt }
+//        // not registered yet ;;
+//        DispatchQueue.main.async {
+//            self.gatheringTableView.reloadData()
+//        }
     }
     
     private let gatheringTableView = UITableView().then {

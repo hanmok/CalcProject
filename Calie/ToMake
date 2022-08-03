@@ -20,3 +20,11 @@ MainTab Delegate 으로 일단 처리하자.
 
 일단 자자
 졸리다.. 
+
+
+
+
+8.3
+
+DutchpayController ~ ViewModel
+switch action 으로 나눈거 다시 분할하기. 

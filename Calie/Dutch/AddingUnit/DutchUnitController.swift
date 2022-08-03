@@ -409,7 +409,7 @@ class DutchUnitController: NeedingController {
         
         
         spentDatePicker.snp.makeConstraints { make in
-            make.width.equalToSuperview().dividedBy(1.5)
+            make.width.equalToSuperview().dividedBy(2) // prev: 1.5
             make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
             make.leading.equalToSuperview().inset(15)
             make.height.equalTo(40)
@@ -494,9 +494,9 @@ class DutchUnitController: NeedingController {
         let picker = UIDatePicker()
         picker.datePickerMode = .dateAndTime
         picker.sizeToFit()
-        picker.semanticContentAttribute = .forceRightToLeft
-        picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
-        
+//        picker.semanticContentAttribute = .forceRightToLeft
+//        picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
+        picker.semanticContentAttribute = .forceLeftToRight
         return picker
     }()
     

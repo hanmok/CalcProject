@@ -37,7 +37,7 @@ class DutchpayController: UIViewController {
 
     
     // MARK: - Properties
-    weak var delegate: DutchpayControllerDelegate?
+    weak var dutchToMainTapDelegate: DutchpayControllerDelegate?
     weak var dutchToPartiDelegate: DutchpayToParticipantsDelegate?
     
     var participantsController: ParticipantsController?
@@ -106,23 +106,9 @@ class DutchpayController: UIViewController {
         view.insetsLayoutMarginsFromSafeArea = false
     }
     
-    // need to be sorted
-    
-//    var cellData: [DutchUnitCellComponents] = [] {
-//        didSet {
-//            DispatchQueue.main.async {
-//                self.dutchTableView.reloadData()
-//            }
-//        }
-//    }
     
     private func setupBindings() {
-
-//        viewModel.updateDutchUnitCells = { [weak self] dutchCellComponents in
-//            guard let self = self else { return }
-//            self.cellData = dutchCellComponents
-//        }
-        
+    
         viewModel.updateDutchUnits = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -141,8 +127,10 @@ class DutchpayController: UIViewController {
 //        viewModel.createGathering = { [weak self ] in
 //            guard let self = self else { return }
 //            // TODO: don't ask Gathering name. Set it to Gatherig n
-////            self.
-//        }
+
+        
+
+        
     }
     
     
@@ -197,7 +185,7 @@ class DutchpayController: UIViewController {
         navigationController?.pushViewController(resultVC, animated: true)
         // TODO: Handle this!
 //        delegate?.dutchpayController(shouldHideMainTab: true)
-        delegate?.shouldHideMainTab(true)
+        dutchToMainTapDelegate?.shouldHideMainTab(true)
     }
     
     @objc func editPeopleBtnAction() {
@@ -211,7 +199,11 @@ class DutchpayController: UIViewController {
     
     @objc func historyBtnAction() {
         // TODO: Handle
-        viewModel.setActions(to: .showHistory)
+//        viewModel.setActions(to: .showHistory)
+//        dutchToMainTapDelegate?.shouldHideMainTab(true)
+//        dutchToMainTapDelegate?.shouldShowSideView(true)
+        showSideController()
+        print("historyBtnTapped")
     }
     
     
@@ -266,7 +258,7 @@ class DutchpayController: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         
-        delegate?.shouldHideMainTab(true)
+        dutchToMainTapDelegate?.shouldHideMainTab(true)
         
         numLayerController.parentDelegate = self
     }
@@ -355,14 +347,12 @@ class DutchpayController: UIViewController {
         
 //        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
 //        delegate?.shouldShowSideView(_ bool: false)
-        delegate?.shouldShowSideView(false)
+        dutchToMainTapDelegate?.shouldShowSideView(false)
     }
     
     private func showSideController() {
         
-//        delegate?.dutchpayController(shouldShowSideView: true, dutchManager: dutchManager)
-//        delegate?.shouldShowSideView(_ bool: true)
-        delegate?.shouldShowSideView(true)
+        dutchToMainTapDelegate?.shouldShowSideView(true)
         
         UIView.animate(withDuration: 0.3) {
             self.blurredView.isHidden = false // 이거.. ;;
@@ -578,7 +568,6 @@ class DutchpayController: UIViewController {
 
         wholeContainerView.addSubview(historyBtn)
         
-        wholeContainerView.addSubview(addGatheringBtn)
         wholeContainerView.addSubview(resetGatheringBtn)
         
         wholeContainerView.addSubview(groupBtn)
@@ -790,7 +779,7 @@ extension DutchpayController: AddingUnitControllerDelegate {
         navigationController?.popViewController(animated: true)
         
 //        delegate?.dutchpayController(shouldHideMainTab: false)
-        delegate?.shouldHideMainTab(false)
+        dutchToMainTapDelegate?.shouldHideMainTab(false)
     }
 }
 

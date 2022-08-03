@@ -38,6 +38,7 @@ class DutchpayViewModel {
         didSet {
 //            let cellComponents = convertDutchUnits(dutchUnits: dutchUnits)
 //            updateDutchUnitCells(cellComponents)
+            
             updateDutchUnits()
         }
     }
