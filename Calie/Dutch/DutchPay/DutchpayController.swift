@@ -18,8 +18,8 @@ enum PopupScreens {
 
 protocol DutchpayControllerDelegate: AnyObject {
     func shouldHideMainTab(_ bool: Bool)
-//    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager)
-
+    //    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager)
+    
     func shouldShowSideView(_ bool: Bool)
 }
 
@@ -31,10 +31,10 @@ protocol DutchpayToParticipantsDelegate: AnyObject {
 class DutchpayController: UIViewController {
     
     var viewModel: DutchpayViewModel
-
+    
     var mainTabController: MainTabController
     var sideViewController: SideViewController?
-
+    
     
     // MARK: - Properties
     weak var dutchToMainTapDelegate: DutchpayControllerDelegate?
@@ -42,11 +42,11 @@ class DutchpayController: UIViewController {
     
     var participantsController: ParticipantsController?
     
-//    let customAlert = MyAlert()
+    //    let customAlert = MyAlert()
     
     var popupToShow: PopupScreens?
     
-//    let persistenceManager: PersistenceController
+    //    let persistenceManager: PersistenceController
     
     var userDefaultSetup = UserDefaultSetup()
     
@@ -67,12 +67,12 @@ class DutchpayController: UIViewController {
     
     // MARK: - LifeCycle
     
-//    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
+    //    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
     init(mainTabController: MainTabController) {
         
         self.mainTabController = mainTabController
         
-//        self.persistenceManager = persistenceManager
+        //        self.persistenceManager = persistenceManager
         
         self.viewModel = DutchpayViewModel()
         
@@ -96,7 +96,7 @@ class DutchpayController: UIViewController {
         view.backgroundColor = colorList.bgColorForExtrasLM
         
         viewModel.setActions(to: .viewDidLoad)
-            
+        
         registerTableView()
         setupLayout()
         setupAddTargets()
@@ -108,7 +108,7 @@ class DutchpayController: UIViewController {
     
     
     private func setupBindings() {
-    
+        
         viewModel.updateDutchUnits = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -124,19 +124,19 @@ class DutchpayController: UIViewController {
         
         
         
-//        viewModel.createGathering = { [weak self ] in
-//            guard let self = self else { return }
-//            // TODO: don't ask Gathering name. Set it to Gatherig n
-
+        //        viewModel.createGathering = { [weak self ] in
+        //            guard let self = self else { return }
+        //            // TODO: don't ask Gathering name. Set it to Gatherig n
         
-
+        
+        
         
     }
     
     
     private func setupAddTargets() {
         print("setupAddTargets Called !")
-
+        
         historyBtn.addTarget(self, action: #selector(historyBtnAction), for: .touchUpInside)
         
         resetGatheringBtn.addTarget(self, action: #selector(resetGatheringBtnAction), for: .touchUpInside)
@@ -179,12 +179,12 @@ class DutchpayController: UIViewController {
         print("calculateBtn Tapped !!")
         
         guard let gathering = viewModel.gathering else { fatalError() }
-
+        
         let resultVC = ResultViewController(gathering: gathering)
-
+        
         navigationController?.pushViewController(resultVC, animated: true)
         // TODO: Handle this!
-//        delegate?.dutchpayController(shouldHideMainTab: true)
+        //        delegate?.dutchpayController(shouldHideMainTab: true)
         dutchToMainTapDelegate?.shouldHideMainTab(true)
     }
     
@@ -199,9 +199,9 @@ class DutchpayController: UIViewController {
     
     @objc func historyBtnAction() {
         // TODO: Handle
-//        viewModel.setActions(to: .showHistory)
-//        dutchToMainTapDelegate?.shouldHideMainTab(true)
-//        dutchToMainTapDelegate?.shouldShowSideView(true)
+        //        viewModel.setActions(to: .showHistory)
+        //        dutchToMainTapDelegate?.shouldHideMainTab(true)
+        //        dutchToMainTapDelegate?.shouldShowSideView(true)
         showSideController()
         print("historyBtnTapped")
     }
@@ -225,14 +225,14 @@ class DutchpayController: UIViewController {
         viewModel.setActions(to: .addDutchUnit(needGathering: true))
         // TODO: Add DutchUnit
         presentDutchUnitController()
-    
+        
     }
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
         
-
+        
         viewModel.setActions(to: .createIfNeeded)
-
+        
         guard let gathering = viewModel.gathering else { fatalError() }
         
         
@@ -240,11 +240,11 @@ class DutchpayController: UIViewController {
             initialDutchUnit: nil,
             gathering: gathering
         )
-
+        
         
         addingUnitController.addingDelegate = self
         addingUnitController.dutchDelegate = self
-
+        
         let numLayerController = NumberLayerController(
             bgColor: UIColor(white: 0.7, alpha: 1),
             presentingChildVC: addingUnitController
@@ -265,7 +265,7 @@ class DutchpayController: UIViewController {
     
     
     // MARK: - Helper Functions
-   
+    
     private func registerTableView() {
         dutchTableView.register(DutchTableCell.self, forCellReuseIdentifier: DutchTableCell.identifier)
         dutchTableView.delegate = self
@@ -314,17 +314,17 @@ class DutchpayController: UIViewController {
         guard let participantsController = participantsController else {
             fatalError()
         }
-
+        
         participantsController.delegate = self
-  
-         participantsNavController = UINavigationController(rootViewController: participantsController)
+        
+        participantsNavController = UINavigationController(rootViewController: participantsController)
         
         guard let participantsNavController = participantsNavController else {
             fatalError()
         }
-
+        
         self.addChild(participantsNavController)
-
+        
         self.mainContainer.addSubview(participantsNavController.view)
         participantsNavController.didMove(toParent: self)
         
@@ -345,8 +345,8 @@ class DutchpayController: UIViewController {
             }
         })
         
-//        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
-//        delegate?.shouldShowSideView(_ bool: false)
+        //        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
+        //        delegate?.shouldShowSideView(_ bool: false)
         dutchToMainTapDelegate?.shouldShowSideView(false)
     }
     
@@ -357,7 +357,7 @@ class DutchpayController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.blurredView.isHidden = false // 이거.. ;;
             self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
-
+            
         } completion: { done in
             if done {
                 self.isShowingSideController = true
@@ -375,7 +375,7 @@ class DutchpayController: UIViewController {
     
     private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
-     }
+    }
     
     private let blurredView = UIButton().then {
         $0.isHidden = true
@@ -465,25 +465,27 @@ class DutchpayController: UIViewController {
     private let groupBtnInHeader = UIButton().then {
         let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
         innerImage.contentMode = .scaleAspectFit
-
+        
         innerImage.tintColor = .black
         $0.addSubview(innerImage)
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
+        //        $0.backgroundColor = .cyan
     }
     
     private let mainContainer = UIView()
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        //        $0.backgroundColor = .magenta
     }
     
     private let groupBtn = UIButton().then {
         
         let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
         innerImage.contentMode = .scaleAspectFit
-
+        
         innerImage.tintColor = .black
         $0.addSubview(innerImage)
         innerImage.snp.makeConstraints { make in
@@ -494,9 +496,9 @@ class DutchpayController: UIViewController {
     
     private let gatheringPlusBtn: UIButton = {
         let btn = UIButton()
-
+        
         let inner = UIImageView(image: UIImage(systemName: "plus.circle"))
-
+        
         btn.addSubview(inner)
         inner.snp.makeConstraints { make in
             make.center.equalTo(btn)
@@ -510,7 +512,7 @@ class DutchpayController: UIViewController {
     private let dutchUnitPlusBtn: UIButton = {
         let btn = UIButton()
         
-       let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
+        let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
         
         
         let removingLineView = UIView()
@@ -527,7 +529,7 @@ class DutchpayController: UIViewController {
         plusImage.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
-    
+        
         return btn
     }()
     
@@ -565,7 +567,7 @@ class DutchpayController: UIViewController {
         }
         
         view.addSubview(wholeContainerView)
-
+        
         wholeContainerView.addSubview(historyBtn)
         
         wholeContainerView.addSubview(resetGatheringBtn)
@@ -594,68 +596,72 @@ class DutchpayController: UIViewController {
             make.height.width.equalTo(30)
         }
         
-
+        
         resetGatheringBtn.snp.makeConstraints { make in
             make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.height.width.equalTo(30)
         }
         
-            mainContainer.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(10)
-                make.top.equalTo(historyBtn.snp.bottom).offset(30)
-                make.bottom.equalToSuperview().inset(10)
-            }
-            
-            calculateBtn.snp.makeConstraints { make in
-                make.height.equalTo(60)
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalToSuperview()
-            }
-            
-            [totalPriceLabel, totalPriceValueLabel].forEach {
-                self.totalPriceContainerView.addSubview($0)
-            }
-
-            totalPriceContainerView.snp.makeConstraints { make in
-                make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(50)
-            }
-
-            totalPriceLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.leading.equalToSuperview()
-                make.width.equalToSuperview().dividedBy(2.1)
-                make.height.equalTo(50)
-            }
-
-            totalPriceValueLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.trailing.equalToSuperview().inset(10)
-                make.width.equalToSuperview().dividedBy(2.1)
-                make.height.equalTo(50)
-            }
-            
-            
-
-            mainContainer.addSubview(dutchTableView)
-            dutchTableView.snp.makeConstraints { make in
-                make.top.equalToSuperview()
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalTo(totalPriceContainerView.snp.top)
-            }
-            
-            mainContainer.addSubview(dutchUnitPlusBtn)
-            dutchUnitPlusBtn.snp.makeConstraints { make in
-                make.centerY.equalTo(totalPriceContainerView.snp.top)
-                make.centerX.equalToSuperview()
-                make.width.height.equalTo(50)
-            }
+        mainContainer.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.top.equalTo(historyBtn.snp.bottom).offset(30)
+            make.bottom.equalToSuperview().inset(10)
+        }
+        
+        calculateBtn.snp.makeConstraints { make in
+            make.height.equalTo(60)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        
+        [totalPriceLabel, totalPriceValueLabel].forEach {
+            self.totalPriceContainerView.addSubview($0)
+        }
+        
+        totalPriceContainerView.snp.makeConstraints { make in
+            make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(50)
+        }
+        
+        totalPriceLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.width.equalToSuperview().dividedBy(2.1)
+            make.height.equalTo(50)
+        }
+        
+        totalPriceValueLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(10)
+            make.width.equalToSuperview().dividedBy(2.1)
+            make.height.equalTo(50)
+        }
+        
+        
+        
+        mainContainer.addSubview(dutchTableView)
+        dutchTableView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(totalPriceContainerView.snp.top)
+        }
+        
+        
+        
+        mainContainer.addSubview(dutchUnitPlusBtn)
+        dutchUnitPlusBtn.snp.makeConstraints { make in
+            make.centerY.equalTo(totalPriceContainerView.snp.top)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(50)
+        }
         
         blurredView.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
+        
+        setupHeaderView()
     }
     
     private func setupHeaderView() {
@@ -679,11 +685,11 @@ class DutchpayController: UIViewController {
 }
 
 
-// FIXME: Replace cellData with viewModel.xxx
 extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+        totalPriceLabel.isHidden = (viewModel.dutchUnits.count == 0)
         
-//        return cellData.count
         return viewModel.dutchUnits.count
     }
     
@@ -695,7 +701,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         // cell.dutchUnitCellComponents = cellData[indexPath.row]
         // TODO: Use Cell's ViewModel
         
-//        cell.viewModel = viewModel.dutch
+        //        cell.viewModel = viewModel.dutch
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
@@ -708,7 +714,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
             
             self.viewModel.setActions(to: .deleteDutchUnit(idx: indexPath.row))
-
+            
             completionhandler(true)
         }
         
@@ -744,7 +750,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
 extension DutchpayController: ParticipantsVCDelegate {
     
     func hideParticipantsController() {
-    
+        
         guard let participantsController = participantsController else { fatalError() }
         
         participantsController.willMove(toParent: nil)
@@ -765,7 +771,7 @@ extension DutchpayController: ParticipantsVCDelegate {
 
 
 extension DutchpayController: DutchUnitDelegate {
-
+    
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool) {
         viewModel.setActions(to: .updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew))
     }
@@ -778,7 +784,7 @@ extension DutchpayController: AddingUnitControllerDelegate {
         
         navigationController?.popViewController(animated: true)
         
-//        delegate?.dutchpayController(shouldHideMainTab: false)
+        //        delegate?.dutchpayController(shouldHideMainTab: false)
         dutchToMainTapDelegate?.shouldHideMainTab(false)
     }
 }
@@ -836,8 +842,8 @@ extension Set {
 
 
 extension DutchpayController: MainTabDelegate {
-//    func updateGatheringFromMainTab(with newGathering: Gathering) {
-//        updateGatheringInfo(with: newGathering)
-//        viewModel.setActions(to: .replaceGathering(with: newGathering))
-//    }
+    //    func updateGatheringFromMainTab(with newGathering: Gathering) {
+    //        updateGatheringInfo(with: newGathering)
+    //        viewModel.setActions(to: .replaceGathering(with: newGathering))
+    //    }
 }

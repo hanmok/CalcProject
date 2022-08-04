@@ -554,7 +554,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         print("numOfParticipantsInAddingUnitController: \(viewModel.participants.count)")
 //        return viewModel.participantsNames.count
 //        return viewModel.participants.count
-        return viewModel.peopleDetail.count
+        return viewModel.personDetails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -568,11 +568,10 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-        
         // FIXME: index out of range, 7.11, 7.18
         print("indexPath.row: \(indexPath.row)")
         
-        let personDetail = viewModel.peopleDetail[indexPath.row]
+        let personDetail = viewModel.personDetails[indexPath.row]
         
         cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
         

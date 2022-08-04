@@ -73,7 +73,7 @@ class DutchUnitViewModel {
         }
     }
     
-    public var peopleDetail: [PersonDetail] = [] {
+    public var personDetails: [PersonDetail] = [] {
         willSet {
             var sum = 0.0
             for (_, value) in newValue.enumerated() {
@@ -103,10 +103,10 @@ class DutchUnitViewModel {
         
         if let initialDutchUnit = selectedDutchUnit {
             
-            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetail: peopleDetail, spentPlace: "", spentDate: Date())
+            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetail: personDetails, spentPlace: "", spentDate: Date())
             
         } else {
-            dutchService.createDutchUnit(peopleDetails: peopleDetail, spentPlace: "spent place", spentDate: Date())
+            dutchService.createDutchUnit(peopleDetails: personDetails, spentPlace: "spent place", spentDate: Date())
         }
         
         completion()
@@ -116,7 +116,7 @@ class DutchUnitViewModel {
         
 //        participantsNames = initialParticipantsNames
         participants = initialParticipants
-        peopleDetail = []
+        personDetails = []
         completion()
             
         //        textFieldWithPriceDic = [:]
@@ -133,13 +133,13 @@ class DutchUnitViewModel {
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {
         // TODO: Set personDetails
         
-        dutchService.addPerson(name: name, personDetails: peopleDetail) { [weak self] result in
+        dutchService.addPerson(name: name, personDetails: personDetails) { [weak self] result in
             
             guard let self = self else { return }
             
             switch result {
             case .success(let peopleDetail):
-                self.peopleDetail = peopleDetail
+                self.personDetails = peopleDetail
                 guard let lastPersonDetail = peopleDetail.last,
                       let lastPerson = lastPersonDetail.person else { fatalError() }
                 
