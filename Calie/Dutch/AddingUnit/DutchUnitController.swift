@@ -22,26 +22,58 @@ class DutchUnitController: NeedingController {
     
     // MARK: - Properties
     
+    private let smallPadding: CGFloat = 10
+    
     var viewModel: DutchUnitViewModel
     
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
     /// 10
-    private let smallPadding: CGFloat = 10
+    /// 
+   
+    weak var addingDelegate: AddingUnitControllerDelegate?
     
+
     
     var dutchUnit: DutchUnit?
     
-    // need to handle both
-    
     var selectedPriceTF: PriceTextField?
-    
-    weak var addingDelegate: AddingUnitControllerDelegate?
-    
+
     weak var dutchDelegate: DutchUnitDelegate?
     
-
+    
+    
+    var detailPriceDic: [Int: Double] = [:] {
+        willSet {
+            var sum = 0.0
+            for (_, value2) in newValue.enumerated() {
+                sum += value2.value
+            }
+            sumOfIndividual = sum
+            print("detailPriceDic updated \(newValue)")
+        }
+        didSet {
+            print("umm")
+        }
+    }
+    
+    var spentAmount: Double = 0 {
+        willSet {
+            let condition = (sumOfIndividual == newValue) && (newValue != 0)
+            updateConditionState(condition)
+            print("spentAmount updated \(newValue)")
+        }
+    }
+    
+    var sumOfIndividual: Double = 0 {
+        willSet {
+        let condition = (newValue == spentAmount) && (newValue != 0)
+            updateConditionState(condition)
+            print("sumOfIndividual updated \(newValue)")
+        }
+    }
+    
     
     init(
         initialDutchUnit: DutchUnit? = nil,
@@ -59,12 +91,23 @@ class DutchUnitController: NeedingController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
+    /// set DetailPriceDic if viewDidLoad
+    private func setupDictionary() {
+        
+        for idx in 0 ..< viewModel.personDetails.count {
+            detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
+        }
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
+        setupDictionary()
         
         setupLayout()
         setupTargets()
@@ -88,31 +131,64 @@ class DutchUnitController: NeedingController {
         
         viewModel.setupInitialCells { [weak self] cells in
             guard let self = self else { return }
+//            DispatchQueue
         }
         
-        // Recognizer for resigning keyboards
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        
-        view.addGestureRecognizer(tap)
-    }
-    
-    private func setupBindings() {
-        
-        viewModel.changeableConditionState = { [weak self] condition in
+        updateConditionState = { [weak self] condition in
+            print("current condition: \(condition)")
             guard let self = self else { return }
             self.confirmBtn.isUserInteractionEnabled = condition
             self.confirmBtn.backgroundColor = condition ? .green : .orange
         }
         
-        viewModel.personDetailCellState = { [weak self] dic in
-            guard let self = self else { return }
-            // TODO: binding ~~
-            
-            DispatchQueue.main.async {
-                self.personDetailCollectionView.reloadData()
-            }
-            
+        
+        // Recognizer for resigning keyboards
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
+        
+//        view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(tap2)
+        
+    }
+    
+    @objc func otherViewTapped() {
+//        UIInputViewController.dismissKeyboard(UIInputViewController)
+        guard let selectedPriceTF = selectedPriceTF else {
+            return
         }
+        
+        let currentText = selectedPriceTF.text!
+        
+        if selectedPriceTF.tag == -1 {
+            spentAmount = currentText.convertToDouble()
+        } else { //
+            detailPriceDic[selectedPriceTF.tag] = currentText.convertToDouble()
+        }
+        print("otherView Tapped!!")
+        dismissKeyboard()
+    }
+    
+    var updateConditionState: (Bool) -> Void = { _ in }
+    
+    private func setupBindings() {
+        
+        
+        
+//        viewModel.changeableConditionState = { [weak self] condition in
+//            guard let self = self else { return }
+//            self.confirmBtn.isUserInteractionEnabled = condition
+//            self.confirmBtn.backgroundColor = condition ? .green : .orange
+//        }
+        
+//        viewModel.personDetailCellState = { [weak self] dic in
+//            guard let self = self else { return }
+//            // TODO: binding ~~
+//
+//            DispatchQueue.main.async {
+//                self.personDetailCollectionView.reloadData()
+//            }
+//
+//        }
         
         
         viewModel.updateCollectionView = { [weak self] in
@@ -196,11 +272,17 @@ class DutchUnitController: NeedingController {
     
     
     @objc func confirmTapped() {
-        viewModel.updateDutchUnit { [weak self] in
+        
+        viewModel.updateDutchUnit(spentPlace: spentPlaceTF.text!,
+                                  spentAmount: spentAmount,
+                                  spentDate: Date(),
+                                  detailPriceDic: detailPriceDic) { [weak self] in
+            
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
             self.needingDelegate?.dismissNumberLayer()
         }
+        
     }
     
     
@@ -324,8 +406,8 @@ class DutchUnitController: NeedingController {
                     }
                 }
                 
-                
             case .failure(let errorMsg):
+                print("duplicate flag 3")
                 self.showToast(message: errorMsg.localizedDescription, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
             }
         }
@@ -566,6 +648,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.spentAmountTF.delegate = self
         
+//        cell.spentAmountTF.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
+//        cell.spentAmountTF.addTarget(self, action: #selector(textChanged(_:)), for: .valueChanged)
         cell.delegate = self
         
         // FIXME: index out of range, 7.11, 7.18
@@ -574,26 +658,9 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         let personDetail = viewModel.personDetails[indexPath.row]
         
         cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
-        
-        // FIXME: TextField 에 대해서는 View 에서의 처리가 필요해보임. 그렇게 하지 않으면 업데이트가 너무 자주될 수 있음.
-        
-//        cell.spentAmountTF.text = peopleDetail[indexPath.row].spentAmount.addComma()
-//        cell.spentAmountTF.text = viewModel.peopleDetail[indexPath.row].spentAmount.addComma()
-        
-        // personDetail 이 존재하지 않음. why? 모름 ;;
-        //        textFieldWithPriceDic[indexPath.row] = peopleDetail[indexPath.row].spentAmount
-        
-        //        print("textFieldWithPriceDic: \(textFieldWithPriceDic)")
-        
-        //        if indexPath.row == (viewModel.participantsNames.count) - 1 {
-        //            if let initialDutchUnit = initialDutchUnit {
-        //                spentAmount = initialDutchUnit.spentAmount
-        //            }
-        //        }
-        
-//        cell.viewModel = PersonDetailCellViewModel(personDetail: viewModel.personDetails[indexPath.row])
-        
-        // personDetails 가 아직 없는 듯 ??
+        // 이 값을 쓰는 이유는 ? 업데이트가 계속 될 때, View 에서 가장 최신 값 받아오기.
+        // 나중에 수정이 필요할 수도 있음.
+        cell.spentAmountTF.text = String(detailPriceDic[indexPath.row] ?? 0)
         
         return cell
     }
@@ -659,23 +726,34 @@ extension DutchUnitController: UITextFieldDelegate {
         } else {
             return true
         }
-        
-        
     }
-    
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
+//        if textField is PriceTextField {
+//            textField.becomeFirstResponder()
+//            textField.selectAll(nil)
+//        }
+        
         if let tf = textField as? PriceTextField {
+            
+
             delegate?.initializeNumberText()
+            
             self.dismissKeyboardOnly()
             
             needingDelegate?.presentNumberPad()
             
+            // 이게 호출되네 ??
             selectedPriceTF = tf
+            
             print("tag : \(textField.tag)")
             print("textField: \(textField)")
+            
+            
+            
             return false
+            
         } else {
             
             needingDelegate?.hideNumberPad()
@@ -683,6 +761,4 @@ extension DutchUnitController: UITextFieldDelegate {
             return true
         }
     }
-    
-    
 }

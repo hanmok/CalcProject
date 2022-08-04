@@ -17,6 +17,7 @@ import UIKit
 extension UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: PriceTextField) {
         print("tag : \(textField.tag)")
+        print("umm..")
     }
 }
 
@@ -38,16 +39,25 @@ class PriceTextField: UITextField {
         setupLayout()
         setLeftPaddingPoints(5)
         setRightPaddingPoints(5)
+        addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
     
     init(placeHolder: String, _ frame: CGRect = .zero) {
         self.init()
         self.textAlignment = .right
+//        addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+//        selectAll(nil)
     }
+    
+
     
     private func setupLayout() {
         currencyLabel.frame.size = CGSize(width: 30, height: 30)
         rightView = currencyLabel
+    }
+    
+    @objc func tapped() {
+        print("tf tapped!!!")
     }
     
     required init?(coder: NSCoder) {

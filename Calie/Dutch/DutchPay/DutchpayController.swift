@@ -95,7 +95,8 @@ class DutchpayController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
-        viewModel.setActions(to: .viewDidLoad)
+        
+        viewModel.viewDidLoadAction()
         
         registerTableView()
         setupLayout()
@@ -104,6 +105,9 @@ class DutchpayController: UIViewController {
         setupBindings()
         
         view.insetsLayoutMarginsFromSafeArea = false
+        
+        // for simplicity.
+//        handleAddDutchUnit()
     }
     
     
@@ -161,12 +165,11 @@ class DutchpayController: UIViewController {
     
     // MARK: - Actions
     @objc func resetGatheringBtnAction() {
-        viewModel.setActions(to: .resetGathering(needGathering: true))
+        
+        viewModel.resetGatheringAction(needGathering: true)
     }
     
     @objc func blurredViewTapped() {
-        viewModel.setActions(to: .blurredViewTapped)
-        
         if isShowingSideController {
             
             isShowingSideController = false
@@ -175,7 +178,8 @@ class DutchpayController: UIViewController {
     }
     
     @objc func calculateBtnAction() {
-        viewModel.setActions(to: .calculate(needGathering: true))
+        
+        viewModel.calculateAction(needGathering: true)
         print("calculateBtn Tapped !!")
         
         guard let gathering = viewModel.gathering else { fatalError() }
@@ -190,7 +194,7 @@ class DutchpayController: UIViewController {
     
     @objc func editPeopleBtnAction() {
         
-        viewModel.setActions(to: .createIfNeeded)
+        viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else {fatalError()}
         
@@ -199,7 +203,7 @@ class DutchpayController: UIViewController {
     
     @objc func historyBtnAction() {
         // TODO: Handle
-        //        viewModel.setActions(to: .showHistory)
+        
         //        dutchToMainTapDelegate?.shouldHideMainTab(true)
         //        dutchToMainTapDelegate?.shouldShowSideView(true)
         showSideController()
@@ -214,7 +218,8 @@ class DutchpayController: UIViewController {
             switch result {
                 
             case .success(let newName):
-                self.viewModel.setActions(to: .changeGatheringName(newName))
+                
+                self.viewModel.changeGatheringNameAction(newName: newName)
             case .failure(let e):
                 print(e.localizedDescription)
             }
@@ -222,7 +227,8 @@ class DutchpayController: UIViewController {
     }
     
     @objc func handleAddDutchUnit() {
-        viewModel.setActions(to: .addDutchUnit(needGathering: true))
+        
+        viewModel.addDutchUnit(needGathering: true)
         // TODO: Add DutchUnit
         presentDutchUnitController()
         
@@ -231,7 +237,7 @@ class DutchpayController: UIViewController {
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
         
         
-        viewModel.setActions(to: .createIfNeeded)
+        viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else { fatalError() }
         
@@ -306,7 +312,8 @@ class DutchpayController: UIViewController {
     
     private func presentParticipantsController(with people: [Person]) {
         
-        viewModel.setActions(to: .createIfNeeded)
+
+        viewModel.createIfNeeded()
         
         // TODO: Need Gathering
         participantsController = ParticipantsController(currentGathering: viewModel.gathering!)
@@ -713,8 +720,8 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
             
-            self.viewModel.setActions(to: .deleteDutchUnit(idx: indexPath.row))
             
+            self.viewModel.deleteDutchUnitAction(idx: indexPath.row)
             completionhandler(true)
         }
         
@@ -765,7 +772,8 @@ extension DutchpayController: ParticipantsVCDelegate {
     }
     
     func updateParticipants(with participants: [Person]) {
-        viewModel.setActions(to: .updatePeople(updatedPeople: participants))
+        
+        viewModel.updatePeople(updatedPeople: participants)
     }
 }
 
@@ -773,7 +781,8 @@ extension DutchpayController: ParticipantsVCDelegate {
 extension DutchpayController: DutchUnitDelegate {
     
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool) {
-        viewModel.setActions(to: .updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew))
+        
+        viewModel.updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew)
     }
 }
 
@@ -844,6 +853,6 @@ extension Set {
 extension DutchpayController: MainTabDelegate {
     //    func updateGatheringFromMainTab(with newGathering: Gathering) {
     //        updateGatheringInfo(with: newGathering)
-    //        viewModel.setActions(to: .replaceGathering(with: newGathering))
+    
     //    }
 }

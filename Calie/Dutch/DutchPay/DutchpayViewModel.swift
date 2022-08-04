@@ -42,80 +42,9 @@ class DutchpayViewModel {
             updateDutchUnits()
         }
     }
-    
-    
-    
-    
-    
 
     
-    
     // MARK: - Actions
-    var action: Actions = .none {
-        didSet {
-            switch action {
-            case .showHistory:
-                break
-                
-            case .resetGathering(let needGathering):
-                if needGathering && gathering == nil {
-                    createGathering()
-                }
-                resetGatheringAction()
-                
-            case .addDutchUnit(let needGathering):
-                if needGathering && gathering == nil {
-                    createGathering()
-                }
-                
-            case .changeGatheringName(let newName):
-                self.changeGatheringNameAction(newName: newName)
-                
-            case .calculate(let needGathering):
-                if needGathering && gathering == nil {
-                    createGathering()
-                }
-                calculateAction()
-                
-            case .blurredViewTapped:
-                break
-                
-            case .viewDidLoad:
-                viewDidLoadAction()
-                
-            case .createOne(let name):
-                makeGathering(with: name)
-                
-            case .createIfNeeded:
-                if gathering == nil {
-                    createGathering()
-                }
-                
-            case .deleteDutchUnit(let idx):
-                deleteDutchUnitAction(idx: idx)
-                
-            case .updatePeople(updatedPeople: let updatedPeople):
-                
-                dutchService.updatePeople(with: updatedPeople) { gathering in
-                    self.gathering = gathering
-                    self.updateDutchUnits(gathering: gathering)
-                }
-                
-            case .updateDutchUnit(let dutchUnit, let isNew):
-                dutchService.updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew) { gathering in
-                    self.gathering = gathering
-                    self.updateDutchUnits(gathering: gathering)
-                }
-                
-            case .replaceGathering(let newGathering):
-                self.gathering = newGathering
-                
-            case .none:
-                break
-            }
-        }
-    }
-    
     
     private func convertDutchUnits(dutchUnits: [DutchUnit]) -> [DutchUnitCellComponents] {
         
@@ -138,6 +67,7 @@ class DutchpayViewModel {
             self.gathering = gathering
         }
     }
+    
     /// create `Gathering n`
     private func createGathering() {
         dutchService.createGathering { gathering in
@@ -149,7 +79,24 @@ class DutchpayViewModel {
         
     }
     
-    func resetGatheringAction() {
+    func addDutchUnit(needGathering: Bool) {
+        if needGathering && gathering == nil {
+            createGathering()
+        }
+    }
+    
+//    func changeGatheringName(newName: String) {
+//        changeGatheringNameAction(newName: newName)
+//    }
+    
+    
+    
+    func resetGatheringAction(needGathering: Bool) {
+        
+        if needGathering && gathering == nil {
+            createGathering()
+        }
+        
         dutchService.resetGathering { result in
             switch result {
             case .success(let result):
@@ -171,8 +118,11 @@ class DutchpayViewModel {
         }
     }
     
-    func calculateAction() {
-        
+    func calculateAction(needGathering: Bool) {
+        if needGathering && gathering == nil {
+            createGathering()
+        }
+        // TODO: Calculate!
     }
     
     func blurredViewTappedAction() {
@@ -186,46 +136,41 @@ class DutchpayViewModel {
         }
     }
     
+    func createIfNeeded() {
+        if gathering == nil {
+            createGathering()
+        }
+    }
+    func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool) {
+        dutchService.updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew) { gathering in
+            self.gathering = gathering
+            self.updateDutchUnits(gathering: gathering)
+        }
+    }
+    
+    func replaceGathering(newGathering: Gathering) {
+        self.gathering = newGathering
+    }
+    
+    func updatePeople(updatedPeople: [Person]) {
+        dutchService.updatePeople(with: updatedPeople) { gathering in
+            self.gathering = gathering
+            self.updateDutchUnits(gathering: gathering)
+        }
+    }
+    
     func viewDidLoadAction() {
         fetchLatestGathering()
     }
     
     func fetchLatestGathering() {
         
-//        dutchService.updateGathering { gathering in
-//            self.gathering = gathering
-//        }
-        // TODO: What if it fails ?
         dutchService.fetchLatestGathering { gathering in
             self.gathering = gathering
+            self.dutchUnits = gathering.dutchUnits.sorted()
+            print("gathering.dutchunits.count: \(gathering.dutchUnits.count)")
         }
     }
-    
-    
-    // MARK: - Actions Enum
-    
-    enum Actions {
-        case none
-        case showHistory
-        case resetGathering(needGathering: Bool)
-        case addDutchUnit(needGathering: Bool) // need default gathering
-        case changeGatheringName(String)
-        case calculate(needGathering: Bool)
-        case blurredViewTapped
-        case viewDidLoad
-        case createIfNeeded
-        case createOne(String)
-        case deleteDutchUnit(idx: Int)
-        
-        case updatePeople(updatedPeople: [Person])
-        case updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool)
-        case replaceGathering(with: Gathering)
-    }
-    
-    public func setActions(to action: Actions) {
-        self.action = action
-    }
-    
 }
 
 extension DutchpayViewModel {

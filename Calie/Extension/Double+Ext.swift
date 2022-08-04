@@ -8,23 +8,27 @@
 
 import Foundation
 
-//extension Double {
-//    func convertIntoStr() -> String {
-////        return String(self)
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//
-//        if let intValue = self.convertToInt() {
-//            return convertIntoKoreanPrice(number: Double(intValue))
-//        } else {
-//            return convertIntoKoreanPrice(number: dutchUnit.spentAmount)
-//        }
-//    }
-//}
+extension Double {
+    func convertIntoStr() -> String {
+        //        return String(self)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+    
+        if let intValue = self.convertToInt() {
+            return String(intValue)
+        } else {
+            return String(self)
+        }
+        
+    }
+}
 
-private func convertIntoKoreanPrice(number: Double) -> String {
-    let numberFormatter = NumberFormatter()
-    numberFormatter.numberStyle = .decimal
-    numberFormatter.string(from: NSNumber(value:number))
-    return numberFormatter.string(from: NSNumber(value: number))! + " 원"
+extension Double {
+    private func convertIntoKoreanPrice(number: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.string(from: NSNumber(value:number))
+        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
+    }
 }
