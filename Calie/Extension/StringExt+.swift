@@ -35,7 +35,7 @@ extension String {
         self = result
     }
     /// used to convert formatted String To Double
-    public func convertStrToDouble() -> Double {
+    public func convertToDouble() -> Double {
         var str = self
         guard str != "" else { return 0 }
         str = str.replacingOccurrences(of: ",", with: "")

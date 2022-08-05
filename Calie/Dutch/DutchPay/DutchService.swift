@@ -18,6 +18,7 @@ class DutchService {
     
 
     
+    
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
         
     }
@@ -41,9 +42,8 @@ class DutchService {
         gathering.updatedAt = Date()
         
         dutchManager.update()
-        //        completion(gathering)
         completion(.success(gathering))
-        
+        return
         // order updating to viewmodel
     }
     
@@ -67,6 +67,7 @@ class DutchService {
         gathering.title = newName
         self.dutchManager.update()
         completion(gathering)
+        return
     }
     
     func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool, completion: @escaping (Gathering) -> Void) {
@@ -101,6 +102,7 @@ class DutchService {
             }
         }
         completion(gathering)
+        return
     }
     
     func updatePeople(with newPeople: [Person], completion: @escaping (Gathering) -> Void) {
@@ -111,6 +113,7 @@ class DutchService {
         dutchManager.updatePeople(updatedPeople: newPeople, currentGathering: currentGathering)
         let newGathering = currentGathering
         completion(newGathering)
+        return
         
     }
     
@@ -121,11 +124,13 @@ class DutchService {
         
         DutchUnit.deleteSelf(currentGathering.dutchUnits.sorted()[idx])
         completion(currentGathering)
+        return
     }
     func createGathering( completion: @escaping (Gathering) -> Void) {
         let allGatheringsCount = dutchManager.fetchGatherings().count
         let newGathering = dutchManager.createGathering(title: String(allGatheringsCount + 1))
         completion(newGathering!)
+        return
     }
     
     func updateGathering(completion: @escaping (Gathering) -> Void) {
@@ -141,6 +146,7 @@ class DutchService {
         let gathering = Gathering()
         
         completion(gathering)
+        return
     }
 }
 
@@ -159,17 +165,30 @@ extension DutchService {
     }
     
 //    func createDutchUnit(peopleDetailDic: [Int: DetailState], spentPlace: String, spentDate: Date) {
-    func createDutchUnit(peopleDetails: [PersonDetail], spentPlace: String, spentDate: Date) {
+    func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, peopleDetails: [PersonDetail] ) -> Gathering{
         // TODO: create DutchUnit
+        guard let currentGathering = currentGathering else {fatalError("no gathering ") }
+        let newDutchUnit = dutchManager.createDutchUnit(spentTo: spentplace, spentAmount: spentAmount, personDetails: peopleDetails, spentDate: Date())
+        
+        // Need to be done inside DutchManger ?? 
+        currentGathering.dutchUnits.insert(newDutchUnit)
+        
+        dutchManager.update()
+        
+        return currentGathering
+        
     }
     
     func addPerson(name: String, personDetails: [PersonDetail], completion: @escaping (Result<[PersonDetail], DutchUnitError>) -> Void) {
         
         for personDetail in personDetails {
-//            if eachPerson.name == name {
             guard let person = personDetail.person else { fatalError() }
+            print("current person name: \(person.name)")
+            print("compared name: \(name)\n")
             if person.name == name {
+print("duplicate flag 1")
                 completion(.failure(.duplicateName))
+                return
             }
         }
         
@@ -178,16 +197,24 @@ extension DutchService {
         //TODO: Make New Person, PersonDetail
         
         let newPerson = dutchManager.createPerson(name: name)
+        
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
         
         let resultDetails = personDetails + [newPersonDetail]
         
         completion(.success(resultDetails))
+        return
+    }
+    
+    func updatePersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
         
+        var newPersonDetails = initialDetails
+//        newPersonDetails
+        for (idx, eachValue) in detailPriceDic {
+            newPersonDetails[idx].spentAmount = eachValue
+        }
         
-        
-        
-        
+        return newPersonDetails
     }
 }
 

@@ -99,14 +99,14 @@ class CustomNumberPadController: UIViewController {
     }
     
     @objc func completeTapped(_ sender: UIButton) {
-        print("complete Tapped!!")
+        print("complete Tapped!!1")
         
         delegate?.numberPadViewShouldReturn()
         numberText = ""
     }
     
     @objc func deleteTapped(_ sender: UIButton) {
-        print("complete Tapped!!")
+        print("delete Tapped!!2")
         if numberText != "" {
             numberText.removeLast()
         }

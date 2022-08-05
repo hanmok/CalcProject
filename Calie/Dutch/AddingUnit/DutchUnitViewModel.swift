@@ -15,8 +15,6 @@ typealias InitialState = (place: String, amount: String, date: Date)
 
 class DutchUnitViewModel {
     
-
-    
     var selectedDutchUnit: DutchUnit?
     var gathering: Gathering
     
@@ -26,7 +24,7 @@ class DutchUnitViewModel {
     init(selectedDutchUnit: DutchUnit?, gathering: Gathering) {
         self.selectedDutchUnit = selectedDutchUnit
         self.gathering = gathering
-
+        dutchService.currentGathering = gathering
         guard let selectedDutchUnit = selectedDutchUnit else {
             return
         }
@@ -44,7 +42,7 @@ class DutchUnitViewModel {
     
     var changeableConditionState: (Bool) -> Void = { _ in }
 
-    var personDetailCellState: ([Int: DetailState]) -> Void = { _ in }
+//    var personDetailCellState: ([Int: DetailState]) -> Void = { _ in }
 
     var updateCollectionView: () -> Void = { }
     
@@ -81,32 +79,46 @@ class DutchUnitViewModel {
             }
             sumOfIndividual = sum
             updateCollectionView()
-//            personDetailCellState
         }
     }
+    
     
     
     // MARK: - Main Functions
     
     // TODO: using service layer, store or update dutchUnit
     
-    public func updateDutchUnit(completion: @escaping () -> Void) {
+//    public func updateDutchUnit(completion: @escaping () -> Void) {
+    public func updateDutchUnit(spentPlace: String,
+                                spentAmount: Double,
+                                spentDate: Date,
+                                detailPriceDic: [Int:Double],
+                                completion: @escaping () -> Void ) {
         
-//        for personIndex in 0 ..< participants.count {
-//        for personNameIndex in 0 ..< participantsNames.count {
+        // TODO: Update PersonDetails
+//        let newPersonDetails =
+        personDetails = dutchService.updatePersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
-//        }
+        
         
         //        guard let numOfAllUnits = numOfAllUnits else { return }
         let numOfAllUnits = 0
 //        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
         
+        
+        
         if let initialDutchUnit = selectedDutchUnit {
             
-            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit, peopleDetail: personDetails, spentPlace: "", spentDate: Date())
-            
+            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit,
+                                         peopleDetail: personDetails,
+                                         spentPlace: "",
+                                         spentDate: Date())
         } else {
-            dutchService.createDutchUnit(peopleDetails: personDetails, spentPlace: "spent place", spentDate: Date())
+//            dutchService.createDutchUnit(peopleDetails: personDetails,
+//                                         spentPlace: "spent place",
+//                                         spentDate: Date())
+            
+            gathering = dutchService.createDutchUnit(spentplace: spentPlace, spentAmount: spentAmount, spentDate: Date(), peopleDetails: personDetails)
         }
         
         completion()
@@ -114,16 +126,10 @@ class DutchUnitViewModel {
     
     public func reset(completion: @escaping () -> Void ) {
         
-//        participantsNames = initialParticipantsNames
         participants = initialParticipants
         personDetails = []
         completion()
-            
-        //        textFieldWithPriceDic = [:]
-//        setAction(to: .initializePriceDic)
-        // TODO: Initialize Price Dic
-//                initializePersonDetails(initialDutchUnit: initialDutchUnit)
-    
+
     }
     
     public func initializePersonDetails(dutchUnit: DutchUnit?) {
@@ -138,17 +144,19 @@ class DutchUnitViewModel {
             guard let self = self else { return }
             
             switch result {
-            case .success(let peopleDetail):
-                self.personDetails = peopleDetail
-                guard let lastPersonDetail = peopleDetail.last,
+            case .success(let personDetails):
+                self.personDetails = personDetails
+                guard let lastPersonDetail = personDetails.last,
                       let lastPerson = lastPersonDetail.person else { fatalError() }
                 
                 self.participants.append(lastPerson)
                 completion(.success("\(name) has added"))
-                
+                return
             case .failure(let e):
                 print(e.localizedDescription)
+                print("duplicate flag 2")
                 completion(.failure(.duplicateName))
+                return
             }
         }
     }

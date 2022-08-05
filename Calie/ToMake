@@ -27,4 +27,10 @@ MainTab Delegate 으로 일단 처리하자.
 8.3
 
 DutchpayController ~ ViewModel
-switch action 으로 나눈거 다시 분할하기. 
+switch action 으로 나눈거 다시 분할하기.
+
+8.5 음..,, DutchUnitController 를 어떻게 업데이트 시킬까 ?
+
+spentAmount 를 계속해야 받아야하는데, 항상 업데이트 시킬수는 없음.
+
+중복 인원도 어떻게 좀.. 해주자.
