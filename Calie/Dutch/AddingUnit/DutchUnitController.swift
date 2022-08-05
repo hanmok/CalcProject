@@ -34,9 +34,8 @@ class DutchUnitController: NeedingController {
    
     weak var addingDelegate: AddingUnitControllerDelegate?
     
-
-    
     var dutchUnit: DutchUnit?
+    var gathering: Gathering
     
     var selectedPriceTF: PriceTextField?
 
@@ -80,7 +79,10 @@ class DutchUnitController: NeedingController {
         gathering: Gathering
     ) {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
-        viewModel.initializePersonDetails(dutchUnit: initialDutchUnit)
+        self.dutchUnit = initialDutchUnit
+        self.gathering = gathering
+        viewModel.initializePersonDetails(gathering: gathering, dutchUnit: initialDutchUnit)
+        
         super.init(nibName: nil, bundle: nil)
 //        initializePersonDetails(initialDutchUnit: initialDutchUnit)
         
@@ -104,8 +106,14 @@ class DutchUnitController: NeedingController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("initializing personDetails flag 3")
         view.backgroundColor = .white
+        
+        setupBindings()
+        
+        viewModel.initializePersonDetails(gathering: gathering, dutchUnit: dutchUnit)
+        
+        print("flag 5, currentPersonDetails: \(viewModel.personDetails.count)")
         
         setupDictionary()
         
@@ -113,8 +121,9 @@ class DutchUnitController: NeedingController {
         setupTargets()
         
         setupCollectionView()
-        
-        setupBindings()
+
+
+
         
         viewModel.setupInitialState { [weak self] initialState, newDutchUnitIndex in
             guard let self = self else { return }
@@ -172,29 +181,13 @@ class DutchUnitController: NeedingController {
     
     private func setupBindings() {
         
-        
-        
-//        viewModel.changeableConditionState = { [weak self] condition in
-//            guard let self = self else { return }
-//            self.confirmBtn.isUserInteractionEnabled = condition
-//            self.confirmBtn.backgroundColor = condition ? .green : .orange
-//        }
-        
-//        viewModel.personDetailCellState = { [weak self] dic in
-//            guard let self = self else { return }
-//            // TODO: binding ~~
-//
-//            DispatchQueue.main.async {
-//                self.personDetailCollectionView.reloadData()
-//            }
-//
-//        }
-        
-        
         viewModel.updateCollectionView = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.personDetailCollectionView.reloadData()
+                self.personDetailCollectionView.reloadData()
             }
+            print("initializing personDetails flag 4")
+            print("numOfDetails: \(self.viewModel.personDetails.count)")
         }
     }
     

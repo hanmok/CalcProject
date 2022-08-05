@@ -48,6 +48,20 @@ class DutchService {
     }
     
     
+    func createPersonDetails(from gathering: Gathering) -> [PersonDetail] {
+        
+        var personDetails: [PersonDetail] = []
+        let sortedPeople = gathering.people.sorted()
+        
+        for idx in 0 ..< sortedPeople.count {
+            let targetPerson = sortedPeople[idx]
+            let newPersonDetail = dutchManager.createPersonDetail(person: targetPerson, isAttended: true, spentAmount: 0)
+            personDetails.append(newPersonDetail)
+        }
+        
+//        completion(personDetails)
+    return personDetails
+    }
     
     
     
@@ -168,12 +182,18 @@ extension DutchService {
     func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, peopleDetails: [PersonDetail] ) -> Gathering{
         // TODO: create DutchUnit
         guard let currentGathering = currentGathering else {fatalError("no gathering ") }
+        
         let newDutchUnit = dutchManager.createDutchUnit(spentTo: spentplace, spentAmount: spentAmount, personDetails: peopleDetails, spentDate: Date())
         
         // Need to be done inside DutchManger ?? 
         currentGathering.dutchUnits.insert(newDutchUnit)
         
+        // 사람 비교해서, 구성인원이 다를 경우 Participants 처리해줘야함. ;;
+        
+        
         dutchManager.update()
+        
+        
         
         return currentGathering
         

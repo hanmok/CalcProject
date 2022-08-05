@@ -45,11 +45,7 @@ class PriceTextField: UITextField {
     init(placeHolder: String, _ frame: CGRect = .zero) {
         self.init()
         self.textAlignment = .right
-//        addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
-//        selectAll(nil)
     }
-    
-
     
     private func setupLayout() {
         currencyLabel.frame.size = CGSize(width: 30, height: 30)

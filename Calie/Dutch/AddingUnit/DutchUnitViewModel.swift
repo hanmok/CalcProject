@@ -132,8 +132,23 @@ class DutchUnitViewModel {
 
     }
     
-    public func initializePersonDetails(dutchUnit: DutchUnit?) {
-        
+    public func initializePersonDetails(gathering: Gathering, dutchUnit: DutchUnit?) {
+        print("initializing personDetails flag 1")
+//        guard let dutchUnit = dutchUnit else { return }
+        if let dutchUnit = dutchUnit {
+            personDetails = dutchUnit.personDetails.sorted()
+        } else {
+//            DutchManager
+//            dutchService.create
+//            personDetails =
+            personDetails = dutchService.createPersonDetails(from: gathering)
+                
+            
+        }
+    
+        print("initializing personDetails flag 2")
+        print("numOfPersonDetails: \(personDetails.count)")
+        // 사람을 생성하지 않았어.. 
     }
     
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {

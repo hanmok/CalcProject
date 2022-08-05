@@ -35,6 +35,7 @@ class DutchpayController: UIViewController {
     var mainTabController: MainTabController
     var sideViewController: SideViewController?
     
+//    var currentGathering
     
     // MARK: - Properties
     weak var dutchToMainTapDelegate: DutchpayControllerDelegate?
