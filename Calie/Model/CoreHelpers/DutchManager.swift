@@ -428,6 +428,10 @@ extension DutchManager {
         update() // update 했는데 왜... ??
     }
     
+    func addPerson(name: String) {
+//        let newPerson =
+    }
+    
     
     
     // MARK: - Test Funcs
@@ -443,7 +447,9 @@ extension DutchManager {
         
         person2.order = person1.order
         person1.order = tempOrder
-        update()
+        
+        //        update()
+        
     }
 }
 

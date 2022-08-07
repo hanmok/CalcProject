@@ -12,11 +12,11 @@ class ParticipantTableViewCell: UITableViewCell {
     
     static let identifier = "ParticipantTableViewCell"
     
-    public var viewModel: ParticipantsTableCellViewModel? {
-        didSet {
-            self.loadView()
-        }
-    }
+//    public var viewModel: ParticipantsTableCellViewModel? {
+//        didSet {
+//            self.loadView()
+//        }
+//    }
 
     var isAttended = true
     
@@ -42,11 +42,11 @@ class ParticipantTableViewCell: UITableViewCell {
     
     private func loadView() {
 
-        guard let viewModel = viewModel else {
-            return
-        }
+//        guard let viewModel = viewModel else {
+//            return
+//        }
         
-        nameLabel.text = viewModel.personName
+//        nameLabel.text = viewModel.personName
     }
     
     required init?(coder: NSCoder) {

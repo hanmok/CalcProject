@@ -82,8 +82,6 @@
 		9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2D28A00C4A002F35AD /* ToSolve */; };
 		9AB1BC3028A0311F002F35AD /* ParticipantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
-		9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */; };
-		9AC3CC5F2819934200C9A37F /* ParticipantsTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5E2819934200C9A37F /* ParticipantsTableCellViewModel.swift */; };
 		9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* DutchUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
 		9AD2FB252847D24B0075551B /* Gathering+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB242847D24B0075551B /* Gathering+Helper.swift */; };
@@ -212,8 +210,6 @@
 		9AB1BC2D28A00C4A002F35AD /* ToSolve */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToSolve; sourceTree = "<group>"; };
 		9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsViewModel.swift; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
-		9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCollectionViewCell.swift; sourceTree = "<group>"; };
-		9AC3CC5E2819934200C9A37F /* ParticipantsTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableCellViewModel.swift; sourceTree = "<group>"; };
 		9AC3CC622819999C00C9A37F /* DutchUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
 		9AD2FB242847D24B0075551B /* Gathering+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Gathering+Helper.swift"; sourceTree = "<group>"; };
@@ -445,8 +441,6 @@
 			children = (
 				9A1C85022815A865001020EF /* ParticipantsController.swift */,
 				9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */,
-				9AC3CC5E2819934200C9A37F /* ParticipantsTableCellViewModel.swift */,
-				9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */,
 				9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */,
 			);
 			path = Participants;
@@ -722,7 +716,6 @@
 			files = (
 				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
-				9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
 				9AD2FB272847D2610075551B /* DutchUnit+Helper.swift in Sources */,
@@ -738,7 +731,6 @@
 				9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */,
-				9AC3CC5F2819934200C9A37F /* ParticipantsTableCellViewModel.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,

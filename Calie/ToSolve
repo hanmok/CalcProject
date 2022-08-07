@@ -57,5 +57,13 @@ a: 초기상태
 
 
 
+---------------
+7. ParticipantsController 를 고쳐보자~
+완료 ? (테스트 아직 안했음) 
+---------------
 
-음.. ParticipantsController 를 고쳐보자~ 
+
+
+-
+8. MVVM Pattern 으로 전환함에 따라, 불필요한 Delegate 들이 생겼음. Refactoring 할 것.
+-

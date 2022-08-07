@@ -808,6 +808,14 @@ extension DutchpayController: ParticipantsVCDelegate {
         
         viewModel.updatePeople(updatedPeople: participants)
     }
+    
+    func update() {
+        viewModel.viewDidLoadAction()
+        // 업데이트 어떻게 시켜주지..?? ;;
+        
+//        viewModel.gathering =
+        // Gathering.. ??? ddd
+    }
 }
 
 

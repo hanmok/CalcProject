@@ -20,10 +20,15 @@ class DutchService {
     
     
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
+    }
+    
+    init() {
         
     }
     
-    
+    init(currentGathering: Gathering) {
+        self.currentGathering = currentGathering
+    }
     
     typealias ResultTest = (Result<Gathering, DutchError>) -> Void
     
@@ -248,9 +253,31 @@ extension DutchService {
     }
 }
 
+// MARK: - ParticipantsController
+extension DutchService {
+    func swapPersonOrder(person1: Person, person2: Person, closure: @escaping () -> Void) {
+        dutchManager.swapPersonOrder(of: person1, with: person2)
+    closure()
+    }
+    
+    
+    func addPerson(name: String, completion: @escaping (Person) -> Void ) {
+        
+        guard let currentGathering = currentGathering else { fatalError() }
+        
+        let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
+        completion(newPerson)
+        
+    }
+    
+    func update() {
+        dutchManager.update()
+    }
+}
 
 
 enum DutchError: Error {
     case failedToGetGathering
     case cancelAskingName
+    case duplicateName
 }
