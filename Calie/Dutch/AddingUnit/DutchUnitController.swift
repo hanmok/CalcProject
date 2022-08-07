@@ -87,28 +87,14 @@ class DutchUnitController: NeedingController {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
         self.dutchUnit = initialDutchUnit
         self.gathering = gathering
-
+        print("initializing personDetails flag 0, dutchUnit: \(initialDutchUnit)")
         
         super.init(nibName: nil, bundle: nil)
 //        initializePersonDetails(initialDutchUnit: initialDutchUnit)
-        
     }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
     
     /// set DetailPriceDic if viewDidLoad
-    private func setupDictionary() {
-        
-        for idx in 0 ..< viewModel.personDetails.count {
-            detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
-        }
-    }
-    
+   
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,18 +135,36 @@ class DutchUnitController: NeedingController {
         updateConditionState = { [weak self] condition in
             print("current condition: \(condition)")
             guard let self = self else { return }
-            self.confirmBtn.isUserInteractionEnabled = condition
-            self.confirmBtn.backgroundColor = condition ? .green : .orange
+//            self.confirmBtn.isUserInteractionEnabled = condition
+//            self.confirmBtn.backgroundColor = condition ? .green : .orange
+            self.setConfirmBtnState(isActive: condition)
         }
         
         
         // Recognizer for resigning keyboards
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
-//        view.addGestureRecognizer(tap)
         view.addGestureRecognizer(tap2)
         
+        if dutchUnit != nil {
+            setConfirmBtnState(isActive: true)
+        }
+        
+    }
+    
+    private func setConfirmBtnState(isActive: Bool) {
+        confirmBtn.isUserInteractionEnabled = isActive
+        confirmBtn.backgroundColor = isActive ? .green : .orange
+    }
+    
+    
+    private func setupDictionary() {
+        
+        for idx in 0 ..< viewModel.personDetails.count {
+            detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
+        }
     }
     
     @objc func otherViewTapped() {
@@ -175,9 +179,13 @@ class DutchUnitController: NeedingController {
             spentAmount = currentText.convertToDouble()
         } else { //
             detailPriceDic[selectedPriceTF.tag] = currentText.convertToDouble()
+            print("detailPriceDic updated!, tag: \(selectedPriceTF.tag)")
         }
+        
         print("otherView Tapped!!")
         dismissKeyboard()
+        
+        
     }
     
     var updateConditionState: (Bool) -> Void = { _ in }
@@ -237,8 +245,6 @@ class DutchUnitController: NeedingController {
                     make.leading.equalToSuperview().inset(self.smallPadding)
                     make.trailing.equalToSuperview().inset(self.smallPadding)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                    make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
-//                    make.height.equalTo(50 * self.viewModel.participants.count - 20)
                     make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
                 }
                 
@@ -261,7 +267,8 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissTapped() {
         addingDelegate?.dismissChildVC()
-        self.dismiss(animated: true)
+//        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -380,7 +387,6 @@ class DutchUnitController: NeedingController {
                         make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.top.equalTo(self.divider.snp.bottom).offset(30)
 
-//                        make.height.equalTo(50 * self.viewModel.participants.count - 20)
                         make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
                     }
                     
@@ -536,8 +542,6 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-//            make.height.equalTo(45 * viewModel.participantsNames.count - 20)
-//            make.height.equalTo(45 * viewModel.participants.count - 20)
             make.height.equalTo(45 * viewModel.personDetails.count - 20)
         }
         
@@ -653,6 +657,10 @@ class DutchUnitController: NeedingController {
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 
@@ -661,13 +669,7 @@ class DutchUnitController: NeedingController {
 extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        print("numOfParticipantsInAddingUnitController: \(viewModel.participantsNames.count)")
-        
-//        print("numOfParticipantsInAddingUnitController: \(viewModel.participants.count)")
         print("numberOfItemsInSection: \(viewModel.personDetails.count)")
-        
-//        return viewModel.participantsNames.count
-//        return viewModel.participants.count
         
         return viewModel.personDetails.count
     }
@@ -764,10 +766,6 @@ extension DutchUnitController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-//        if textField is PriceTextField {
-//            textField.becomeFirstResponder()
-//            textField.selectAll(nil)
-//        }
         
         if let tf = textField as? PriceTextField {
             
@@ -795,4 +793,6 @@ extension DutchUnitController: UITextFieldDelegate {
             return true
         }
     }
+    
+    
 }

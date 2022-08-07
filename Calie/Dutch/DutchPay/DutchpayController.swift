@@ -68,12 +68,10 @@ class DutchpayController: UIViewController {
     
     // MARK: - LifeCycle
     
-    //    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
     init(mainTabController: MainTabController) {
         
         self.mainTabController = mainTabController
         
-        //        self.persistenceManager = persistenceManager
         
         self.viewModel = DutchpayViewModel()
         
@@ -88,16 +86,19 @@ class DutchpayController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear in DutchpayController called")
+        viewModel.viewDidLoadAction()
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("viewDidLoad in DutchpayController called")
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
         
-        viewModel.viewDidLoadAction()
+//        viewModel.viewDidLoadAction()
         
         registerTableView()
         setupLayout()
@@ -199,6 +200,9 @@ class DutchpayController: UIViewController {
     
     @objc func calculateBtnAction() {
         
+        // MARK: - Original Code
+        
+        /*
         viewModel.calculateAction(needGathering: true)
         print("calculateBtn Tapped !!")
         
@@ -206,10 +210,20 @@ class DutchpayController: UIViewController {
         
         let resultVC = ResultViewController(gathering: gathering)
         
+
         navigationController?.pushViewController(resultVC, animated: true)
+        dutchToMainTapDelegate?.shouldHideMainTab(true)
+        */
+        
+        print("current Gathering: \(viewModel.gathering)")
+        print("current participants: \(viewModel.gathering?.people)")
+        
+        
+        
+        
         // TODO: Handle this!
         //        delegate?.dutchpayController(shouldHideMainTab: true)
-        dutchToMainTapDelegate?.shouldHideMainTab(true)
+
     }
     
     @objc func editPeopleBtnAction() {
@@ -256,16 +270,14 @@ class DutchpayController: UIViewController {
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
         
-        
         viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else { fatalError() }
         
         let addingUnitController = DutchUnitController(
-            initialDutchUnit: nil,
+            initialDutchUnit: selectedUnit,
             gathering: gathering
         )
-        
         
         addingUnitController.addingDelegate = self
         addingUnitController.dutchDelegate = self
@@ -720,13 +732,14 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
-        print("cutchpay cell has appeared")
+        print("dutchpay cell has appeared")
         
         
         // cell.dutchUnitCellComponents = cellData[indexPath.row]
         // TODO: Use Cell's ViewModel
         
         //        cell.viewModel = viewModel.dutch
+        
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
@@ -759,6 +772,8 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         guard let gathering = viewModel.gathering else { fatalError() }
         let selectedUnit = gathering.dutchUnits.sorted()[selectedIndex]
         presentDutchUnitController(selectedUnit: selectedUnit)
+//        print("selectedUnitInfo: ")
+//        print("personDetails: \(selectedUnit.personDetails.sorted())")
     }
     
     // Header Height

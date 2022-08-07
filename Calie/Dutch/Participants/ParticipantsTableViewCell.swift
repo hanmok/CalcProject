@@ -12,7 +12,7 @@ class ParticipantTableViewCell: UITableViewCell {
     
     static let identifier = "ParticipantTableViewCell"
     
-    public var viewModel: ParticipantViewModel? {
+    public var viewModel: ParticipantsTableCellViewModel? {
         didSet {
             self.loadView()
         }

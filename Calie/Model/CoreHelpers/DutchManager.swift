@@ -229,22 +229,30 @@ extension DutchManager {
     
     @discardableResult
     func updateDutchUnit(target dutchUnit: DutchUnit,
-                         spentTo placeName: String,
+                         spentTo placeName: String?,
                          spentAmount: Double,
                          personDetails: [PersonDetail],
-                         spentDate: Date = Date()) -> DutchUnit {
+                         spentDate: Date?) -> DutchUnit {
+
+//        dutchUnit.placeName = placeName
         
-        dutchUnit.placeName = placeName
         dutchUnit.spentAmount = spentAmount
         dutchUnit.personDetails = Set(personDetails)
-        
+
         let totalPrice = personDetails.map { $0.spentAmount }.reduce(0) { partialResult, element in
             return partialResult + element
         }
-        
+
         dutchUnit.isAmountEqual = totalPrice == spentAmount
-        
-        dutchUnit.spentDate = spentDate
+
+//        dutchUnit.spentDate = spentDate
+        if spentDate != nil {
+            dutchUnit.spentDate = spentDate!
+        }
+
+        if placeName != nil {
+            dutchUnit.placeName = placeName!
+        }
         
         do {
             try mainContext.save()
@@ -254,26 +262,26 @@ extension DutchManager {
         }
     }
     
-    @discardableResult
-    func updateDutchUnit(target originalUnit: DutchUnit, with updatedUnit: DutchUnit) -> DutchUnit {
-        originalUnit.placeName = updatedUnit.placeName
-        originalUnit.spentAmount = updatedUnit.spentAmount
-        originalUnit.personDetails = updatedUnit.personDetails
-        originalUnit.spentDate = updatedUnit.spentDate
-        
-        let totalPrice = originalUnit.personDetails.map { $0.spentAmount }.reduce(0) { partialResult, element in
-            return partialResult + element
-        }
-        
-        originalUnit.isAmountEqual = totalPrice == originalUnit.spentAmount
-        
-        do {
-            try mainContext.save()
-            return originalUnit
-        } catch let error {
-            fatalError(error.localizedDescription)
-        }
-    }
+//    @discardableResult
+//    func updateDutchUnit(target originalUnit: DutchUnit, with updatedUnit: DutchUnit) -> DutchUnit {
+//        originalUnit.placeName = updatedUnit.placeName
+//        originalUnit.spentAmount = updatedUnit.spentAmount
+//        originalUnit.personDetails = updatedUnit.personDetails
+//        originalUnit.spentDate = updatedUnit.spentDate
+//
+//        let totalPrice = originalUnit.personDetails.map { $0.spentAmount }.reduce(0) { partialResult, element in
+//            return partialResult + element
+//        }
+//
+//        originalUnit.isAmountEqual = totalPrice == originalUnit.spentAmount
+//
+//        do {
+//            try mainContext.save()
+//            return originalUnit
+//        } catch let error {
+//            fatalError(error.localizedDescription)
+//        }
+//    }
 }
 
 
@@ -303,24 +311,16 @@ extension DutchManager {
 // MARK: - People Helper
 extension DutchManager {
     @discardableResult
-    func createPerson(name: String, prevPeople: [Person]? = nil, givenIndex: Int = 100 ) -> Person {
+//    func createPerson(name: String, prevPeople: [Person]? = nil, givenIndex: Int = 100 ) -> Person {
+    func createPerson(name: String, currentGathering: Gathering ) -> Person {
         
          let person = Person(context: mainContext)
          
          person.name = name
         person.id = UUID()
         
-        if prevPeople != nil {
-            if prevPeople!.count != 0 {
-                let highestOrder = prevPeople!.max { $0.order < $1.order }!.order
-                
-                person.order = Int64(highestOrder + 1)
-            }else {
-                person.order = 0
-            }
-        } else {
-            person.order = Int64(givenIndex)
-        }
+        let numOfPeople = currentGathering.people.count
+        person.order = Int64(numOfPeople)
         
         do {
              try mainContext.save()
@@ -390,7 +390,7 @@ extension DutchManager {
         let addedPeopleSet = updatedMemberSet.subtracting(originalMemberSet)
         
         let removedPeopleSet = originalMemberSet.subtracting(updatedMemberSet)
-        
+        print("people flag 2, addedPeopleSet: \(addedPeopleSet)")
         
         // 이 과정을 먼저 해야 Loop 를 짧게 돈다.
         // removedPeopleSet
@@ -411,13 +411,17 @@ extension DutchManager {
         // addedPeopleSet
         if addedPeopleSet.count != 0 {
             
-            for eachUnit in currentGathering.dutchUnits {
+            for eachUnit in currentGathering.dutchUnits { // 이게.. 존재하지 않아서 call 되지 않음.
                 for eachPerson in addedPeopleSet {
                     let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
                     // 순서가 중요함 !! 내부에서 새로 personDetail 만든 후 update 할 것!
                     eachUnit.personDetails.update(with: newPersonDetail)
-                    currentGathering.people.update(with: eachPerson)
+                    print("people flag 3, currentGathering's people: \(currentGathering.people)")
                 }
+            }
+            
+            for eachPerson in addedPeopleSet {
+                currentGathering.people.update(with: eachPerson)
             }
         }
         

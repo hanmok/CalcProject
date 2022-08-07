@@ -53,5 +53,4 @@ extension DutchTableCellViewModel {
     private func convertDateIntoStr(date: Date) -> String {
         return date.getFormattedDate(format: "yyyy.MM.dd HH:mm")
     }
-    
 }

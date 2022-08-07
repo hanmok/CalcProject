@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ParticipantViewModel {
+struct ParticipantsTableCellViewModel {
     public var person: Person
     
     var personName: String { return person.name }
