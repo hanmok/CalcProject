@@ -20,7 +20,6 @@ class DutchUnitViewModel {
     
     let dutchService = DutchService()
     
-    
     init(selectedDutchUnit: DutchUnit?, gathering: Gathering) {
         self.selectedDutchUnit = selectedDutchUnit
         self.gathering = gathering
@@ -79,6 +78,7 @@ class DutchUnitViewModel {
             }
             sumOfIndividual = sum
             updateCollectionView()
+            print("persoNDetail willSet ended")
         }
     }
     
@@ -94,18 +94,12 @@ class DutchUnitViewModel {
                                 spentDate: Date,
                                 detailPriceDic: [Int:Double],
                                 completion: @escaping () -> Void ) {
-        
+    
         // TODO: Update PersonDetails
-//        let newPersonDetails =
-        personDetails = dutchService.updatePersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
+        personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
-        
-        //        guard let numOfAllUnits = numOfAllUnits else { return }
         let numOfAllUnits = 0
-//        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
-        
-        
         
         if let initialDutchUnit = selectedDutchUnit {
             
@@ -122,6 +116,7 @@ class DutchUnitViewModel {
         }
         
         completion()
+    
     }
     
     public func reset(completion: @escaping () -> Void ) {
@@ -129,7 +124,6 @@ class DutchUnitViewModel {
         participants = initialParticipants
         personDetails = []
         completion()
-
     }
     
     public func initializePersonDetails(gathering: Gathering, dutchUnit: DutchUnit?) {
@@ -205,3 +199,6 @@ extension DutchUnitViewModel {
 enum DutchUnitError: Error {
     case duplicateName
 }
+
+
+// 저장이 잘 안됐나보다..

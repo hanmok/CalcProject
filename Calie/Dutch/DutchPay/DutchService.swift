@@ -115,6 +115,8 @@ class DutchService {
                 }
             }
         }
+        
+        dutchManager.update()
         completion(gathering)
         return
     }
@@ -188,12 +190,10 @@ extension DutchService {
         // Need to be done inside DutchManger ?? 
         currentGathering.dutchUnits.insert(newDutchUnit)
         
-        // 사람 비교해서, 구성인원이 다를 경우 Participants 처리해줘야함. ;;
+        // 사람 비교해서, 구성인원이 다를 경우 Participants 도 처리해줘야함. ;;
         
         
         dutchManager.update()
-        
-        
         
         return currentGathering
         
@@ -226,17 +226,19 @@ print("duplicate flag 1")
         return
     }
     
-    func updatePersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
+    func returnPersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
         
         var newPersonDetails = initialDetails
 //        newPersonDetails
         for (idx, eachValue) in detailPriceDic {
             newPersonDetails[idx].spentAmount = eachValue
         }
+//        dutchManager.update()
         
         return newPersonDetails
     }
 }
+
 
 
 enum DutchError: Error {

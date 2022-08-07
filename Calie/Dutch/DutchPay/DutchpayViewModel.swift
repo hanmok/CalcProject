@@ -91,19 +91,23 @@ class DutchpayViewModel {
     
     
     
-    func resetGatheringAction(needGathering: Bool) {
+    func resetGatheringAction(needGathering: Bool, completion: @escaping (Bool) -> Void ) {
         
         if needGathering && gathering == nil {
             createGathering()
         }
         
-        dutchService.resetGathering { result in
-            switch result {
-            case .success(let result):
-                self.gathering = result
+        dutchService.currentGathering = gathering
+        
+        dutchService.resetGathering { newGathering in
+            switch newGathering {
+            case .success(let newGathering):
+                self.gathering = newGathering
                 self.dutchUnits = self.gathering!.dutchUnits.sorted()
+                completion(true)
             case .failure(let e):
                 print(e.localizedDescription)
+                completion(false)
             }
         }
     }
