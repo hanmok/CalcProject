@@ -204,7 +204,7 @@ class DutchUnitController: NeedingController {
         print("selected flag 3")
         
 //        validSelectedPriceTF = nil
-        selectedPriceTF = nil
+//        selectedPriceTF = nil
         
     }
     
@@ -834,7 +834,7 @@ extension DutchUnitController: UITextFieldDelegate {
             
             if isShowingKeyboard {
                 print("dismissing flag 2")
-                //FIXME: Fatal Error ! 
+                //FIXME: Fatal Error !
                 guard let prevSelectedPriceTF = selectedPriceTF else { fatalError() }
                 updateDictionary(tag: prevSelectedPriceTF.tag, currentText: prevSelectedPriceTF.text!)
 //                prevSelectedPriceTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
