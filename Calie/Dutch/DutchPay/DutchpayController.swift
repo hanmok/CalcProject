@@ -96,7 +96,6 @@ class DutchpayController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
-        
         viewModel.viewDidLoadAction()
         
         registerTableView()

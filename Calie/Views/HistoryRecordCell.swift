@@ -204,6 +204,7 @@ class HistoryRecordCell: UITableViewCell { // change it to : SwipeTableViewCell
                     titleAttributedText.append(NSAttributedString(string:  " = " + resultValid, attributes: [ .font:UIFont.boldSystemFont(ofSize: fontSize.resultBasicLandscape[userDefaultSetup.deviceSize]!),  .paragraphStyle : styleRight,  .foregroundColor: UIColor.clear]))
                 }
             }
+            
             stringLabel.attributedText = attributedText
             stringLabel.numberOfLines = 0
             titleLabel.attributedText = titleAttributedText

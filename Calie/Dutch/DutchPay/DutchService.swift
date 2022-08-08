@@ -30,7 +30,6 @@ class DutchService {
     func resetGathering(completion: @escaping ResultTest) {
         //        currentGathering
         guard let gathering = currentGathering else {
-            //            completion(nil)
             completion(.failure(.failedToGetGathering))
             return }
         
@@ -189,7 +188,9 @@ extension DutchService {
         currentGathering.dutchUnits.insert(newDutchUnit)
         
         // 사람 비교해서, 구성인원이 다를 경우 Participants 처리해줘야함. ;;
+        let currentPeople = peopleDetails.map { $0.person! }
         
+        dutchManager.updatePeople(updatedPeople: currentPeople, currentGathering: currentGathering)
         
         dutchManager.update()
         

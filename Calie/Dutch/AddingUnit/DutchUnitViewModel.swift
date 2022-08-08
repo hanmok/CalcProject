@@ -125,7 +125,7 @@ class DutchUnitViewModel {
     }
     
     public func reset(completion: @escaping () -> Void ) {
-        
+        // TODO: Ask DutchService
         participants = initialParticipants
         personDetails = []
         completion()
@@ -148,7 +148,7 @@ class DutchUnitViewModel {
     
         print("initializing personDetails flag 2")
         print("numOfPersonDetails: \(personDetails.count)")
-        // 사람을 생성하지 않았어.. 
+        // 사람을 생성하지 않았어..
     }
     
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {
