@@ -20,16 +20,11 @@ class DutchUnitViewModel {
     
     let dutchService = DutchService()
     
-    
     init(selectedDutchUnit: DutchUnit?, gathering: Gathering) {
         self.selectedDutchUnit = selectedDutchUnit
         self.gathering = gathering
         dutchService.currentGathering = gathering
-        guard let selectedDutchUnit = selectedDutchUnit else {
-            return
-        }
         
-//        initialParticipantsNames = selectedDutchUnit.personDetails.sorted().map { $0.person!.name }
     }
     
     var initialParticipants: [Person] = [] // shouldn't be real model ??
@@ -79,6 +74,7 @@ class DutchUnitViewModel {
             }
             sumOfIndividual = sum
             updateCollectionView()
+            print("persoNDetail willSet ended")
         }
     }
     
@@ -88,37 +84,38 @@ class DutchUnitViewModel {
     
     // TODO: using service layer, store or update dutchUnit
     
-//    public func updateDutchUnit(completion: @escaping () -> Void) {
+
     public func updateDutchUnit(spentPlace: String,
                                 spentAmount: Double,
                                 spentDate: Date,
                                 detailPriceDic: [Int:Double],
                                 completion: @escaping () -> Void ) {
+    
+        // Update PersonDetails with Dictionary
         
-        // TODO: Update PersonDetails
-//        let newPersonDetails =
-        personDetails = dutchService.updatePersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
+        personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
+//        let numOfAllUnits = 0
         
-        
-        //        guard let numOfAllUnits = numOfAllUnits else { return }
-        let numOfAllUnits = 0
-//        let spentPlace = spentPlaceTF.text! != "" ? spentPlaceTF.text! : "항목 \(numOfAllUnits + 1)"
-        
-        
+        // Editing Mode
         
         if let initialDutchUnit = selectedDutchUnit {
             
-            dutchService.updateDutchUnit(originalDutchUnit: initialDutchUnit,
-                                         peopleDetail: personDetails,
-                                         spentPlace: "",
-                                         spentDate: Date())
+            dutchService.updateDutchUnit(
+                originalDutchUnit: initialDutchUnit,
+                peopleDetail: personDetails,
+                 spentAmount: spentAmount,
+                spentPlace: spentPlace,
+                spentDate: Date())
+        
+            // Making Mode
         } else {
-//            dutchService.createDutchUnit(peopleDetails: personDetails,
-//                                         spentPlace: "spent place",
-//                                         spentDate: Date())
             
-            gathering = dutchService.createDutchUnit(spentplace: spentPlace, spentAmount: spentAmount, spentDate: Date(), peopleDetails: personDetails)
+            gathering = dutchService.createDutchUnit(
+                spentplace: spentPlace,
+                spentAmount: spentAmount,
+                spentDate: Date(),
+                personDetails: personDetails)
         }
         
         completion()
@@ -129,21 +126,17 @@ class DutchUnitViewModel {
         participants = initialParticipants
         personDetails = []
         completion()
-
     }
     
     public func initializePersonDetails(gathering: Gathering, dutchUnit: DutchUnit?) {
         print("initializing personDetails flag 1")
-//        guard let dutchUnit = dutchUnit else { return }
+        print("dutchUnit: \(dutchUnit)")
+        
         if let dutchUnit = dutchUnit {
             personDetails = dutchUnit.personDetails.sorted()
+            print("personDetail flag 1: \(personDetails)")
         } else {
-//            DutchManager
-//            dutchService.create
-//            personDetails =
             personDetails = dutchService.createPersonDetails(from: gathering)
-                
-            
         }
     
         print("initializing personDetails flag 2")
@@ -205,3 +198,7 @@ extension DutchUnitViewModel {
 enum DutchUnitError: Error {
     case duplicateName
 }
+
+
+
+// 저장이 잘 안됐나보다..

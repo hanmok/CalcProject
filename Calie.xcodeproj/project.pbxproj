@@ -61,7 +61,6 @@
 		9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510D287C7EE800DC4CED /* DutchManager.swift */; };
 		9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */; };
 		9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15113287C833000DC4CED /* CoreDataTestStack.swift */; };
-		9AA15117287DDBE700DC4CED /* SampleModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */; };
 		9AA15119287DDC2300DC4CED /* SampleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15118287DDC2300DC4CED /* SampleManager.swift */; };
 		9AA1511B287DDC4000DC4CED /* SampleCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1511A287DDC4000DC4CED /* SampleCoreDataStack.swift */; };
 		9AA1511D287DDD1E00DC4CED /* SampleManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */; };
@@ -80,9 +79,9 @@
 		9AADB3452895E5E400DAD657 /* DutchpayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */; };
 		9AADB3472895F10A00DAD657 /* DutchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3462895F10A00DAD657 /* DutchService.swift */; };
 		9AADB34D2896C2BC00DAD657 /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */; };
+		9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2D28A00C4A002F35AD /* ToSolve */; };
+		9AB1BC3028A0311F002F35AD /* ParticipantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
-		9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */; };
-		9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */; };
 		9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* DutchUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
 		9AD2FB252847D24B0075551B /* Gathering+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2FB242847D24B0075551B /* Gathering+Helper.swift */; };
@@ -190,7 +189,6 @@
 		9AA1510D287C7EE800DC4CED /* DutchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchManager.swift; sourceTree = "<group>"; };
 		9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		9AA15113287C833000DC4CED /* CoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestStack.swift; sourceTree = "<group>"; };
-		9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SampleModel.xcdatamodel; sourceTree = "<group>"; };
 		9AA15118287DDC2300DC4CED /* SampleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleManager.swift; sourceTree = "<group>"; };
 		9AA1511A287DDC4000DC4CED /* SampleCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCoreDataStack.swift; sourceTree = "<group>"; };
 		9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleManagerTest.swift; sourceTree = "<group>"; };
@@ -209,9 +207,9 @@
 		9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayViewModel.swift; sourceTree = "<group>"; };
 		9AADB3462895F10A00DAD657 /* DutchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchService.swift; sourceTree = "<group>"; };
 		9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitViewModel.swift; sourceTree = "<group>"; };
+		9AB1BC2D28A00C4A002F35AD /* ToSolve */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToSolve; sourceTree = "<group>"; };
+		9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsViewModel.swift; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
-		9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCollectionViewCell.swift; sourceTree = "<group>"; };
-		9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewModel.swift; sourceTree = "<group>"; };
 		9AC3CC622819999C00C9A37F /* DutchUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
 		9AD2FB242847D24B0075551B /* Gathering+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Gathering+Helper.swift"; sourceTree = "<group>"; };
@@ -304,6 +302,7 @@
 				9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */,
 				9AA150EA2870D15700DC4CED /* GitInfo */,
 				9AADB33E2884773900DAD657 /* ToMake */,
+				9AB1BC2D28A00C4A002F35AD /* ToSolve */,
 				9AA150F0287A91D400DC4CED /* SideViewController.swift */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
@@ -360,7 +359,6 @@
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 				9AA15120287DE4AC00DC4CED /* Dutch.xcdatamodeld */,
 				9AADB3402885A94B00DAD657 /* ResultViewController.swift */,
-				9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -442,8 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				9A1C85022815A865001020EF /* ParticipantsController.swift */,
-				9AC3CC5E2819934200C9A37F /* ParticipantViewModel.swift */,
-				9AC3CC5C2819931700C9A37F /* ParticipantCollectionViewCell.swift */,
+				9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */,
 				9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */,
 			);
 			path = Participants;
@@ -648,6 +645,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */,
 				9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */,
 				9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */,
 				9AA150EB2870D15700DC4CED /* GitInfo in Resources */,
@@ -718,7 +716,6 @@
 			files = (
 				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
-				9AC3CC5D2819931700C9A37F /* ParticipantCollectionViewCell.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
 				9AD2FB272847D2610075551B /* DutchUnit+Helper.swift in Sources */,
@@ -734,7 +731,6 @@
 				9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,
 				9A2DBC34282822C600CF4E86 /* MyAlert.swift in Sources */,
-				9AC3CC5F2819934200C9A37F /* ParticipantViewModel.swift in Sources */,
 				9A083FE124CCDC72001057D2 /* LocalizedStringStorage.swift in Sources */,
 				9AA5C43627186A9D0021975C /* MVCSampleCode.swift in Sources */,
 				9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */,
@@ -793,11 +789,11 @@
 				9AFB9505281EF5F200A9DEAA /* DutchCollectionCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,
 				9AF62EF927020C1A00E183AB /* ToastMessage.swift in Sources */,
-				9AA15117287DDBE700DC4CED /* SampleModel.xcdatamodeld in Sources */,
 				9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */,
 				9A2DBC0B28258CB200CF4E86 /* ColorExt+.swift in Sources */,
 				9AADB3472895F10A00DAD657 /* DutchService.swift in Sources */,
 				9A083FDD24CCDC3B001057D2 /* HistoryRecordCell.swift in Sources */,
+				9AB1BC3028A0311F002F35AD /* ParticipantsViewModel.swift in Sources */,
 				9A1C85012815A733001020EF /* BasicCalc.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1087,16 +1083,6 @@
 			);
 			currentVersion = 9A1C85002815A733001020EF /* BasicCalc.xcdatamodel */;
 			path = BasicCalc.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		9AA15115287DDBE700DC4CED /* SampleModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */,
-			);
-			currentVersion = 9AA15116287DDBE700DC4CED /* SampleModel.xcdatamodel */;
-			path = SampleModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

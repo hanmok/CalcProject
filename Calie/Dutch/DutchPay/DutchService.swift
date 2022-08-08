@@ -20,10 +20,15 @@ class DutchService {
     
     
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
+    }
+    
+    init() {
         
     }
     
-    
+    init(currentGathering: Gathering) {
+        self.currentGathering = currentGathering
+    }
     
     typealias ResultTest = (Result<Gathering, DutchError>) -> Void
     
@@ -114,6 +119,10 @@ class DutchService {
                 }
             }
         }
+        
+        print("current participants flag1: \(gathering.people)")
+        
+        dutchManager.update()
         completion(gathering)
         return
     }
@@ -166,35 +175,39 @@ class DutchService {
 // MARK: -DutchUnitController
 extension DutchService {
 
-    
-//    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetailDic: [Int: DetailState], updatedName: String?, updatedDate: Date? ) {
-    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetail: [PersonDetail], spentPlace: String?, spentDate: Date?) {
+    func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetail: [PersonDetail], spentAmount: Double,  spentPlace: String?, spentDate: Date? ) {
         
-        // TODO: replace personDetails using dic
+        guard let currentGathering = currentGathering else { fatalError() }
+        // TODO: Compare people
+        let updatedPeople = peopleDetail.map { $0.person! }
+        
+        dutchManager.updatePeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
+        
+        // 아래꺼랑 순서가 약간 다를 수 있음. 음.. 이대로 하면 될 것 같아. ㅇㅇ
+        dutchManager.updateDutchUnit(target: originalDutchUnit, spentTo: spentPlace ?? "somewhere", spentAmount: spentAmount, personDetails: peopleDetail, spentDate: spentDate)
+        
         // ex:
         //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
         //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
-        
     }
     
-//    func createDutchUnit(peopleDetailDic: [Int: DetailState], spentPlace: String, spentDate: Date) {
-    func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, peopleDetails: [PersonDetail] ) -> Gathering{
+    func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, personDetails: [PersonDetail]) -> Gathering{
         // TODO: create DutchUnit
-        guard let currentGathering = currentGathering else {fatalError("no gathering ") }
         
-        let newDutchUnit = dutchManager.createDutchUnit(spentTo: spentplace, spentAmount: spentAmount, personDetails: peopleDetails, spentDate: Date())
+        guard let currentGathering = currentGathering else {fatalError("no gathering") }
+        
+        let newDutchUnit = dutchManager.createDutchUnit(spentTo: spentplace, spentAmount: spentAmount, personDetails: personDetails, spentDate: Date())
+
+
+        // personDetails : Updated
+        let updatedPeople = personDetails.map { $0.person! }
+            print("people flag 1, updatedPeople: \(updatedPeople)")
+        dutchManager.updatePeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
         
         // Need to be done inside DutchManger ?? 
         currentGathering.dutchUnits.insert(newDutchUnit)
         
-        // 사람 비교해서, 구성인원이 다를 경우 Participants 처리해줘야함. ;;
-        let currentPeople = peopleDetails.map { $0.person! }
-        
-        dutchManager.updatePeople(updatedPeople: currentPeople, currentGathering: currentGathering)
-        
         dutchManager.update()
-        
-        
         
         return currentGathering
         
@@ -202,22 +215,21 @@ extension DutchService {
     
     func addPerson(name: String, personDetails: [PersonDetail], completion: @escaping (Result<[PersonDetail], DutchUnitError>) -> Void) {
         
-        for personDetail in personDetails {
-            guard let person = personDetail.person else { fatalError() }
-            print("current person name: \(person.name)")
-            print("compared name: \(name)\n")
-            if person.name == name {
-print("duplicate flag 1")
-                completion(.failure(.duplicateName))
-                return
-            }
-        }
+        // convert current personDetails into names Set
+        let personNames = Set(personDetails.map { $0.person!.name})
         
+        // Check if name set contains new name
+        if personNames.contains(name) {
+            completion(.failure(.duplicateName))
+        }
         
         
         //TODO: Make New Person, PersonDetail
         
-        let newPerson = dutchManager.createPerson(name: name)
+//        let newPerson = dutchManager.createPerson(name: name, )
+        guard let currentGathering = currentGathering else { fatalError() }
+        
+        let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
         
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
         
@@ -227,15 +239,38 @@ print("duplicate flag 1")
         return
     }
     
-    func updatePersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
+    func returnPersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
         
         var newPersonDetails = initialDetails
 //        newPersonDetails
         for (idx, eachValue) in detailPriceDic {
             newPersonDetails[idx].spentAmount = eachValue
         }
+//        dutchManager.update()
         
         return newPersonDetails
+    }
+}
+
+// MARK: - ParticipantsController
+extension DutchService {
+    func swapPersonOrder(person1: Person, person2: Person, closure: @escaping () -> Void) {
+        dutchManager.swapPersonOrder(of: person1, with: person2)
+    closure()
+    }
+    
+    
+    func addPerson(name: String, completion: @escaping (Person) -> Void ) {
+        
+        guard let currentGathering = currentGathering else { fatalError() }
+        
+        let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
+        completion(newPerson)
+        
+    }
+    
+    func update() {
+        dutchManager.update()
     }
 }
 
@@ -243,4 +278,5 @@ print("duplicate flag 1")
 enum DutchError: Error {
     case failedToGetGathering
     case cancelAskingName
+    case duplicateName
 }

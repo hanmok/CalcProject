@@ -6,6 +6,12 @@
 //  Copyright © 2022 Mac mini. All rights reserved.
 //
 
+
+// MARK: - Problems
+/*
+ 새로운 항목인지, 이미 있던 항목인지 구분하지 못함 ??
+ */
+
 import UIKit
 import SnapKit
 import Then
@@ -81,28 +87,14 @@ class DutchUnitController: NeedingController {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
         self.dutchUnit = initialDutchUnit
         self.gathering = gathering
-        viewModel.initializePersonDetails(gathering: gathering, dutchUnit: initialDutchUnit)
+        print("initializing personDetails flag 0, dutchUnit: \(initialDutchUnit)")
         
         super.init(nibName: nil, bundle: nil)
 //        initializePersonDetails(initialDutchUnit: initialDutchUnit)
-        
     }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
     
     /// set DetailPriceDic if viewDidLoad
-    private func setupDictionary() {
-        
-        for idx in 0 ..< viewModel.personDetails.count {
-            detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
-        }
-    }
-    
+   
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,9 +113,6 @@ class DutchUnitController: NeedingController {
         setupTargets()
         
         setupCollectionView()
-
-
-
         
         viewModel.setupInitialState { [weak self] initialState, newDutchUnitIndex in
             guard let self = self else { return }
@@ -146,18 +135,36 @@ class DutchUnitController: NeedingController {
         updateConditionState = { [weak self] condition in
             print("current condition: \(condition)")
             guard let self = self else { return }
-            self.confirmBtn.isUserInteractionEnabled = condition
-            self.confirmBtn.backgroundColor = condition ? .green : .orange
+//            self.confirmBtn.isUserInteractionEnabled = condition
+//            self.confirmBtn.backgroundColor = condition ? .green : .orange
+            self.setConfirmBtnState(isActive: condition)
         }
         
         
         // Recognizer for resigning keyboards
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
-//        view.addGestureRecognizer(tap)
         view.addGestureRecognizer(tap2)
         
+        if dutchUnit != nil {
+            setConfirmBtnState(isActive: true)
+        }
+        
+    }
+    
+    private func setConfirmBtnState(isActive: Bool) {
+        confirmBtn.isUserInteractionEnabled = isActive
+        confirmBtn.backgroundColor = isActive ? .green : .orange
+    }
+    
+    
+    private func setupDictionary() {
+        
+        for idx in 0 ..< viewModel.personDetails.count {
+            detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
+        }
     }
     
     @objc func otherViewTapped() {
@@ -172,9 +179,13 @@ class DutchUnitController: NeedingController {
             spentAmount = currentText.convertToDouble()
         } else { //
             detailPriceDic[selectedPriceTF.tag] = currentText.convertToDouble()
+            print("detailPriceDic updated!, tag: \(selectedPriceTF.tag)")
         }
+        
         print("otherView Tapped!!")
         dismissKeyboard()
+        
+        
     }
     
     var updateConditionState: (Bool) -> Void = { _ in }
@@ -183,9 +194,7 @@ class DutchUnitController: NeedingController {
         
         viewModel.updateCollectionView = { [weak self] in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.personDetailCollectionView.reloadData()
-            }
+            self.relocateCollectionView()
             print("initializing personDetails flag 4")
             print("numOfDetails: \(self.viewModel.personDetails.count)")
         }
@@ -236,8 +245,7 @@ class DutchUnitController: NeedingController {
                     make.leading.equalToSuperview().inset(self.smallPadding)
                     make.trailing.equalToSuperview().inset(self.smallPadding)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                    make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
-                    make.height.equalTo(50 * self.viewModel.participants.count - 20)
+                    make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
                 }
                 
                 self.resetBtn.snp.makeConstraints { make in
@@ -259,7 +267,8 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissTapped() {
         addingDelegate?.dismissChildVC()
-        self.dismiss(animated: true)
+//        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -275,7 +284,6 @@ class DutchUnitController: NeedingController {
             self.navigationController?.popViewController(animated: true)
             self.needingDelegate?.dismissNumberLayer()
         }
-        
     }
     
     
@@ -368,7 +376,6 @@ class DutchUnitController: NeedingController {
             switch result {
                 
             case .success(let msg):
-//                 participantsNames
                 
                 self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
                 
@@ -379,8 +386,8 @@ class DutchUnitController: NeedingController {
                         make.leading.equalToSuperview().inset(self.smallPadding)
                         make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                        make.height.equalTo(50 * self.viewModel.participantsNames.count - 20)
-                        make.height.equalTo(50 * self.viewModel.participants.count - 20)
+
+                        make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
                     }
                     
                     self.resetBtn.snp.makeConstraints { make in
@@ -388,7 +395,6 @@ class DutchUnitController: NeedingController {
                         make.width.equalTo(80)
                         make.height.equalTo(40)
                         make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-                        
                     }
                     
                     self.addPersonBtn.snp.makeConstraints { make in
@@ -406,15 +412,50 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    private func relocateCollectionView() {
+        DispatchQueue.main.async {
+            
+            self.personDetailCollectionView.reloadData()
+            
+            self.personDetailCollectionView.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding)
+                make.trailing.equalToSuperview().inset(self.smallPadding)
+                make.top.equalTo(self.divider.snp.bottom).offset(30)
+
+                make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+            }
+            
+            self.resetBtn.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.width.equalTo(80)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+            }
+            
+            self.addPersonBtn.snp.makeConstraints { make in
+                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
+                make.height.equalTo(40)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+            }
+        }
+        
+        print("relocate collectionView called, count: \(viewModel.personDetails.count)")
+    }
+    
     
     private func setupCollectionView() {
         personDetailCollectionView.register(PersonDetailCell.self, forCellWithReuseIdentifier: cellIdentifier)
         personDetailCollectionView.delegate = self
         personDetailCollectionView.dataSource = self
         
-        DispatchQueue.main.async {
-            self.personDetailCollectionView.reloadData()
-        }
+//        DispatchQueue.main.async {
+//            self.personDetailCollectionView.reloadData()
+//        }
+//        reloadInputViews()
+        
+        
+        relocateCollectionView()
     }
     
     private func setupLayout() {
@@ -501,8 +542,7 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(smallPadding)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-//            make.height.equalTo(45 * viewModel.participantsNames.count - 20)
-            make.height.equalTo(45 * viewModel.participants.count - 20)
+            make.height.equalTo(45 * viewModel.personDetails.count - 20)
         }
         
         resetBtn.snp.makeConstraints { make in
@@ -617,6 +657,10 @@ class DutchUnitController: NeedingController {
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 
@@ -625,10 +669,8 @@ class DutchUnitController: NeedingController {
 extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        print("numOfParticipantsInAddingUnitController: \(viewModel.participantsNames.count)")
-        print("numOfParticipantsInAddingUnitController: \(viewModel.participants.count)")
-//        return viewModel.participantsNames.count
-//        return viewModel.participants.count
+        print("numberOfItemsInSection: \(viewModel.personDetails.count)")
+        
         return viewModel.personDetails.count
     }
     
@@ -641,12 +683,13 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.spentAmountTF.delegate = self
         
-//        cell.spentAmountTF.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
-//        cell.spentAmountTF.addTarget(self, action: #selector(textChanged(_:)), for: .valueChanged)
-        cell.delegate = self
-        
         // FIXME: index out of range, 7.11, 7.18
+        let target = viewModel.personDetails[indexPath.row]
+        
         print("indexPath.row: \(indexPath.row)")
+        
+        print("cell \(indexPath.row), name: \(target.person!.name)")
+        print("cell \(indexPath.row), spentAmount: \(target.spentAmount)")
         
         let personDetail = viewModel.personDetails[indexPath.row]
         
@@ -723,10 +766,6 @@ extension DutchUnitController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-//        if textField is PriceTextField {
-//            textField.becomeFirstResponder()
-//            textField.selectAll(nil)
-//        }
         
         if let tf = textField as? PriceTextField {
             
@@ -754,4 +793,6 @@ extension DutchUnitController: UITextFieldDelegate {
             return true
         }
     }
+    
+    
 }

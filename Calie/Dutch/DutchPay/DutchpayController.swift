@@ -68,12 +68,10 @@ class DutchpayController: UIViewController {
     
     // MARK: - LifeCycle
     
-    //    init(persistenceManager: PersistenceController, mainTabController: MainTabController) {
     init(mainTabController: MainTabController) {
         
         self.mainTabController = mainTabController
         
-        //        self.persistenceManager = persistenceManager
         
         self.viewModel = DutchpayViewModel()
         
@@ -88,15 +86,17 @@ class DutchpayController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear in DutchpayController called")
+        viewModel.viewDidLoadAction()
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("viewDidLoad in DutchpayController called")
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
-        viewModel.viewDidLoadAction()
         
         registerTableView()
         setupLayout()
@@ -124,6 +124,13 @@ class DutchpayController: UIViewController {
             guard let self = self else { return }
             self.updateGatheringName(with: gatheringInfo.title)
             self.updateSpentTotalPrice(to: gatheringInfo.totalPrice)
+            // TODO: update TableView
+            // TODO: Separate changing gathering infos only with dutchUnits
+            
+            DispatchQueue.main.async {
+                self.dutchTableView.reloadData()
+            }
+            print("Gathering has updated, current dutchUnit number: \(self.viewModel.dutchUnits)")
         }
         
         
@@ -166,8 +173,20 @@ class DutchpayController: UIViewController {
     // MARK: - Actions
     @objc func resetGatheringBtnAction() {
         
-        viewModel.resetGatheringAction(needGathering: true)
+        viewModel.resetGatheringAction(needGathering: true) { [weak self]
+            bool in
+            
+            if bool {
+                
+            }
+            
+            print("hi")
+        }
+        
+        print("")
+    
     }
+    
     
     @objc func blurredViewTapped() {
         if isShowingSideController {
@@ -179,6 +198,9 @@ class DutchpayController: UIViewController {
     
     @objc func calculateBtnAction() {
         
+        // MARK: - Original Code
+        
+        /*
         viewModel.calculateAction(needGathering: true)
         print("calculateBtn Tapped !!")
         
@@ -186,10 +208,20 @@ class DutchpayController: UIViewController {
         
         let resultVC = ResultViewController(gathering: gathering)
         
+
         navigationController?.pushViewController(resultVC, animated: true)
+        dutchToMainTapDelegate?.shouldHideMainTab(true)
+        */
+        
+        print("current Gathering: \(viewModel.gathering)")
+        print("current participants: \(viewModel.gathering?.people)")
+        
+        
+        
+        
         // TODO: Handle this!
         //        delegate?.dutchpayController(shouldHideMainTab: true)
-        dutchToMainTapDelegate?.shouldHideMainTab(true)
+
     }
     
     @objc func editPeopleBtnAction() {
@@ -236,17 +268,14 @@ class DutchpayController: UIViewController {
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
         
-        
         viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else { fatalError() }
         
-        
         let addingUnitController = DutchUnitController(
-            initialDutchUnit: nil,
+            initialDutchUnit: selectedUnit,
             gathering: gathering
         )
-        
         
         addingUnitController.addingDelegate = self
         addingUnitController.dutchDelegate = self
@@ -646,8 +675,6 @@ class DutchpayController: UIViewController {
             make.height.equalTo(50)
         }
         
-        
-        
         mainContainer.addSubview(dutchTableView)
         dutchTableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -700,15 +727,17 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         return viewModel.dutchUnits.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
-        print("cutchpay cell has appeared")
+        print("dutchpay cell has appeared")
         
         
         // cell.dutchUnitCellComponents = cellData[indexPath.row]
         // TODO: Use Cell's ViewModel
         
         //        cell.viewModel = viewModel.dutch
+        
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
@@ -741,6 +770,8 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         guard let gathering = viewModel.gathering else { fatalError() }
         let selectedUnit = gathering.dutchUnits.sorted()[selectedIndex]
         presentDutchUnitController(selectedUnit: selectedUnit)
+//        print("selectedUnitInfo: ")
+//        print("personDetails: \(selectedUnit.personDetails.sorted())")
     }
     
     // Header Height
@@ -774,6 +805,14 @@ extension DutchpayController: ParticipantsVCDelegate {
     func updateParticipants(with participants: [Person]) {
         
         viewModel.updatePeople(updatedPeople: participants)
+    }
+    
+    func update() {
+        viewModel.viewDidLoadAction()
+        // 업데이트 어떻게 시켜주지..?? ;;
+        
+//        viewModel.gathering =
+        // Gathering.. ??? ddd
     }
 }
 
