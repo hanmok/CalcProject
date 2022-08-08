@@ -12,12 +12,6 @@ class ParticipantTableViewCell: UITableViewCell {
     
     static let identifier = "ParticipantTableViewCell"
     
-//    public var viewModel: ParticipantsTableCellViewModel? {
-//        didSet {
-//            self.loadView()
-//        }
-//    }
-
     var isAttended = true
     
     private let nameLabel: UILabel = {

@@ -45,7 +45,7 @@ class DutchpayController: UIViewController {
     
     //    let customAlert = MyAlert()
     
-    var popupToShow: PopupScreens?
+//    var popupToShow: PopupScreens?
     
     //    let persistenceManager: PersistenceController
     
@@ -71,7 +71,6 @@ class DutchpayController: UIViewController {
     init(mainTabController: MainTabController) {
         
         self.mainTabController = mainTabController
-        
         
         self.viewModel = DutchpayViewModel()
         
@@ -175,16 +174,7 @@ class DutchpayController: UIViewController {
         
         viewModel.resetGatheringAction(needGathering: true) { [weak self]
             bool in
-            
-            if bool {
-                
-            }
-            
-            print("hi")
         }
-        
-        print("")
-    
     }
     
     

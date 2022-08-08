@@ -35,6 +35,11 @@ class PersonDetailCell: UICollectionViewCell {
         $0.adjustsFontSizeToFitWidth = true
     }
     
+    public let bottomLineView = UIView().then {
+        $0.backgroundColor = .green
+        $0.isHidden = true
+    }
+    
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
@@ -95,7 +100,9 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        [nameLabel, spentAmountTF, currencyLabel, fullPriceBtn, attendingBtn].forEach { v in
+        [nameLabel, spentAmountTF, currencyLabel,
+         bottomLineView,
+         fullPriceBtn, attendingBtn].forEach { v in
             addSubview(v)
         }
         
@@ -125,9 +132,20 @@ class PersonDetailCell: UICollectionViewCell {
             make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
             make.top.bottom.equalToSuperview()
         }
+        
+        bottomLineView.snp.makeConstraints { make in
+            make.leading.equalTo(spentAmountTF.snp.leading)
+            make.trailing.equalTo(spentAmountTF.snp.trailing)
+            make.bottom.equalTo(spentAmountTF.snp.bottom)
+            make.height.equalTo(1)
+        }
     }
 }
 
 extension PersonDetailCell: UITextFieldDelegate {
     // need to communicate to.. the viewController that contains CollectionView which is of type PersonDetailCell for its cell
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("textFieldDidBeginEditing called !!")
+        bottomLineView.isHidden = false
+    }
 }

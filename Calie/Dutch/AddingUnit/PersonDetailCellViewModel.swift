@@ -19,7 +19,7 @@ struct PersonDetailCellViewModel {
         return personDetail.spentAmount.convertToIntString()}
     
     var attendingBtnTitle: String { return personDetail.isAttended ? "참석" : "불참"}
-    var attendingBtnColor: UIColor { return personDetail.isAttended ? .blue : .red }
+    var attendingBtnColor: UIColor { return personDetail.isAttended ? .black : .red }
     
     init(personDetail: PersonDetail) {
         self.personDetail = personDetail

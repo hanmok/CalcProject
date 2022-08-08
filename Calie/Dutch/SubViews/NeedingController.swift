@@ -19,31 +19,14 @@ protocol NeedingControllerDelegate: AnyObject {
 protocol NeedingControllerProtocol: AnyObject {
     func updateNumber(with numberText: String)
     func fullPriceAction2()
-//    func
     var numLayerController: NumberLayerController? { get set }
     var delegate: NeedingControllerDelegate? { get set }
 }
 
-/// Controller that need numberPadController (ex: addingUnitController
-//class NeedingController: UIViewController {
-//
-////    func some() {
-//    func updateNumber(with numberText: String) {
-//        print("some triggered")
-//    }
-//
-//    func fullPriceAction2() { }
-////    weak var
-//    weak var delegate: NeedingControllerDelegate?
-//
-//    public var numLayerController: NumberLayerController? {
-//        didSet {
-//            oldValue?.childDelegate = self
-//        }
-//    }
-//}
+
 
 class NeedingController: UIViewController, NeedingControllerProtocol {
+    
     weak var delegate: NeedingControllerDelegate?
     
     func updateNumber(with numberText: String) {
@@ -59,8 +42,6 @@ class NeedingController: UIViewController, NeedingControllerProtocol {
             oldValue?.childDelegate = self
         }
     }
-    
-    
 }
 
 extension NeedingController: NumberLayerDelegateToChild {

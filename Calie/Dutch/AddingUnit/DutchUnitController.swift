@@ -24,6 +24,7 @@ protocol DutchUnitDelegate: AnyObject {
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool)
 }
 
+//class DutchUnitController: NeedingController {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
@@ -44,6 +45,7 @@ class DutchUnitController: NeedingController {
     var gathering: Gathering
     
     var selectedPriceTF: PriceTextField?
+    var selectedIdx: Int?
 
     weak var dutchDelegate: DutchUnitDelegate?
     
@@ -156,7 +158,8 @@ class DutchUnitController: NeedingController {
     
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
-        confirmBtn.backgroundColor = isActive ? .green : .orange
+//        confirmBtn.backgroundColor = isActive ? .green : .orange
+        confirmBtn.backgroundColor = isActive ? .green : UIColor(white: 0.85, alpha: 0.9)
     }
     
     
@@ -168,23 +171,35 @@ class DutchUnitController: NeedingController {
     }
     
     @objc func otherViewTapped() {
-//        UIInputViewController.dismissKeyboard(UIInputViewController)
-        guard let selectedPriceTF = selectedPriceTF else {
-            return
-        }
         
-        let currentText = selectedPriceTF.text!
+        guard let validSelectedPriceTF = selectedPriceTF else { return }
         
-        if selectedPriceTF.tag == -1 {
+        let currentText = validSelectedPriceTF.text!
+        
+        if validSelectedPriceTF.tag == -1 {
             spentAmount = currentText.convertToDouble()
         } else { //
-            detailPriceDic[selectedPriceTF.tag] = currentText.convertToDouble()
-            print("detailPriceDic updated!, tag: \(selectedPriceTF.tag)")
+            detailPriceDic[validSelectedPriceTF.tag] = currentText.convertToDouble()
+            print("detailPriceDic updated!, tag: \(validSelectedPriceTF.tag)")
         }
         
         print("otherView Tapped!!")
         dismissKeyboard()
         
+        if validSelectedPriceTF.tag != -1 {
+            let selectedRow = validSelectedPriceTF.tag
+            personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
+            
+            print("selected flag 1, updated row: \(selectedRow)")
+        } else {
+            spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+            spentAmountTF.textColor = .black
+            print("selected flag 2")
+        }
+        print("selected flag 3")
+        
+//        validSelectedPriceTF = nil
+        selectedPriceTF = nil
         
     }
     
@@ -652,8 +667,10 @@ class DutchUnitController: NeedingController {
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .orange
+//        $0.setTitleColor(.blue, for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+//        $0.backgroundColor = .orange
+        $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
@@ -683,20 +700,25 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.spentAmountTF.delegate = self
         
-        // FIXME: index out of range, 7.11, 7.18
+        
         let target = viewModel.personDetails[indexPath.row]
-        
-        print("indexPath.row: \(indexPath.row)")
-        
-        print("cell \(indexPath.row), name: \(target.person!.name)")
-        print("cell \(indexPath.row), spentAmount: \(target.spentAmount)")
         
         let personDetail = viewModel.personDetails[indexPath.row]
         
         cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
-        // 이 값을 쓰는 이유는 ? 업데이트가 계속 될 때, View 에서 가장 최신 값 받아오기.
-        // 나중에 수정이 필요할 수도 있음.
-        cell.spentAmountTF.text = String(detailPriceDic[indexPath.row] ?? 0)
+        // 이 값을 쓰는 이유는 ? 업데이트가 계속 될 때, View 에서 가장 최신 값 받아오기. (나중에 수정이 필요할 수도 있음)
+        // ummm... 왜 변환이 안되지 ?? ;;
+       var text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString()
+        
+        text.applyNumberFormatter()
+        
+//        cell.spentAmountTF.text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString().applyNumberFormatter()
+        cell.spentAmountTF.text = text
+        
+        print("newText: \(cell.spentAmountTF.text!)")
+//        cell.spentAmountTF.textColor = .magenta
+        cell.spentAmountTF.textColor = .black
+        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
         
         return cell
     }
@@ -765,11 +787,9 @@ extension DutchUnitController: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        
-        
+//        personDetailCollectionView.reloadItems(at: [IndexPath(row: , section: <#T##Int#>)])
         if let tf = textField as? PriceTextField {
             
-
             delegate?.initializeNumberText()
             
             self.dismissKeyboardOnly()
@@ -778,11 +798,18 @@ extension DutchUnitController: UITextFieldDelegate {
             
             // 이게 호출되네 ??
             selectedPriceTF = tf
+            // getting called
+//            selectedPriceTF?.becomeFirstResponder()
+//            selectedPriceTF?.selectAll(nil) // not
+//            tf.selectAll(nil)
+//            selectedPriceTF?.backgroundColor = UIColor(white: 0.9, alpha: 1)
+            selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
+            selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
+            //            selectedPriceTF?.backgroundColor = UIColor.magenta
+            // 다른 셀을 누를 때 해당 이고 재설정은 어떻게 해 ? reload. cell
             
             print("tag : \(textField.tag)")
             print("textField: \(textField)")
-            
-            
             
             return false
             
@@ -793,6 +820,4 @@ extension DutchUnitController: UITextFieldDelegate {
             return true
         }
     }
-    
-    
 }

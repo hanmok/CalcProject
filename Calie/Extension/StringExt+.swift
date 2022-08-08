@@ -19,7 +19,8 @@ extension String {
             self.removeLast()
         }
         
-        let numberFormatter = NumberFormatter()
+         let numberFormatter = NumberFormatter()
+        
         numberFormatter.numberStyle = .decimal
 
         self = self.replacingOccurrences(of: ",", with: "")
@@ -34,6 +35,7 @@ extension String {
        
         self = result
     }
+    
     /// used to convert formatted String To Double
     public func convertToDouble() -> Double {
         var str = self
