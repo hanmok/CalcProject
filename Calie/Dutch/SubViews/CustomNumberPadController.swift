@@ -130,16 +130,19 @@ class CustomNumberPadController: UIViewController {
 //            make.bottom.equalTo(hor3Stack.snp.top)
             make.top.equalToSuperview()
         }
-        [fullPriceBtn, deleteBtn].forEach { self.inputBar.addSubview($0) }
+        
+        [
+//            fullPriceBtn,
+         deleteBtn].forEach { self.inputBar.addSubview($0) }
 //        inputBar.addSubview(deleteBtn)
         
-        fullPriceBtn.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
-//            make.centerX.equalToSuperview()
-            make.leading.equalToSuperview().inset(10)
-            make.top.bottom.equalToSuperview().inset(5)
-            make.width.equalTo(80)
-        }
+//        fullPriceBtn.snp.makeConstraints { make in
+////            make.leading.top.trailing.bottom.equalToSuperview()
+////            make.centerX.equalToSuperview()
+//            make.leading.equalToSuperview().inset(10)
+//            make.top.bottom.equalToSuperview().inset(5)
+//            make.width.equalTo(80)
+//        }
         
         deleteBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(10)

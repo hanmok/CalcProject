@@ -87,6 +87,14 @@ class NumberLayerController : UIViewController {
 
 
 extension NumberLayerController: NeedingControllerDelegate {
+//    func presentNumberPad(completion: @escaping () -> Void) {
+//        showNumberPadAction()
+//    }
+    
+//    func hideNumberPad(completion: @escaping () -> Void) {
+//        hideNumberPadAction()
+//    }
+    
     func initializeNumberText() {
         numberPadController.numberText = ""
     }

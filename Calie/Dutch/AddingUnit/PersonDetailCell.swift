@@ -13,7 +13,8 @@ import SnapKit
 
 protocol PersonDetailCellDelegate: AnyObject {
 
-    func cell(_ cell: PersonDetailCell, from peopleIndex: Int)
+//    func cell(_ cell: PersonDetailCell, from peopleIndex: Int)
+    func fullPriceAction(idx: Int)
     
     func updateAttendingState(with tag: Int, to isAttending: Bool)
 }
@@ -35,10 +36,10 @@ class PersonDetailCell: UICollectionViewCell {
         $0.adjustsFontSizeToFitWidth = true
     }
     
-    public let bottomLineView = UIView().then {
-        $0.backgroundColor = .green
-        $0.isHidden = true
-    }
+//    public let bottomLineView = UIView().then {
+//        $0.backgroundColor = .green
+//        $0.isHidden = true
+//    }
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
@@ -55,9 +56,10 @@ class PersonDetailCell: UICollectionViewCell {
     public let fullPriceBtn = UIButton().then {
         $0.setTitle("전액", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-//        $0.backgroundColor = .yellow
         $0.backgroundColor = UIColor(white: 240 / 255, alpha: 1)
     }
+    
+    
     
     private func setupTargets() {
         fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
@@ -66,7 +68,8 @@ class PersonDetailCell: UICollectionViewCell {
     
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
-        delegate?.cell(self, from: sender.tag)
+//        delegate?.cell(self, from: sender.tag)
+        delegate?.fullPriceAction(idx: sender.tag)
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
@@ -101,7 +104,7 @@ class PersonDetailCell: UICollectionViewCell {
     
     private func setupLayout() {
         [nameLabel, spentAmountTF, currencyLabel,
-         bottomLineView,
+//         bottomLineView,
          fullPriceBtn, attendingBtn].forEach { v in
             addSubview(v)
         }
@@ -111,7 +114,7 @@ class PersonDetailCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().inset(10)
-            make.width.equalTo(100)
+            make.width.equalTo(70)
         }
         
         attendingBtn.snp.makeConstraints { make in
@@ -120,8 +123,15 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
+        fullPriceBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-10)
+            make.width.equalTo(60)
+            make.top.bottom.equalToSuperview()
+        }
+        
         currencyLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(attendingBtn.snp.leading).offset(-35)
+//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-35)
+            make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-15)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(15)
         }
@@ -133,19 +143,19 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
-        bottomLineView.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountTF.snp.leading)
-            make.trailing.equalTo(spentAmountTF.snp.trailing)
-            make.bottom.equalTo(spentAmountTF.snp.bottom)
-            make.height.equalTo(1)
-        }
+//        bottomLineView.snp.makeConstraints { make in
+//            make.leading.equalTo(spentAmountTF.snp.leading)
+//            make.trailing.equalTo(spentAmountTF.snp.trailing)
+//            make.bottom.equalTo(spentAmountTF.snp.bottom)
+//            make.height.equalTo(1)
+//        }
     }
 }
 
 extension PersonDetailCell: UITextFieldDelegate {
     // need to communicate to.. the viewController that contains CollectionView which is of type PersonDetailCell for its cell
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("textFieldDidBeginEditing called !!")
-        bottomLineView.isHidden = false
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("textFieldDidBeginEditing called !!")
+//        bottomLineView.isHidden = false
+//    }
 }

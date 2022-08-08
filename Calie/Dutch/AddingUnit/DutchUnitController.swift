@@ -31,13 +31,18 @@ class DutchUnitController: NeedingController {
     
     private let smallPadding: CGFloat = 10
     
+    var isShowingKeyboard = false {
+        willSet {
+            print("dismissing flag 4: isShowingKeyboard: \(newValue)")
+        }
+    }
+    
     var viewModel: DutchUnitViewModel
     
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
     /// 10
-    /// 
    
     weak var addingDelegate: AddingUnitControllerDelegate?
     
@@ -58,7 +63,7 @@ class DutchUnitController: NeedingController {
                 sum += value2.value
             }
             sumOfIndividual = sum
-            print("detailPriceDic updated \(newValue)")
+            print("detailPriceDic updated \(newValue), \nspentAmount: \(spentAmount), \nsumOfIndividual:\(sumOfIndividual)")
         }
         didSet {
             print("umm")
@@ -143,9 +148,6 @@ class DutchUnitController: NeedingController {
         }
         
         
-        // Recognizer for resigning keyboards
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
         view.addGestureRecognizer(tap2)
@@ -176,15 +178,18 @@ class DutchUnitController: NeedingController {
         
         let currentText = validSelectedPriceTF.text!
         
-        if validSelectedPriceTF.tag == -1 {
-            spentAmount = currentText.convertToDouble()
-        } else { //
-            detailPriceDic[validSelectedPriceTF.tag] = currentText.convertToDouble()
-            print("detailPriceDic updated!, tag: \(validSelectedPriceTF.tag)")
-        }
+//        if validSelectedPriceTF.tag == -1 {
+//            spentAmount = currentText.convertToDouble()
+//        } else { //
+//            detailPriceDic[validSelectedPriceTF.tag] = currentText.convertToDouble()
+//            print("detailPriceDic updated!, tag: \(validSelectedPriceTF.tag)")
+//        }
+        
+        updateDictionary(tag: validSelectedPriceTF.tag, currentText: currentText)
         
         print("otherView Tapped!!")
         dismissKeyboard()
+//        needingDelegate?.hideNumberPad { print("hide!")}
         
         if validSelectedPriceTF.tag != -1 {
             let selectedRow = validSelectedPriceTF.tag
@@ -201,6 +206,19 @@ class DutchUnitController: NeedingController {
 //        validSelectedPriceTF = nil
         selectedPriceTF = nil
         
+    }
+    
+    func updateDictionary(tag: Int, currentText: String) {
+        print("dismissing flag::  tag: \(tag), currentText: \(currentText)")
+        
+        if tag == -1{
+            spentAmount = currentText.convertToDouble()
+            print("dismissing flag 6, spentAmount: \(spentAmount)")
+        } else {
+            detailPriceDic[tag] = currentText.convertToDouble()
+        }
+        
+        print("after updating dictionary, spentAmount: \(spentAmount), dic: \(detailPriceDic), currentText: \(currentText)")
     }
     
     var updateConditionState: (Bool) -> Void = { _ in }
@@ -302,54 +320,10 @@ class DutchUnitController: NeedingController {
     }
     
     
-    override func fullPriceAction2() {
-        print("fullprice from addingUnitController!")
-        guard let selectedPriceTF = selectedPriceTF else {
-            fatalError()
-        }
-        
-        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
-        
-        //        sumOfIndividual = 0
-        
-        //        for (tag, number) in textFieldWithPriceDic {
-        //            print("tag: \(tag), number: \(number)")
-        //            sumOfIndividual += number
-        //        }
-        
-        //        var costRemaining = spentAmount - sumOfIndividual
-        
-        //        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
-        
-        //        let remainingStr = costRemaining.addComma()
-        //        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
-        
-        //        self.viewModel.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
-        
-        //        selectedPriceTF.text = remainingStr
-        
-    }
     
     
-    override func updateNumber(with numberText: String) {
-        print("hi, \(numberText)")
-        
-        guard let selectedPriceTF = selectedPriceTF else {
-            return
-        }
-        
-        selectedPriceTF.text = numberText
-        
-        let selectedTag = selectedPriceTF.tag
-        
-        //        switch selectedTag {
-        //        case -1: spentAmount = numberText.convertStrToDouble()
-        //        default:
-        //            textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
-        //            viewModel.personDetails[selectedTag].spentAmount = numberText.convertStrToDouble()
-        //        }
-        
-    }
+    
+    
     
     
     @objc func dismissKeyboard() {
@@ -357,6 +331,7 @@ class DutchUnitController: NeedingController {
         view.endEditing(true)
         
         needingDelegate?.hideNumberPad()
+        
     }
     
     func dismissKeyboardOnly() {
@@ -678,6 +653,56 @@ class DutchUnitController: NeedingController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    // MARK: - NeedingController Delegate
+    override func updateNumber(with numberText: String) {
+        print("hi, \(numberText)")
+        
+        guard let selectedPriceTF = selectedPriceTF else {
+            return
+        }
+        
+        selectedPriceTF.text = numberText
+        
+        let selectedTag = selectedPriceTF.tag
+        
+        //        switch selectedTag {
+        //        case -1: spentAmount = numberText.convertStrToDouble()
+        //        default:
+        //            textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
+        //            viewModel.personDetails[selectedTag].spentAmount = numberText.convertStrToDouble()
+        //        }
+        
+    }
+    
+    override func fullPriceAction2() {
+        print("fullprice from addingUnitController!")
+        guard let selectedPriceTF = selectedPriceTF else {
+            fatalError()
+        }
+        
+        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
+        
+        //        sumOfIndividual = 0
+        
+        //        for (tag, number) in textFieldWithPriceDic {
+        //            print("tag: \(tag), number: \(number)")
+        //            sumOfIndividual += number
+        //        }
+        
+        //        var costRemaining = spentAmount - sumOfIndividual
+        
+        //        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
+        
+        //        let remainingStr = costRemaining.addComma()
+        //        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
+        
+        //        self.viewModel.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
+        
+        //        selectedPriceTF.text = remainingStr
+        
+    }
 }
 
 
@@ -712,6 +737,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         text.applyNumberFormatter()
         
+        cell.delegate = self
+        
 //        cell.spentAmountTF.text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString().applyNumberFormatter()
         cell.spentAmountTF.text = text
         
@@ -735,6 +762,34 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
 // MARK: - PersonDetailCell Delegate
 extension DutchUnitController: PersonDetailCellDelegate {
     
+    func fullPriceAction(idx: Int) {
+        print("fullPriceAction in dutchUnitController called")
+        print("current idx: \(idx), spentAmout: \(spentAmount)")
+        
+        for (tag, amount) in detailPriceDic {
+            print("tag: \(tag), amount: \(amount)")
+        }
+
+        // 여기 두줄이 문제.. 본인 값을 잘못 반영하고있음.
+        // umm..
+        let prev = detailPriceDic[idx] ?? 0
+        
+        // TODO: update sumOfIndividual
+        // 음.. 입력을 하다가 이걸 누르는 경우는 고려하지 않은 상태. ㅅㅂ;
+        // TextField 를 연속해서 (Custom NumberPad 를 dismiss 시키지 않은 채) 입력하면 값이 반영되지 않음. 어떻게 해결하지??
+        
+        let remaining = spentAmount - sumOfIndividual + prev
+
+        
+        
+        if remaining != 0 {
+            detailPriceDic[idx] = remaining
+
+            personDetailCollectionView.reloadItems(at: [IndexPath(row: idx, section: 0)])
+        }
+        
+        delegate?.hideNumberPad()
+    }
     
     func cell(_ cell: PersonDetailCell, isAttending: Bool) {
         print("didTapAttended triggered")
@@ -746,21 +801,7 @@ extension DutchUnitController: PersonDetailCellDelegate {
     
     func cell(_ cell: PersonDetailCell, from peopleIndex: Int) {
         
-        //        for (tag, amount) in textFieldWithPriceDic {
-        //            print("tag: \(tag), amount: \(amount)")
-        //        }
-        
-        //        let prev = textFieldWithPriceDic[peopleIndex] ?? 0
-        
-        //        let remaining = spentAmount - sumOfIndividual - prev
-        
-        //        if remaining != 0 {
-        //            textFieldWithPriceDic[peopleIndex] = remaining
-        //
-        //            var strRemaining = String(remaining)
-        //            strRemaining.applyNumberFormatter()
-        //            cell.spentAmountTF.text = strRemaining
-        //        }
+                
     }
 }
 
@@ -788,25 +829,32 @@ extension DutchUnitController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 //        personDetailCollectionView.reloadItems(at: [IndexPath(row: , section: <#T##Int#>)])
+        // FIXME: dismissKeyboardOnly, dismissKeyboard 두개 구분해서 사용하기.
         if let tf = textField as? PriceTextField {
             
+            if isShowingKeyboard {
+                print("dismissing flag 2")
+                //FIXME: Fatal Error ! 
+                guard let prevSelectedPriceTF = selectedPriceTF else { fatalError() }
+                updateDictionary(tag: prevSelectedPriceTF.tag, currentText: prevSelectedPriceTF.text!)
+//                prevSelectedPriceTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
+                prevSelectedPriceTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+                prevSelectedPriceTF.textColor = .black
+            }
+            
+            print("dismissing flag 3")
             delegate?.initializeNumberText()
             
             self.dismissKeyboardOnly()
             
             needingDelegate?.presentNumberPad()
             
-            // 이게 호출되네 ??
+            isShowingKeyboard = true
+            
             selectedPriceTF = tf
-            // getting called
-//            selectedPriceTF?.becomeFirstResponder()
-//            selectedPriceTF?.selectAll(nil) // not
-//            tf.selectAll(nil)
-//            selectedPriceTF?.backgroundColor = UIColor(white: 0.9, alpha: 1)
+            
             selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
             selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
-            //            selectedPriceTF?.backgroundColor = UIColor.magenta
-            // 다른 셀을 누를 때 해당 이고 재설정은 어떻게 해 ? reload. cell
             
             print("tag : \(textField.tag)")
             print("textField: \(textField)")
@@ -816,6 +864,9 @@ extension DutchUnitController: UITextFieldDelegate {
         } else {
             
             needingDelegate?.hideNumberPad()
+            
+            isShowingKeyboard = false
+            
             print("tag : \(textField.tag)")
             return true
         }
