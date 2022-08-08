@@ -21,12 +21,11 @@ class SideViewController: UIViewController {
     lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     let cellIdentifier = "SideTableCell"
-//    var dutchManager: DutchManager
+
+    var viewModel: SideViewModel
     
-//    init(dutchManager: DutchManager) {
     init() {
-//        self.dutchManager = dutchManager
-        
+        self.viewModel = SideViewModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,59 +33,39 @@ class SideViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let dismissBtn: UIButton = {
-        let btn = UIButton()
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        imageView.tintColor = .black
-//        imageView.contentMode = .scaleToFit
-        imageView.contentMode = .scaleAspectFit
-        btn.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.equalTo(20)
-            make.height.equalTo(30)
-        }
-//        btn.backgroundColor = .magenta
-        btn.isHidden = true
-        return btn
-    }()
-    
-    private let sideLabel = UILabel().then {
-        $0.text = "지난 모임"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.textColor = .black
-//        $0.textAlignment = .left
-        $0.textAlignment = .center
-    }
-    
     weak var sideDelegate: SideControllerDelegate?
-    
-    var gatherings: [Gathering] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 //        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
 //        navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
-        updateGatherings()
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        print("viewDidLoad in SideViewController called")
+        
+//        viewModel.viewDidLoadAction()
         
         registerTableView()
+
+        
+        setupBindings()
+        
+        viewModel.fetchAllGatherings()
+
         
         setupLayout()
-        setupAddTargets()
+//        setupAddTargets()
     }
     
-    public func updateGatherings() {
-//        let allGatherings = Gathering.fetchAll()
-//        let allGatherings = dutchManager.fetchGatherings()
-        
-//        gatherings = allGatherings.sorted {$0.createdAt < $1.createdAt }
-//        // not registered yet ;;
-//        DispatchQueue.main.async {
-//            self.gatheringTableView.reloadData()
-//        }
+    private func setupBindings() {
+        viewModel.updateGatherings = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.gatheringTableView.reloadData()
+            }
+        }
     }
     
     private let gatheringTableView = UITableView().then {
@@ -100,6 +79,26 @@ class SideViewController: UIViewController {
         
         gatheringTableView.delegate = self
         gatheringTableView.dataSource = self
+    }
+    
+    
+    
+    
+    private func setupAddTargets() {
+        
+//        dismissBtn.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
+        
+//        gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
+        
+    }
+    
+//    @objc func dismissSelf() {
+//        sideDelegate?.dismissSideController()
+//    }
+    
+    
+    @objc func addGaterhing() {
+//        sideDelegate?.addNewGathering()
     }
     
     
@@ -132,58 +131,67 @@ class SideViewController: UIViewController {
         }
     }
     
+    // MARK: - UI properties
+    private let dismissBtn: UIButton = {
+        let btn = UIButton()
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+        imageView.tintColor = .black
+//        imageView.contentMode = .scaleToFit
+        imageView.contentMode = .scaleAspectFit
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(20)
+            make.height.equalTo(30)
+        }
+//        btn.backgroundColor = .magenta
+        btn.isHidden = true
+        return btn
+    }()
+    
+    private let sideLabel = UILabel().then {
+        $0.text = "지난 모임"
+        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.textColor = .black
+//        $0.textAlignment = .left
+        $0.textAlignment = .center
+    }
 
     
-    private func setupAddTargets() {
-//        dismissBtn.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
-        
-//        gatheringPlusBtn.addTarget(self, action: #selector(addGaterhing), for: .touchUpInside)
-        
-    }
-    
-//    @objc func dismissSelf() {
-//        sideDelegate?.dismissSideController()
-//    }
-    
-    
-    @objc func addGaterhing() {
-//        sideDelegate?.addNewGathering()
-    }
 }
 
 extension SideViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gatherings.count
+        
+        return viewModel.allGatherings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: SideTableCell.identifier, for: indexPath) as! SideTableCell
-//        let cell = tableView.dequeueReusableCell(withIdentifier: SideTableCell.identifier, for: indexPath)
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         
-        cell.textLabel?.text = gatherings[indexPath.row].title
+        let targetGathering = viewModel.allGatherings[indexPath.row]
+        
+        cell.textLabel?.text = targetGathering.title
+                
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        sideDelegate?.dismissSideVC(with: gatherings[indexPath.row])
-        print("selectedGathering title: \(gatherings[indexPath.row].title)")
+        
+        let targetGathering = viewModel.allGatherings[indexPath.row]
+        
+        sideDelegate?.dismissSideVC(with: targetGathering)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
             
-            let selectedGathering = self.gatherings[indexPath.row]
-
-            Gathering.deleteSelf(selectedGathering)
-
-            self.gatherings.remove(at: indexPath.row)
+            let targetGathering = self.viewModel.allGatherings[indexPath.row]
             
-            DispatchQueue.main.async {
-                self.gatheringTableView.reloadData()
-            }
+            self.viewModel.removeGathering(target: targetGathering)
             
             completionhandler(true)
         }

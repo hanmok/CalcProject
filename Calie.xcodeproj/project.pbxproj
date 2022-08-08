@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		226A46F4289A078700CCF29C /* DutchTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */; };
+		226A47E828A0C4FC00CCF29C /* SideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A47E728A0C4FC00CCF29C /* SideViewModel.swift */; };
 		22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E732845D08D00646FCD /* Group+Helper.swift */; };
 		22F65E782845D0AB00646FCD /* Person+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E772845D0AB00646FCD /* Person+Helper.swift */; };
 		5833A01F4BB1956F1EF0970C /* Pods_Calie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5931D4062B3225906FE3C994 /* Pods_Calie.framework */; };
@@ -122,6 +123,7 @@
 		0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.release.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.debug.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.debug.xcconfig"; sourceTree = "<group>"; };
 		226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchTableCellViewModel.swift; sourceTree = "<group>"; };
+		226A47E728A0C4FC00CCF29C /* SideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewModel.swift; sourceTree = "<group>"; };
 		22F65E732845D08D00646FCD /* Group+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+Helper.swift"; sourceTree = "<group>"; };
 		22F65E772845D0AB00646FCD /* Person+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Helper.swift"; sourceTree = "<group>"; };
 		2E410E853A6BD45D189BBA36 /* Pods-Calie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calie.debug.xcconfig"; path = "Target Support Files/Pods-Calie/Pods-Calie.debug.xcconfig"; sourceTree = "<group>"; };
@@ -260,6 +262,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		226A47E628A0C4F000CCF29C /* Side */ = {
+			isa = PBXGroup;
+			children = (
+				9AA150F0287A91D400DC4CED /* SideViewController.swift */,
+				226A47E728A0C4FC00CCF29C /* SideViewModel.swift */,
+			);
+			path = Side;
+			sourceTree = "<group>";
+		};
 		3E15720660FED9FFA29DB295 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,7 +314,6 @@
 				9AA150EA2870D15700DC4CED /* GitInfo */,
 				9AADB33E2884773900DAD657 /* ToMake */,
 				9AB1BC2D28A00C4A002F35AD /* ToSolve */,
-				9AA150F0287A91D400DC4CED /* SideViewController.swift */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
@@ -485,6 +495,7 @@
 		9AD2FB51285784D70075551B /* Dutch */ = {
 			isa = PBXGroup;
 			children = (
+				226A47E628A0C4F000CCF29C /* Side */,
 				9AD2FB53285785810075551B /* Group */,
 				9AC3CC642819A90D00C9A37F /* AddingUnit */,
 				9AC3CC602819981500C9A37F /* Participants */,
@@ -755,6 +766,7 @@
 				9A083FA624CCD55D001057D2 /* AppDelegate.swift in Sources */,
 				9A1C85062815BB0F001020EF /* GroupButton.swift in Sources */,
 				9AD2FB2B2847D2960075551B /* PersonDetail+Helper.swift in Sources */,
+				226A47E828A0C4FC00CCF29C /* SideViewModel.swift in Sources */,
 				9AD2FB5928578AC70075551B /* LayerController.swift in Sources */,
 				E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */,
 				9AD2FB2E284FC4030075551B /* NumberLayerController.swift in Sources */,

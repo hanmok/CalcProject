@@ -275,8 +275,26 @@ extension DutchService {
 }
 
 
+// MARK: - SideViewController
+
+extension DutchService {
+    func removeGathering(target: Gathering, completion: @escaping (Result<[Gathering], DutchError>) -> Void) {
+        dutchManager.deleteGathering(gathering: target) {
+            let allGatherings = self.dutchManager.fetchGatherings()
+            completion(.success(allGatherings))
+        }
+        completion(.failure(.failedToDelete))
+    }
+    
+    func fetchAllGatherings(completion: @escaping (([Gathering]) -> Void)) {
+        let allGatherings = dutchManager.fetchGatherings()
+        completion(allGatherings)
+    }
+}
+
 enum DutchError: Error {
     case failedToGetGathering
     case cancelAskingName
     case duplicateName
+    case failedToDelete
 }

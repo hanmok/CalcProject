@@ -63,7 +63,28 @@ a: 초기상태
 ---------------
 
 
+7.5
+SideViewController 에 에러가 있음..
+1. 눌리는 것과 Trailing Action 구분 더 명확하게 ?
+2. 눌렸을 때 blurred View 가 왜 사라지지 않지??
+
 
 -
 8. MVVM Pattern 으로 전환함에 따라, 불필요한 Delegate 들이 생겼음. Refactoring 할 것.
 -
+
+
+--
+9. Test Codes 에 쓰이는 Methods 가 수정됨에 따라 TestCodes 가 정상작동하지 않음. Test Codes 를 고쳐줄 필요가 있음.
+--
+
+10. 정산하기 기능 만들기.
+
+
+11. 전반적인 기획 수정해보기.
+a. DutUnit 생성하는 방식
+
+
+12. SideController Cell 눌렀을 때
+Blurred View 처리해주기...
+

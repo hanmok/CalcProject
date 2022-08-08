@@ -94,10 +94,12 @@ extension DutchManager {
         mainContext.saveCoreData()
     }
 
-    func deleteGathering(gathering: Gathering) {
+    func deleteGathering(gathering: Gathering, completion: @escaping () -> Void) {
         mainContext.delete(gathering)
 
         update()
+        completion()
+        
     }
     
     
