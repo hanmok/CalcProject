@@ -42,7 +42,7 @@ class DutchpayManagerTest: XCTestCase {
     }
 
     func test_update_gathering() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
         
         gathering.title = "jiwon"
         
@@ -55,11 +55,13 @@ class DutchpayManagerTest: XCTestCase {
     }
 
     func test_delete_gathering() {
-        let gatheringA = dutchpayManager.createGathering(title: "A")!
-        let gatheringB = dutchpayManager.createGathering(title: "B")!
-        let gatheringC = dutchpayManager.createGathering(title: "C")!
+        let gatheringA = dutchpayManager.createGathering(title: "A")
+        let gatheringB = dutchpayManager.createGathering(title: "B")
+        let gatheringC = dutchpayManager.createGathering(title: "C")
 
-        dutchpayManager.deleteGathering(gathering: gatheringB)
+        dutchpayManager.deleteGathering(gathering: gatheringB) {
+            
+        }
 
         
         let gatherings = dutchpayManager.fetchGatherings()
@@ -75,9 +77,9 @@ class DutchpayManagerTest: XCTestCase {
 extension DutchpayManagerTest {
     // DutchUnit 하나 생성
     func test_addDutchUnit() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
         
-        let person = dutchpayManager.createPerson(name: "new Person")
+        let person = dutchpayManager.createPerson(name: "new Person", currentGathering: gathering)
         let personDetails = dutchpayManager.createPersonDetail(person: person, isAttended: true, spentAmount: 100)
         
         let dutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 100, personDetails: [personDetails], spentDate: Date())
@@ -90,9 +92,9 @@ extension DutchpayManagerTest {
     
     // DutchUnit 생성 완료 후 -> 인원 추가, 장소명 변경
     func test_updateDutchUnit1_addPerson() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
         
-        let originalPerson = dutchpayManager.createPerson(name: "original Person")
+        let originalPerson = dutchpayManager.createPerson(name: "original Person", currentGathering: gathering)
         let originalPersonDetail = dutchpayManager.createPersonDetail(person: originalPerson, isAttended: true, spentAmount: 300)
         
         let originalDutchUnit = dutchpayManager.createDutchUnit(spentTo: "somewhere", spentAmount: 300, personDetails: [originalPersonDetail], spentDate: Date())
@@ -100,20 +102,25 @@ extension DutchpayManagerTest {
         // add dutchUnit to gathering
         gathering.dutchUnits.update(with: originalDutchUnit)
         
-        let newPerson = dutchpayManager.createPerson(name: "added Person")
+        let newPerson = dutchpayManager.createPerson(name: "added Person", currentGathering: gathering)
         let additionalPersonDetail = dutchpayManager.createPersonDetail(person: newPerson, isAttended: true, spentAmount: 0)
         
-        let updatedDutchUnit = dutchpayManager.createDutchUnit(spentTo: "updatedPlace", spentAmount: 300, personDetails: [originalPersonDetail, additionalPersonDetail], spentDate: Date())
+//        let updatedDutchUnit = dutchpayManager.createDutchUnit(spentTo: "updatedPlace", spentAmount: 300, personDetails: [originalPersonDetail, additionalPersonDetail], spentDate: Date())
         
+        let updatedPlace = "updatedPlace"
         
         // update dutchUnit
-        dutchpayManager.updateDutchUnit(target: originalDutchUnit, with: updatedDutchUnit)
-        
+//        dutchpayManager.updateDutchUnit(target: originalDutchUnit, with: updatedDutchUnit)
+        dutchpayManager.updateDutchUnit(target: originalDutchUnit,
+                                        spentTo: updatedPlace,
+                                        spentAmount: 300,
+                                        personDetails: [originalPersonDetail, additionalPersonDetail],
+                                        spentDate: Date())
         
 
         XCTAssertEqual(gathering.dutchUnits.count, 1)
         // chck if gathering has the same dutchUnit
-        XCTAssertEqual(gathering.dutchUnits.first!.placeName, updatedDutchUnit.placeName)
+        XCTAssertEqual(gathering.dutchUnits.first!.placeName, updatedPlace)
         
         XCTAssertEqual(gathering.dutchUnits.first!.personDetails.count, 2)
         // get totalCost from DutchUnits
@@ -152,9 +159,9 @@ extension DutchpayManagerTest {
     
     // DutchUnit 제거
     func test_deleteDutchUnit() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
         
-        let person1 = dutchpayManager.createPerson(name: "original Person")
+        let person1 = dutchpayManager.createPerson(name: "original Person", currentGathering: gathering)
         let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
         
         
@@ -181,11 +188,11 @@ extension DutchpayManagerTest {
 extension DutchpayManagerTest {
     
     func test_gathering_updatePeople() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
         
-        let person1 = dutchpayManager.createPerson(name: "person1")
-        let person2 = dutchpayManager.createPerson(name: "person2")
-        let person3 = dutchpayManager.createPerson(name: "person3")
+        let person1 = dutchpayManager.createPerson(name: "person1", currentGathering: gathering)
+        let person2 = dutchpayManager.createPerson(name: "person2", currentGathering: gathering)
+        let person3 = dutchpayManager.createPerson(name: "person3", currentGathering: gathering)
 
         let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
         let personDetail2 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
@@ -223,9 +230,9 @@ extension DutchpayManagerTest {
     // MARK: - People Ordering
 //    지금 만들기가 조금 애매함.. 상황이 구체적이지 않기 때문에..
     func test_gathering_makingPeopleInOrder() {
-        let person1 = dutchpayManager.createPerson(name: "person1")
-        let person2 = dutchpayManager.createPerson(name: "person2")
-        let person3 = dutchpayManager.createPerson(name: "person3")
+//        let person1 = dutchpayManager.createPerson(name: "person1")
+//        let person2 = dutchpayManager.createPerson(name: "person2")
+//        let person3 = dutchpayManager.createPerson(name: "person3")
         
         
     }
@@ -253,11 +260,11 @@ extension DutchpayManagerTest {
     
     // DutchUnit 생성 후, ParticipantsController 에서 people 추가 (DutchUnit 들도 추가로 수정)
     func test_gathering_addPerson() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
 
-        let person1 = dutchpayManager.createPerson(name: "person1")
-        let person2 = dutchpayManager.createPerson(name: "person2")
-        let person3 = dutchpayManager.createPerson(name: "person3")
+        let person1 = dutchpayManager.createPerson(name: "person1", currentGathering: gathering)
+        let person2 = dutchpayManager.createPerson(name: "person2", currentGathering: gathering)
+        let person3 = dutchpayManager.createPerson(name: "person3", currentGathering: gathering)
 
 
         let personDetail1 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 100)
@@ -281,10 +288,10 @@ extension DutchpayManagerTest {
     }
     
     func test_gathering_removePeople() {
-        let gathering = dutchpayManager.createGathering(title: "developers")!
+        let gathering = dutchpayManager.createGathering(title: "developers")
 
-        let person1 = dutchpayManager.createPerson(name: "person1")
-        let person2 = dutchpayManager.createPerson(name: "person2")
+        let person1 = dutchpayManager.createPerson(name: "person1", currentGathering: gathering)
+        let person2 = dutchpayManager.createPerson(name: "person2", currentGathering: gathering)
 
 
 
@@ -307,8 +314,9 @@ extension DutchpayManagerTest {
     }
     
     func test_swapPeopleOrder() {
-        let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
-        let person2 = dutchpayManager.createPerson(name: "person2", givenIndex: 1)
+        let gathering = dutchpayManager.createGathering(title: "dummy")
+        let person1 = dutchpayManager.createPerson(name: "person1", currentGathering: gathering)
+        let person2 = dutchpayManager.createPerson(name: "person2", currentGathering: gathering)
         
         dutchpayManager.swapPersonOrder(of: person1, with: person2)
         
@@ -322,9 +330,12 @@ extension DutchpayManagerTest {
     
     func test_result_firstOverall() {
         
-        let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
-        let person2 = dutchpayManager.createPerson(name: "person1", givenIndex: 1)
-        let person3 = dutchpayManager.createPerson(name: "person1", givenIndex: 2)
+        let gathering = dutchpayManager.createGathering(title: "gathering")
+        
+//        let person1 = dutchpayManager.createPerson(name: "person1", givenIndex: 0)
+        let person1 = dutchpayManager.createPerson(name: "person1", currentGathering: gathering)
+        let person2 = dutchpayManager.createPerson(name: "person2", currentGathering: gathering)
+        let person3 = dutchpayManager.createPerson(name: "person3", currentGathering: gathering)
         
         let personDetail11 = dutchpayManager.createPersonDetail(person: person1, isAttended: true, spentAmount: 150)
         let personDetail21 = dutchpayManager.createPersonDetail(person: person2, isAttended: true, spentAmount: 0)
@@ -338,20 +349,30 @@ extension DutchpayManagerTest {
 
         let dutchUnit2 = dutchpayManager.createDutchUnit(spentTo: "some2", spentAmount: 900, personDetails: [personDetail12, personDetail22, personDetail32])
         
-        let gathering = dutchpayManager.createGathering(title: "gathering")
+
         
-        [dutchUnit1, dutchUnit2].forEach { dutchpayManager.addDutchUnit(of: $0, to: gathering!)}
+        [dutchUnit1, dutchUnit2].forEach { dutchpayManager.addDutchUnit(of: $0, to: gathering)}
 
         XCTAssertEqual(dutchUnit1.personDetails.count, 3)
         
-        dutchpayManager.getUnitResult(using: dutchUnit1)
-        dutchpayManager.getUnitResult(using: dutchUnit2)
-        XCTAssertEqual(gathering!.people.count, 3)
+        dutchpayManager.getRelativeTobePaidAmount(from: dutchUnit1)
+        dutchpayManager.getRelativeTobePaidAmount(from: dutchUnit2)
+        XCTAssertEqual(gathering.people.count, 3)
         
-        dutchpayManager.getFirstOverallResult(using: gathering!) // [ -350, -50, 400]
+        dutchpayManager.getRelativeTobePaidAmountForEachPerson(from: gathering) // [ -350, -50, 400]
+        
+        
+
         // [0 0 -350 ]
         // [0 -50 0  ]
         // [350 50 0 ]
+        
+        let displayedData = dutchpayManager.createOverallInfo(gathering: gathering)
+        XCTAssertEqual(displayedData.count, 3)
+        
+        let payData = dutchpayManager.createPersonPayInfos(gathering: gathering)
+        XCTAssertEqual(payData.count, 3)
+        
     }
     
     func test_result_secondOverall_Step1() {

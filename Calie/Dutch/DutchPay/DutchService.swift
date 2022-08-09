@@ -151,7 +151,7 @@ class DutchService {
     func createGathering( completion: @escaping (Gathering) -> Void) {
         let allGatheringsCount = dutchManager.fetchGatherings().count
         let newGathering = dutchManager.createGathering(title: String(allGatheringsCount + 1))
-        completion(newGathering!)
+        completion(newGathering)
         return
     }
     
@@ -292,9 +292,24 @@ extension DutchService {
     }
 }
 
+// MARK: - ResultViewController
+extension DutchService {
+    func createOverallInfo(gathering: Gathering) -> [OverallPersonInfo] {
+        return dutchManager.createOverallInfo(gathering: gathering)
+    }
+    
+    func createPersonPayInfos(gathering: Gathering) -> [PersonPaymentInfo] {
+        return dutchManager.createPersonPayInfos(gathering: gathering)
+    }
+    
+}
+
 enum DutchError: Error {
     case failedToGetGathering
     case cancelAskingName
     case duplicateName
     case failedToDelete
 }
+
+
+

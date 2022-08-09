@@ -126,7 +126,7 @@ class DutchpayViewModel {
         if needGathering && gathering == nil {
             createGathering()
         }
-        // TODO: Calculate!
+        // TODO: Calculate! ?? 
     }
     
     func blurredViewTappedAction() {

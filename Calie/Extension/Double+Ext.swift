@@ -25,10 +25,14 @@ extension Double {
 }
 
 extension Double {
-    private func convertIntoKoreanPrice(number: Double) -> String {
+     func convertIntoKoreanPrice() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        numberFormatter.string(from: NSNumber(value:number))
-        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
+        numberFormatter.string(from: NSNumber(value:self))
+        let result = numberFormatter.string(from: NSNumber(value: self))!
+         if result == "-0" { return "0 원"}
+        return result + " 원"
     }
 }
+
+

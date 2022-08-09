@@ -65,7 +65,7 @@ extension DutchUnit: RemovableProtocol {}
 
 
 extension DutchUnit: Comparable {
-    public static func <(lhs: DutchUnit, rhs: DutchUnit) -> Bool {
+    public static func < (lhs: DutchUnit, rhs: DutchUnit) -> Bool {
         return lhs.spentDate < rhs.spentDate
     }
 }

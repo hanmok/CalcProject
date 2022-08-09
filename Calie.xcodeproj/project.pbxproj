@@ -82,6 +82,8 @@
 		9AADB34D2896C2BC00DAD657 /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */; };
 		9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2D28A00C4A002F35AD /* ToSolve */; };
 		9AB1BC3028A0311F002F35AD /* ParticipantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */; };
+		9AB1BC3328A2D5CF002F35AD /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */; };
+		9AB1BC3528A2D77A002F35AD /* ResultBriefInfoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
 		9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* DutchUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
@@ -211,6 +213,8 @@
 		9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitViewModel.swift; sourceTree = "<group>"; };
 		9AB1BC2D28A00C4A002F35AD /* ToSolve */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToSolve; sourceTree = "<group>"; };
 		9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsViewModel.swift; sourceTree = "<group>"; };
+		9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
+		9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultBriefInfoTableCell.swift; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		9AC3CC622819999C00C9A37F /* DutchUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 				9A083FF524CCDE04001057D2 /* Model */,
 				9AF62EF12701C16A00E183AB /* Views */,
 				9AD2FB51285784D70075551B /* Dutch */,
+				9AB1BC3128A2D5BD002F35AD /* Result */,
 				9AC3CC612819993D00C9A37F /* Trash */,
 				9A083FF624CCDE0D001057D2 /* Extension */,
 				9AF62EE526FF65CC00E183AB /* Services */,
@@ -368,7 +373,6 @@
 				9AD2FB2C2847D2B20075551B /* CoreHelpers */,
 				9A1C84FF2815A733001020EF /* BasicCalc.xcdatamodeld */,
 				9AA15120287DE4AC00DC4CED /* Dutch.xcdatamodeld */,
-				9AADB3402885A94B00DAD657 /* ResultViewController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -435,6 +439,16 @@
 				9AA1511E287DDD3F00DC4CED /* SampleCoreDataTestStack.swift */,
 			);
 			path = CalieTests;
+			sourceTree = "<group>";
+		};
+		9AB1BC3128A2D5BD002F35AD /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				9AADB3402885A94B00DAD657 /* ResultViewController.swift */,
+				9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */,
+				9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */,
+			);
+			path = Result;
 			sourceTree = "<group>";
 		};
 		9AC3CC572819922F00C9A37F /* Model */ = {
@@ -725,6 +739,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AB1BC3528A2D77A002F35AD /* ResultBriefInfoTableCell.swift in Sources */,
 				9AA5C43827186F5F0021975C /* AppUtility.swift in Sources */,
 				9A083FE524CCDC88001057D2 /* UserDefaultSetup.swift in Sources */,
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
@@ -789,6 +804,7 @@
 				9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */,
 				9AF62EF72702051B00E183AB /* BasicCalculator.swift in Sources */,
 				9AD2FB252847D24B0075551B /* Gathering+Helper.swift in Sources */,
+				9AB1BC3328A2D5CF002F35AD /* ResultViewModel.swift in Sources */,
 				9A083FEB24CCDCA2001057D2 /* FontSizes.swift in Sources */,
 				9AA15122287DE4AC00DC4CED /* Dutch.xcdatamodeld in Sources */,
 				9AA5C4302716FE320021975C /* SettingsViewController.swift in Sources */,

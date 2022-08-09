@@ -190,8 +190,8 @@ class DutchpayController: UIViewController {
         
         // MARK: - Original Code
         
-        /*
-        viewModel.calculateAction(needGathering: true)
+        
+//        viewModel.calculateAction(needGathering: true)
         print("calculateBtn Tapped !!")
         
         guard let gathering = viewModel.gathering else { fatalError() }
@@ -201,7 +201,7 @@ class DutchpayController: UIViewController {
 
         navigationController?.pushViewController(resultVC, animated: true)
         dutchToMainTapDelegate?.shouldHideMainTab(true)
-        */
+        
         
         print("current Gathering: \(viewModel.gathering)")
         print("current participants: \(viewModel.gathering?.people)")

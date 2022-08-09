@@ -24,7 +24,7 @@ struct DutchManager {
 extension DutchManager {
     
     @discardableResult
-    func createGathering(title: String) -> Gathering? {
+    func createGathering(title: String) -> Gathering {
         let gathering = Gathering(context: mainContext)
         
         gathering.title = title
@@ -34,8 +34,8 @@ extension DutchManager {
             return gathering
         } catch let error {
             print("Failed to create: \(error)")
+            fatalError("failed to create Gathering")
         }
-        return nil
     }
     
     @discardableResult
@@ -129,20 +129,15 @@ extension DutchManager {
     }
     
 // 모든 DutchUnit 의 SpentAmount 와 PersonDetails 의 합이 같다고 가정.
-    func getFirstOverallResult(using gathering: Gathering) -> [Double] {
-        
+    func getRelativeTobePaidAmountForEachPerson(from gathering: Gathering) -> [Double] {
 
 //        [0 0 0 0 0 .. ]
         var result = Array(repeating: 0.0, count: gathering.people.count)
         print("\ngetOverallResult, numOfElements:\(result.count)")
 
-        // 인원 체크 굳이 안해도 ..;;
-//        if eachResult.count != result.count { fatalError() }
-        
         for eachUnit in gathering.dutchUnits {
-            let eachResult = getUnitResult(using: eachUnit)
+            let eachResult = getRelativeTobePaidAmount(from: eachUnit)
 
-//            result += getUnitResult(using: eachUnit)
             for (idx, element) in eachResult.enumerated() {
                 result[idx] += element
             }
@@ -152,40 +147,139 @@ extension DutchManager {
         return result
     }
     
-    // need random Generator.. TT....
-
-    
-    
-    // 이거부터 그렇게 쉽지 않네.. 한명이 낸다고 가정하는 것부터 잘못됨..
-    // 전체 인원가지고 하는게 편할수도..
-    func getUnitResult(using dutchUnit: DutchUnit) -> [Double] {
+    func getRelativeTobePaidAmount(from dutchUnit: DutchUnit) -> [Double] {
         // 150
         var totalAmount: Double
         
         if dutchUnit.isAmountEqual {
             totalAmount = dutchUnit.spentAmount
         } else {
-            totalAmount = dutchUnit.isAmountEqual ? dutchUnit.spentAmount : dutchUnit.personDetails.map { $0.spentAmount }.reduce(0, { partialResult, element in
-                return partialResult + element
-            })
+            let totalSpentAmount = dutchUnit.personDetails.map { $0.spentAmount }.reduce(0, +)
+            totalAmount = totalSpentAmount
         }
         
         // 불참 인원은 Average 계산에서 제외.
         let average = getAverage(totalAmount: totalAmount, numOfPeople: dutchUnit.personDetails.filter { $0.isAttended }.count)
-        // 불참인 경우 -1 대입
+        
+        // 불참인 경우 -1 대입 ( flag )
         let unitArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
-        // 불참인 경우 계산 없이 0, 그 외: X - Average
+       
+        // 불참인 경우 계산 없이 0, 그 외: 본인 지불한 비용 - Average (개인당 지불해야하는 비용)
         let result = unitArr.map { $0 < 0 ? 0 : $0 - average }
-        print("result: \(result)")
+        print("getRelativeTobePaidAmount result: \(result)")
         return result
     }
+    
+    
     
     func getAverage(totalAmount: Double, numOfPeople: Int) -> Double {
         return totalAmount / Double(numOfPeople)
     }
+    // [이름, 받아야 하는 금액, 참여 항목]
+    func createOverallInfo(gathering: Gathering) -> [OverallPersonInfo] {
+//        if gathering.people.contains(person) == false { fatalError("no target person found") }
+        var amtToPay = Array(repeating: 0.0, count: gathering.people.count)
+        print("\ngetOverallResult, numOfElements:\(amtToPay.count)")
+
+        // FIXME: - 총 지출비용으로 하는게 나아.
+        // TODO: 음.. 각 Cell 별로 Detail 한 내용도 알려줄까 ??
+        
+        for eachUnit in gathering.dutchUnits {
+            let eachResult = getRelativeTobePaidAmount(from: eachUnit)
+
+            for (idx, element) in eachResult.enumerated() {
+                amtToPay[idx] += element
+            }
+        }
+        
+        print("overall Result: \(amtToPay)")
+        
+        let people = gathering.sortedPeople
+        let peopleNames = people.map { $0.name }
+        
+        
+        var attendedPlacesForPerson: [String] = []
+        
+        for idx in 0 ..< people.count {
+            var attendedPlaces: [String] = []
+            for eachUnit in gathering.dutchUnits.sorted() {
+                let targetDetail = eachUnit.personDetails.sorted()[idx]
+                if targetDetail.isAttended == true {
+                    attendedPlaces.append(eachUnit.placeName)
+                }
+            }
+            let attendedPlacesInLine = attendedPlaces.joined(separator: ", ")
+            attendedPlacesForPerson.append(attendedPlacesInLine)
+        }
+        
+        var result = [OverallPersonInfo]()
+        
+        for idx in 0 ..< people.count {
+            let each: OverallPersonInfo = (peopleNames[idx], amtToPay[idx], attendedPlacesForPerson[idx])
+            print("overallResult: \(each)")
+            result.append(each)
+        }
+        
+        return result
+    }
+    
+    func createPersonPayInfos(gathering: Gathering) -> [PersonPaymentInfo] {
+        
+        var amtToPay = Array(repeating: 0.0, count: gathering.people.count)
+        print("\ngetOverallResult, numOfElements:\(amtToPay.count)")
+        let names = gathering.sortedPeople.map { $0.name }
+        
+        var spentAmount = Array(repeating: 0.0, count: gathering.people.count)
+        var sum = Array(repeating: 0.0, count: gathering.people.count)
+        
+        // FIXME: - 총 지출비용으로 하는게 나아.
+        // TODO: 음.. 각 Cell 별로 Detail 한 내용도 알려줄까 ??
+        
+        for eachUnit in gathering.dutchUnits {
+            let eachResult = getRelativeTobePaidAmount(from: eachUnit)
+
+            for (idx, element) in eachResult.enumerated() {
+//                amtToPay[idx] += element
+                amtToPay[idx] += element
+            }
+            
+            let spentAmountsForUnit = eachUnit.personDetails.sorted().map { $0.spentAmount }
+//            spentAmount
+            for idx in 0 ..< spentAmountsForUnit.count {
+                spentAmount[idx] += spentAmountsForUnit[idx]
+                print("paymentFlag 1, idx:\(idx), spentAmountsForUnit:\(spentAmountsForUnit[idx])")
+            }
+        }
+        
+        // 부호 변환 (의미 혼동 방지)
+//        amtToPay = -amtToPay
+        for idx in 0 ..< amtToPay.count {
+            amtToPay[idx] = -amtToPay[idx]
+        }
+        
+        var result = [PersonPaymentInfo]()
+        
+        for idx in 0 ..< amtToPay.count {
+//            sum[idx] = amtToPay[idx] + spentAmount[idx]
+            sum[idx] = amtToPay[idx] - spentAmount[idx]
+            let eachResult: PersonPaymentInfo = (name: names[idx],paidAmt: spentAmount[idx], toPay: amtToPay[idx], sum: sum[idx])
+            result.append(eachResult)
+        }
+        
+        for person in gathering.sortedPeople {
+            print("personName: \(person.name), order: \(person.order)")
+        }
+        
+        print("result of personPaymentInfo: \(result)")
+        
+        return result
+    }
 }
 
 
+typealias OverallPersonInfo = (name: String, relativePaidAmount: Double, attendedPlaces: String)
+
+typealias PersonPaymentInfo = (name: String, paidAmt: Double, toPay: Double, sum: Double)
 
 extension DutchManager {
     
@@ -323,6 +417,8 @@ extension DutchManager {
         
         let numOfPeople = currentGathering.people.count
         person.order = Int64(numOfPeople)
+        
+        currentGathering.people.insert(person)
         
         do {
              try mainContext.save()

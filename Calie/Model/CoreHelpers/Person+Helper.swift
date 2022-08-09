@@ -50,8 +50,8 @@ extension Person {
 
 extension Person: Comparable {
     public static func < (lhs: Person, rhs: Person) -> Bool {
-//        return lhs.order < rhs.order
-        return lhs.name < rhs.name
+        return lhs.order < rhs.order
+//        return lhs.name < rhs.name
     }
 }
 
