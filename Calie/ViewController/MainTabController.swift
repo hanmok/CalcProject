@@ -179,7 +179,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 //                print("isShowingSideController : \(self.isShowingSideController)")
             }
         }
-    }
+    } 
     
     private func hideSideController() {
         guard let sideViewController = sideViewController else { return }

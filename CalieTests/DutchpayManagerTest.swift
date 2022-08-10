@@ -433,7 +433,7 @@ extension DutchpayManagerTest {
         while (inputIndexes.first! != 5) {
             print("inputIndexes: \(inputIndexes)")
 
-            inputIndexes = returnNextdIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
+            inputIndexes = returnNextIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
             indexesContainer.append(inputIndexes)
         }
         print("indexesContainer: \(indexesContainer)")
@@ -621,34 +621,100 @@ extension DutchpayManagerTest {
         
         let numOfAllElements = allNumsArr.count // 총 n 개
         let firstIndexOfLastCombination = numOfAllElements - numOfElementsToPick
-
+        // 사람에 대한 Index 가 아님.
         var inputIndexes = Array(0 ..< numOfElementsToPick) // 0, 1, 2  Set 를 구하는 데 사용된 Elements 의 Indexes.
-    //    var indexesOfLastElement = inputIndexes
-        
         
         var firstlyUsedIndexOfLastCombination = 0
         
-        let resultCombination = createCombination(using: inputIndexes, from: allNumsArr)
+        let resultCombination = sum(of: allNumsArr, withIndexesOf: inputIndexes)
         combinationSet.insert(resultCombination)
         
         print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
         
         // 초기값 조건들을 어떻게 주지...??
         while (firstIndexOfLastCombination != firstlyUsedIndexOfLastCombination ) {
-//                print("firstIndexOfLastCombination: \(firstIndexOfLastCombination)")
-//                print("firstlyUsedIndexOfLastCombination: \(firstlyUsedIndexOfLastCombination)")
-    //            indexesOfLastElement = inputIndexes
         
         // update Indexes.
-            inputIndexes = returnNextdIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
+            inputIndexes = returnNextIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
             
-            let resultCombination = createCombination(using: inputIndexes, from: allNumsArr)
+            let resultCombination = sum(of: inputIndexes, withIndexesOf: allNumsArr)
             print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
             combinationSet.insert(resultCombination)
             
+            firstlyUsedIndexOfLastCombination = inputIndexes.first!
+        }
+        
+        print("\n\nprinting combinationSet: \n")
+        for element in combinationSet {
+            print(element)
+        }
+        
+        return combinationSet
+    }
+    
+    // MARK: - Newly added.
+    func createAllCombinationsInPersonIdx(using allDic: [Int: [Int]], numOfElementsToPick: Int) -> Set<Int>{
+        // 중복된 elements 없다고 가정, Result 에는 Set 으로 (중복된 결과 넣지 않음) 우선 넣기.
+        var allNums = Set<Int>()
+        var combinationSet = Set<Int>() // result
+        
+        for (key, _) in allDic {
+            if allNums.contains(key) == false {
+                allNums.insert(key)
+            }
+        }
+
+        if numOfElementsToPick == 1 {
+            return allNums
+        }
+
+        
+        let allNumsArr = Array(allNums) // make elements into array form.
+        print("\nallNumsArr: \(allNumsArr)\n\n")
+        
+        let numOfAllElements = allNumsArr.count // 총 n 개
+        let firstIndexOfLastCombination = numOfAllElements - numOfElementsToPick
+        // 사람에 대한 Index 가 아님.
+        var inputIndexes = Array(0 ..< numOfElementsToPick) // 0, 1, 2  Set 를 구하는 데 사용된 Elements 의 Indexes.
+        // 간단히, personIndexes 와 inputIndexes 를 관계지어주면 안되나 ? 음... 그러면 사용하는 함수 (sum) 가 달라져야함. ???
+        
+//        var personIndexes = allDic.map { $0.key }
+        var personIndexes = [Int]()
+        
+        for (numIdx, allnum) in allNumsArr.enumerated() {
+            if let idx = allDic[allnum] {
+                personIndexes.append(idx[0])
+            }
+           
+        }
+        print("personIndexes: \(personIndexes)")
+        
+        var firstlyUsedIndexOfLastCombination = 0
+        
+        // 순서가 여기서 고려되었나 ?
+        let resultCombination = sum(of: allNumsArr, withIndexesOf: inputIndexes )
+        
+        combinationSet.insert(resultCombination)
+        
+        print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
+        for (idx, value) in inputIndexes.enumerated() {
+                print("personIndexes: \(personIndexes[value])")
+        }
+        
+
+        // 초기값 조건들을 어떻게 주지...??
+        while (firstIndexOfLastCombination != firstlyUsedIndexOfLastCombination ) {
+        
+        // update Indexes.
+            inputIndexes = returnNextIndexes(indexes: inputIndexes, numOfAllElements: numOfAllElements)
             
+            let resultCombination = sum(of: allNumsArr, withIndexesOf: inputIndexes)
+            print("inputIndexes: \(inputIndexes), resultCombination: \(resultCombination)")
+            for (idx, value) in inputIndexes.enumerated() {
+                    print("personIndexes: \(personIndexes[value])")
+            }
+            combinationSet.insert(resultCombination)
             
-    //            firstlyUsedIndexOfLastCombination = indexesOfLastElement.first!
             firstlyUsedIndexOfLastCombination = inputIndexes.first!
         }
         
@@ -660,7 +726,7 @@ extension DutchpayManagerTest {
         return combinationSet
     }
 
-    func createCombination(using indexes: [Int], from targetArr: [Int]) -> Int {
+    func sum(of targetArr: [Int], withIndexesOf indexes: [Int]) -> Int {
         var sum = 0
         for idx in 0 ..< indexes.count {
             sum += targetArr[indexes[idx]]
@@ -669,7 +735,7 @@ extension DutchpayManagerTest {
     }
 
 
-    func returnNextdIndexes(indexes: [Int], numOfAllElements: Int) -> [Int] {
+    func returnNextIndexes(indexes: [Int], numOfAllElements: Int) -> [Int] {
         var backwardIndex = 1
         var ans = indexes
         let numOfElementsToPick = indexes.count
@@ -697,7 +763,39 @@ extension DutchpayManagerTest {
     }
     
     func testCode() {
-        let people = [100: [0], 200: [1], -300: [2], 50: [3], -50: [4]]
-        let _ = createAllCombinations(using: people, numOfElementsToPick: 2)
+        let allDic = [100: [0], 200: [1], -300: [2], 50: [3], -50: [4]]
+        let numOfCombi = createAllCombinations(using: allDic, numOfElementsToPick: 2)
+        
+
+        XCTAssertNotEqual(numOfCombi.count, 1)
+    }
+    
+    func test_createCombinationOfBothSigns() {
+        let allDic = [100: [0], 200: [1], -300: [2], 50: [3], -50: [4]]
+        
+        // [100: [0], 200: [1], 50: [3]]
+        var positiveNums = [Int:[Int]]()
+        
+        // [-300: [2], -50: [4]]
+        var negativeNums = [Int:[Int]]()
+        
+        for (key, value) in allDic {
+            if key >= 0 && positiveNums[key] == nil {
+                positiveNums[key] = value
+            } else if key < 0 && negativeNums[key] == nil {
+                negativeNums[key] = value
+            }
+        }
+        
+//        let positiveCombinations = createAllCombinations(using: positiveNums, numOfElementsToPick: 2)
+//        let negativeCombination = createAllCombinations(using: negativeNums, numOfElementsToPick: 2)
+        
+        let positiveCombinations = createAllCombinationsInPersonIdx(using: positiveNums, numOfElementsToPick: 2)
+        let negativeCombination = createAllCombinationsInPersonIdx(using: negativeNums, numOfElementsToPick: 2)
+        
+        XCTAssertEqual(positiveCombinations.count, 3)
+        print("end of positiveCombination. ")
+        XCTAssertEqual(negativeCombination.count, 1)
+        
     }
 }
