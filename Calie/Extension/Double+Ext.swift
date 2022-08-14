@@ -20,7 +20,6 @@ extension Double {
         } else {
             return String(self)
         }
-        
     }
 }
 
