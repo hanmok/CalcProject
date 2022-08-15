@@ -198,116 +198,44 @@ class DutchResultTest: XCTestCase {
                 for (amt, _) in negativesDic {
                     negativeCandidates.append(-amt)
                 }
-//                negativeCandidates.sort(by: >)
                 negativeCandidates.sort(by: >)
                 
             }
-            
-            
         }
+        
         print("in the end, resultTuples: \(resultTuples)")
         print("positivesDic: \(positivesDic)")
         print("negativesDic: \(negativesDic)")
-        /*
         
-        // FIXME: 후처리 및 중간단계 실시간 처리. How ?? 더 큰 Loop 안에 가두기 ?
-    positiveLoop: for (pValue, pPeople) in positivesDic {
-        negativeLoop: for (nValue, nPeople) in negativesDic {
-            print("flag 7, negativesDic: \(negativesDic)")
-            
-            var duplicatableDic = [Int:Int]()
-            
-            var negativeValueSet = Set<Int>()
-            
-            for (nvalue, people) in negativesDic {
-                negativeValueSet.insert(nvalue)
-                duplicatableDic[nvalue] = people.count
+        if negativesDic.count == 1, let lastNagativeElement = negativesDic.first, lastNagativeElement.value.count == 1 {
+            let lastnName = lastNagativeElement.value[0]
+            for (amt, names) in positivesDic {
+                for name in names {
+                    let tupleResult: (ResultTuple) = (from: lastnName, to: name, amount: amt)
+                    resultTuples.append(tupleResult)
+                }
+                positivesDic[amt] = nil
             }
-            
-            var allNums = [Int]()
-            
-            for (key, _ ) in negativesDic {
-                allNums.append(key)
-            }
-            
-            allNums = allNums.sorted(by: >)
-            
-            
-            if pValue > -nValue {
-                let diff = pValue + nValue
-
-//                if negativeValueSet.contains(-diff) {
-                if duplicatableDic[-diff] != nil {
-                    if -diff != nValue { // 중복 값 처리.
-                    resultTuples.append((from: nPeople.first!,to: pPeople.first!, amount: -nValue))
-                    let negativePerson = negativesDic[-diff]!.first!
-                    resultTuples.append((from: negativePerson, to: pPeople.first!, amount: diff))
-                        print("found matched ones!")
-                    print("matched ! \(nPeople.first!), \(pPeople.first!), amount: \(-nValue)")
-                    print("matched ! \(negativePerson), \(pPeople.first!), amount: \(diff)")
-                        
-                    continue positiveLoop
-                    }
-                } else {
-                    // get ingredients for combinations
-                    var smallerNums = [Int]()
-                    print("flag 5 start to make smallerNums, pValue: \(pValue), nValue: \(nValue), diff: \(diff) ")
-                    makingSmaller: for allNum in allNums {
-                        print("flag 6 diff: \(diff), -allNum: \(-allNum)")
-                        // 같은 경우에도 고려해야함. 중복값일 경우 같은 값일 수 있기 때문에..
-                        if diff > -allNum && allNum != nValue {
-                            smallerNums.append(allNum)
-                        } else if diff < -allNum { break makingSmaller }
-                    }
-                    
-                    
-                    // TODO: 2 ~ n 명까지 골라주기.
-                    // n 범위는 어디까지여? 중복도 허용해야함 ?? 응.. 반드시 허용해야함.
-                    
-                    let createdComb = createCombination(using: smallerNums, numToPick: 2)
-                    
-                    if createdComb == [:] { continue negativeLoop }
-                    
-                    for (key, matchedIndexes) in createdComb {
-                        if key == -diff {
-                            
-                            let resultTuple1 = (from: nPeople.first!, to: pPeople.first!, amount: -nValue)
-                            
-                            removePersonFromDic(amt: nValue, negativesDic: &negativesDic)
-                            
-                            resultTuples.append(resultTuple1)
-                            // TODO: n 개의 elements 에 대해 사용할 수 있는 function 만들기.
-                            
-                            let result = convertResult(matchedIndexes: matchedIndexes, smallerNums: smallerNums, negativesDic: negativesDic)
-                            
-                            print("found matched ones! ")
-                            print("unitResult: \(resultTuple1)")
-                            for (amt, value) in result {
-                                let unitResult: ResultTuple = (from:value , to: pPeople.first!, amount:-amt )
-                                print("unitResult: \(unitResult)")
-                                resultTuples.append(unitResult)
-                                
-                                removePersonFromDic(amt: amt, negativesDic: &negativesDic)
-                            }
-                            continue positiveLoop
-                        }
-                    }
+            let value = lastNagativeElement.key
+            negativesDic[value] = nil
+        }
+        
+        
+        if positivesDic.count == 1, let lastPositiveElement = negativesDic.first,
+           lastPositiveElement.value.count == 1 {
+            let lastpName = lastPositiveElement.value[0]
+            for (amt, names) in negativesDic {
+                for name in names {
+                    let resultTuple: (ResultTuple) = (from: name, to: lastpName, amount: -amt)
+                    resultTuples.append(resultTuple)
                 }
             }
+            let value = lastPositiveElement.key
+            positivesDic[value] = nil
         }
         
-        
-        print("\n\n\n\n")
-        print("printing results ")
-        for eachResult in resultTuples {
-            print(eachResult)
-        }
-        print("remained Minuses: \(negativesDic)")
-        
-        
-    }
-        */
-        
+        print("in the very end, resultTuples: \(resultTuples)")
+        print("positivesDic: \(positivesDic), negativesDic: \(negativesDic)")
     }
     
     
