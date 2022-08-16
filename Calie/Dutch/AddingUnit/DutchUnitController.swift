@@ -185,11 +185,16 @@ class DutchUnitController: NeedingController {
     
     private func askTotalSpentAmount() {
         
-        spentAmountTF.becomeFirstResponder()
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.spentAmountTF.becomeFirstResponder()
             self.needingDelegate?.presentNumberPad()
             self.blinkSpentAmount()
         }
+        
+//        Timer.scheduledTimer(withTimeInterval: , repeats: false) { timer in
+//            self.needingDelegate?.presentNumberPad()
+//            self.blinkSpentAmount()
+//        }
         
 //        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
 //            self.presentAskingSpentAmountAlert {
@@ -593,13 +598,23 @@ class DutchUnitController: NeedingController {
             make.width.equalTo(15)
         }
         
+        spentDateLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(smallPadding * 2)
+            make.top.equalTo(spentAmountTF.snp.bottom).offset(20)
+            make.width.equalTo(150)
+            make.height.equalTo(30)
+        }
+        
         
         spentDatePicker.snp.makeConstraints { make in
-            make.width.equalToSuperview().dividedBy(1.7) // prev: 1.5
-            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
             make.leading.equalToSuperview().inset(15)
+//            make.width.equalToSuperview().dividedBy(1.7) // prev: 1.5
+//            make.width.equalToSuperview().dividedBy(2.0)
+//            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
+            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
             make.height.equalTo(40)
         }
+        
         
         divider.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
@@ -672,16 +687,21 @@ class DutchUnitController: NeedingController {
     }
     
     private let spentDateLabel = UILabel().then {
-        $0.textAlignment = .right
+//        $0.textAlignment = .right
+        $0.text = "지출 일시"
     }
     
     private let spentDatePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .dateAndTime
-        picker.sizeToFit()
+        picker.preferredDatePickerStyle = .automatic
+//        picker.backgroundColor = .magenta
+        picker.contentMode = .left
+        picker.sizeThatFits(CGSize(width: 150, height: 40))
+//        picker.sizeToFit()
 //        picker.semanticContentAttribute = .forceRightToLeft
 //        picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
-        picker.semanticContentAttribute = .forceLeftToRight
+//        picker.semanticContentAttribute = .forceLeftToRight
         return picker
     }()
     
