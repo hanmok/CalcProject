@@ -41,9 +41,26 @@ class NeedingController: UIViewController, NeedingControllerProtocol {
             oldValue?.childDelegate = self
         }
     }
+    
+    func completeAction3() {
+        
+    }
 }
 
-extension NeedingController: NumberLayerDelegateToChild {
+extension NeedingController: NumberLayerToChildDelegate {
+//    func completAction2() {
+//        completeAction3()
+//    }
+    
+//    func completeAction2() {
+//        print("complete action 2 triggered")
+//    }
+    
+    func completeAction2() {
+        print("umm")
+        completeAction3()
+    }
+    
     func fullPriceAction() {
         print("fullPriceAction")
         fullPriceAction2()

@@ -19,7 +19,9 @@ protocol CustomNumberPadDelegate: AnyObject {
     /// number
     func numberPadView(updateWith numTextInput: String) // include delete Action
     
-    func fullPriceAction()
+//    func fullPriceAction()
+    
+    func completeAction()
 }
 
 class CustomNumberPadController: UIViewController {
@@ -32,7 +34,7 @@ class CustomNumberPadController: UIViewController {
     
     static let colorList = ColorList()
     
-    weak var delegate: CustomNumberPadDelegate?
+    weak var numberPadDelegate: CustomNumberPadDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,24 +63,20 @@ class CustomNumberPadController: UIViewController {
         $0.setTitleColor(.black, for: .normal)
     }
     
-    private let fullPriceBtn = UIButton().then {
-        $0.setTitle("전액", for: .normal)
-//        $0.layer.borderColor = UIColor(white: 0.6, alpha: 0.5).cgColor
-//        $0.layer.cornerRadius = 10
-//        $0.layer.borderWidth = 1
-        $0.setTitleColor(.black, for: .normal) 
-    }
+//    private let fullPriceBtn = UIButton().then {
+//        $0.setTitle("전액", for: .normal)
+//        $0.setTitleColor(.black, for: .normal)
+//    }
     
     private let inputBar = UIView().then {
         $0.backgroundColor = UIColor.bgColorForExtrasLM
     }
     
-    private let completeBtn = UIButton().then { $0.setTitle("완료", for: .normal )
+    private let completeBtn = UIButton().then {
+        $0.setTitle("완료", for: .normal )
         $0.setTitleColor(.black, for: .normal)
         $0.backgroundColor = .bgColorForExtrasLM
     }
-    
-
     
     private func setupAddTargets() {
         [num7, num8, num9,
@@ -90,18 +88,19 @@ class CustomNumberPadController: UIViewController {
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         
-        fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
+//        fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func fullPriceTapped(_ sender: UIButton) {
-        delegate?.fullPriceAction()
-        delegate?.numberPadViewShouldReturn()
-    }
+//    @objc func fullPriceTapped(_ sender: UIButton) {
+//        delegate?.fullPriceAction()
+//        delegate?.numberPadViewShouldReturn()
+//    }
     
     @objc func completeTapped(_ sender: UIButton) {
         print("complete Tapped!!1")
+        numberPadDelegate?.completeAction()
         
-        delegate?.numberPadViewShouldReturn()
+        numberPadDelegate?.numberPadViewShouldReturn()
         numberText = ""
     }
     
@@ -110,14 +109,14 @@ class CustomNumberPadController: UIViewController {
         if numberText != "" {
             numberText.removeLast()
         }
-        delegate?.numberPadView(updateWith: numberText)
+        numberPadDelegate?.numberPadView(updateWith: numberText)
     }
     
     
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
         numberText += sender.wrapperString
-        delegate?.numberPadView(updateWith: numberText)
+        numberPadDelegate?.numberPadView(updateWith: numberText)
         // update textFields belong to Controllers which conforms NumberPadDelegate
     }
     

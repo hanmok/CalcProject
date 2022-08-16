@@ -10,6 +10,10 @@
 // MARK: - Problems
 /*
  새로운 항목인지, 이미 있던 항목인지 구분하지 못함 ??
+ 
+값을 입력 후 다른 곳을 누르면 정상 처리
+          완료를 누르면 이상하게 처리함.
+ 
  */
 
 import UIKit
@@ -24,11 +28,10 @@ protocol DutchUnitDelegate: AnyObject {
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool)
 }
 
-//class DutchUnitController: NeedingController {
 class DutchUnitController: NeedingController {
     
     // MARK: - Properties
-    
+    /// 10
     private let smallPadding: CGFloat = 10
     
     var isShowingKeyboard = false {
@@ -42,7 +45,7 @@ class DutchUnitController: NeedingController {
     private let cellIdentifier = "PersonDetailCell"
     
     weak var needingDelegate: NeedingControllerDelegate?
-    /// 10
+    
    
     weak var addingDelegate: AddingUnitControllerDelegate?
     
@@ -742,9 +745,7 @@ class DutchUnitController: NeedingController {
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
-//        $0.setTitleColor(.blue, for: .normal)
         $0.setTitleColor(.black, for: .normal)
-//        $0.backgroundColor = .orange
         $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
@@ -754,6 +755,9 @@ class DutchUnitController: NeedingController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func completeAction3() {
+        print("complete recognized from dutchunitController")
+    }
     
     // MARK: - NeedingController Delegate
     override func updateNumber(with numberText: String) {
@@ -776,33 +780,33 @@ class DutchUnitController: NeedingController {
         
     }
     
-    override func fullPriceAction2() {
-        print("fullprice from addingUnitController!")
-        guard let selectedPriceTF = selectedPriceTF else {
-            fatalError()
-        }
-        
-        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
-        
-        //        sumOfIndividual = 0
-        
-        //        for (tag, number) in textFieldWithPriceDic {
-        //            print("tag: \(tag), number: \(number)")
-        //            sumOfIndividual += number
-        //        }
-        
-        //        var costRemaining = spentAmount - sumOfIndividual
-        
-        //        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
-        
-        //        let remainingStr = costRemaining.addComma()
-        //        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
-        
-        //        self.viewModel.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
-        
-        //        selectedPriceTF.text = remainingStr
-        
-    }
+//    override func fullPriceAction2() {
+//        print("fullprice from addingUnitController!")
+//        guard let selectedPriceTF = selectedPriceTF else {
+//            fatalError()
+//        }
+//
+//        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
+//
+//        //        sumOfIndividual = 0
+//
+//        //        for (tag, number) in textFieldWithPriceDic {
+//        //            print("tag: \(tag), number: \(number)")
+//        //            sumOfIndividual += number
+//        //        }
+//
+//        //        var costRemaining = spentAmount - sumOfIndividual
+//
+//        //        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
+//
+//        //        let remainingStr = costRemaining.addComma()
+//        //        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
+//
+//        //        self.viewModel.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
+//
+//        //        selectedPriceTF.text = remainingStr
+//
+//    }
 }
 
 
@@ -875,7 +879,7 @@ extension DutchUnitController: PersonDetailCellDelegate {
         let prev = detailPriceDic[idx] ?? 0
         
         // TODO: update sumOfIndividual
-        // 음.. 입력을 하다가 이걸 누르는 경우는 고려하지 않은 상태. ㅅㅂ;
+        // 음.. 입력을 하다가 이걸 누르는 경우는 고려하지 않은 상태. ;
         // TextField 를 연속해서 (Custom NumberPad 를 dismiss 시키지 않은 채) 입력하면 값이 반영되지 않음. 어떻게 해결하지??
         
         let remaining = spentAmount - sumOfIndividual + prev

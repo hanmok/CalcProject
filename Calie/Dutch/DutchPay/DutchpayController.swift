@@ -275,7 +275,8 @@ class DutchpayController: UIViewController {
             presentingChildVC: addingUnitController
         )
         
-        numLayerController.childDelegate = addingUnitController
+//        numLayerController.childDelegate = addingUnitController
+        numLayerController.childDelegate = addingUnitController as? NumberLayerToChildDelegate
         
         addingUnitController.needingDelegate = numLayerController
         
@@ -867,7 +868,7 @@ extension DutchpayController {
 }
 
 
-extension DutchpayController: NumberLayerDelegateToSuperVC {
+extension DutchpayController: NumberLayerToParentDelegate {
     
 }
 

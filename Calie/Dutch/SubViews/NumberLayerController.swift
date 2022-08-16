@@ -11,12 +11,12 @@ import SnapKit
 import Then
 
 
-protocol NumberLayerDelegateToChild: AnyObject {
+protocol NumberLayerToChildDelegate: AnyObject {
     func update(with numberText: String)
-    func fullPriceAction()
+    func completeAction2()
 }
 
-protocol NumberLayerDelegateToSuperVC: AnyObject {
+protocol NumberLayerToParentDelegate: AnyObject {
     func dismissChildVC()
 }
 
@@ -24,8 +24,8 @@ class NumberLayerController : UIViewController {
     
     let backgroundColor: UIColor
     
-    weak var childDelegate: NumberLayerDelegateToChild?
-    weak var parentDelegate: NumberLayerDelegateToSuperVC?
+    weak var childDelegate: NumberLayerToChildDelegate?
+    weak var parentDelegate: NumberLayerToParentDelegate?
     
     private var presentingChildVC: NeedingController
     
@@ -49,7 +49,6 @@ class NumberLayerController : UIViewController {
         setupDelegate()
     }
     
-    
     private func setupLayout() {
         view.backgroundColor = .white
         
@@ -64,7 +63,7 @@ class NumberLayerController : UIViewController {
     
     private func setupDelegate() {
         presentingChildVC.delegate = self
-        numberPadController.delegate = self
+        numberPadController.numberPadDelegate = self
     }
 
     private func prepareNumberPad() {
@@ -87,13 +86,6 @@ class NumberLayerController : UIViewController {
 
 
 extension NumberLayerController: NeedingControllerDelegate {
-//    func presentNumberPad(completion: @escaping () -> Void) {
-//        showNumberPadAction()
-//    }
-    
-//    func hideNumberPad(completion: @escaping () -> Void) {
-//        hideNumberPadAction()
-//    }
     
     func initializeNumberText() {
         numberPadController.numberText = ""
@@ -114,10 +106,15 @@ extension NumberLayerController: NeedingControllerDelegate {
 
 
 extension NumberLayerController: CustomNumberPadDelegate {
-    
-    func fullPriceAction() {
-        childDelegate?.fullPriceAction()
+    func completeAction() {
+        print("complete tapped")
+        childDelegate?.completeAction2()
     }
+    
+    
+//    func fullPriceAction() {
+//        childDelegate?.fullPriceAction()
+//    }
     
     
     func numberPadViewShouldReturn() {
