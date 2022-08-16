@@ -142,8 +142,6 @@ class DutchUnitController: NeedingController {
         updateConditionState = { [weak self] condition in
             print("current condition: \(condition)")
             guard let self = self else { return }
-//            self.confirmBtn.isUserInteractionEnabled = condition
-//            self.confirmBtn.backgroundColor = condition ? .green : .orange
             self.setConfirmBtnState(isActive: condition)
         }
         
@@ -151,16 +149,63 @@ class DutchUnitController: NeedingController {
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
         view.addGestureRecognizer(tap2)
+        print("flag, dutchUnit: \(dutchUnit)")
         
         if dutchUnit != nil {
             setConfirmBtnState(isActive: true)
+        } else {
+            askTotalSpentAmount()
+        }
+    }
+    
+    private func blinkSpentAmount() {
+        
+        UIView.animate(withDuration: 0.2) {
+            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
+        } completion: { bool in
+            if bool {
+                UIView.animate(withDuration: 0.2) {
+                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
+                } completion: { bool in
+                    if bool {
+                        UIView.animate(withDuration: 0.2) {
+                            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
+                        } completion: { bool in
+                            if bool {
+                                UIView.animate(withDuration: 0.2) {
+                                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func askTotalSpentAmount() {
+        
+        spentAmountTF.becomeFirstResponder()
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
+            self.needingDelegate?.presentNumberPad()
+            self.blinkSpentAmount()
         }
         
+//        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
+//            self.presentAskingSpentAmountAlert {
+////                self.needingDelegate?.presentNumberPad()
+//            }
+//        }
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+////            self.presentAskingSpentAmountAlert {
+//                self.needingDelegate?.presentNumberPad()
+////            }
+//        }
+
     }
     
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
-//        confirmBtn.backgroundColor = isActive ? .green : .orange
         confirmBtn.backgroundColor = isActive ? .green : UIColor(white: 0.85, alpha: 0.9)
     }
     
@@ -258,6 +303,41 @@ class DutchUnitController: NeedingController {
             let newPersonName = textFieldInput.text!
             
             addPersonAction(with: newPersonName)
+            
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
+    // TODO: 이거, Custom 으로 만들어야겠어 ;;
+    @objc private func presentAskingSpentAmountAlert(completion: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "지출 금액", message: "지출한 총 비용을 입력해주세요.", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "cost"
+            textField.tag = 100
+            textField.delegate = self
+            textField.keyboardType = .decimalPad // replace with custom numberpad
+        }
+        
+        view.endEditing(true)
+//        self.needing
+        
+        needingDelegate?.presentNumberPad()
+        let saveAction = UIAlertAction(title: "Confirm", style: .default) { [self] alert -> Void in
+            let textFieldInput = alertController.textFields![0] as UITextField
+        
+            let spentAmountStr = textFieldInput.text!
+            
+            spentAmount = spentAmountStr.convertToDouble()
+            spentAmountTF.text = spentAmount.addComma()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
@@ -515,7 +595,7 @@ class DutchUnitController: NeedingController {
         
         
         spentDatePicker.snp.makeConstraints { make in
-            make.width.equalToSuperview().dividedBy(2) // prev: 1.5
+            make.width.equalToSuperview().dividedBy(1.7) // prev: 1.5
             make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
             make.leading.equalToSuperview().inset(15)
             make.height.equalTo(40)

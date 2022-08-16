@@ -27,17 +27,14 @@ class DutchUnitViewModel {
         
     }
     
-    var initialParticipants: [Person] = [] // shouldn't be real model ??
-//    var initialParticipantsNames: [String] = [] // shouldn't be real model ??
-//    var personDetails: [PersonDetail] = []
+    var initialParticipants: [Person] = []
+    
     var participants: [Person] = []
-//    var participantsNames: [String] = []
+
     
     // MARK: - Actions when Observed Properties changed.
     
     var changeableConditionState: (Bool) -> Void = { _ in }
-
-//    var personDetailCellState: ([Int: DetailState]) -> Void = { _ in }
 
     var updateCollectionView: () -> Void = { }
     
