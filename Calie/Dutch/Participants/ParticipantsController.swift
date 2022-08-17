@@ -82,23 +82,25 @@ class ParticipantsController: UIViewController{
     
     private func setupAddTargets() {
         
-        cancelBtn.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
+//        cancelBtn.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         
         editingBtn.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
         
         addPeopleBtn.addTarget(self, action: #selector(addPersonBtnTapped(_:)), for: .touchUpInside)
         
-        confirmBtn.addTarget(nil, action: #selector(confirmAction), for: .touchUpInside)
+//        confirmBtn.addTarget(nil, action: #selector(confirmAction), for: .touchUpInside)
         
+        dismissBtn.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
     }
     
     
-    @objc func cancelAction() {
-        //TODO: Add alert if any changes occurred.
-        delegate?.hideParticipantsController()
-    }
+//    @objc func cancelAction() {
+//        //TODO: Add alert if any changes occurred.
+//        delegate?.hideParticipantsController()
+//    }
     
-    @objc func confirmAction() {
+//    @objc func confirmAction() {
+    @objc func dismissTapped() {
         
 //        participants.forEach { print($0.name) }
         viewModel.updatePeople()
@@ -123,41 +125,55 @@ class ParticipantsController: UIViewController{
     
     
     
+    
     @objc func didTapEdit() {
         if participantsTableView.isEditing {
             // not on Editing Mode
             editingBtn.setTitle("EDIT", for: .normal)
-            DispatchQueue.main.async {
-                self.addPeopleBtn.isHidden = false
-                self.confirmBtn.isHidden = false
+            
+            // show !
+            
+            dismissBtn.snp.remakeConstraints { make in
+                make.height.equalTo(30)
+                make.centerY.equalTo(titleLabel.snp.centerY)
+                make.leading.equalToSuperview().inset(10)
+                make.width.equalTo(30)
             }
             
-            cancelBtn.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().inset(10)
-                make.height.equalTo(50)
-                make.width.equalToSuperview().dividedBy(2.15)
-                make.bottom.equalToSuperview().inset(10)
+            addPeopleBtn.snp.remakeConstraints { make in
+                make.bottom.equalToSuperview()
+                make.height.equalTo(55)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(40)
             }
             
             participantsTableView.setEditing(false, animated: true)
             
         } else {
-            // on Editing Mode
+            // turn on Editing Mode
             editingBtn.setTitle("Done", for: .normal)
             
-            cancelBtn.snp.remakeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.height.equalTo(50)
-                make.width.equalToSuperview().dividedBy(2.15)
-                make.bottom.equalToSuperview().inset(50)
+            // hide !
+            
+            dismissBtn.snp.remakeConstraints { make in
+                make.height.equalTo(30)
+                make.centerY.equalTo(titleLabel.snp.centerY)
+                make.leading.equalToSuperview().offset(-30)
+                make.width.equalTo(30)
             }
             
-            DispatchQueue.main.async {
-                self.addPeopleBtn.isHidden = true
-                self.confirmBtn.isHidden = true
+            addPeopleBtn.snp.remakeConstraints { make in
+                make.bottom.equalToSuperview().offset(50)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(40)
+                make.height.equalTo(55)
             }
             
             participantsTableView.setEditing(true, animated: true)
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -226,21 +242,21 @@ class ParticipantsController: UIViewController{
         $0.textAlignment = .center
     }
     
-    //    private let dismissBtn: UIButton = {
-    //        let btn = UIButton()
-    //        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-    //        imageView.contentMode = .scaleAspectFit
-    //        imageView.tintColor = .black
-    //
-    //        btn.addSubview(imageView)
-    //        imageView.snp.makeConstraints { make in
-    //            make.leading.trailing.equalToSuperview()
-    //            make.centerY.equalToSuperview()
-    //            make.height.equalToSuperview()
-    //        }
-    //
-    //        return btn
-    //    }()
+        private let dismissBtn: UIButton = {
+            let btn = UIButton()
+            let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+            imageView.contentMode = .scaleAspectFit
+//            imageView.tintColor = .black
+    
+            btn.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.centerY.equalToSuperview()
+                make.height.equalToSuperview()
+            }
+    
+            return btn
+        }()
     
     
     private let editingBtn: UIButton = {
@@ -250,14 +266,14 @@ class ParticipantsController: UIViewController{
         return btn
     }()
     
-    private let cancelBtn = UIButton().then {
-        $0.setTitle("Cancel", for: .normal)
-        $0.backgroundColor = .white
-        $0.setTitleColor(.red, for: .normal)
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-        $0.layer.cornerRadius = 10
-    }
+//    private let cancelBtn = UIButton().then {
+//        $0.setTitle("Cancel", for: .normal)
+//        $0.backgroundColor = .white
+//        $0.setTitleColor(.red, for: .normal)
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
+//        $0.layer.cornerRadius = 10
+//    }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
@@ -270,8 +286,9 @@ class ParticipantsController: UIViewController{
     
     
     private let participantsTableView = UITableView().then {
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
-        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+        $0.layer.borderColor = UIColor.clear.cgColor
+//        $0.layer.borderWidth = 1
     }
     
     private let addPeopleBtn = UIButton().then {
@@ -303,6 +320,12 @@ class ParticipantsController: UIViewController{
         $0.backgroundColor = .black
     }
     
+    private let bottomContainerView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.borderColor = UIColor.clear.cgColor
+    }
+    
+    
     private func registerTableView() {
         participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
         
@@ -318,41 +341,61 @@ class ParticipantsController: UIViewController{
             make.leading.trailing.bottom.top.equalToSuperview()
         }
         
-        [cancelBtn, confirmBtn,
-         addPeopleBtn,
+        [
+//            cancelBtn, confirmBtn,
+//         addPeopleBtn,
+            bottomContainerView,
          participantsTableView,
          titleLabel,
-         editingBtn ]
+         editingBtn, dismissBtn]
             .forEach { containerView.addSubview($0)}
         
         // TODO: Make it contained in Stack View
-        cancelBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(10)
-            make.height.equalTo(50)
-            make.width.equalToSuperview().dividedBy(2.15)
-            make.bottom.equalToSuperview().inset(10)
-        }
+//        cancelBtn.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(10)
+//            make.height.equalTo(50)
+//            make.width.equalToSuperview().dividedBy(2.15)
+//            make.bottom.equalToSuperview().inset(10)
+//        }
         
-        confirmBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(10)
-            make.width.equalToSuperview().dividedBy(2.15)
-            make.bottom.equalToSuperview().inset(10)
-            make.height.equalTo(50)
-        }
+//        confirmBtn.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().inset(10)
+//            make.width.equalToSuperview().dividedBy(2.15)
+//            make.bottom.equalToSuperview().inset(10)
+//            make.height.equalTo(50)
+//        }
         
         
-        addPeopleBtn.snp.makeConstraints { make in
-            make.bottom.equalTo(confirmBtn.snp.top).offset(-5)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(50)
-        }
+        
         
         
         participantsTableView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(addPeopleBtn.snp.top).offset(-10)
+//            make.bottom.equalTo(addPeopleBtn.snp.top).offset(-10)
+//            make.bottom.equalTo(bottomContainerView.snp.top).offset(5)
+            make.bottom.equalToSuperview().inset(50)
         }
+        
+        
+        bottomContainerView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(55)
+            make.centerX.equalToSuperview()
+        }
+        
+        bottomContainerView.addSubview(addPeopleBtn)
+        
+        addPeopleBtn.snp.makeConstraints { make in
+//            make.bottom.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalTo(40)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(55)
+        }
+        
+        
         
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(30)
@@ -366,6 +409,13 @@ class ParticipantsController: UIViewController{
             make.centerY.equalTo(titleLabel.snp.centerY)
             make.trailing.equalToSuperview().inset(10)
             make.width.equalTo(70)
+        }
+        
+        dismissBtn.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.leading.equalToSuperview().inset(10)
+            make.width.equalTo(30)
         }
     }
     

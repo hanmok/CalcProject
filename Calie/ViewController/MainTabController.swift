@@ -23,7 +23,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     var userDefaultSetup = UserDefaultSetup()
     let colorList = ColorList()
     
-    var sideViewController: SideViewController?
+//    var sideViewController: SideViewController?
+    var sideViewController: UINavigationController?
     
     lazy var isDarkMode = userDefaultSetup.darkModeOn
     
@@ -154,11 +155,17 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         let sideVC = SideViewController()
         sideVC.sideDelegate = self
 //        sideViewController = SideViewController(dutchManager: dutchManager)
-        sideViewController = sideVC
+        
+        let sideInNavController = UINavigationController(rootViewController: sideVC)
+//        sideViewController = sideVC
+        sideViewController = sideInNavController
 //        sideViewController?.sideDelegate = self
         guard let sideViewController = sideViewController else {
             return
         }
+        
+//        let sideInNavController = UINavigationController(rootViewController: sideVC)
+        
         
        self.addChild(sideViewController)
        self.view.addSubview(sideViewController.view)

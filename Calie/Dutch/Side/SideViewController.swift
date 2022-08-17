@@ -42,6 +42,9 @@ class SideViewController: UIViewController {
 //        navigationController?.navigationBar.isHidden = true
         
         
+        view.insetsLayoutMarginsFromSafeArea = false
+        navigationController?.navigationBar.isHidden = true
+        
         view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         print("viewDidLoad in SideViewController called")
         
@@ -71,6 +74,8 @@ class SideViewController: UIViewController {
     private let gatheringTableView = UITableView().then {
         $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
         $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 12
+        $0.separatorStyle = .none
     }
     
     private func registerTableView() {
@@ -104,30 +109,33 @@ class SideViewController: UIViewController {
     
     private func setupLayout() {
         
-        view.addSubview(dismissBtn)
-        dismissBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(10)
-            make.width.height.equalTo(40)
-//            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
-        }
+//        view.addSubview(dismissBtn)
+//        dismissBtn.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(10)
+//            make.width.height.equalTo(40)
+////            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+//            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+//        }
         
         view.addSubview(sideLabel)
         sideLabel.snp.makeConstraints { make in
 //            make.leading.equalTo(dismissBtn.snp.trailing).offset(75)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+//            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(60)
             make.height.equalTo(40)
         }
         
         view.addSubview(gatheringTableView)
         gatheringTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(5)
-            make.top.equalTo(dismissBtn.snp.bottom).offset(10)
+//            make.top.equalTo(dismissBtn.snp.bottom).offset(10)
+            make.top.equalTo(sideLabel.snp.bottom).offset(10)
 //            make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
 //            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview().inset(tabbarheight)
+//            make.bottom.equalToSuperview().inset(tabbarheight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
         }
     }
     

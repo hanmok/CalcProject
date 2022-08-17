@@ -85,6 +85,7 @@
 		9AB1BC3328A2D5CF002F35AD /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */; };
 		9AB1BC3528A2D77A002F35AD /* ResultBriefInfoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */; };
 		9AB1BC3928A948D4002F35AD /* DutchResultTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */; };
+		9AB1BC3B28AD635C002F35AD /* Memo8.18 in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3A28AD635C002F35AD /* Memo8.18 */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
 		9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* DutchUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
@@ -217,6 +218,7 @@
 		9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 		9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultBriefInfoTableCell.swift; sourceTree = "<group>"; };
 		9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchResultTest.swift; sourceTree = "<group>"; };
+		9AB1BC3A28AD635C002F35AD /* Memo8.18 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Memo8.18; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		9AC3CC622819999C00C9A37F /* DutchUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				9AA150EA2870D15700DC4CED /* GitInfo */,
 				9AADB33E2884773900DAD657 /* ToMake */,
 				9AB1BC2D28A00C4A002F35AD /* ToSolve */,
+				9AB1BC3A28AD635C002F35AD /* Memo8.18 */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
@@ -674,6 +677,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */,
+				9AB1BC3B28AD635C002F35AD /* Memo8.18 in Resources */,
 				9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */,
 				9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */,
 				9AA150EB2870D15700DC4CED /* GitInfo in Resources */,

@@ -89,7 +89,9 @@ class DutchpayController: UIViewController {
         viewModel.viewDidLoadAction()
         
     }
-    
+    private let topView = UIView().then {
+        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad in DutchpayController called")
@@ -299,7 +301,7 @@ class DutchpayController: UIViewController {
         
         dutchTableView.rowHeight = 70
         
-        dutchTableView.tableHeaderView = headerContainer
+//        dutchTableView.tableHeaderView = headerContainer
     }
     
     
@@ -412,27 +414,27 @@ class DutchpayController: UIViewController {
     private let totalPriceContainerView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.borderColor = UIColor(white: 1, alpha: 1).cgColor
+        $0.layer.cornerRadius = 8
+        $0.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
     
     let historyBtn: UIButton = {
         let btn = UIButton()
-        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
-        let innerImage = UIImageView(image: UIImage(systemName: "list.bullet")!)
         
-        circle.tintColor = .white
-        innerImage.tintColor = .black
+        let innerImage = UIImageView(image: UIImage(systemName: "line.horizontal.3")!)
         
-        btn.addSubview(circle)
-        circle.addSubview(innerImage)
+        innerImage.contentScaleFactor = 0.7
         
-        circle.snp.makeConstraints { make in
-            make.width.height.equalTo(50)
-            make.center.equalTo(btn)
-        }
+        innerImage.tintColor = ColorList().bgColorForExtrasDM
+        
+        
+        btn.addSubview(innerImage)
         
         innerImage.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.center.equalTo(circle)
+//            make.width.height.equalTo(30)
+            make.width.height.equalToSuperview()
+//            make.center.equalTo(circle)
+            make.center.equalToSuperview()
         }
         
         return btn
@@ -440,24 +442,24 @@ class DutchpayController: UIViewController {
     
     let resetGatheringBtn: UIButton = {
         let btn = UIButton()
-        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
-        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
-        
-        circle.tintColor = .white
-        innerImage.tintColor = .black
-        
-        btn.addSubview(circle)
-        circle.addSubview(innerImage)
-        
-        circle.snp.makeConstraints { make in
-            make.width.height.equalTo(50)
-            make.center.equalTo(btn)
-        }
-        
-        innerImage.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.center.equalTo(circle)
-        }
+//        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
+//        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+//
+//        circle.tintColor = .white
+//        innerImage.tintColor = .black
+//
+//        btn.addSubview(circle)
+//        circle.addSubview(innerImage)
+//
+//        circle.snp.makeConstraints { make in
+//            make.width.height.equalTo(50)
+//            make.center.equalTo(btn)
+//        }
+//
+//        innerImage.snp.makeConstraints { make in
+//            make.width.height.equalTo(30)
+//            make.center.equalTo(circle)
+//        }
         
         return btn
     }()
@@ -465,6 +467,7 @@ class DutchpayController: UIViewController {
     let addGatheringBtn: UIButton = {
         let btn = UIButton()
         let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
+        
         let innerImage = UIImageView(image: UIImage(systemName: "plus")!)
         
         circle.tintColor = .white
@@ -498,14 +501,15 @@ class DutchpayController: UIViewController {
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
-        //        $0.backgroundColor = .cyan
     }
     
-    private let mainContainer = UIView()
+    private let mainContainer = UIView().then {
+        $0.layer.cornerRadius = 16
+        $0.clipsToBounds = true
+    }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
         $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
-        //        $0.backgroundColor = .magenta
     }
     
     private let groupBtn = UIButton().then {
@@ -540,7 +544,7 @@ class DutchpayController: UIViewController {
         let btn = UIButton()
         
         let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-        
+        plusImage.tintColor = ColorList().bgColorForExtrasMiddle
         
         let removingLineView = UIView()
         removingLineView.backgroundColor = .white
@@ -562,9 +566,19 @@ class DutchpayController: UIViewController {
     
     
     
-    private let dutchTableView = UITableView().then {
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
-        $0.layer.borderWidth = 1
+    private let dutchTableView = UITableView()
+//        .then {
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+//        $0.layer.borderWidth = 1
+//
+//    }
+    
+    private let tableViewBottomBorder = UIView().then {
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+        $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
+//        $0.backgroundColor = .magenta
+//        $0.backgroundColor = UIColor
+//        $0.layer.borderWidth = 1
     }
     
     private let totalPriceLabel = UILabel().then {
@@ -583,6 +597,8 @@ class DutchpayController: UIViewController {
         let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
         $0.setAttributedTitle(attr, for: .normal)
         $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
     }
     
     private func setupLayout() {
@@ -594,10 +610,10 @@ class DutchpayController: UIViewController {
         }
         
         view.addSubview(wholeContainerView)
+        view.addSubview(topView)
+//        wholeContainerView.addSubview(historyBtn)
         
-        wholeContainerView.addSubview(historyBtn)
-        
-        wholeContainerView.addSubview(resetGatheringBtn)
+//        wholeContainerView.addSubview(resetGatheringBtn)
         
         wholeContainerView.addSubview(groupBtn)
         wholeContainerView.addSubview(gatheringPlusBtn)
@@ -607,32 +623,39 @@ class DutchpayController: UIViewController {
         mainContainer.addSubview(totalPriceContainerView)
         mainContainer.addSubview(calculateBtn)
         
-        wholeContainerView.addSubview(blurredView)
+        view.addSubview(blurredView)
+//        wholeContainerView.addSubview(blurredView)
         // safeArea on the bottom
         
         wholeContainerView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        historyBtn.snp.makeConstraints { make in
-            make.leading.equalTo(wholeContainerView.snp.leading).offset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.width.equalTo(30)
+        topView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalTo(wholeContainerView.snp.top)
+            make.leading.trailing.equalToSuperview()
         }
         
+//        historyBtn.snp.makeConstraints { make in
+//            make.leading.equalTo(wholeContainerView.snp.leading).offset(20)
+//            make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.height.width.equalTo(40)
+//        }
         
-        resetGatheringBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.width.equalTo(30)
-        }
+        
+//        resetGatheringBtn.snp.makeConstraints { make in
+//            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
+//            make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.height.width.equalTo(30)
+//        }
         
         mainContainer.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalTo(historyBtn.snp.bottom).offset(30)
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview().inset(10)
         }
         
@@ -666,14 +689,56 @@ class DutchpayController: UIViewController {
             make.height.equalTo(50)
         }
         
-        mainContainer.addSubview(dutchTableView)
-        dutchTableView.snp.makeConstraints { make in
+        totalPriceContainerView.addSubview(tableViewBottomBorder)
+        
+        tableViewBottomBorder.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.top.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
+        mainContainer.addSubview(headerContainer)
+        headerContainer.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(totalPriceContainerView.snp.top)
+            make.height.equalTo(60)
+        }
+        
+        [
+            titleLabelBtnInHeader,
+            groupBtnInHeader,
+            historyBtn
+        ].forEach { self.headerContainer.addSubview($0) }
+        
+        titleLabelBtnInHeader.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalTo(24)
+            make.width.equalToSuperview().dividedBy(2)
         }
         
         
+        groupBtnInHeader.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(20)
+//            make.height.width.equalTo(24)
+            make.height.width.equalTo(30)
+        }
+        
+        historyBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+//            make.height.width.equalTo(24)
+//            make.height.equalToSuperview()
+//            make.height.equalTo(40)
+            make.width.height.equalTo(30)
+            make.centerY.equalToSuperview()
+        }
+        
+        mainContainer.addSubview(dutchTableView)
+        dutchTableView.snp.makeConstraints { make in
+            make.top.equalTo(headerContainer.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(totalPriceContainerView.snp.top)
+        }
         
         mainContainer.addSubview(dutchUnitPlusBtn)
         dutchUnitPlusBtn.snp.makeConstraints { make in
@@ -690,22 +755,7 @@ class DutchpayController: UIViewController {
     }
     
     private func setupHeaderView() {
-        [
-            titleLabelBtnInHeader,
-            groupBtnInHeader,
-        ].forEach { self.headerContainer.addSubview($0) }
         
-        titleLabelBtnInHeader.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalTo(24)
-            make.width.equalToSuperview().dividedBy(2)
-        }
-        
-        groupBtnInHeader.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(20)
-            make.height.width.equalTo(24)
-        }
     }
 }
 
@@ -766,9 +816,9 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     }
     
     // Header Height
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 30
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60

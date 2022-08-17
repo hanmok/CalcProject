@@ -56,7 +56,8 @@ class DutchTableCell: UITableViewCell {
     
     private let dateLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 10)
-        $0.textColor = .black
+//        $0.textColor = .black
+        $0.textColor = UIColor(white: 0, alpha: 0.7)
         $0.textAlignment = .left
     }
 
@@ -73,18 +74,17 @@ class DutchTableCell: UITableViewCell {
     private func setupLayout() {
         self.addSubview(placeNameLabel)
         placeNameLabel.snp.makeConstraints { make in
-//            make.leading.top.bottom.equalToSuperview()
             make.leading.equalToSuperview()
-//            make.top.bottom.equalToSuperview().inset(5)
-            make.centerY.equalToSuperview().offset(5)
-//            make.height.equalToSuperview()
+            make.centerY.equalToSuperview().offset(8)
             make.height.equalToSuperview().dividedBy(1.5)
             make.width.equalToSuperview().dividedBy(3)
         }
 
         self.addSubview(dateLabel)
         dateLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(5)
+//            make.leading.top.equalToSuperview().inset(5)
+            make.leading.equalToSuperview().inset(15)
+            make.top.equalToSuperview().inset(8)
             make.width.equalToSuperview().dividedBy(3)
             make.height.equalTo(10)
         }
