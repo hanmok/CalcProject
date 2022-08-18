@@ -6,6 +6,11 @@
 //  Copyright © 2022 Mac mini. All rights reserved.
 //
 
+
+
+// DutchUnit 에서 추가한거는 중복추가됨
+// ParticipantsController 에서 추가한거는 덜 추가됨; ;;;;
+
 import Foundation
 
 
@@ -15,10 +20,7 @@ class DutchService {
     var currentDutchUnit: DutchUnit?
     
     let dutchManager = DutchManager()
-    
 
-    
-    
     func fetchDutchUnits(closure: @escaping () -> [DutchUnit]) {
     }
     
@@ -183,12 +185,7 @@ extension DutchService {
         
         dutchManager.updatePeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
         
-        // 아래꺼랑 순서가 약간 다를 수 있음. 음.. 이대로 하면 될 것 같아. ㅇㅇ
         dutchManager.updateDutchUnit(target: originalDutchUnit, spentTo: spentPlace ?? "somewhere", spentAmount: spentAmount, personDetails: peopleDetail, spentDate: spentDate)
-        
-        // ex:
-        //            viewModel.personDetails[personIndex].isAttended = attendingDic[personIndex] ?? true
-        //            viewModel.personDetails[personIndex].spentAmount = textFieldWithPriceDic[personIndex] ?? 0
     }
     
     func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, personDetails: [PersonDetail]) -> Gathering{
@@ -226,12 +223,13 @@ extension DutchService {
         
         //TODO: Make New Person, PersonDetail
         
-//        let newPerson = dutchManager.createPerson(name: name, )
         guard let currentGathering = currentGathering else { fatalError() }
         
         let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
         
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
+        
+        dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
         
         let resultDetails = personDetails + [newPersonDetail]
         
@@ -265,6 +263,9 @@ extension DutchService {
         guard let currentGathering = currentGathering else { fatalError() }
         
         let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
+        
+        dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
+        
         completion(newPerson)
         
     }

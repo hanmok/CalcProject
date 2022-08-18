@@ -117,7 +117,7 @@ extension DutchManager {
             
             let appendedDetail = createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
             
-            for eachDutchUnit in gathering.dutchUnits {
+            for eachDutchUnit in gathering.dutchUnits.sorted() {
                 eachDutchUnit.personDetails.update(with: appendedDetail)
             }
         }
@@ -135,7 +135,7 @@ extension DutchManager {
         var result = Array(repeating: 0.0, count: gathering.people.count)
         print("\ngetOverallResult, numOfElements:\(result.count)")
 
-        for eachUnit in gathering.dutchUnits {
+        for eachUnit in gathering.dutchUnits.sorted() {
             let eachResult = getRelativeTobePaidAmount(from: eachUnit)
 
             for (idx, element) in eachResult.enumerated() {
@@ -184,7 +184,7 @@ extension DutchManager {
         // FIXME: - 총 지출비용으로 하는게 나아.
         // TODO: 음.. 각 Cell 별로 Detail 한 내용도 알려줄까 ??
         
-        for eachUnit in gathering.dutchUnits {
+        for eachUnit in gathering.dutchUnits.sorted() {
             let eachResult = getRelativeTobePaidAmount(from: eachUnit)
 
             for (idx, element) in eachResult.enumerated() {
@@ -235,7 +235,7 @@ extension DutchManager {
         // FIXME: - 총 지출비용으로 하는게 나아.
         // TODO: 음.. 각 Cell 별로 Detail 한 내용도 알려줄까 ??
         
-        for eachUnit in gathering.dutchUnits {
+        for eachUnit in gathering.dutchUnits.sorted() {
             let eachResult = getRelativeTobePaidAmount(from: eachUnit)
 
             for (idx, element) in eachResult.enumerated() {
@@ -420,6 +420,18 @@ extension DutchManager {
         
         currentGathering.people.insert(person)
         
+        
+        if currentGathering.dutchUnits.count == 0 { return person }
+        
+        let newPersonDetail = createPersonDetail(person: person, isAttended: false, spentAmount: 0)
+        
+//        for eachUnit in currentGathering.dutchUnits.sorted() {
+//            eachUnit.personDetails.update(with: newPersonDetail)
+//        }
+        
+//        addPeople(addedPeople: [person], currentGathering: currentGathering)
+        
+        
         do {
              try mainContext.save()
              return person
@@ -437,6 +449,7 @@ extension DutchManager {
     }
     
     func addPeople(addedPeople: [Person], currentGathering: Gathering) {
+        
         if addedPeople.count == 0 { return }
         // name check needed each time person name input
         
@@ -446,19 +459,22 @@ extension DutchManager {
         
         if currentGathering.dutchUnits.count == 0 { return }
         
-        var addedPersonDetails: [PersonDetail] = []
-        
-        // make PersonDetails for added people
-        for eachPerson in addedPeople {
-            let newPersonDetail = createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
-            addedPersonDetails.append(newPersonDetail)
-        }
-        
         // add PersonDetails to each of dutchUnits
-        for eachUnit in currentGathering.dutchUnits {
-            for eachDetail in addedPersonDetails {
-                eachUnit.personDetails.update(with: eachDetail)
+        for (idx, eachUnit) in currentGathering.dutchUnits.sorted().enumerated() {
+            print("dutchUnit idx: \(idx), placeName: \(eachUnit.placeName)")
+            
+            var addedPersonDetails2 = [PersonDetail]()
+            
+            for eachPerson in addedPeople {
+                let newPersonDetail = createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
+                addedPersonDetails2.append(newPersonDetail)
+                
+                for eachDetail in addedPersonDetails2 {
+                    eachUnit.personDetails.update(with: eachDetail)
+                }
             }
+            
+            
         }
         update()
     }
@@ -467,7 +483,7 @@ extension DutchManager {
         if removedPeople.count == 0 { return }
         
         for removedPerson in removedPeople {
-            for dutchUnit in gathering.dutchUnits {
+            for dutchUnit in gathering.dutchUnits.sorted() {
                 for eachDetail in dutchUnit.personDetails {
                     if eachDetail.person! == removedPerson {
                         dutchUnit.personDetails.remove(eachDetail)
@@ -494,7 +510,7 @@ extension DutchManager {
         // removedPeopleSet
         if removedPeopleSet.count != 0 {
             for eachPerson in removedPeopleSet {
-                for eachUnit in currentGathering.dutchUnits {
+                for eachUnit in currentGathering.dutchUnits.sorted() {
                     for eachDetail in eachUnit.personDetails {
                         if eachDetail.person! == eachPerson {
                             eachUnit.personDetails.remove(eachDetail)
@@ -509,7 +525,7 @@ extension DutchManager {
         // addedPeopleSet
         if addedPeopleSet.count != 0 {
             
-            for eachUnit in currentGathering.dutchUnits { // 이게.. 존재하지 않아서 call 되지 않음.
+            for eachUnit in currentGathering.dutchUnits.sorted() { // 이게.. 존재하지 않아서 call 되지 않음.
                 for eachPerson in addedPeopleSet {
                     let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
                     // 순서가 중요함 !! 내부에서 새로 personDetail 만든 후 update 할 것!

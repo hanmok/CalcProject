@@ -103,7 +103,7 @@ class ParticipantsController: UIViewController{
     @objc func dismissTapped() {
         
 //        participants.forEach { print($0.name) }
-        viewModel.updatePeople()
+//        viewModel.updatePeople()
 //        delegate?.updateParticipants(with: participants)
         delegate?.hideParticipantsController()
         

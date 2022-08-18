@@ -109,6 +109,8 @@ class DutchUnitController: NeedingController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("initializing personDetails flag 3")
+        print("current personDetails: ")
+        
         view.backgroundColor = .white
         
         setupBindings()
@@ -255,11 +257,9 @@ class DutchUnitController: NeedingController {
             print("selected flag 2")
         }
         print("selected flag 3")
-        
-//        validSelectedPriceTF = nil
-//        selectedPriceTF = nil
-        
     }
+    
+    
     
     func updateDictionary(tag: Int, currentText: String) {
         print("dismissing flag::  tag: \(tag), currentText: \(currentText)")
@@ -757,6 +757,7 @@ class DutchUnitController: NeedingController {
     
     override func completeAction3() {
         print("complete recognized from dutchunitController")
+        otherViewTapped()
     }
     
     // MARK: - NeedingController Delegate

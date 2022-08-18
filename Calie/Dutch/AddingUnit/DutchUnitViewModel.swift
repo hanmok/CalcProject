@@ -92,8 +92,6 @@ class DutchUnitViewModel {
         
         personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
-//        let numOfAllUnits = 0
-        
         // Editing Mode
         
         if let initialDutchUnit = selectedDutchUnit {
@@ -155,6 +153,7 @@ class DutchUnitViewModel {
                       let lastPerson = lastPersonDetail.person else { fatalError() }
                 
                 self.participants.append(lastPerson)
+                
                 completion(.success("\(name) has added"))
                 return
             case .failure(let e):

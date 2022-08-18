@@ -10,7 +10,7 @@ import XCTest
 import CoreData
 @testable import Calie
 
-class DutchpayManagerTest: XCTestCase {
+class DutchpayUnitTest: XCTestCase {
     
     var dutchpayManager: DutchManager!
     var coreDataStack: CoreDataTestStack!
@@ -75,7 +75,7 @@ class DutchpayManagerTest: XCTestCase {
 
 
 // Advanced features ( DutchUnit )
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     // DutchUnit 하나 생성
     func test_addDutchUnit() {
         let gathering = dutchpayManager.createGathering(title: "developers")
@@ -186,7 +186,7 @@ extension DutchpayManagerTest {
     }
 }
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     
     func test_gathering_updatePeople() {
         let gathering = dutchpayManager.createGathering(title: "developers")
@@ -256,7 +256,7 @@ extension DutchpayManagerTest {
 
 
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     // Not necessary ..
     
     // DutchUnit 생성 후, ParticipantsController 에서 people 추가 (DutchUnit 들도 추가로 수정)
@@ -327,7 +327,7 @@ extension DutchpayManagerTest {
 }
 
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     
     func test_result_firstOverall() {
         
@@ -447,7 +447,7 @@ extension DutchpayManagerTest {
 
 
 // MARK: - Test Helpers
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     func createArray(of num: Int = 6, positiveRange: Int = 10) -> [Int]{
         
         var resultArr = [Int]()
@@ -570,7 +570,7 @@ extension DutchpayManagerTest {
     
 }
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     
     
     override func setUpWithError() throws {
@@ -600,7 +600,7 @@ extension DutchpayManagerTest {
 
 
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     func createAllCombinations(using allDic: [Int: [Int]], numOfElementsToPick: Int) -> Set<Int>{
         // 중복된 elements 없다고 가정, Result 에는 Set 으로 (중복된 결과 넣지 않음) 우선 넣기.
         var allNums = Set<Int>()
@@ -810,7 +810,7 @@ extension DutchpayManagerTest {
     }
 }
 
-extension DutchpayManagerTest {
+extension DutchpayUnitTest {
     func test_fromTheTop() {
         
         typealias PersonTuple = (name: String, spentAmount: Int)

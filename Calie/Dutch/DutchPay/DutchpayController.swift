@@ -443,23 +443,39 @@ class DutchpayController: UIViewController {
     let resetGatheringBtn: UIButton = {
         let btn = UIButton()
 //        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
-//        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+
+        innerImage.tintColor = .black
+
+        btn.addSubview(innerImage)
+
+        innerImage.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalToSuperview().dividedBy(2)
+            make.height.equalToSuperview().dividedBy(2)
+        }
+        
+        btn.backgroundColor = UIColor(white: 0.7, alpha: 0.5)
+        btn.clipsToBounds = true
+        btn.layer.cornerRadius = 8
+        
+//        btn.layer.maskedCorners = []
+//        btn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner ]
+        btn.layer.cornerRadius = 16
+//        btn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner ]
+//        btn.layer.maskedCorners = [.layerMaxXMaxYCorner]
+//        btn.roundedCorner
+        
+        
+        
+//        btn.roundCorners(topLeft: 8, topRight: 16, bottomLeft: 8, bottomRight: 8)
+        
+//        let borderLayer = CAShapeLayer()
 //
-//        circle.tintColor = .white
-//        innerImage.tintColor = .black
-//
-//        btn.addSubview(circle)
-//        circle.addSubview(innerImage)
-//
-//        circle.snp.makeConstraints { make in
-//            make.width.height.equalTo(50)
-//            make.center.equalTo(btn)
-//        }
-//
-//        innerImage.snp.makeConstraints { make in
-//            make.width.height.equalTo(30)
-//            make.center.equalTo(circle)
-//        }
+//        borderLayer.path = (btn.layer.mask! as! CAShapeLayer).path!
+//        borderLayer.fillColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+//        borderLayer.frame = btn.bounds
+//        btn.layer.addSublayer(borderLayer)
         
         return btn
     }()
@@ -512,18 +528,18 @@ class DutchpayController: UIViewController {
         $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
     }
     
-    private let groupBtn = UIButton().then {
-        
-        let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
-        innerImage.contentMode = .scaleAspectFit
-        
-        innerImage.tintColor = .black
-        $0.addSubview(innerImage)
-        innerImage.snp.makeConstraints { make in
-            make.top.leading.bottom.trailing.equalToSuperview()
-        }
-        $0.isHidden = true
-    }
+//    private let groupBtn = UIButton().then {
+//
+//        let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
+//        innerImage.contentMode = .scaleAspectFit
+//
+//        innerImage.tintColor = .black
+//        $0.addSubview(innerImage)
+//        innerImage.snp.makeConstraints { make in
+//            make.top.leading.bottom.trailing.equalToSuperview()
+//        }
+//        $0.isHidden = true
+//    }
     
     private let gatheringPlusBtn: UIButton = {
         let btn = UIButton()
@@ -615,7 +631,8 @@ class DutchpayController: UIViewController {
         
 //        wholeContainerView.addSubview(resetGatheringBtn)
         
-        wholeContainerView.addSubview(groupBtn)
+//        wholeContainerView.addSubview(groupBtn)
+
         wholeContainerView.addSubview(gatheringPlusBtn)
         
         wholeContainerView.addSubview(mainContainer)
@@ -663,6 +680,13 @@ class DutchpayController: UIViewController {
             make.height.equalTo(60)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+        
+        calculateBtn.addSubview(resetGatheringBtn)
+        
+        resetGatheringBtn.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalToSuperview().inset(3)
+            make.width.equalTo(54)
         }
         
         [totalPriceLabel, totalPriceValueLabel].forEach {

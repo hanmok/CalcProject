@@ -26,6 +26,8 @@ protocol CustomNumberPadDelegate: AnyObject {
 
 class CustomNumberPadController: UIViewController {
     
+    let colorList = ColorList()
+    
     public var numberText = "0" {
         didSet {
             numberText.applyNumberFormatter()
@@ -63,10 +65,6 @@ class CustomNumberPadController: UIViewController {
         $0.setTitleColor(.black, for: .normal)
     }
     
-//    private let fullPriceBtn = UIButton().then {
-//        $0.setTitle("전액", for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
-//    }
     
     private let inputBar = UIView().then {
         $0.backgroundColor = UIColor.bgColorForExtrasLM
@@ -83,12 +81,30 @@ class CustomNumberPadController: UIViewController {
          num4, num5, num6,
         num1, num2, num3,
         num0, num00, num000
-        ].forEach { $0.addTarget(self, action: #selector(appendToNumberText(_:)), for: .touchUpInside)}
+        ].forEach { $0.addTarget(self, action: #selector(appendToNumberText(_:)), for: .touchUpInside)
+            
+            $0.addTarget(self, action: #selector(changeColor(_:)), for: .touchDown)
+            
+            $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchUpInside)
+            
+            $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchDragExit)
+        }
+        
+        
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         
-//        fullPriceBtn.addTarget(self, action: #selector(fullPriceTapped(_:)), for: .touchUpInside)
+
+    }
+    
+    @objc func changeColor(_ sender: NumberButton) {
+//        sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        sender.backgroundColor = colorList.bgColorForExtrasLM
+    }
+    
+    @objc func turnIntoOriginalColor(_ sender: NumberButton) {
+        sender.backgroundColor = .black
     }
     
 //    @objc func fullPriceTapped(_ sender: UIButton) {

@@ -58,7 +58,7 @@
 		9AA150EB2870D15700DC4CED /* GitInfo in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150EA2870D15700DC4CED /* GitInfo */; };
 		9AA150EF287203DF00DC4CED /* ParticipantsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */; };
 		9AA150F1287A91D400DC4CED /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150F0287A91D400DC4CED /* SideViewController.swift */; };
-		9AA1510A287C7E9700DC4CED /* DutchpayManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */; };
+		9AA1510A287C7E9700DC4CED /* DutchpayUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA150FB287C7D4800DC4CED /* DutchpayUnitTest.swift */; };
 		9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510D287C7EE800DC4CED /* DutchManager.swift */; };
 		9AA15110287C7F1C00DC4CED /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */; };
 		9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA15113287C833000DC4CED /* CoreDataTestStack.swift */; };
@@ -86,6 +86,7 @@
 		9AB1BC3528A2D77A002F35AD /* ResultBriefInfoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */; };
 		9AB1BC3928A948D4002F35AD /* DutchResultTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */; };
 		9AB1BC3B28AD635C002F35AD /* Memo8.18 in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3A28AD635C002F35AD /* Memo8.18 */; };
+		9AB1BC3D28AEE8F3002F35AD /* UIBezierPathExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3C28AEE8F3002F35AD /* UIBezierPathExt+.swift */; };
 		9AC3CC592819923D00C9A37F /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC582819923D00C9A37F /* SampleModel.swift */; };
 		9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC3CC622819999C00C9A37F /* DutchUnitController.swift */; };
 		9ACC0C7627DDB48900D18690 /* NotificationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC0C7527DDB48900D18690 /* NotificationKey.swift */; };
@@ -190,7 +191,7 @@
 		9AA150EA2870D15700DC4CED /* GitInfo */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitInfo; sourceTree = "<group>"; };
 		9AA150EE287203DF00DC4CED /* ParticipantsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableViewCell.swift; sourceTree = "<group>"; };
 		9AA150F0287A91D400DC4CED /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
-		9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayManagerTest.swift; sourceTree = "<group>"; };
+		9AA150FB287C7D4800DC4CED /* DutchpayUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayUnitTest.swift; sourceTree = "<group>"; };
 		9AA15101287C7E3E00DC4CED /* CalieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AA1510D287C7EE800DC4CED /* DutchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchManager.swift; sourceTree = "<group>"; };
 		9AA1510F287C7F1C00DC4CED /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -219,6 +220,7 @@
 		9AB1BC3428A2D77A002F35AD /* ResultBriefInfoTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultBriefInfoTableCell.swift; sourceTree = "<group>"; };
 		9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchResultTest.swift; sourceTree = "<group>"; };
 		9AB1BC3A28AD635C002F35AD /* Memo8.18 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Memo8.18; sourceTree = "<group>"; };
+		9AB1BC3C28AEE8F3002F35AD /* UIBezierPathExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPathExt+.swift"; sourceTree = "<group>"; };
 		9AC3CC582819923D00C9A37F /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		9AC3CC622819999C00C9A37F /* DutchUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitController.swift; sourceTree = "<group>"; };
 		9ACC0C7527DDB48900D18690 /* NotificationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationKey.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				9A083FEE24CCDCB4001057D2 /* UIView+Ext.swift */,
 				9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */,
 				9AADB342288C4B8300DAD657 /* Double+Ext.swift */,
+				9AB1BC3C28AEE8F3002F35AD /* UIBezierPathExt+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -437,7 +440,7 @@
 		9AA15102287C7E3E00DC4CED /* CalieTests */ = {
 			isa = PBXGroup;
 			children = (
-				9AA150FB287C7D4800DC4CED /* DutchpayManagerTest.swift */,
+				9AA150FB287C7D4800DC4CED /* DutchpayUnitTest.swift */,
 				9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */,
 				9AADB33C28831B2800DAD657 /* Notes */,
 				9AA15113287C833000DC4CED /* CoreDataTestStack.swift */,
@@ -800,6 +803,7 @@
 				9A2DBC0D28258DF400CF4E86 /* SelectableButton.swift in Sources */,
 				9AA5C434271701FD0021975C /* SettingsSection.swift in Sources */,
 				9AF62EE826FF660B00E183AB /* ImageConstants.swift in Sources */,
+				9AB1BC3D28AEE8F3002F35AD /* UIBezierPathExt+.swift in Sources */,
 				9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */,
 				9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
@@ -838,7 +842,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AA1511D287DDD1E00DC4CED /* SampleManagerTest.swift in Sources */,
-				9AA1510A287C7E9700DC4CED /* DutchpayManagerTest.swift in Sources */,
+				9AA1510A287C7E9700DC4CED /* DutchpayUnitTest.swift in Sources */,
 				9AB1BC3928A948D4002F35AD /* DutchResultTest.swift in Sources */,
 				9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */,
 				9AA1511F287DDD3F00DC4CED /* SampleCoreDataTestStack.swift in Sources */,

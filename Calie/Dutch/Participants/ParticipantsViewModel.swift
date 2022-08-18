@@ -33,13 +33,11 @@ class ParticipantsViewModel {
         self.dutchService = DutchService(currentGathering: gathering)
     }
     
-//    public func viewDidLoadAction() {}
-    
-    public func updatePeople() {
-        
-        dutchService.updatePeople(with: participants) { _ in }
-        dutchService.update()
-    }
+//    public func updatePeople() {
+//
+//        dutchService.updatePeople(with: participants) { _ in }
+//        dutchService.update()
+//    }
     
     func addPerson(name: String, needDuplicateCheck: Bool = false, completion: (Result<Void, DutchError>) -> Void ) {
         
@@ -50,10 +48,12 @@ class ParticipantsViewModel {
             }
         }
         
+        // MARK: - It works !! ㅠㅠ...
         dutchService.addPerson(name: name) { [weak self] newPerson in
             guard let self = self else { return }
             self.participants.append(newPerson)
         }
+        
         completion(.success(()))
     }
     
