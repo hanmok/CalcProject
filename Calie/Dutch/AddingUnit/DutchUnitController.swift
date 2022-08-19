@@ -57,8 +57,6 @@ class DutchUnitController: NeedingController {
 
     weak var dutchDelegate: DutchUnitDelegate?
     
-    
-    
     var detailPriceDic: [Int: Double] = [:] {
         willSet {
             var sum = 0.0
@@ -195,28 +193,12 @@ class DutchUnitController: NeedingController {
             self.needingDelegate?.presentNumberPad()
             self.blinkSpentAmount()
         }
-        
-//        Timer.scheduledTimer(withTimeInterval: , repeats: false) { timer in
-//            self.needingDelegate?.presentNumberPad()
-//            self.blinkSpentAmount()
-//        }
-        
-//        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
-//            self.presentAskingSpentAmountAlert {
-////                self.needingDelegate?.presentNumberPad()
-//            }
-//        }
-//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-////            self.presentAskingSpentAmountAlert {
-//                self.needingDelegate?.presentNumberPad()
-////            }
-//        }
-
     }
     
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
-        confirmBtn.backgroundColor = isActive ? .green : UIColor(white: 0.85, alpha: 0.9)
+//        confirmBtn.backgroundColor = isActive ? ColorList().bgColorForExtrasLM : UIColor(white: 0.85, alpha: 0.9)
+        confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.85, alpha: 0.9)
     }
     
     
@@ -712,6 +694,7 @@ class DutchUnitController: NeedingController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        cv.isScrollEnabled = false
         return cv
     }()
     

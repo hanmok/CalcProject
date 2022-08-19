@@ -196,7 +196,6 @@ class ParticipantsController: UIViewController{
             let newName = textFieldInput.text!
             
             self.addPerson(newName: newName)
-            
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
@@ -350,52 +349,30 @@ class ParticipantsController: UIViewController{
          editingBtn, dismissBtn]
             .forEach { containerView.addSubview($0)}
         
-        // TODO: Make it contained in Stack View
-//        cancelBtn.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(10)
-//            make.height.equalTo(50)
-//            make.width.equalToSuperview().dividedBy(2.15)
-//            make.bottom.equalToSuperview().inset(10)
-//        }
-        
-//        confirmBtn.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(10)
-//            make.width.equalToSuperview().dividedBy(2.15)
-//            make.bottom.equalToSuperview().inset(10)
-//            make.height.equalTo(50)
-//        }
-        
-        
-        
-        
-        
         participantsTableView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
 //            make.bottom.equalTo(addPeopleBtn.snp.top).offset(-10)
 //            make.bottom.equalTo(bottomContainerView.snp.top).offset(5)
-            make.bottom.equalToSuperview().inset(50)
+            make.bottom.equalToSuperview().inset(70)
         }
         
         
         bottomContainerView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(55)
+            make.height.equalTo(70)
             make.centerX.equalToSuperview()
         }
         
         bottomContainerView.addSubview(addPeopleBtn)
         
         addPeopleBtn.snp.makeConstraints { make in
-//            make.bottom.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.width.equalTo(40)
-            make.bottom.equalToSuperview()
+            make.width.equalTo(55)
+            make.top.equalToSuperview()
             make.height.equalTo(55)
         }
-        
-        
         
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(30)

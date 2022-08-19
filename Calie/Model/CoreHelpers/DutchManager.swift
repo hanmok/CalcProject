@@ -357,27 +357,6 @@ extension DutchManager {
             fatalError(error.localizedDescription)
         }
     }
-    
-//    @discardableResult
-//    func updateDutchUnit(target originalUnit: DutchUnit, with updatedUnit: DutchUnit) -> DutchUnit {
-//        originalUnit.placeName = updatedUnit.placeName
-//        originalUnit.spentAmount = updatedUnit.spentAmount
-//        originalUnit.personDetails = updatedUnit.personDetails
-//        originalUnit.spentDate = updatedUnit.spentDate
-//
-//        let totalPrice = originalUnit.personDetails.map { $0.spentAmount }.reduce(0) { partialResult, element in
-//            return partialResult + element
-//        }
-//
-//        originalUnit.isAmountEqual = totalPrice == originalUnit.spentAmount
-//
-//        do {
-//            try mainContext.save()
-//            return originalUnit
-//        } catch let error {
-//            fatalError(error.localizedDescription)
-//        }
-//    }
 }
 
 
@@ -495,6 +474,7 @@ extension DutchManager {
         update()
     }
     
+    // TODO: 여기서 고쳐야함.
     func updatePeople(updatedPeople: [Person], currentGathering: Gathering) {
         // 이름 바꾸는 경우는 어떻게 처리하지... ??
         // 사람을 추가할 수도, 제거할 수도 있는 경우.

@@ -27,6 +27,8 @@ struct ColorList{
     let bgColorForOperatorsLM = UIColor(red: 0.967, green: 0.967, blue: 0.967, alpha: 1)
     let bgColorForExtrasLM = UIColor(red: 0.894, green: 0.902, blue: 0.792, alpha: 1)
     
+    let confirmBtnColor = UIColor(red: 0.894, green: 0.932, blue: 0.792, alpha: 1)
+    
     let bgColorForExtrasMiddle = UIColor(red : (0.537 + 0.894)/2, green: (0.541 + 0.902)/2, blue: (0.454 + 0.792)/2, alpha: 1)
     
     

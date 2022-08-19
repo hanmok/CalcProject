@@ -444,8 +444,14 @@ class DutchpayController: UIViewController {
         let btn = UIButton()
 //        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
         let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
+//        innerImage
 
-        innerImage.tintColor = .black
+//        innerImage.tintColor = .black
+//        innerImage.tintColor = .orange
+        
+//        innerImage.tintColor = UIColor(red: 0.95, green: 0, blue: 0)
+        
+        innerImage.tintColor = UIColor(red: 0.95, green: 0, blue: 0, alpha: 1)
 
         btn.addSubview(innerImage)
 
@@ -455,27 +461,9 @@ class DutchpayController: UIViewController {
             make.height.equalToSuperview().dividedBy(2)
         }
         
-        btn.backgroundColor = UIColor(white: 0.7, alpha: 0.5)
+        btn.backgroundColor = UIColor(white: 0.97, alpha: 1)
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 8
-        
-//        btn.layer.maskedCorners = []
-//        btn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner ]
-        btn.layer.cornerRadius = 16
-//        btn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner ]
-//        btn.layer.maskedCorners = [.layerMaxXMaxYCorner]
-//        btn.roundedCorner
-        
-        
-        
-//        btn.roundCorners(topLeft: 8, topRight: 16, bottomLeft: 8, bottomRight: 8)
-        
-//        let borderLayer = CAShapeLayer()
-//
-//        borderLayer.path = (btn.layer.mask! as! CAShapeLayer).path!
-//        borderLayer.fillColor = UIColor(white: 0.7, alpha: 0.5).cgColor
-//        borderLayer.frame = btn.bounds
-//        btn.layer.addSublayer(borderLayer)
         
         return btn
     }()
@@ -639,6 +627,7 @@ class DutchpayController: UIViewController {
         
         mainContainer.addSubview(totalPriceContainerView)
         mainContainer.addSubview(calculateBtn)
+        mainContainer.addSubview(resetGatheringBtn)
         
         view.addSubview(blurredView)
 //        wholeContainerView.addSubview(blurredView)
@@ -676,18 +665,22 @@ class DutchpayController: UIViewController {
             make.bottom.equalToSuperview().inset(10)
         }
         
+        resetGatheringBtn.snp.makeConstraints { make in
+//            make.top.bottom.trailing.equalToSuperview().inset(3)
+//            make.trailing.bottom.equalToSuperview().inset(3)
+            make.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
+//            make.height.equalTo(54)
+            make.width.height.equalTo(60)
+        }
+        
         calculateBtn.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalTo(resetGatheringBtn.snp.leading).inset(-5)
             make.bottom.equalToSuperview()
         }
         
-        calculateBtn.addSubview(resetGatheringBtn)
-        
-        resetGatheringBtn.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview().inset(3)
-            make.width.equalTo(54)
-        }
         
         [totalPriceLabel, totalPriceValueLabel].forEach {
             self.totalPriceContainerView.addSubview($0)

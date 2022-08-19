@@ -229,7 +229,8 @@ extension DutchService {
         
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
         
-        dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
+        //FIXME: 이거 여기서 하면 안돼요~
+//        dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
         
         let resultDetails = personDetails + [newPersonDetail]
         
