@@ -268,7 +268,12 @@ extension DutchService {
         dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
         
         completion(newPerson)
-        
+    }
+    
+    func removePerson(person: Person, completion: @escaping () -> Void) {
+        guard let currentGathering = currentGathering else { fatalError() }
+        dutchManager.removePeople(from: currentGathering, removedPeople: [person])
+        completion()
     }
     
     func update() {

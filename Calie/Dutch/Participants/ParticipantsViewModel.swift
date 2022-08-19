@@ -68,8 +68,10 @@ class ParticipantsViewModel {
     }
     
     public func removePerson(idx: Int, completion: @escaping () -> Void ) {
-//        let targetPerson = participants[idx]
-        participants.remove(at: idx)
-        completion()
+        let targetPerson = participants[idx]
+        dutchService.removePerson(person: targetPerson) {
+            self.participants.remove(at: idx)
+            completion()
+    }
     }
 }
