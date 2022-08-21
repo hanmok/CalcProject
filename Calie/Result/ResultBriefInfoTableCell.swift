@@ -49,7 +49,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
     
     private let summaryLabel = UILabel().then {
         $0.textAlignment = .right
-        $0.backgroundColor = .orange
+//        $0.backgroundColor = .orange
     }
     
 //    private let attendedPlacesLabel = UILabel().then {
@@ -72,7 +72,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
         nameLabel.text = personCostInfo.name
         
         spentAmountLabel.text = personCostInfo.paidAmt.convertIntoKoreanPrice()
-        toPayLabel.text = personCostInfo.toPay.convertIntoKoreanPrice()
+        toPayLabel.text = personCostInfo.toGet.convertIntoKoreanPrice()
         summaryLabel.text = personCostInfo.sum.convertIntoKoreanPrice()
         
         

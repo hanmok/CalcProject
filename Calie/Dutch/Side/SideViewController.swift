@@ -45,7 +45,8 @@ class SideViewController: UIViewController {
         view.insetsLayoutMarginsFromSafeArea = false
         navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        view.backgroundColor = .white
         print("viewDidLoad in SideViewController called")
         
 //        viewModel.viewDidLoadAction()
@@ -72,11 +73,17 @@ class SideViewController: UIViewController {
     }
     
     private let gatheringTableView = UITableView().then {
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
-        $0.layer.borderWidth = 1
-        $0.layer.cornerRadius = 12
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
+//        $0.layer.borderWidth = 1
+//        $0.layer.cornerRadius = 12
+
+//        $0.backgroundColor = UIColor(white: 0.96, alpha: 1)
+        
+        $0.backgroundColor = UIColor(white: 0.96, alpha: 1)
         $0.separatorStyle = .none
     }
+    
+    
     
     private func registerTableView() {
         
@@ -127,9 +134,11 @@ class SideViewController: UIViewController {
             make.height.equalTo(40)
         }
         
+        
         view.addSubview(gatheringTableView)
         gatheringTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(5)
+//            make.leading.trailing.equalToSuperview().inset(5)
+            make.leading.trailing.equalToSuperview()
 //            make.top.equalTo(dismissBtn.snp.bottom).offset(10)
             make.top.equalTo(sideLabel.snp.bottom).offset(10)
 //            make.bottom.equalTo(gatheringPlusBtn.snp.top).offset(-20)
@@ -158,7 +167,7 @@ class SideViewController: UIViewController {
     }()
     
     private let sideLabel = UILabel().then {
-        $0.text = "지난 모임"
+//        $0.text = "지난 모임"
         $0.font = UIFont.systemFont(ofSize: 20)
         $0.textColor = .black
 //        $0.textAlignment = .left
@@ -181,7 +190,7 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
         let targetGathering = viewModel.allGatherings[indexPath.row]
         
         cell.textLabel?.text = targetGathering.title
-                
+        cell.backgroundColor = UIColor(white: 0.96, alpha: 1)
         
         return cell
     }

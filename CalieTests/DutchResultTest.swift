@@ -203,9 +203,17 @@ class DutchResultTest: XCTestCase {
             }
         }
         
+        
+        // MARK: - n : n (not implemented Yet.. ) 
+        
+        
+
         print("in the end, resultTuples: \(resultTuples)")
         print("positivesDic: \(positivesDic)")
         print("negativesDic: \(negativesDic)")
+        
+        
+        // MARK: - 하나 남았을 때 처리
         
         if negativesDic.count == 1, let lastNagativeElement = negativesDic.first, lastNagativeElement.value.count == 1 {
             let lastnName = lastNagativeElement.value[0]

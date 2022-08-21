@@ -40,3 +40,4 @@ class ResultViewModel {
 // Detail 한 사항 원하면 클릭 !
 
 
+

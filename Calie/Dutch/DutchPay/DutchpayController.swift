@@ -90,8 +90,10 @@ class DutchpayController: UIViewController {
         
     }
     private let topView = UIView().then {
-        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+//        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+        $0.backgroundColor = .white
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad in DutchpayController called")
@@ -360,6 +362,8 @@ class DutchpayController: UIViewController {
         participantsNavController.view.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview()
         }
+        
+        
     }
     
     
@@ -403,7 +407,8 @@ class DutchpayController: UIViewController {
     // MARK: - UI Properties
     
     private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+//        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+        $0.backgroundColor = .white
     }
     
     private let blurredView = UIButton().then {
@@ -461,7 +466,7 @@ class DutchpayController: UIViewController {
             make.height.equalToSuperview().dividedBy(2)
         }
         
-        btn.backgroundColor = UIColor(white: 0.97, alpha: 1)
+        btn.backgroundColor = UIColor(white: 0.90, alpha: 1)
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 8
         
@@ -507,14 +512,19 @@ class DutchpayController: UIViewController {
         }
     }
     
-    private let mainContainer = UIView().then {
-        $0.layer.cornerRadius = 16
-        $0.clipsToBounds = true
-    }
+    private let mainContainer = UIView()
+//        .then {
+//        $0.layer.cornerRadius = 16
+//        $0.clipsToBounds = true
+//    }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+//        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        $0.backgroundColor = .white
+        $0.addBorders(edges: .bottom, color: UIColor(white: 0.8, alpha: 0.9))
     }
+    
+//    private let
     
 //    private let groupBtn = UIButton().then {
 //
@@ -586,21 +596,24 @@ class DutchpayController: UIViewController {
     }
     
     private let totalPriceLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 24)
+//        $0.font = UIFont.systemFont(ofSize: 24)
+        $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .center
-        $0.text = "총 금액"
+//        $0.text = "총 금액"
     }
     
     private let totalPriceValueLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 24)
+//        $0.font = UIFont.systemFont(ofSize: 24)
+        $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .right
     }
     
     private let calculateBtn = UIButton().then {
         
-        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
+//        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold)])
         $0.setAttributedTitle(attr, for: .normal)
-        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
     }
@@ -668,7 +681,7 @@ class DutchpayController: UIViewController {
         resetGatheringBtn.snp.makeConstraints { make in
 //            make.top.bottom.trailing.equalToSuperview().inset(3)
 //            make.trailing.bottom.equalToSuperview().inset(3)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
             make.trailing.equalToSuperview()
 //            make.height.equalTo(54)
             make.width.height.equalTo(60)
@@ -677,8 +690,8 @@ class DutchpayController: UIViewController {
         calculateBtn.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.leading.equalToSuperview()
-            make.trailing.equalTo(resetGatheringBtn.snp.leading).inset(-5)
-            make.bottom.equalToSuperview()
+            make.trailing.equalTo(resetGatheringBtn.snp.leading).inset(-10)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         
@@ -687,7 +700,8 @@ class DutchpayController: UIViewController {
         }
         
         totalPriceContainerView.snp.makeConstraints { make in
-            make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
+//            make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
+            make.bottom.equalTo(calculateBtn.snp.top).offset(-20)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(50)
         }
@@ -737,22 +751,18 @@ class DutchpayController: UIViewController {
         groupBtnInHeader.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(20)
-//            make.height.width.equalTo(24)
             make.height.width.equalTo(30)
         }
         
         historyBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
-//            make.height.width.equalTo(24)
-//            make.height.equalToSuperview()
-//            make.height.equalTo(40)
             make.width.height.equalTo(30)
             make.centerY.equalToSuperview()
         }
         
         mainContainer.addSubview(dutchTableView)
         dutchTableView.snp.makeConstraints { make in
-            make.top.equalTo(headerContainer.snp.bottom)
+            make.top.equalTo(headerContainer.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(totalPriceContainerView.snp.top)
         }

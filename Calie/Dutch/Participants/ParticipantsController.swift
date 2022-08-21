@@ -60,7 +60,8 @@ class ParticipantsController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(white: 0.93, alpha: 1)
+//        view.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
         
         setupBindings()
@@ -229,7 +230,8 @@ class ParticipantsController: UIViewController{
     
     // MARK: - UI Properties
     private let containerView = UIView().then {
-        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+//        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+        $0.backgroundColor = .white
     }
     
     private let titleLabel = UILabel().then {
@@ -245,7 +247,7 @@ class ParticipantsController: UIViewController{
             let btn = UIButton()
             let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
             imageView.contentMode = .scaleAspectFit
-//            imageView.tintColor = .black
+            imageView.tintColor = .black
     
             btn.addSubview(imageView)
             imageView.snp.makeConstraints { make in
@@ -274,14 +276,14 @@ class ParticipantsController: UIViewController{
 //        $0.layer.cornerRadius = 10
 //    }
     
-    private let confirmBtn = UIButton().then {
-        $0.setTitle("Confirm", for: .normal)
-        $0.backgroundColor = .white
-        $0.setTitleColor(.black, for: .normal)
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-        $0.layer.cornerRadius = 10
-    }
+//    private let confirmBtn = UIButton().then {
+//        $0.setTitle("Confirm", for: .normal)
+//        $0.backgroundColor = .white
+//        $0.setTitleColor(.black, for: .normal)
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
+//        $0.layer.cornerRadius = 10
+//    }
     
     
     private let participantsTableView = UITableView().then {
@@ -442,7 +444,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {

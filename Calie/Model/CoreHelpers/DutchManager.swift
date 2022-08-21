@@ -253,16 +253,16 @@ extension DutchManager {
         
         // 부호 변환 (의미 혼동 방지)
 //        amtToPay = -amtToPay
-        for idx in 0 ..< amtToPay.count {
-            amtToPay[idx] = -amtToPay[idx]
-        }
+//        for idx in 0 ..< amtToPay.count {
+//            amtToPay[idx] = -amtToPay[idx]
+//        }
         
         var result = [PersonPaymentInfo]()
         
         for idx in 0 ..< amtToPay.count {
 //            sum[idx] = amtToPay[idx] + spentAmount[idx]
-            sum[idx] = amtToPay[idx] - spentAmount[idx]
-            let eachResult: PersonPaymentInfo = (name: names[idx],paidAmt: spentAmount[idx], toPay: amtToPay[idx], sum: sum[idx])
+            sum[idx] = amtToPay[idx] + spentAmount[idx]
+            let eachResult: PersonPaymentInfo = (name: names[idx], paidAmt: spentAmount[idx], toGet: amtToPay[idx], sum: sum[idx])
             result.append(eachResult)
         }
         
@@ -279,7 +279,7 @@ extension DutchManager {
 
 typealias OverallPersonInfo = (name: String, relativePaidAmount: Double, attendedPlaces: String)
 
-typealias PersonPaymentInfo = (name: String, paidAmt: Double, toPay: Double, sum: Double)
+typealias PersonPaymentInfo = (name: String, paidAmt: Double, toGet: Double, sum: Double)
 
 extension DutchManager {
     

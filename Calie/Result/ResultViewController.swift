@@ -31,6 +31,7 @@ class ResultViewController: UIViewController {
         
         let imageView = UIImageView(image: UIImage(systemName: "chevron.left")!)
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
         $0.addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
@@ -55,13 +56,13 @@ class ResultViewController: UIViewController {
          let toPayLabel = UILabel().then {
             $0.textAlignment = .right
 //            $0.backgroundColor = .cyan
-             $0.text = "보낼 금액"
+             $0.text = "받을 금액"
         }
         
          let summaryLabel = UILabel().then {
             $0.textAlignment = .right
-            $0.backgroundColor = .orange
-             $0.text = "종합"
+//            $0.backgroundColor = .orange
+//             $0.text = "종합"
         }
         
         let pricesContainer = UIView()
@@ -165,7 +166,8 @@ class ResultViewController: UIViewController {
         briefInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(titleLabel.snp.bottom).offset(30)
-            make.height.equalTo(viewModel.overallPayInfos.count * 40 + 20 + 40)
+//            make.height.equalTo(viewModel.overallPayInfos.count * 50 + 20 + 40)
+            make.height.equalTo(viewModel.overallPayInfos.count * 50 + 40)
         }
         
         dividerView.snp.makeConstraints { make in
@@ -201,12 +203,16 @@ class ResultViewController: UIViewController {
         $0.textAlignment = .center
         $0.textColor = .black
 //        $0.font = UIFont.preferredFont(forTextStyle: .headline)
-        $0.font = UIFont.systemFont(ofSize: 32, weight: .regular)
+//        $0.font = UIFont.systemFont(ofSize: 32, weight: .regular)
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
     }
     
     private let dividerView = UIView().then { $0.backgroundColor = UIColor(white: 0.8, alpha: 0.9)}
     
-    private let briefInfoTableView = UITableView()
+    private let briefInfoTableView = UITableView().then {
+        $0.isScrollEnabled = false
+    }
+    
     
     private func registerTableView() {
         briefInfoTableView.register(ResultBriefInfoTableCell.self, forCellReuseIdentifier: ResultBriefInfoTableCell.identifier)
@@ -214,8 +220,6 @@ class ResultViewController: UIViewController {
         briefInfoTableView.dataSource = self
         briefInfoTableView.rowHeight = 50
         briefInfoTableView.separatorStyle = .none
-        
-//        briefInfoTableView.tableFooterView = UIView()
         
         briefInfoTableView.tableHeaderView = briefHeaderView
     }
