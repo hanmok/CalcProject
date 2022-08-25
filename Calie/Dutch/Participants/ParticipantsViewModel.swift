@@ -74,4 +74,15 @@ class ParticipantsViewModel {
             completion()
     }
     }
+    
+    public func changePersonName(targetPerson: Person, to newName: String, completion: @escaping (Void?) -> Void) {
+
+        dutchService.changPersonName(person: targetPerson, newName: newName, from: gathering) { void in
+            // reload data;;
+            if void != nil {
+            self.participants = self.gathering.sortedPeople
+            }
+            completion(void)
+        }
+    }
 }

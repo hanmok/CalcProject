@@ -208,6 +208,44 @@ class ParticipantsController: UIViewController{
         self.present(alertController, animated: true)
     }
     
+    private func presentEditingNameAlert(target: Person) {
+        let alertController = UIAlertController(title: "Edit Name", message: "새로운 이름을 입력해주세요", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Name"
+            textField.tag = 200
+            textField.delegate = self
+        }
+        
+        let saveAction = UIAlertAction(title: "Edit", style: .default) { alert -> Void in
+            let textFieldInput = alertController.textFields![0] as UITextField
+            
+            let newName = textFieldInput.text!
+            
+//            self.addPerson(newName: newName)
+            
+            self.viewModel.changePersonName(targetPerson: target, to: newName) { void in
+                if void != nil {
+                    // TODO: Handle.. How ???? 함수로 따로 빼기. 
+                    // success
+                } else{
+                    // fail ( 이름 중복 )
+                    
+                }
+                print("hi")
+            }
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
     private func addPerson(newName: String) {
         guard newName.count != 0 else { fatalError("Name must have at least one character") }
         
@@ -433,7 +471,16 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         delete.backgroundColor = .red
         
         
-        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        let edit = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
+            
+            let prevPerson = self.viewModel.participants[indexPath.row]
+            self.presentEditingNameAlert(target: prevPerson)
+        }
+        
+        edit.image = UIImage(systemName: "pencil")
+        edit.backgroundColor = .gray
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete, edit])
         
         return rightSwipe
     }

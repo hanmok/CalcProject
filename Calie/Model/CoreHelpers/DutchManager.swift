@@ -458,6 +458,25 @@ extension DutchManager {
         update()
     }
     
+    func changePersonName(targetPerson: Person, newName: String, gathering: Gathering, completion: @escaping (Void?) -> Void) {
+//        targetPerson.name =
+        // TODO: Duplication check
+//        let currentGathering = gathering
+        let participants = gathering.people
+        
+        for eachPerson in participants {
+            if eachPerson.name == newName {
+             
+                completion(nil)
+                return
+            }
+        }
+        
+        targetPerson.name = newName
+        update()
+        completion(())
+    }
+    
     func removePeople(from gathering: Gathering, removedPeople: [Person]) {
         if removedPeople.count == 0 { return }
         

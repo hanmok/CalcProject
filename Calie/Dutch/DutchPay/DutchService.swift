@@ -279,6 +279,14 @@ extension DutchService {
     func update() {
         dutchManager.update()
     }
+    
+    func changPersonName(person: Person, newName: String, from gathering: Gathering, completion: @escaping (Void?) -> Void) {
+        dutchManager.changePersonName(targetPerson: person, newName: newName, gathering: gathering) { void in
+            
+            completion(void)
+            
+        }
+    }
 }
 
 

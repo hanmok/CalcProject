@@ -678,19 +678,32 @@ class DutchpayController: UIViewController {
             make.bottom.equalToSuperview().inset(10)
         }
         
+//        resetGatheringBtn.snp.makeConstraints { make in
+////            make.top.bottom.trailing.equalToSuperview().inset(3)
+////            make.trailing.bottom.equalToSuperview().inset(3)
+//            make.bottom.equalToSuperview().offset(-20)
+//            make.trailing.equalToSuperview()
+////            make.height.equalTo(54)
+//            make.width.height.equalTo(60)
+//        }
+//
+//        calculateBtn.snp.makeConstraints { make in
+//            make.height.equalTo(60)
+//            make.leading.equalToSuperview()
+//            make.trailing.equalTo(resetGatheringBtn.snp.leading).inset(-10)
+//            make.bottom.equalToSuperview().offset(-20)
+//        }
+        
         resetGatheringBtn.snp.makeConstraints { make in
-//            make.top.bottom.trailing.equalToSuperview().inset(3)
-//            make.trailing.bottom.equalToSuperview().inset(3)
             make.bottom.equalToSuperview().offset(-20)
-            make.trailing.equalToSuperview()
-//            make.height.equalTo(54)
+            make.leading.equalToSuperview()
             make.width.height.equalTo(60)
         }
         
         calculateBtn.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.leading.equalToSuperview()
-            make.trailing.equalTo(resetGatheringBtn.snp.leading).inset(-10)
+            make.trailing.equalToSuperview()
+            make.leading.equalTo(resetGatheringBtn.snp.trailing).offset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
         
