@@ -14,20 +14,19 @@ import Darwin
 
 
 typealias Idx = Int
-
+typealias Amt = Int
 typealias PersonTuple = (name: String, spentAmount: Int, idx: Idx)
 //typealias ResultTuple = (from: String, to: String, amount: Int)
 typealias ResultTuple = (from: Idx, to: Idx, amount: Int)
 typealias BinIndex = Int
+
 
 struct PersonStruct {
     let name: String
     var spentAmount: Int
     var idx: Idx
 }
-extension PersonStruct: Hashable {
-    
-}
+extension PersonStruct: Hashable { }
 
 class DutchResultTest: XCTestCase {
     // Bit Operator Helpers
@@ -39,6 +38,55 @@ class DutchResultTest: XCTestCase {
         let toPrint = String(target, radix: 2)
         let additionalMsg = isPositive ? "plusRemainders:" : "minusRemainders:"
         print(additionalMsg + " " + toPrint)
+    }
+    
+    func returnIdxSet(using binIdx: Int) -> [Int] {
+        let binStr = String(binIdx, radix: 2)
+        let length = binStr.count
+        let startIdx = binStr.startIndex
+        let endIdx = binStr.endIndex
+        var ret = [Int]()
+        for idx in 0 ..< length {
+            let some = binStr.index(startIdx, offsetBy: length - idx - 1, limitedBy: endIdx)
+            let char = String(binStr[some!])
+            if char == "1" { ret.append(idx)}
+        }
+
+        return ret
+    }
+    
+    func test_idxSet() {
+        let test = returnIdxSet(using: 10)
+        print("idxSet test: \(test)")
+        XCTAssertNotEqual(test, [])
+    }
+    
+    func createBin(using arr: [Int]) -> BinIndex {
+        var ret = 0
+        for element in arr {
+            ret += poweredInt(exponent: element)
+        }
+        return ret
+    }
+    
+    func test_createBin() {
+        let arr = [1,3,4] // 11010 -> 26
+        let ret = createBin(using: arr)
+        print("testing createBin, ret: \(ret)")
+
+        XCTAssertEqual(ret, 26)
+    }
+    
+    func test_duplicateDigits() {
+        let num1 = 0b1010101
+        let num2 = 0b0101010
+        print("num1: \(num1), num2: \(num2), and operation: \(num1 & num2)")
+        XCTAssertEqual(num1 & num2, 0)
+    }
+    
+    func checkIfDuplicate(num1: Int, num2: Int) -> Bool {
+        let ret = num1 & num2
+        return ret != 0
     }
     
     func digitFromTheRight(bin: Int, location: Idx) -> Int? {
@@ -155,24 +203,13 @@ class DutchResultTest: XCTestCase {
         //        typealias PersonTuple = (name: String, spentAmount: Int)
         //        typealias ResultTuple = (from: String, to: String, amount: Int)
         
-//        var personDetails: [PersonTuple] = [
-////            PersonStruct(name: <#T##String#>, spentAmount: <#T##Int#>, idx: <#T##Idx#>)
-//            ("a0", 1, idx: 0), ("a1", 25, idx: 1), ("a2", 7, idx: 2), ("a3", 4, idx: 3),
-//            ("a4", 7, idx: 4), ("a5", 5, idx: 5), ("a6", 2, idx: 6), ("a7", 0, idx: 7),
-//            ("a8", 17, idx: 8), ("a9", 7, idx: 9), ("a10", 14, idx: 10),("a11", 7, idx: 11),
-//            ("a12", 6, idx: 12),("a13", 6, idx: 13),
-//
-//            ("b0", -54, idx: 0), ("b1", -13, idx: 1), ("b2", -2, idx: 2), ("b3", -1, idx: 3),
-//            ("b4", -5, idx: 4), ("b5", -7, idx: 5),("b6", -7, idx: 6),("b7", -5, idx: 7),
-//            ("b8", -2, idx: 8),("b9", -10, idx: 9),("b10", -2, idx: 10)
-//        ]
-        
-        var personDetailsIngre: [PersonTuple] = [
+        let personDetailsIngre: [PersonTuple] = [
 //            PersonStruct(name: <#T##String#>, spentAmount: <#T##Int#>, idx: <#T##Idx#>)
             ("a0", 1, idx: 0), ("a1", 25, idx: 1), ("a2", 7, idx: 2), ("a3", 4, idx: 3),
-            ("a4", 7, idx: 4), ("a5", 5, idx: 5), ("a6", 2, idx: 6), ("a7", 0, idx: 7),
+            ("a4", 7, idx: 4), ("a5", 5, idx: 5), ("a6", 2, idx: 6),
+            ("a7", 6, idx: 7),
             ("a8", 17, idx: 8), ("a9", 7, idx: 9), ("a10", 14, idx: 10),("a11", 7, idx: 11),
-            ("a12", 6, idx: 12),("a13", 6, idx: 13),
+            ("a12", 6, idx: 12),
             
             ("b0", -54, idx: 0), ("b1", -13, idx: 1), ("b2", -2, idx: 2), ("b3", -1, idx: 3),
             ("b4", -5, idx: 4), ("b5", -7, idx: 5),("b6", -7, idx: 6),("b7", -5, idx: 7),
@@ -185,12 +222,8 @@ class DutchResultTest: XCTestCase {
         
         personDetails = personDetails.filter { $0.spentAmount != 0 }
         
-//  PersonTuple = (name: String, spentAmount: Int, idx: Idx)
-        
-//        var positiveTuples = [PersonTuple]()
-//        var negativeTuples = [PersonTuple]()
-//        var resultTuples = [ResultTuple]()
-        
+        //  PersonTuple = (name: String, spentAmount: Int, idx: Idx)
+
         var plusRemainders = 0
         
         var minusRemainders = 0
@@ -201,24 +234,20 @@ class DutchResultTest: XCTestCase {
         
         for tup in personDetails {
             if tup.spentAmount > 0 {
-//                positiveTuples.append(tup)
                 positivePersonSet.update(with: tup)
             } else {
-//                negativeTuples.append(tup)
                 negativePersonSet.update(with: tup)
             }
         }
         
 
-        
-//        print("positiveTuples: \(positiveTuples)")
         print("\npositiveTuples: from the beginning")
-        for positiveTuple in positivePersonSet {
+        for positiveTuple in positivePersonSet.sorted(by: { $0.idx < $1.idx }) {
             print("remaining positiveTuple: idx: \(positiveTuple.idx), amt: \(positiveTuple.spentAmount)")
         }
         
         print("\nnegativeTuples: from the beginning")
-        for negativeTuple in negativePersonSet {
+        for negativeTuple in negativePersonSet.sorted(by: { $0.idx < $1.idx }) {
             print("remaining negativeTuple: idx: \(negativeTuple.idx), amt: \(negativeTuple.spentAmount)")
         }
         
@@ -229,7 +258,7 @@ class DutchResultTest: XCTestCase {
         var numOfPlusPeople = positivePersonSet.count
         var numOfMinusPeople = negativePersonSet.count
         
-
+        
 
         
         // ---------------------Equal Total Amount Test ----------------------------- //
@@ -241,10 +270,10 @@ class DutchResultTest: XCTestCase {
         
         // MARK: - Make Dictionary for both signs
         // spentAmount: Index
-        var positivesDic: [Int: [Idx]] = [:]
-        var negativesDic: [Int: [Idx]] = [:]
+        var positivesDic: [Amt: [Idx]] = [:]
+        var negativesDic: [Amt: [Idx]] = [:]
         
-        for personTuple in positivePersonSet {
+        for personTuple in positivePersonSet.sorted(by: { $0.idx < $1.idx }) {
             if positivesDic[personTuple.spentAmount] != nil {
                 positivesDic[personTuple.spentAmount]!.append(personTuple.idx)
                 
@@ -253,7 +282,7 @@ class DutchResultTest: XCTestCase {
             }
         }
         
-        for  personTuple in negativePersonSet {
+        for  personTuple in negativePersonSet.sorted(by: { $0.idx < $1.idx }) {
             if negativesDic[personTuple.spentAmount] != nil {
                 negativesDic[personTuple.spentAmount]!.append(personTuple.idx)
                 
@@ -278,7 +307,6 @@ class DutchResultTest: XCTestCase {
     
                         plusRemainders += poweredInt(exponent: positivePersonIndices[forwardingIdx])
                         minusRemainders += poweredInt(exponent: validNegativeIndices[forwardingIdx])
-                        
                     }
                 }
             }
@@ -290,7 +318,7 @@ class DutchResultTest: XCTestCase {
         
         
 //        print("resultTuples: \(resultTuples)")
-        for eachTuple in resultTuples {
+        for eachTuple in resultTuples.sorted(by: { $0.from < $1.from }) {
             print("from idx: \(eachTuple.from), to idx: \(eachTuple.to), amt: \(eachTuple.amount)")
         }
         XCTAssertNotEqual(resultTuples.count, 0)
@@ -301,6 +329,7 @@ class DutchResultTest: XCTestCase {
         
 //        let donePlusIndices = getIndicesArr(from: plusRemainders)
         // 이거 용도는 뭐지...??
+        
         let donePlusIndices = getIndicesSet(from: plusRemainders)
         
 //        positiveTuples
@@ -309,7 +338,7 @@ class DutchResultTest: XCTestCase {
             positivePersonSet.remove(target)
         }
         
-//        let doneMinusIndices = getIndicesArr(from: minusRemainders)
+
         let doneMinusIndices = getIndicesSet(from: minusRemainders)
         for idx in doneMinusIndices {
             let target = negativePersonSet.filter { $0.idx == idx }.first!
@@ -319,7 +348,7 @@ class DutchResultTest: XCTestCase {
          numOfPlusPeople = positivePersonSet.count
          numOfMinusPeople = negativePersonSet.count
         
-//        for some in positi
+        
         
         
         // MARK: - Update positivesDic, negativesDic
@@ -356,18 +385,19 @@ class DutchResultTest: XCTestCase {
         }
         
         
+        // Printing
         print("\npositiveTuples: after 1:1 match")
-        for positiveTuple in positivePersonSet {
+        for positiveTuple in positivePersonSet.sorted(by: { $0.idx < $1.idx }) {
             print("remaining positiveTuple: idx: \(positiveTuple.idx), amt: \(positiveTuple.spentAmount)")
         }
         print("dictionary: \(positivesDic)")
         
         print("\nnegativeTuples: after 1:1 match")
-        for negativeTuple in negativePersonSet {
+        for negativeTuple in negativePersonSet.sorted(by: { $0.idx < $1.idx }) {
             print("remaining negativeTuple: idx: \(negativeTuple.idx), amt: \(negativeTuple.spentAmount)")
         }
         print("dictionary: \(negativesDic)")
-        
+        // Printing
         
         
         
@@ -379,45 +409,50 @@ class DutchResultTest: XCTestCase {
         var positiveCandidates = [Int]()
         
         // 중복 허용.
-        for personInfo in negativePersonSet {
+        for personInfo in negativePersonSet.sorted(by: { $0.idx < $1.idx }) {
             negativeCandidates.append(-personInfo.spentAmount)
         }
         
-        for personInfo in positivePersonSet {
+        for personInfo in positivePersonSet.sorted(by: { $0.idx < $1.idx }) {
             positiveCandidates.append(personInfo.spentAmount)
         }
-    
+        
         negativeCandidates.sort(by: >)  // [54, ... 2, 1, 1]
         positiveCandidates.sort(by: <)  // [1,2,3, ... ]
        
         // include updating negativesDic, positivesDic
         for positiveCandidateAmt in positiveCandidates {
-            let targetAmt = positiveCandidateAmt
+            let targetPositiveAmt = positiveCandidateAmt
             
-            let negativeResultIndexes = combinationSum(candidates: negativeCandidates, target: targetAmt)
+//            func makeTargetNumUsingCombination(candidates: [Int], target: Int) -> [Int], 내부에서 sorting 과정 거침.
+            let negativeResultIndexes = makeTargetNumUsingCombination(of: negativeCandidates, target: targetPositiveAmt)
             
-//            convertResult2(source: [Int], indexes: [Int]) -> [Int]
-            let negativesResults = convertResult2(source: negativeCandidates, indexes: negativeResultIndexes)
-            print("found pair! \(negativesResults)")
+//            returnArrayOfValues(of source: [Int], indexes: [Int]) -> [Int]
+           
+            
             // found pair
             if negativeResultIndexes != [] {
                
-                let pPersonIdx = positivesDic[targetAmt]!.removeFirst()
+                let pPersonIdx = positivesDic[targetPositiveAmt]!.removeFirst() // return first pPersonIdx, remove
                 
-                for negativeValue in negativesResults {
+                let negativesResults = returnArrayOfValues(of: negativeCandidates, indexes: negativeResultIndexes)
+                print("found pair! \(negativesResults)")
+                
+                // unsignedNegativeValue > 0, append matched Negative values to resultTuples with (positive) value
+                for unsignedNegativeValue in negativesResults {
                     var nPersonIdx: Idx
                     
-                    nPersonIdx = negativesDic[-negativeValue]!.removeFirst()
+                    nPersonIdx = negativesDic[-unsignedNegativeValue]!.removeFirst()
                     
-                    if negativesDic[-negativeValue]!.count == 0 {
-                        negativesDic[-negativeValue] = nil
+                    if negativesDic[-unsignedNegativeValue]!.count == 0 {
+                        negativesDic[-unsignedNegativeValue] = nil
                     }
                     
-                    let resultTuple: (ResultTuple) = (from: nPersonIdx, to: pPersonIdx, amount: negativeValue)
+                    let resultTuple: (ResultTuple) = (from: nPersonIdx, to: pPersonIdx, amount: unsignedNegativeValue)
                     resultTuples.append(resultTuple)
                     
                     
-                    let ntargetPerson = negativePersonSet.filter { $0.spentAmount == -negativeValue}.first!
+                    let ntargetPerson = negativePersonSet.filter { $0.spentAmount == -unsignedNegativeValue}.first!
                     negativePersonSet.remove(ntargetPerson)
                     
                     let ntargetIdx = ntargetPerson.idx
@@ -431,8 +466,8 @@ class DutchResultTest: XCTestCase {
                 plusRemainders += poweredInt(exponent: ptargetIdx)
                 
                 
-                if positivesDic[targetAmt]!.count == 0 {
-                    positivesDic[targetAmt] = nil
+                if positivesDic[targetPositiveAmt]!.count == 0 {
+                    positivesDic[targetPositiveAmt] = nil
                 }
                 
                 // update  NegativeCandidates using negativesDic
@@ -445,44 +480,169 @@ class DutchResultTest: XCTestCase {
             }
         }
         
-        
-        // MARK: - n : n (not implemented Yet.. )
-        print("in the end of 1:n , resultTuples:")
-        
-        for eachTuple in resultTuples {
-            print("from idx: \(eachTuple.from), to idx: \(eachTuple.to), amt: \(eachTuple.amount)")
-        }
-        print("positivesDic: \(positivesDic)")
-        print("negativesDic: \(negativesDic)")
-        
-        for eachPerson in positivePersonSet {
-            print("person idx: \(eachPerson.idx), amt: \(eachPerson.spentAmount)")
-        }
-        
-        for eachPerson in negativePersonSet {
-            print("person idx: \(eachPerson.idx), amt: \(eachPerson.spentAmount)")
-        }
-
         numOfPlusPeople = positivePersonSet.count
         numOfMinusPeople = negativePersonSet.count
-        print("numOfPositives: \(numOfPlusPeople)") // 7
-        print("numOfNegatives: \(numOfMinusPeople)") // 4
+        
+        
+        
+        // Printing
+        print("\n\nin the end of 1:n")
+        
+        print("resultTuples: ")
+        for eachTuple in resultTuples.sorted(by: { $0.from < $1.from }) {
+            print("from idx: \(eachTuple.from), to idx: \(eachTuple.to), amt: \(eachTuple.amount)")
+        }
+
+
+        print("\n\nremainedPeople: ")
+//        print("positivesDic: \(positivesDic)")
+        
+        for eachPerson in positivePersonSet.sorted(by: { $0.idx < $1.idx }) {
+            print("person idx: \(eachPerson.idx), amt: \(eachPerson.spentAmount)")
+        }
+        print("\nnumOfPositives: \(numOfPlusPeople)") // 7
+//        print("\nnegativesDic: \(negativesDic)")
+        
+        for eachPerson in negativePersonSet.sorted(by: { $0.idx < $1.idx }) {
+            print("person idx: \(eachPerson.idx), amt: \(eachPerson.spentAmount)")
+        }
+        print("\nnumOfNegatives: \(numOfMinusPeople)") // 4
         
 
         printBin(target: plusRemainders)
         printBin(target: minusRemainders, isPositive: false)
-        
-//  MARK: - 여기까지 정상 작동 확인함. !!! 이제.. n:n 처리하기!
-        
+        // Printing
         
         
         
+        //  MARK: - 여기까지 정상 작동 확인함. (2번 확인함..) !!! 이제.. n:n 처리하기!
+        
+        
+        // MARK: - n : n (not implemented Yet.. )
+        
+//        Duplication Check 는 num1 & num2 == 0 이면 겹치는 1 이 없음.
+        
+        // 사용할 변수들:
+        // positivesDic, negativesDic ( [Int: [Idx]] )
+        // positivePersonSet, negativePersonSet Set<PersonStruct> , (struct: spentAmount, Idx)
+        // numOfPlusPeople, numOfMinusPeople,
+        // plusRemainders, minusRemainders ( Int numbers (Binary)
+        
+        // 사용할 함수들:
+        // Combination 을 만들어줄 함수.
+        // Duplication Check
+        
+        // TODO:
+        // Combination 을 양쪽에서 번갈아 만들어가며 비교.
+        // 만약 어떤 값이라도 매치될 경우, plusRemainders, minusRemainders 와 비교하여 사용된 값이면 해당 값 제외
+        // 이미 사용되지 않은 값이면 Combination 에 사용될 Var, plusRemainders, minusRemainders Update,
+        //
+        
+        // 만들어질 변수
+        // positiveCombinations: [Int: [Idx]], (idx: binary Int)
+        // negativeCombinations: [Int: [Idx]], (idx: binary Int)
+        
+        var positiveCombinations = [Amt: [BinIndex]]()
+        var negativeCombinations = [Amt: [BinIndex]]()
+        
+        
+        for (amt, idx) in positivesDic {
+            positiveCombinations[amt] = idx
+
+        }
+        
+        for (amt, idx) in negativesDic {
+            negativeCombinations[amt] = idx
+        }
+        
+
+        var numToPickForCombination = 2
+        var resultBinIndices = [(from: BinIndex, to: BinIndex)]()
+        bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
+            
+            var availablePlusPeople = Array(positivePersonSet)
+            var availableMinusPeople = Array(negativePersonSet)
+            
+            let higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
+            
+            smallerLoop: while (numToPickForCombination <= higherNumOfPeople) {
+               
+                // make comb of plusPeople first ( (positive) 1:n (negative) executed before)
+                if numOfPlusPeople >= numToPickForCombination {
+                    
+                    var negativeAmtTargets = [Amt]()
+                    for (amt, idxes) in negativeCombinations {
+                        let amtsArr = Array(repeating: amt, count: idxes.count)
+                        negativeAmtTargets += amtsArr
+                    }
+                    // make combinations of positive people
+                    let ret = somefunc(numToPick: numToPickForCombination, candidatesDic: positivesDic, targetArr: negativeAmtTargets)
+                    
+                    let unmatchedCandidatesComb = ret.unmatchedResults // [Amt : [BinIndex]]
+                    let matchedCandidatesComb = ret.matchedResults //  [Amt : [BinIndex]]
+                    let remainedCandidates = ret.remainedCandidates
+                    let matchedTargets = ret.matchedTargets //  [Amt]
+                    
+                    // handle unmatchedCandidatesComb
+                    for (amt, binIdx) in unmatchedCandidatesComb {
+                        if positiveCombinations[amt] != nil {
+                            for eachBinIdx in binIdx {
+                                positiveCombinations[amt]!.append(eachBinIdx)
+                            }
+                        } else {
+                            positiveCombinations[amt] = binIdx
+                        }
+                    }
+                    
+                    // update positivesDic with latest Version
+                    positivesDic = remainedCandidates
+                    
+                    //  match ( matchedCandidatesComb with matchedTargets)
+                    for matchedTarget in matchedTargets.sorted(by: { $0 < $1 }) {
+                        // 둘 갯수에 차이가 있을 수 있음.
+                        guard let positiveBinIndices = matchedCandidatesComb[matchedTarget],
+                              let negativeBinIndices = negativeCombinations[matchedTarget] else { fatalError() }
+                        
+                        let numOfMatchedTargets = min(positiveBinIndices.count, negativeBinIndices.count)
+                        for idx in 0 ..< numOfMatchedTargets {
+                            resultBinIndices.append((from: negativeBinIndices[idx], to: positiveBinIndices[idx]))
+                        }
+                        // 갯수만큼만 ResultBinInDices 에 담기.
+                    }
+                }
+                
+                
+                // TODO: Repeat same process for negative People
+                // TODO: Before that, review if any missing part exist.
+                
+                if numOfMinusPeople >= numToPickForCombination {
+                    var positiveAmtTargets = [Amt]()
+                    for (amt, idxes) in positiveCombinations {
+                        let amtsArr = Array(repeating: amt, count: idxes.count)
+                        positiveAmtTargets += amtsArr
+                    }
+                     
+                    let (unmatchedResults, matchedResults, remainedCandidates, matchedTargets) = somefunc(numToPick: numToPickForCombination, candidatesDic: negativesDic, targetArr: positiveAmtTargets)
+                    
+                }
+                    
+            numToPickForCombination += 1
+                
+            }
+            
+        }
+        
+        // TODO: update ResultTuple using resultBinIndices
+
         
         
         
         
         
         
+        
+        
+        print("end of n:n operation \n\n")
         
         // MARK: - 하나 남았을 때 처리
         
@@ -544,14 +704,39 @@ class DutchResultTest: XCTestCase {
         return combos(elements: ArraySlice(elements), k: k)
     }
         
-    //return [value: [indexOfSmallerNums]]
+    /// [1,2,3,4,5] -> [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5], [3, 4], [3, 5], [4, 5]]
+//    func combosWithoutDuplication<T: Hashable>(elements: Array<T>, k: Int) -> [[T]] {
+    func combosWithoutDuplication(numOfElements: Int, numToPick: Int) -> [[Int]] {
+        
+        var elements = Array(repeating: 0, count: numOfElements)
+        
+        for idx in 0 ..< numOfElements {
+            elements[idx] = idx
+        }
+        
+        let comboResult = combos(elements: ArraySlice(elements), k: numToPick)
+        
+        var ret = [[Int]]()
+        for eachArr in comboResult {
+            let set = Set(eachArr)
+            if set.count == numToPick {
+                ret.append(eachArr)
+            }
+        }
+        
+        print("combos flag, ret: \(ret)")
+        return ret
+    }
+    
     func createCombination(using array: [Int], numToPick: Int) -> [Int: [Int]] {
         
 // arr = [0,1,2, ... array.count-1]
         var arr = Array(repeating: 0, count: array.count)
+        
         for (idx, _) in array.enumerated() {
             arr[idx] = idx
         }
+//        var arr = array
         
         if arr.count < numToPick { return [:] }
         
@@ -567,15 +752,25 @@ class DutchResultTest: XCTestCase {
             for eachIndex in eachCombo {
                 unitResult += array[eachIndex]
             }
-//            print("unit result: \(unitResult), eachCombo: \(eachCombo)")
             result[unitResult] = eachCombo
         }
         
 
-        
-        
-//        print("result22 : \(result)")
         return result
+    }
+    
+    func test_createCombination() {
+//        let arr = [1,2,3,4,5]
+//        let ret = createCombination(using: arr, numToPick: 2)
+//        let ret = combosWithoutDuplication(elements: arr, k: 2)
+        let ret = combosWithoutDuplication(numOfElements: 5, numToPick: 2)
+        print("combination test, ret: \(ret)")
+        
+        for a in ret.sorted { $0.first! < $1.first!} {
+            print("result: \(a)")
+        }
+        
+        XCTAssertNotEqual(ret, [[]])
     }
     
     func convertActualNums(sourceArray: [Int], target: [Int: [String]]) -> [Int: String] {
@@ -599,74 +794,6 @@ class DutchResultTest: XCTestCase {
 
 
 
-
-//newPersonDetails: [(name: "a2", spentAmount: 25),
-//                   (name: "a4", spentAmount: 4),
-//                   (name: "a9", spentAmount: 17),
-//                   (name: "a10", spentAmount: 7),
-//                   (name: "a11", spentAmount: 14),
-//                   (name: "b1", spentAmount: -54),
-//                   (name: "b2", spentAmount: -13)]
-//
-//newPositiveDic: [4: ["a4"],
-//                 17: ["a9"],
-//                 25: ["a2"],
-//                 7: ["a10"],
-//                 14: ["a11"],
-//                 0: ["a8"]]
-//
-//newNegativeDic: [-54: ["b1"],
-//                  -13: ["b2"]]
-
-
-
-
-
-//newPersonDetails: [
-//(name: "a2", spentAmount: 25),
-//(name: "a4", spentAmount: 4),
-//(name: "a9", spentAmount: 17),
-//(name: "a10", spentAmount: 7),
-//(name: "a11", spentAmount: 14),
-//(name: "a12", spentAmount: 7),
-//(name: "b1", spentAmount: -54),
-//(name: "b2", spentAmount: -13),
-//(name: "b8", spentAmount: -5),
-//(name: "b9", spentAmount: -2)]
-
-
-//newPositiveDic:
-//[4: ["a4"],
-//17: ["a9"],
-//14: ["a11"],
-//7: ["a10", "a12"],
-//25: ["a2"]]
-
-//newNegativeDic:[
-//-54: ["b1"],
-//-13: ["b2"],
-//  -5: ["b8"],
-//  -2: ["b9"]]
-
-
-
-
-
-//newPositiveDic: [
-//    14: ["a11"],
-//    4: ["a4"],
-//    17: ["a9"],
-//    7: ["a10", "a12"],
-//    6: ["a13", "a12"],
-//    25: ["a2"]]
-//
-//newNegativeDic: [
-//    -13: ["b2"],
-//     -54: ["b1"],
-//     -2: ["b9", "b11"],
-//     -10: ["b10"],
-//     -5: ["b8"]]
-
 extension DutchResultTest {
     func convertResult(matchedIndexes:[Int], smallerNums: [Int], negativesDic: [Int: [String]]) -> [Int: String]{
 
@@ -688,541 +815,33 @@ extension DutchResultTest {
         }
     }
     
-    func convertResult2(source: [Int], indexes: [Int]) -> [Int]{
-//        return []
+    func returnArrayOfValues(of source: [Int], indexes: [Int]) -> [Int]{
+        
         var result = [Int]()
         for index in indexes {
             result.append(source[index])
         }
         return result
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-extension DutchResultTest {
     
+    func hasOneElement<T: Hashable>(dic: [T:[T]], input: T) -> Bool? {
+//        if dic[input
+        if dic[input] != nil {
+            return dic[input]!.count == 1
+        } else {
+            return nil
+        }
+    }
     
-//    func test_fromTheTop_duplicate() {
-//
-//        //        typealias PersonTuple = (name: String, spentAmount: Int)
-//        //        typealias ResultTuple = (from: String, to: String, amount: Int)
-//
-//        var personDetails: [PersonTuple] = [
-//            ("a1", 1), ("a2", 25), ("a3", 7), ("a4", 4),
-//            ("a5", 7), ("a6", 5), ("a7", 2), ("a8", 0),
-//            ("a9", 17), ("a10", 7), ("a11", 14),("a12", 7),("a13", 6),("a14", 6),
-//
-//            ("b1", -54), ("b2", -13), ("b3", -2), ("b4", -1),
-//            ("b5", -5), ("b6", -7),("b7", -7),("b8", -5),
-//            ("b9", -2),("b10", -10),("b11", -2) ]
-//
-//        personDetails = personDetails.filter { $0.spentAmount != 0 }
-//
-//        var positiveTuples = [PersonTuple]()
-//        var negativeTuples = [PersonTuple]()
-//        var resultTuples = [ResultTuple]()
-//
-//
-//
-//        for tup in personDetails {
-//            if tup.spentAmount >= 0 {
-//                positiveTuples.append(tup)
-//            } else {
-//                negativeTuples.append(tup)
-//            }
-//        }
-//
-//        // --------------------------------Test----------------------------- //
-//        let positiveSum = positiveTuples.map { $0.spentAmount}.reduce(0, +)
-//        let negativeSum = negativeTuples.map { $0.spentAmount }.reduce(0, +)
-//        XCTAssertEqual(positiveSum, -negativeSum)
-//        // ----------------------------------------------------------------- //
-//
-//
-//        // MARK: - Make Dictionary for both signs
-//        var positivesDic: [Int: [String]] = [:]
-//        var negativesDic: [Int: [String]] = [:]
-//
-//        for personTuple in positiveTuples {
-//            if positivesDic[personTuple.spentAmount] != nil {
-//                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                positivesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        for  personTuple in negativeTuples {
-//            if negativesDic[personTuple.spentAmount] != nil {
-//                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                negativesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        print("positivesDic: \(positivesDic)")
-//        print("negativesDic: \(negativesDic)")
-//
-//        // MARK: - Match 1 on 1 // Using Dynamic approach may reduce time complexity ..
-//
-//        var matchedPeopleName = Set<String>()
-//
-//        for (spentAmount, positivePersonNames) in positivesDic {
-//            print("flag 1, spentAmount: \(spentAmount)")
-//            if let validNegativeNames = negativesDic[-1 * spentAmount] {
-//                // MATCH
-//                print("flag 2, validNegativeNames: \(validNegativeNames)")
-//                for (idx, positivePersonName) in positivePersonNames.enumerated() {
-//                    if idx < validNegativeNames.count {
-//
-//                        print("flag 3, idx: \(idx), validNegativenames.count: \(validNegativeNames.count)")
-//                        resultTuples.append((from: validNegativeNames[idx], to: positivePersonName, amount: spentAmount))
-//                        matchedPeopleName.insert(validNegativeNames[idx])
-//                        matchedPeopleName.insert(positivePersonName)
-//                    }
-//                }
-//            }
-//        }
-//
-//        print("resultTuples: \(resultTuples)")
-//        XCTAssertNotEqual(resultTuples.count, 0)
-//
-//        // Match 1 on 1 후처리 ;; 추후 반드시 수정 필요.
-//        // create new personDetails
-//        var newPersonDetails = [PersonTuple]()
-//
-//        for eachPersonInfo in personDetails {
-//            if matchedPeopleName.contains(eachPersonInfo.name) == false {
-//                newPersonDetails.append(eachPersonInfo)
-//            }
-//        }
-//
-//        positivesDic = [:]
-//        negativesDic = [:]
-//
-//        positiveTuples = [PersonTuple]()
-//        negativeTuples = [PersonTuple]()
-//
-//        for tup in newPersonDetails {
-//            if tup.spentAmount > 0 {
-//                positiveTuples.append(tup)
-//            } else if tup.spentAmount < 0 {
-//                negativeTuples.append(tup)
-//            }
-//        }
-//
-//
-//        for personTuple in positiveTuples {
-//            if positivesDic[personTuple.spentAmount] != nil {
-//                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                positivesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        for  personTuple in negativeTuples {
-//            if negativesDic[personTuple.spentAmount] != nil {
-//                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                negativesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        print("newPersonDetails: \(newPersonDetails)\n")
-//        print("newPositiveDic: \(positivesDic)")
-//        print("newNegativeDic: \(negativesDic)")
-//
-//        // MARK: - 1: n
-//        print("Stage 2, Matching 1: n")
-//
-//        var negativeCandidates = [Int]()
-//        var positiveCandidates = [Int]()
-//
-//        for (amt, _) in negativesDic {
-//            negativeCandidates.append(-amt)
-//        }
-//
-//        for (amt, _) in positivesDic {
-//            positiveCandidates.append(amt)
-//        }
-//
-//        negativeCandidates.sort(by: >)  // [54, ... 2, 1, 1]
-//        positiveCandidates.sort(by: <) // [1,2,3, ... ]
-//
-//        for positiveCandidate in positiveCandidates {
-//            let target = positiveCandidate
-
-//            let negativeResultIndexes = combinationSum(candidates: negativeCandidates, target: target)
-
-////            let negativeResults = convert // Array of Values
-//            let negativesResults = convertResult2(source: negativeCandidates, indexes: negativeResultIndexes)
-//            if negativeResultIndexes != [] {
-//                // found pair
-//                let pPersonName = positivesDic[target]!.removeFirst()
-//
-//                for negativeValue in negativesResults {
-//                    var nPersonName: String
-//                    print("negativeValue: \(negativeValue)")
-//                    print("negativeCandidate: \(negativeCandidates)")
-//                    nPersonName = negativesDic[-negativeValue]!.removeFirst()
-//
-//                    if negativesDic[-negativeValue]!.count == 0 { negativesDic[-negativeValue] = nil }
-//
-//                    let resultTuple: (ResultTuple) = (from: nPersonName, to: pPersonName, amount: negativeValue)
-//                    resultTuples.append(resultTuple)
-//                    print("resultTuple: \(resultTuple)")
-//                }
-//                if positivesDic[target]!.count == 0 { positivesDic[target] = nil }
-//
-//
-//                // update negativesDic, NegativeCandidates,
-//                negativeCandidates = [Int]()
-//                for (amt, _) in negativesDic {
-//                    negativeCandidates.append(-amt)
-//                }
-//                negativeCandidates.sort(by: >)
-//
-//            }
-//        }
-//
-//
-//        // MARK: - n : n (not implemented Yet.. )
-//
-//
-//
-//        print("in the end, resultTuples: \(resultTuples)")
-//        print("positivesDic: \(positivesDic)")
-//        print("negativesDic: \(negativesDic)")
-//
-//
-//        // MARK: - 하나 남았을 때 처리
-//
-//        if negativesDic.count == 1, let lastNagativeElement = negativesDic.first, lastNagativeElement.value.count == 1 {
-//            let lastnName = lastNagativeElement.value[0]
-//            for (amt, names) in positivesDic {
-//                for name in names {
-//                    let tupleResult: (ResultTuple) = (from: lastnName, to: name, amount: amt)
-//                    resultTuples.append(tupleResult)
-//                }
-//                positivesDic[amt] = nil
-//            }
-//            let value = lastNagativeElement.key
-//            negativesDic[value] = nil
-//        }
-//
-//
-//        if positivesDic.count == 1, let lastPositiveElement = negativesDic.first,
-//           lastPositiveElement.value.count == 1 {
-//            let lastpName = lastPositiveElement.value[0]
-//            for (amt, names) in negativesDic {
-//                for name in names {
-//                    let resultTuple: (ResultTuple) = (from: name, to: lastpName, amount: -amt)
-//                    resultTuples.append(resultTuple)
-//                }
-//            }
-//            let value = lastPositiveElement.key
-//            positivesDic[value] = nil
-//        }
-//
-//        print("in the very end, resultTuples: \(resultTuples)")
-//        print("positivesDic: \(positivesDic), negativesDic: \(negativesDic)")
-//    }
-    
-//    func test_fromTheTop() {
-//
-//        //        typealias PersonTuple = (name: String, spentAmount: Int)
-//        //        typealias ResultTuple = (from: String, to: String, amount: Int)
-//
-//        var personDetails: [PersonTuple] = [
-//            ("a1", 1), ("a2", 25), ("a3", 7), ("a4", 4),
-//            ("a5", 7), ("a6", 5), ("a7", 2), ("a8", 0),
-//            ("a9", 17), ("a10", 7), ("a11", 14),("a12", 7),("a13", 6),("a12", 6),
-//
-//            ("b1", -54), ("b2", -13), ("b3", -2), ("b4", -1),
-//            ("b5", -5), ("b6", -7),("b7", -7),("b8", -5),
-//            ("b9", -2),("b10", -10),("b11", -2) ]
-//
-//        personDetails = personDetails.filter { $0.spentAmount != 0 }
-//
-//        var positiveTuples = [PersonTuple]()
-//        var negativeTuples = [PersonTuple]()
-//        var resultTuples = [ResultTuple]()
-//
-//
-//
-//        for tup in personDetails {
-//            if tup.spentAmount >= 0 {
-//                positiveTuples.append(tup)
-//            } else {
-//                negativeTuples.append(tup)
-//            }
-//        }
-//
-//        // --------------------------------Test----------------------------- //
-//        let positiveSum = positiveTuples.map { $0.spentAmount}.reduce(0, +)
-//        let negativeSum = negativeTuples.map { $0.spentAmount }.reduce(0, +)
-//        XCTAssertEqual(positiveSum, -negativeSum)
-//        // ----------------------------------------------------------------- //
-//
-//
-//        // MARK: - Make Dictionary for both signs
-//        var positivesDic: [Int: [String]] = [:]
-//        var negativesDic: [Int: [String]] = [:]
-//
-//        for personTuple in positiveTuples {
-//            if positivesDic[personTuple.spentAmount] != nil {
-//                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                positivesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        for  personTuple in negativeTuples {
-//            if negativesDic[personTuple.spentAmount] != nil {
-//                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                negativesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        print("positivesDic: \(positivesDic)")
-//        print("negativesDic: \(negativesDic)")
-//
-//        // MARK: - Match 1 on 1 // Using Dynamic approach may reduce time complexity ..
-//
-//        var matchedPeopleName = Set<String>()
-//
-//        for (spentAmount, positivePersonNames) in positivesDic {
-//            print("flag 1, spentAmount: \(spentAmount)")
-//            if let validNegativeNames = negativesDic[-1 * spentAmount] {
-//                // MATCH
-//                print("flag 2, validNegativeNames: \(validNegativeNames)")
-//                for (idx, positivePersonName) in positivePersonNames.enumerated() {
-//                    if idx < validNegativeNames.count {
-//
-//                        print("flag 3, idx: \(idx), validNegativenames.count: \(validNegativeNames.count)")
-//                        resultTuples.append((from: validNegativeNames[idx], to: positivePersonName, amount: spentAmount))
-//                        matchedPeopleName.insert(validNegativeNames[idx])
-//                        matchedPeopleName.insert(positivePersonName)
-//                    }
-//                }
-//            }
-//        }
-//
-//        print("resultTuples: \(resultTuples)")
-//        XCTAssertNotEqual(resultTuples.count, 0)
-//
-//        // Match 1 on 1 후처리 ;; 추후 반드시 수정 필요.
-//        // create new personDetails
-//        var newPersonDetails = [PersonTuple]()
-//
-//        for eachPersonInfo in personDetails {
-//            if matchedPeopleName.contains(eachPersonInfo.name) == false {
-//                newPersonDetails.append(eachPersonInfo)
-//            }
-//        }
-//
-//        positivesDic = [:]
-//        negativesDic = [:]
-//
-//        positiveTuples = [PersonTuple]()
-//        negativeTuples = [PersonTuple]()
-//
-//        for tup in newPersonDetails {
-//            if tup.spentAmount > 0 {
-//                positiveTuples.append(tup)
-//            } else if tup.spentAmount < 0 {
-//                negativeTuples.append(tup)
-//            }
-//        }
-//
-//
-//        for personTuple in positiveTuples {
-//            if positivesDic[personTuple.spentAmount] != nil {
-//                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                positivesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        for  personTuple in negativeTuples {
-//            if negativesDic[personTuple.spentAmount] != nil {
-//                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
-//
-//            } else {
-//                negativesDic[personTuple.spentAmount] = [personTuple.name]
-//            }
-//        }
-//
-//        print("newPersonDetails: \(newPersonDetails)\n")
-//        print("newPositiveDic: \(positivesDic)")
-//        print("newNegativeDic: \(negativesDic)")
-//
-//        // MARK: - 1: n
-//        print("Stage 2, Matching 1: n")
-//
-//
-//
-//
-//
-//
-//        /*
-//
-//        // FIXME: 후처리 및 중간단계 실시간 처리. How ?? 더 큰 Loop 안에 가두기 ?
-//    positiveLoop: for (pValue, pPeople) in positivesDic {
-//        negativeLoop: for (nValue, nPeople) in negativesDic {
-//            print("flag 7, negativesDic: \(negativesDic)")
-//
-//            var negativeValueSet = Set<Int>()
-//
-//            for (nvalue, _) in negativesDic {
-//                negativeValueSet.insert(nvalue)
-//            }
-//
-//            var allNums = [Int]()
-//
-//            for (key, _ ) in negativesDic {
-//                allNums.append(key)
-//            }
-//
-//            allNums = allNums.sorted(by: >)
-//
-//
-//            if pValue > -nValue {
-//                let diff = pValue + nValue
-//
-//                if negativeValueSet.contains(-diff) {
-//                    if -diff != nValue { // 중복 값 처리.
-//                    resultTuples.append((from: nPeople.first!,to: pPeople.first!, amount: -nValue))
-//                    let negativePerson = negativesDic[-diff]!.first!
-//                    resultTuples.append((from: negativePerson, to: pPeople.first!, amount: diff))
-//                        print("found matched ones!")
-//                    print("matched ! \(nPeople.first!), \(pPeople.first!), amount: \(-nValue)")
-//                    print("matched ! \(negativePerson), \(pPeople.first!), amount: \(diff)")
-//                    // TODO: 매칭된 것들 List 에서 지워야함
-//                    continue positiveLoop
-//                    }
-//                } else {
-//                    // get ingredients for combinations
-//                    var smallerNums = [Int]()
-//                    print("flag 5 start to make smallerNums, pValue: \(pValue), nValue: \(nValue), diff: \(diff) ")
-//                    makingSmaller: for allNum in allNums {
-//                        print("flag 6 diff: \(diff), -allNum: \(-allNum)")
-//                        if diff > -allNum && allNum != nValue {
-//                            smallerNums.append(allNum)
-//                        } else if diff < -allNum { break makingSmaller }
-//                    }
-//
-//
-//                    // TODO: 2 ~ n 명까지 골라주기.
-//                    // n 범위는 어디까지여? 중복도 허용해야함 ?? 응.. 반드시 허용해야함.
-//
-//                    let createdComb = createCombination(using: smallerNums, numToPick: 2)
-//
-//                    if createdComb == [:] { continue negativeLoop }
-//
-//                    for (key, matchedIndexes) in createdComb {
-//                        if key == -diff {
-//
-//                            let resultTuple1 = (from: nPeople.first!, to: pPeople.first!, amount: -nValue)
-//
-//                            removePersonFromDic(amt: nValue, negativesDic: &negativesDic)
-//
-//                            resultTuples.append(resultTuple1)
-//                            // TODO: n 개의 elements 에 대해 사용할 수 있는 function 만들기.
-//
-//                            let result = convertResult(matchedIndexes: matchedIndexes, smallerNums: smallerNums, negativesDic: negativesDic)
-//
-//                            print("found matched ones! ")
-//                            print("unitResult: \(resultTuple1)")
-//                            for (amt, value) in result {
-//                                let unitResult: ResultTuple = (from:value , to: pPeople.first!, amount:-amt )
-//                                print("unitResult: \(unitResult)")
-//                                resultTuples.append(unitResult)
-//
-//                                removePersonFromDic(amt: amt, negativesDic: &negativesDic)
-//                            }
-//                            continue positiveLoop
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//        print("\n\n\n\n")
-//        print("printing results ")
-//        for eachResult in resultTuples {
-//            print(eachResult)
-//        }
-//        print("remained Minuses: \(negativesDic)")
-//
-//
-//    }
-//        */
-//
-//
-//        let comboTests = combos(elements: [1,2,3,4,5], k: 2)
-//        print("comboTests: \(comboTests)")
-//        XCTAssertNotEqual(comboTests.count, 0)
-//
-//    }
     
     
 }
 
 
-//extension DutchResultTest {
-//    func combinationSum(candidates: [Int], target: Int) -> [[Int]] {
-//        var results = [[Int]]()
-//        var comb = LinkedList
-//
-//        var counter = [Int:Int]()
-//
-//        for candidate in candidates {
-//            if counter[candidate] != nil {
-//                counter[candidate] = counter[candidate]! + 1
-//            } else {
-//                counter[candidate] = 1
-//            }
-//        }
-//
-//        // list of (num, count) tuple ??
-//        var counterList = [(Int,Int)]() // Type 이거 아닐 수도 있음
-//        counter.forEach { (key, value) in
-////            counterList
-//            counterList.append((key, value))
-//        }
-//
-//        backtrack(comb, target, 0, counterList, results)
-//        return results
-//
-//    }
-//
-//    func backtrack(comb: LinkedList, remain: Int, curr: Int, )
-//}
-
 extension DutchResultTest {
-    // sortedCandidates // return Indexes of candidates in [Int]
-    func combinationSum(candidates: [Int], target: Int) -> [Int] {
+    // sortedCandidates
+    /// return Indexes of candidates in [Int]
+    func makeTargetNumUsingCombination(of candidates: [Int], target: Int) -> [Int] {
         
         let sortedCandidates = candidates.sorted(by: >)
         
@@ -1245,9 +864,10 @@ extension DutchResultTest {
                     initialDigitIdx += 1
                     continue bigLoop
                 }
-                
-                let result = getResult(target: sortedCandidates, indexes: selectedIndexes)
+//                getResult(target: [Int], indexes: [Int]) -> Int
+                let result = returnSum(of: sortedCandidates, in: selectedIndexes)
                 print("flag 2, result: \(result)")
+                
                 // found matched indices
                 if result == target {
                     print("flag 3, return : \(selectedIndexes)")
@@ -1269,30 +889,139 @@ extension DutchResultTest {
                     selectedIndexes.removeLast()
                     continue digitLoop
                 }
-                
             }
             
             currentIndex = selectedIndexes[0] + 1
             selectedIndexes = [currentIndex]
             initialDigitIdx += 1
             print("flag 3, selectedIndexes: \(selectedIndexes)")
-            
         }
+        
         // no match
         return []
+    }
+    
+    func somefunc(numToPick: Int, candidatesDic: [Amt: [Idx]], targetArr: [Amt]) -> // match 된 것들은 어디서 받아?
+    (unmatchedResults: [Amt: [BinIndex]], matchedResults: [Amt: [BinIndex]],remainedCandidates: [Amt: [Idx]], matchedTargets: [Amt]) {
+        
+        var candidates = candidatesDic
+        var targetArr = targetArr
+        var matchedResults = [Amt:[BinIndex]]()
+        
+        var newResults = [Amt: [BinIndex]]()
+        var matchedTargets = [Amt]()
+        // 실시간으로 하나씩만 업데이트.
+        var allCandidates = [(Amt, Idx)]()
+        
+        for (amt, numOfIdx) in candidates.sorted(by: {$0.key < $1.key }) {
+            for idx in 0 ..< numOfIdx.count {
+                allCandidates.append((amt, numOfIdx[idx]))
+            }
+        }
+        
+        var length = candidates.map { $0.value.count }.reduce(0, +) // num of all candidates
+        
+        let combinations = combosWithoutDuplication(numOfElements: length, numToPick: numToPick) // length 개의 Int Arr 로 comb 생성 [1,2,3..]
+        
+        for eachCombo in combinations {
+            let valueOnlyCandidates = allCandidates.map { $0.0 } // $0.amt
+            let targetArrInSet = Set(targetArr)
+            let eachSumOfCombo = returnSum(of: valueOnlyCandidates, in: eachCombo)
+            
+            let selectedCandidateValues = returnArrayOfValues(of: valueOnlyCandidates, indexes: eachCombo)
+            
+            //TODO: append matchedResults
+            if targetArrInSet.contains(eachSumOfCombo) {
+                // matched!
+                for selectedCandidateValue in selectedCandidateValues {
+                    
+                    if candidates[selectedCandidateValue]!.count == 1 {
+                        candidates[selectedCandidateValue] = nil
+                    } else {
+                        candidates[selectedCandidateValue]!.removeFirst()
+                    }
+                    
+                    let idx = valueOnlyCandidates.firstIndex(of: selectedCandidateValue)
+                    allCandidates.remove(at: idx!)
+                }
+                
+                guard let targetIdx = targetArr.firstIndex(of: eachSumOfCombo) else { fatalError() }
+                let matchedTarget = targetArr.remove(at: targetIdx)
+                matchedTargets.append( matchedTarget )
+                
+                var matcedhIndices = [Idx]()
+                for eachComboIdx in eachCombo {
+                    let candidateIdx = allCandidates[eachComboIdx].1
+                    matcedhIndices.append(candidateIdx)
+                }
+                
+                let binaryIndices = createBin(using: matcedhIndices)
+                if matchedResults[eachSumOfCombo] != nil {
+                    matchedResults[eachSumOfCombo]!.append(binaryIndices)
+                } else {
+                    matchedResults[eachSumOfCombo] = [binaryIndices]
+                }
+            }
+            
+            // target not found
+            else {
+                // append selectedCandidates into newResult
+                var sumOfSelectedIdx: Idx = 0
+                                
+                for comboIdx in eachCombo {
+                    let candidate = allCandidates[comboIdx]
+                    sumOfSelectedIdx += candidate.1
+                }
+
+                let selectedBinIndex: BinIndex = poweredInt(exponent: sumOfSelectedIdx) // candidate.idx
+                
+                if newResults[eachSumOfCombo] != nil {
+                    newResults[eachSumOfCombo]!.append(selectedBinIndex)
+                } else {
+                    newResults[eachSumOfCombo] = [selectedBinIndex]
+                }
+            }
+        }
+        
+        // updateNewResult after comparing with candidates (using bin operators)
+        
+        var unusedBinarySum = Set<Idx>()
+        
+        for (_, indices) in candidates {
+            for idx in indices {
+                unusedBinarySum.insert(idx)
+            }
+        }
+                
+        for (amt, resultBin) in newResults {
+            for eachResultBin in resultBin {
+                let usedIdxes = returnIdxSet(using: eachResultBin)
+                let usedIdxesSet = Set(usedIdxes)
+                let subtraction = usedIdxesSet.subtracting(unusedBinarySum)
+                if subtraction.count != 0 {
+                    newResults[amt] = nil
+                }
+            }
+        }
+
+        // newResults: used: 1 [Amt: [BinIndex]]
+        
+
+        return (unmatchedResults: newResults, matchedResults: matchedResults,remainedCandidates: candidates, matchedTargets: matchedTargets)
     }
 
     
     func test_combinationSum() {
-        // Index 를 날리는구나 ?
+        
 //        let result = combinationSum(candidates: [1,2,3,4,5,6], target: 6)
-        let result = combinationSum(candidates: [3,3], target: 6)
+        let result = makeTargetNumUsingCombination(of : [3,3], target: 6)
         print("final result: \(result)")
         XCTAssertNotEqual(result, [10])
 //        XCTAssertEqual(result, [0])
     }
     
-    func getResult(target: [Int], indexes: [Int]) -> Int {
+    func returnSum(of target: [Int], in indexes: [Int]) -> Int {
+        
         var result = 0
         for index in indexes {
             result += target[index]
@@ -1301,28 +1030,7 @@ extension DutchResultTest {
     }
     
     
-    func test_combination() {
-        let results = combinationSum(candidates: [1,1,2,3,1,4,2,5], target: 5)
-        
-    }
-    
     func backtrack(selectedIndexes: [Int], currentIndex: Int, candidates: [Int], target: Int ) {
         
     }
 }
-
-
-
-
-//in the end, resultTuples: [
-//    (from: "b5", to: "a6", amount: 5),
-//    (from: "b4", to: "a1", amount: 1),
-//    (from: "b3", to: "a7", amount: 2),
-//    (from: "b6", to: "a3", amount: 7),
-//    (from: "b7", to: "a5", amount: 7),
-//
-//    (from: "b8", to: "a10", amount: 5),
-//    (from: "b9", to: "a10", amount: 2),
-//    (from: "b2", to: "a2", amount: 13),
-//    (from: "b10", to: "a2", amount: 10),
-//    (from: "b11", to: "a2", amount: 2)]
