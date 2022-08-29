@@ -34,6 +34,28 @@ class DutchResultTest: XCTestCase {
         return Int(pow(Double(base), Double(exponent)))
     }
     
+    func getArrCountFromDictionary<T: Hashable>(dic: [T: [T]]) -> Int {
+        var amt = 0
+        for (_, valueArr) in dic {
+            amt += valueArr.count
+        }
+        return amt
+    }
+    
+    func returnOppositeSignOfArr(arr: [Int]) -> [Int] {
+        var ret = arr
+        for idx in 0 ..< ret.count {
+            ret[idx] = -ret[idx]
+        }
+        return ret
+    }
+    
+    func printDictionary<T: Hashable>(dic: [T: [Any]]) {
+        for (key, value) in dic {
+            print("key: \(key), value: \(value))")
+        }
+    }
+    
     func printBin(target: Int, isPositive: Bool = true) {
         let toPrint = String(target, radix: 2)
         let additionalMsg = isPositive ? "plusRemainders:" : "minusRemainders:"
@@ -546,9 +568,9 @@ class DutchResultTest: XCTestCase {
         var negativeCombinations = [Amt: [BinIndex]]()
         
         
+        // set for single element
         for (amt, idx) in positivesDic {
             positiveCombinations[amt] = idx
-
         }
         
         for (amt, idx) in negativesDic {
@@ -558,12 +580,15 @@ class DutchResultTest: XCTestCase {
 
         var numToPickForCombination = 2
         var resultBinIndices = [(from: BinIndex, to: BinIndex)]()
-        bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
+        
+        var testCount = 0
+//        bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
+        bigLoop: while(testCount < 10) {
+            testCount += 1
+//            var availablePlusPeople = Array(positivePersonSet)
+//            var availableMinusPeople = Array(negativePersonSet)
             
-            var availablePlusPeople = Array(positivePersonSet)
-            var availableMinusPeople = Array(negativePersonSet)
-            
-            let higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
+            var higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
             
             smallerLoop: while (numToPickForCombination <= higherNumOfPeople) {
                
@@ -575,13 +600,17 @@ class DutchResultTest: XCTestCase {
                         let amtsArr = Array(repeating: amt, count: idxes.count)
                         negativeAmtTargets += amtsArr
                     }
-                    // make combinations of positive people
+                    
+                    // make combinations of positive people using candidates, numToPick and compare to targets
+                    // then, return unmatched, matched results, remainedCandidates, and matchedTargets
                     let ret = somefunc(numToPick: numToPickForCombination, candidatesDic: positivesDic, targetArr: negativeAmtTargets)
                     
                     let unmatchedCandidatesComb = ret.unmatchedResults // [Amt : [BinIndex]]
+                    let remainedCandidates = ret.remainedCandidates //  [Amt : [Idx]]
                     let matchedCandidatesComb = ret.matchedResults //  [Amt : [BinIndex]]
-                    let remainedCandidates = ret.remainedCandidates
                     let matchedTargets = ret.matchedTargets //  [Amt]
+                    
+                    print("unmatchedCandidatesComb: \(unmatchedCandidatesComb)\nremainedCandidates: \(remainedCandidates)\nmatchedCandidatesComb: \(matchedCandidatesComb)\nmatchedTargets: \(matchedTargets)")
                     
                     // handle unmatchedCandidatesComb
                     for (amt, binIdx) in unmatchedCandidatesComb {
@@ -594,39 +623,52 @@ class DutchResultTest: XCTestCase {
                         }
                     }
                     
-                    // update positivesDic with latest Version
+                    // update positivesDic with latest Version ( remainedCandidates)
                     positivesDic = remainedCandidates
+//                    print("updatedPositivesDic: \(positivesDic)")
+                    printDictionary(dic: positivesDic)
+                    numOfPlusPeople = getArrCountFromDictionary(dic: positivesDic)
                     
-                    //  match ( matchedCandidatesComb with matchedTargets)
+                    
+                    //  match ( matchedCandidatesComb, and matchedTargets)
                     for matchedTarget in matchedTargets.sorted(by: { $0 < $1 }) {
-                        // 둘 갯수에 차이가 있을 수 있음.
-                        guard let positiveBinIndices = matchedCandidatesComb[matchedTarget],
+                        
+                        // 둘 갯수에 차이가 있을 수 있음.  두 BinIndices 중 적은 갯수만큼만 ResultBinInDices 에 담기.
+                        guard let positiveBinIndices = matchedCandidatesComb[matchedTarget], // [BinIndex]
                               let negativeBinIndices = negativeCombinations[matchedTarget] else { fatalError() }
                         
                         let numOfMatchedTargets = min(positiveBinIndices.count, negativeBinIndices.count)
+                        
                         for idx in 0 ..< numOfMatchedTargets {
                             resultBinIndices.append((from: negativeBinIndices[idx], to: positiveBinIndices[idx]))
+                            
+                            if negativeCombinations[matchedTarget]!.count > 1 {
+                                negativeCombinations[matchedTarget]!.removeFirst()
+                            } else {
+                                negativeCombinations[matchedTarget] = nil
+                            }
                         }
-                        // 갯수만큼만 ResultBinInDices 에 담기.
+
                     }
                 }
-                
                 
                 // TODO: Repeat same process for negative People
                 // TODO: Before that, review if any missing part exist.
                 
-                if numOfMinusPeople >= numToPickForCombination {
-                    var positiveAmtTargets = [Amt]()
-                    for (amt, idxes) in positiveCombinations {
-                        let amtsArr = Array(repeating: amt, count: idxes.count)
-                        positiveAmtTargets += amtsArr
-                    }
-                     
-                    let (unmatchedResults, matchedResults, remainedCandidates, matchedTargets) = somefunc(numToPick: numToPickForCombination, candidatesDic: negativesDic, targetArr: positiveAmtTargets)
-                    
-                }
+//                if numOfMinusPeople >= numToPickForCombination {
+//                    var positiveAmtTargets = [Amt]()
+//                    for (amt, idxes) in positiveCombinations {
+//                        let amtsArr = Array(repeating: amt, count: idxes.count)
+//                        positiveAmtTargets += amtsArr
+//                    }
+//
+//                    let (unmatchedResults, matchedResults, remainedCandidates, matchedTargets) = somefunc(numToPick: numToPickForCombination, candidatesDic: negativesDic, targetArr: positiveAmtTargets)
+//
+//                }
                     
             numToPickForCombination += 1
+                
+            higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
                 
             }
             
@@ -634,7 +676,7 @@ class DutchResultTest: XCTestCase {
         
         // TODO: update ResultTuple using resultBinIndices
 
-        
+            
         
         
         
@@ -724,7 +766,7 @@ class DutchResultTest: XCTestCase {
             }
         }
         
-        print("combos flag, ret: \(ret)")
+//        print("combos flag, ret: \(ret)")
         return ret
     }
     
@@ -901,11 +943,14 @@ extension DutchResultTest {
         return []
     }
     
-    func somefunc(numToPick: Int, candidatesDic: [Amt: [Idx]], targetArr: [Amt]) -> // match 된 것들은 어디서 받아?
+
+    func somefunc(numToPick: Int, candidatesDic: [Amt: [Idx]], targetArr: [Amt]) ->
     (unmatchedResults: [Amt: [BinIndex]], matchedResults: [Amt: [BinIndex]],remainedCandidates: [Amt: [Idx]], matchedTargets: [Amt]) {
+        print("someFunc flag 1, input: \nnumToPick: \(numToPick), \ncandidatesDic: \(candidatesDic), \ntargetArr: \(targetArr)\n\n")
         
         var candidates = candidatesDic
-        var targetArr = targetArr
+//        var targetArr = targetArr // convert sign
+        var targetArr = returnOppositeSignOfArr(arr: targetArr)
         var matchedResults = [Amt:[BinIndex]]()
         
         var newResults = [Amt: [BinIndex]]()
@@ -922,17 +967,20 @@ extension DutchResultTest {
         var length = candidates.map { $0.value.count }.reduce(0, +) // num of all candidates
         
         let combinations = combosWithoutDuplication(numOfElements: length, numToPick: numToPick) // length 개의 Int Arr 로 comb 생성 [1,2,3..]
-        
+        print("createdCombinations: \(combinations)")
         for eachCombo in combinations {
             let valueOnlyCandidates = allCandidates.map { $0.0 } // $0.amt
             let targetArrInSet = Set(targetArr)
+            // combination 은 항상 같지만, valueOnlyCandidates 는 줄어들 수 있음 ;; 어떡하지..??
+            print("eachCombo: \(eachCombo), valueOnlyCandidates: \(valueOnlyCandidates)")
             let eachSumOfCombo = returnSum(of: valueOnlyCandidates, in: eachCombo)
-            
+            print("eachSumOfCombo: \(eachSumOfCombo)")
             let selectedCandidateValues = returnArrayOfValues(of: valueOnlyCandidates, indexes: eachCombo)
-            
+            print("selectedCandidateValues: \(selectedCandidateValues)")
             //TODO: append matchedResults
             if targetArrInSet.contains(eachSumOfCombo) {
                 // matched!
+                print("matched! \(eachSumOfCombo)")
                 for selectedCandidateValue in selectedCandidateValues {
                     
                     if candidates[selectedCandidateValue]!.count == 1 {
@@ -1006,7 +1054,7 @@ extension DutchResultTest {
 
         // newResults: used: 1 [Amt: [BinIndex]]
         
-
+        print("someFunc flag 2, output: \nunmatchedResults: \(newResults), \nmatchedResults: \(matchedResults), \nremainedCandidates: \(candidates), \nmatchedTargets: \(matchedTargets)\n\n\n")
         return (unmatchedResults: newResults, matchedResults: matchedResults,remainedCandidates: candidates, matchedTargets: matchedTargets)
     }
 
