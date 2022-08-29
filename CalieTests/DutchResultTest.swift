@@ -33,6 +33,43 @@ class DutchResultTest: XCTestCase {
     func poweredInt(base: Int = 2, exponent: Int) -> Int {
         return Int(pow(Double(base), Double(exponent)))
     }
+//    [Amt : [BinIndex]]
+    func printBinIndexDictionary(dic: [Amt: [BinIndex]]) {
+        for (key, value) in dic {
+            let result = key
+            var idxes = [[Int]]()
+            for eachValue in value {
+//                let binStr = String(eachValue, radix: 2)
+//                print("amt: \(key), bin: \(binStr)")
+                let idxArr = convertBinIntoArr(using: eachValue)
+//                print(idxArr)
+                idxes.append(idxArr)
+            }
+            print("value: \(result), idxes: \(idxes)")
+        }
+    }
+    
+    func binIndexDictionaryStr(dic: [Amt: [BinIndex]]) -> String {
+        var resultStr = ""
+        for (key, value) in dic {
+            let result = key
+            var idxes = [[Int]]()
+            for eachValue in value {
+//                let binStr = String(eachValue, radix: 2)
+//                print("amt: \(key), bin: \(binStr)")
+                let idxArr = convertBinIntoArr(using: eachValue)
+//                print(idxArr)
+                idxes.append(idxArr)
+            }
+            let ret = "value: \(result), idxes: \(idxes)"
+            resultStr += ret + "\n"
+        }
+        
+        return resultStr
+    }
+    
+//    [Amt : [Idx]]
+    
     
     func getArrCountFromDictionary<T: Hashable>(dic: [T: [T]]) -> Int {
         var amt = 0
@@ -56,13 +93,23 @@ class DutchResultTest: XCTestCase {
         }
     }
     
+    func strCandidateDic<T: Hashable>(dic: [T: [Any]]) -> String {
+        var result = ""
+        for (key, value) in dic {
+            let ret = "key: \(key), value: \(value))"
+            result += ret + "\n"
+        }
+        return result
+        
+    }
+    
     func printBin(target: Int, isPositive: Bool = true) {
         let toPrint = String(target, radix: 2)
         let additionalMsg = isPositive ? "plusRemainders:" : "minusRemainders:"
         print(additionalMsg + " " + toPrint)
     }
     
-    func returnIdxSet(using binIdx: Int) -> [Int] {
+    func convertBinIntoArr(using binIdx: Int) -> [Int] {
         let binStr = String(binIdx, radix: 2)
         let length = binStr.count
         let startIdx = binStr.startIndex
@@ -78,7 +125,7 @@ class DutchResultTest: XCTestCase {
     }
     
     func test_idxSet() {
-        let test = returnIdxSet(using: 10)
+        let test = convertBinIntoArr(using: 10)
         print("idxSet test: \(test)")
         XCTAssertNotEqual(test, [])
     }
@@ -610,7 +657,7 @@ class DutchResultTest: XCTestCase {
                     let matchedCandidatesComb = ret.matchedResults //  [Amt : [BinIndex]]
                     let matchedTargets = ret.matchedTargets //  [Amt]
                     
-                    print("unmatchedCandidatesComb: \(unmatchedCandidatesComb)\nremainedCandidates: \(remainedCandidates)\nmatchedCandidatesComb: \(matchedCandidatesComb)\nmatchedTargets: \(matchedTargets)")
+//                    print("unmatchedCandidatesComb: \(unmatchedCandidatesComb)\nremainedCandidates: \(remainedCandidates)\nmatchedCandidatesComb: \(matchedCandidatesComb)\nmatchedTargets: \(matchedTargets)")
                     
                     // handle unmatchedCandidatesComb
                     for (amt, binIdx) in unmatchedCandidatesComb {
@@ -635,17 +682,17 @@ class DutchResultTest: XCTestCase {
                         
                         // 둘 갯수에 차이가 있을 수 있음.  두 BinIndices 중 적은 갯수만큼만 ResultBinInDices 에 담기.
                         guard let positiveBinIndices = matchedCandidatesComb[matchedTarget], // [BinIndex]
-                              let negativeBinIndices = negativeCombinations[matchedTarget] else { fatalError() }
+                              let negativeBinIndices = negativeCombinations[-matchedTarget] else { fatalError() }
                         
                         let numOfMatchedTargets = min(positiveBinIndices.count, negativeBinIndices.count)
                         
                         for idx in 0 ..< numOfMatchedTargets {
                             resultBinIndices.append((from: negativeBinIndices[idx], to: positiveBinIndices[idx]))
                             
-                            if negativeCombinations[matchedTarget]!.count > 1 {
-                                negativeCombinations[matchedTarget]!.removeFirst()
+                            if negativeCombinations[-matchedTarget]!.count > 1 {
+                                negativeCombinations[-matchedTarget]!.removeFirst()
                             } else {
-                                negativeCombinations[matchedTarget] = nil
+                                negativeCombinations[-matchedTarget] = nil
                             }
                         }
 
@@ -866,6 +913,17 @@ extension DutchResultTest {
         return result
     }
     
+    func returnArrayOfOptionalValues(of source: [Int?], indexes: [Int]) -> [Int]{
+        
+        var result = [Int]()
+        for index in indexes {
+            result.append(source[index]!)
+        }
+        return result
+    }
+    
+    
+    
     func hasOneElement<T: Hashable>(dic: [T:[T]], input: T) -> Bool? {
 //        if dic[input
         if dic[input] != nil {
@@ -948,7 +1006,7 @@ extension DutchResultTest {
     (unmatchedResults: [Amt: [BinIndex]], matchedResults: [Amt: [BinIndex]],remainedCandidates: [Amt: [Idx]], matchedTargets: [Amt]) {
         print("someFunc flag 1, input: \nnumToPick: \(numToPick), \ncandidatesDic: \(candidatesDic), \ntargetArr: \(targetArr)\n\n")
         
-        var candidates = candidatesDic
+        var candidatesDic = candidatesDic
 //        var targetArr = targetArr // convert sign
         var targetArr = returnOppositeSignOfArr(arr: targetArr)
         var matchedResults = [Amt:[BinIndex]]()
@@ -956,54 +1014,63 @@ extension DutchResultTest {
         var newResults = [Amt: [BinIndex]]()
         var matchedTargets = [Amt]()
         // 실시간으로 하나씩만 업데이트.
-        var allCandidates = [(Amt, Idx)]()
+        var allCandidates = [(Amt, Idx)?]()
         
-        for (amt, numOfIdx) in candidates.sorted(by: {$0.key < $1.key }) {
+        for (amt, numOfIdx) in candidatesDic.sorted(by: {$0.key < $1.key }) {
             for idx in 0 ..< numOfIdx.count {
                 allCandidates.append((amt, numOfIdx[idx]))
             }
         }
         
-        var length = candidates.map { $0.value.count }.reduce(0, +) // num of all candidates
+        var length = candidatesDic.map { $0.value.count }.reduce(0, +) // num of all candidates
         
         let combinations = combosWithoutDuplication(numOfElements: length, numToPick: numToPick) // length 개의 Int Arr 로 comb 생성 [1,2,3..]
         print("createdCombinations: \(combinations)")
-        for eachCombo in combinations {
-            let valueOnlyCandidates = allCandidates.map { $0.0 } // $0.amt
+        var valueOnlyCandidates: [Amt?] = allCandidates.map { $0!.0 } // $0.amt
+        combLoop: for eachCombo in combinations {
+//            let valueOnlyCandidates = allCandidates.map { $0.0 } // $0.amt
+            valueOnlyCandidates = allCandidates.map { $0?.0 }
             let targetArrInSet = Set(targetArr)
             // combination 은 항상 같지만, valueOnlyCandidates 는 줄어들 수 있음 ;; 어떡하지..??
             print("eachCombo: \(eachCombo), valueOnlyCandidates: \(valueOnlyCandidates)")
-            let eachSumOfCombo = returnSum(of: valueOnlyCandidates, in: eachCombo)
-            print("eachSumOfCombo: \(eachSumOfCombo)")
-            let selectedCandidateValues = returnArrayOfValues(of: valueOnlyCandidates, indexes: eachCombo)
+//            let eachSumOfCombo = returnSum(of: valueOnlyCandidates, in: eachCombo)
+            guard let eachSumOfCombo = returnOptionalSum(of: valueOnlyCandidates, in: eachCombo) else { continue combLoop }
+//            print("eachSumOfCombo: \(eachSumOfCombo)")
+//            let selectedCandidateValues = returnArrayOfValues(of: valueOnlyCandidates, indexes: eachCombo)
+            let selectedCandidateValues = returnArrayOfOptionalValues(of: valueOnlyCandidates, indexes: eachCombo)
             print("selectedCandidateValues: \(selectedCandidateValues)")
-            //TODO: append matchedResults
+            
+            // matched!
             if targetArrInSet.contains(eachSumOfCombo) {
-                // matched!
+               
                 print("matched! \(eachSumOfCombo)")
                 for selectedCandidateValue in selectedCandidateValues {
                     
-                    if candidates[selectedCandidateValue]!.count == 1 {
-                        candidates[selectedCandidateValue] = nil
+                    if candidatesDic[selectedCandidateValue]!.count == 1 {
+                        candidatesDic[selectedCandidateValue] = nil
                     } else {
-                        candidates[selectedCandidateValue]!.removeFirst()
+                        candidatesDic[selectedCandidateValue]!.removeFirst()
                     }
                     
-                    let idx = valueOnlyCandidates.firstIndex(of: selectedCandidateValue)
-                    allCandidates.remove(at: idx!)
+//                    let idx = valueOnlyCandidates.firstIndex(of: selectedCandidateValue)
+//                    allCandidates.remove(at: idx!)
+//                    allCandidates[idx!] = nil
                 }
                 
                 guard let targetIdx = targetArr.firstIndex(of: eachSumOfCombo) else { fatalError() }
                 let matchedTarget = targetArr.remove(at: targetIdx)
                 matchedTargets.append( matchedTarget )
                 
-                var matcedhIndices = [Idx]()
+                var matchedIndices = [Idx]()
+                print("allCandidates: \(allCandidates), eachCombo: \(eachCombo)")
                 for eachComboIdx in eachCombo {
-                    let candidateIdx = allCandidates[eachComboIdx].1
-                    matcedhIndices.append(candidateIdx)
+                    print("current ComboIdx: \(eachComboIdx)")
+                    let candidateIdx = allCandidates[eachComboIdx]!.1
+                    matchedIndices.append(candidateIdx)
+                    allCandidates[eachComboIdx] = nil
                 }
                 
-                let binaryIndices = createBin(using: matcedhIndices)
+                let binaryIndices = createBin(using: matchedIndices)
                 if matchedResults[eachSumOfCombo] != nil {
                     matchedResults[eachSumOfCombo]!.append(binaryIndices)
                 } else {
@@ -1013,21 +1080,28 @@ extension DutchResultTest {
             
             // target not found
             else {
+                print("couldn't find target \(eachSumOfCombo)")
                 // append selectedCandidates into newResult
                 var sumOfSelectedIdx: Idx = 0
-                                
-                for comboIdx in eachCombo {
-                    let candidate = allCandidates[comboIdx]
-                    sumOfSelectedIdx += candidate.1
+                print("current allCandidates: \(allCandidates)")
+                print("eachCombo: \(eachCombo)")
+                for comboIdx in eachCombo { // eachCombo: [0,1], [0,2], ...
+                    let candidate = allCandidates[comboIdx]!
+//                    let candidate = valueOnlyCandidates[comboIdx]!
+//                    sumOfSelectedIdx += candidate.1
+                    sumOfSelectedIdx += poweredInt(exponent: candidate.1)
                 }
-
-                let selectedBinIndex: BinIndex = poweredInt(exponent: sumOfSelectedIdx) // candidate.idx
+                // index 들을 더한 값 ;; 을 왜 여기에 넣어요 선생님 ....
+//                let selectedBinIndex: BinIndex = poweredInt(exponent: sumOfSelectedIdx) // candidate.idx
+                let selectedBinIndex: BinIndex = sumOfSelectedIdx // candidate.idx
                 
                 if newResults[eachSumOfCombo] != nil {
                     newResults[eachSumOfCombo]!.append(selectedBinIndex)
                 } else {
                     newResults[eachSumOfCombo] = [selectedBinIndex]
                 }
+                print("newResults updated to ")
+                printBinIndexDictionary(dic: newResults)
             }
         }
         
@@ -1035,7 +1109,7 @@ extension DutchResultTest {
         
         var unusedBinarySum = Set<Idx>()
         
-        for (_, indices) in candidates {
+        for (_, indices) in candidatesDic {
             for idx in indices {
                 unusedBinarySum.insert(idx)
             }
@@ -1043,7 +1117,7 @@ extension DutchResultTest {
                 
         for (amt, resultBin) in newResults {
             for eachResultBin in resultBin {
-                let usedIdxes = returnIdxSet(using: eachResultBin)
+                let usedIdxes = convertBinIntoArr(using: eachResultBin)
                 let usedIdxesSet = Set(usedIdxes)
                 let subtraction = usedIdxesSet.subtracting(unusedBinarySum)
                 if subtraction.count != 0 {
@@ -1053,9 +1127,15 @@ extension DutchResultTest {
         }
 
         // newResults: used: 1 [Amt: [BinIndex]]
+        // unmatchedResults, matchedResults 이상함.
+//        print("someFunc flag 2, output: \nunmatchedResults: \(newResults), \nmatchedResults: \(matchedResults), \nremainedCandidates: \(candidatesDic), \nmatchedTargets: \(matchedTargets)\n\n\n")
+        print("\n\nsomeFunc flag 2, output: ")
         
-        print("someFunc flag 2, output: \nunmatchedResults: \(newResults), \nmatchedResults: \(matchedResults), \nremainedCandidates: \(candidates), \nmatchedTargets: \(matchedTargets)\n\n\n")
-        return (unmatchedResults: newResults, matchedResults: matchedResults,remainedCandidates: candidates, matchedTargets: matchedTargets)
+        print("unmatchedResults: \n\(binIndexDictionaryStr(dic: newResults))")
+        print("matchedResults: \n\(binIndexDictionaryStr(dic: matchedResults))")
+        print("remainedCandidates: \n\(strCandidateDic(dic: candidatesDic))")
+        print("matchedTargets: \(matchedTargets)")
+        return (unmatchedResults: newResults, matchedResults: matchedResults,remainedCandidates: candidatesDic, matchedTargets: matchedTargets)
     }
 
     
@@ -1073,6 +1153,19 @@ extension DutchResultTest {
         var result = 0
         for index in indexes {
             result += target[index]
+        }
+        return result
+    }
+    
+    func returnOptionalSum(of target: [Int?], in indexes: [Int]) -> Int? {
+        
+        var result = 0
+        for idx in indexes {
+            if let validTarget = target[idx] {
+                result += validTarget
+            } else {
+                return nil
+            }
         }
         return result
     }
