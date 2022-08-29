@@ -49,6 +49,16 @@ class DutchResultTest: XCTestCase {
         }
     }
     
+//    [(from: BinIndex, to: BinIndex)]
+    func printBinResults(res: [(from:BinIndex, to: BinIndex)]) {
+        for each in res {
+            let from = convertBinIntoArr(using: each.from)
+            let to = convertBinIntoArr(using: each.to)
+            
+            print("from: \(from), to: \(to)")
+        }
+    }
+    
     func binIndexDictionaryStr(dic: [Amt: [BinIndex]]) -> String {
         var resultStr = ""
         for (key, value) in dic {
@@ -108,20 +118,35 @@ class DutchResultTest: XCTestCase {
         let additionalMsg = isPositive ? "plusRemainders:" : "minusRemainders:"
         print(additionalMsg + " " + toPrint)
     }
-    
+    // 7 -> [1,2,3]
     func convertBinIntoArr(using binIdx: Int) -> [Int] {
+        
         let binStr = String(binIdx, radix: 2)
         let length = binStr.count
         let startIdx = binStr.startIndex
         let endIdx = binStr.endIndex
+        
         var ret = [Int]()
+        
         for idx in 0 ..< length {
             let some = binStr.index(startIdx, offsetBy: length - idx - 1, limitedBy: endIdx)
             let char = String(binStr[some!])
             if char == "1" { ret.append(idx)}
+//            if char == "0" { ret.append(0)}
         }
 
         return ret
+    }
+    
+    func test_convertBin() {
+//        let ret = convertBinIntoArr(using: 0)
+//        XCTAssertEqual(ret, [1])
+        let ret2 = convertBinIntoArr(using: 1)
+        XCTAssertEqual(ret2, [0])
+        let ret3 = convertBinIntoArr(using: 2)
+        XCTAssertEqual(ret3, [1])
+        let ret4 = convertBinIntoArr(using: 3)
+        XCTAssertEqual(ret4, [0,1])
     }
     
     func test_idxSet() {
@@ -614,31 +639,46 @@ class DutchResultTest: XCTestCase {
         var positiveCombinations = [Amt: [BinIndex]]()
         var negativeCombinations = [Amt: [BinIndex]]()
         
-        
         // set for single element
         for (amt, idx) in positivesDic {
-            positiveCombinations[amt] = idx
+//            positiveCombinations[amt] = [poweredInt(exponent: idx)]
+            for eachIdx in idx {
+                if positiveCombinations[amt] != nil {
+                    positiveCombinations[amt]?.append(poweredInt(exponent: eachIdx))
+                }
+                positiveCombinations[amt] = [poweredInt(exponent: eachIdx)]
+            }
         }
         
         for (amt, idx) in negativesDic {
-            negativeCombinations[amt] = idx
+//            negativeCombinations[amt] = [poweredInt(exponent: idx)]
+            for eachIdx in idx {
+                if negativeCombinations[amt] != nil {
+                    negativeCombinations[amt]?.append(poweredInt(exponent: eachIdx))
+                }
+                negativeCombinations[amt] = [poweredInt(exponent: eachIdx)]
+            }
         }
+        print("negativeComb initialized")
+        print("negativeComb: \(negativeCombinations)")
         
 
         var numToPickForCombination = 2
         var resultBinIndices = [(from: BinIndex, to: BinIndex)]()
         
         var testCount = 0
-//        bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
-        bigLoop: while(testCount < 10) {
+        var smallerLoopCount = 0
+        var bigLoopCount = 0
+        
+        bigLoop: while((numOfPlusPeople != 0 && numOfMinusPeople != 0) && testCount < 10) {
+//        bigLoop: while(testCount < 10) {
+            bigLoopCount += 1
             testCount += 1
-//            var availablePlusPeople = Array(positivePersonSet)
-//            var availableMinusPeople = Array(negativePersonSet)
             
             var higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
             
             smallerLoop: while (numToPickForCombination <= higherNumOfPeople) {
-               
+               smallerLoopCount += 1
                 // make comb of plusPeople first ( (positive) 1:n (negative) executed before)
                 if numOfPlusPeople >= numToPickForCombination {
                     
@@ -657,8 +697,6 @@ class DutchResultTest: XCTestCase {
                     let matchedCandidatesComb = ret.matchedResults //  [Amt : [BinIndex]]
                     let matchedTargets = ret.matchedTargets //  [Amt]
                     
-//                    print("unmatchedCandidatesComb: \(unmatchedCandidatesComb)\nremainedCandidates: \(remainedCandidates)\nmatchedCandidatesComb: \(matchedCandidatesComb)\nmatchedTargets: \(matchedTargets)")
-                    
                     // handle unmatchedCandidatesComb
                     for (amt, binIdx) in unmatchedCandidatesComb {
                         if positiveCombinations[amt] != nil {
@@ -672,9 +710,8 @@ class DutchResultTest: XCTestCase {
                     
                     // update positivesDic with latest Version ( remainedCandidates)
                     positivesDic = remainedCandidates
-//                    print("updatedPositivesDic: \(positivesDic)")
                     printDictionary(dic: positivesDic)
-                    numOfPlusPeople = getArrCountFromDictionary(dic: positivesDic)
+//                    numOfPlusPeople = getArrCountFromDictionary(dic: positivesDic) //
                     
                     
                     //  match ( matchedCandidatesComb, and matchedTargets)
@@ -684,46 +721,159 @@ class DutchResultTest: XCTestCase {
                         guard let positiveBinIndices = matchedCandidatesComb[matchedTarget], // [BinIndex]
                               let negativeBinIndices = negativeCombinations[-matchedTarget] else { fatalError() }
                         
+                        // negativeCombinations: [0, 1, 2, .. ]
                         let numOfMatchedTargets = min(positiveBinIndices.count, negativeBinIndices.count)
-                        
+                    
                         for idx in 0 ..< numOfMatchedTargets {
-                            resultBinIndices.append((from: negativeBinIndices[idx], to: positiveBinIndices[idx]))
+//                            let negativeBinIndex = poweredInt(exponent: negativeBinIndices[idx])
+                            let negativeBinIndex = negativeBinIndices[idx]
+                            resultBinIndices.append((from: negativeBinIndex, to: positiveBinIndices[idx]))
+                            print("resultBinIndices changed! \(resultBinIndices), \(#line)")
+                            print("negagaveBinIndices: \(negativeBinIndices), at idx \(idx) : \(negativeBinIndices[idx])")
+                            print("positiveBinDicies:\(positiveBinIndices[idx])")
+                            printBinResults(res: resultBinIndices)
+                            guard let usedIndices = negativeCombinations[-matchedTarget],
+                                  let firstIndices = usedIndices.first else { fatalError() } // BinIndex
+                            
+                            // um.. 하나하나 찾아야 하는건가..??
+                            // dictionary 보단 candidate 쓰는게 더 .. 나아 보인다.
+                            // 여기선 candidate 사용하고 dic 필요할 땐 candidate -> dic 생성? 음... 너무 복잡해짐..;;
+                            let corrIndices = convertBinIntoArr(using: firstIndices)
+                            
+                            
+                            
+                            // dictionary.. [] 라서 하나하나 찾아봐야 할 것 같은데.....
+                            // 아니면, 통째로 업데이트!
+                            
+                            for (key, eachNegativeIndices) in negativesDic {
+                                
+                                let originalIndicesSet = Set(eachNegativeIndices)
+                                
+                                var doesContainValue = false
+                                var matchedIndices = Set<Idx>()
+                                
+                                for corrIndex in corrIndices {
+                                    if originalIndicesSet.contains(corrIndex) {
+                                        doesContainValue = true
+                                        matchedIndices.insert(corrIndex)
+                                    }
+                                }
+                                
+                                if doesContainValue {
+                                    let newIdxArr = originalIndicesSet.subtracting(matchedIndices)
+                                    negativesDic[key] = Array(newIdxArr)
+                                }
+                            }
+                            
                             
                             if negativeCombinations[-matchedTarget]!.count > 1 {
-                                negativeCombinations[-matchedTarget]!.removeFirst()
+                                negativeCombinations[-matchedTarget]!.removeFirst() // [Amt : [BinIndex]]
                             } else {
                                 negativeCombinations[-matchedTarget] = nil
                             }
                         }
-
                     }
                 }
+                
+                // TODO: update negativeCandidates. How ? using.. negativeCombinations!
+                print("end of postives loop ")
                 
                 // TODO: Repeat same process for negative People
                 // TODO: Before that, review if any missing part exist.
                 
-//                if numOfMinusPeople >= numToPickForCombination {
-//                    var positiveAmtTargets = [Amt]()
-//                    for (amt, idxes) in positiveCombinations {
-//                        let amtsArr = Array(repeating: amt, count: idxes.count)
-//                        positiveAmtTargets += amtsArr
-//                    }
-//
-//                    let (unmatchedResults, matchedResults, remainedCandidates, matchedTargets) = somefunc(numToPick: numToPickForCombination, candidatesDic: negativesDic, targetArr: positiveAmtTargets)
-//
-//                }
+                if numOfMinusPeople >= numToPickForCombination {
+                    var positiveAmtTargets = [Amt]()
+                    for (amt, idxes) in positiveCombinations {
+                        let amtsArr = Array(repeating: amt, count: idxes.count)
+                        positiveAmtTargets += amtsArr
+                    }
+
+                    let ret = somefunc(numToPick: numToPickForCombination, candidatesDic: negativesDic, targetArr: positiveAmtTargets)
                     
-            numToPickForCombination += 1
+                    let unmatchedCandidatesComb = ret.unmatchedResults // [Amt : [BinIndex]]
+                    let remainedCandidates = ret.remainedCandidates //  [Amt : [Idx]]
+                    let matchedCandidatesComb = ret.matchedResults //  [Amt : [BinIndex]]
+                    let matchedTargets = ret.matchedTargets //  [Amt]
+                    
+                    for (amt, binIdx) in unmatchedCandidatesComb {
+                        if negativeCombinations[amt] != nil {
+                            for eachBinIdx in binIdx {
+                                negativeCombinations[amt]!.append(eachBinIdx)
+                            }
+                        } else {
+                            negativeCombinations[amt] = binIdx
+                        }
+                    }
+                    
+                    negativesDic = remainedCandidates
+                    numOfMinusPeople = getArrCountFromDictionary(dic: negativesDic)
+                    // TODO: 부호 다시 한번 살펴보기.
+                    for matchedTarget in matchedTargets.sorted(by: { $0 < $1 }) {
+                        guard let negativeBinIndices = matchedCandidatesComb[matchedTarget],
+                              let positiveBinIndices = positiveCombinations[-matchedTarget] else { fatalError() }
+                        
+                        let numOfMatchedTargets = min(positiveBinIndices.count, negativeBinIndices.count)
+                        
+                        for idx in 0 ..< numOfMatchedTargets {
+                            print("some error here, \(negativeBinIndices[idx])")
+//                            let negativeBinIndex = poweredInt(exponent: negativeBinIndices[idx])
+                            let negativeBinIndex = negativeBinIndices[idx]
+                            resultBinIndices.append((from: negativeBinIndex, to: positiveBinIndices[idx]))
+                            
+                            guard let usedIndices = positiveCombinations[-matchedTarget],
+                                  let firstIndices = usedIndices.first else { fatalError() } // BinIndex
+                            
+                            let corrIndices = convertBinIntoArr(using: firstIndices)
+                            
+                            for (key, eachPositiveIndices) in positivesDic {
+                                let originalIndicesSet = Set(eachPositiveIndices)
+                                
+                                var doesContainValue = false
+                                var matchedIndices = Set<Idx>()
+                                
+                                for corrIndex in corrIndices {
+                                    if originalIndicesSet.contains(corrIndex) {
+                                        doesContainValue = true
+                                        matchedIndices.insert(corrIndex)
+                                    }
+                                }
+                                
+                                if doesContainValue {
+                                    let newIdxArr = originalIndicesSet.subtracting(matchedIndices)
+                                    positivesDic[key] = Array(newIdxArr)
+                                }
+                            }
+                            
+                            
+                            if positiveCombinations[-matchedTarget]!.count > 1 {
+                                positiveCombinations[-matchedTarget]!.removeFirst()
+                            } else {
+                                positiveCombinations[-matchedTarget] = nil
+                            }
+                        }
+                    }
+//                    print("                print("end of postives loop ")")
+                    print("end of negatives loop ")
+                }
                 
-            higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
+                numToPickForCombination += 1
                 
+                numOfPlusPeople = getArrCountFromDictionary(dic: positivesDic)
+                numOfMinusPeople = getArrCountFromDictionary(dic: negativesDic)
+                
+//                higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
+                
+                print("resultBinIndices:")
+                printBinResults(res: resultBinIndices)
+                print("smaller loop is running, smallerLoop: \(smallerLoopCount)")
+                print("numOfPlusPeople: \(numOfPlusPeople), numOfMinusPeople:\(numOfMinusPeople)")
             }
-            
+            print("big loop is running, bigLoop: \(bigLoopCount)")
         }
         
         // TODO: update ResultTuple using resultBinIndices
 
-            
+
         
         
         
@@ -1091,8 +1241,7 @@ extension DutchResultTest {
 //                    sumOfSelectedIdx += candidate.1
                     sumOfSelectedIdx += poweredInt(exponent: candidate.1)
                 }
-                // index 들을 더한 값 ;; 을 왜 여기에 넣어요 선생님 ....
-//                let selectedBinIndex: BinIndex = poweredInt(exponent: sumOfSelectedIdx) // candidate.idx
+                
                 let selectedBinIndex: BinIndex = sumOfSelectedIdx // candidate.idx
                 
                 if newResults[eachSumOfCombo] != nil {
@@ -1129,6 +1278,7 @@ extension DutchResultTest {
         // newResults: used: 1 [Amt: [BinIndex]]
         // unmatchedResults, matchedResults 이상함.
 //        print("someFunc flag 2, output: \nunmatchedResults: \(newResults), \nmatchedResults: \(matchedResults), \nremainedCandidates: \(candidatesDic), \nmatchedTargets: \(matchedTargets)\n\n\n")
+        
         print("\n\nsomeFunc flag 2, output: ")
         
         print("unmatchedResults: \n\(binIndexDictionaryStr(dic: newResults))")
