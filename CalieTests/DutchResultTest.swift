@@ -22,10 +22,30 @@ typealias BinIndex = Int
 
 
 struct PersonStruct {
-    let name: String
-    var spentAmount: Int
+    var name: String?
+    var spentAmount: Amt
     var idx: Idx
+    
+    init(idx: Idx, spentAmount: Amt) {
+        self.spentAmount = spentAmount
+        self.idx = idx
+    }
+    
+    init(name: String, spentAmount: Amt, idx: Idx) {
+        self.name = name
+        self.spentAmount = spentAmount
+        self.idx = idx
+    }
 }
+
+extension PersonStruct {
+    
+    mutating func updateSpentAmt(to amt: Amt) {
+        self.spentAmount = amt
+    }
+    
+}
+
 extension PersonStruct: Hashable { }
 
 class DutchResultTest: XCTestCase {
@@ -119,7 +139,7 @@ class DutchResultTest: XCTestCase {
         print(additionalMsg + " " + toPrint)
     }
     // 7 -> [1,2,3]
-    func convertBinIntoArr(using binIdx: Int) -> [Int] {
+    func convertBinIntoArr(using binIdx: BinIndex) -> [Idx] {
         
         let binStr = String(binIdx, radix: 2)
         let length = binStr.count
@@ -312,7 +332,8 @@ class DutchResultTest: XCTestCase {
         
         var personDetails: [PersonStruct] = personDetailsIngre.map { PersonStruct(name: $0.name, spentAmount: $0.spentAmount, idx: $0.idx)}
         
-
+        let positivePersonDetails: [PersonStruct] = personDetails.filter { $0.spentAmount > 0 }
+        let negativePersonDetails: [PersonStruct] = personDetails.filter { $0.spentAmount < 0 }
         
         personDetails = personDetails.filter { $0.spentAmount != 0 }
         
@@ -609,10 +630,9 @@ class DutchResultTest: XCTestCase {
         
         
         
-        //  MARK: - 여기까지 정상 작동 확인함. (2번 확인함..) !!! 이제.. n:n 처리하기!
         
         
-        // MARK: - n : n (not implemented Yet.. )
+        // MARK: - n : n
         
 //        Duplication Check 는 num1 & num2 == 0 이면 겹치는 1 이 없음.
         
@@ -670,10 +690,11 @@ class DutchResultTest: XCTestCase {
         var smallerLoopCount = 0
         var bigLoopCount = 0
         
-        bigLoop: while((numOfPlusPeople != 0 && numOfMinusPeople != 0) && testCount < 10) {
-//        bigLoop: while(testCount < 10) {
+//        bigLoop: while((numOfPlusPeople != 0 && numOfMinusPeople != 0) && testCount < 10) {
+    bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
+        
             bigLoopCount += 1
-            testCount += 1
+//            testCount += 1
             
             var higherNumOfPeople = max(numOfPlusPeople, numOfMinusPeople)
             
@@ -872,31 +893,131 @@ class DutchResultTest: XCTestCase {
         }
         
         // TODO: update ResultTuple using resultBinIndices
+        // 음.. 각 Idx 들.. 많이 줘야하는 애들부터 많이 받아야하는애들한테 보내기.
+        // Amt 는 어떻게 알지 ?? ㅠㅠㅠㅠㅠ
+
+        //       resultBinIndices          ->  resultTuples
+//        [(from: BinIndex, to: BinIndex)] -> [ResultTuple]  ResultTuple: (from: Idx, to: Idx, amount: Int)
+        // idx 에 대한 정보는 Dic 에.. 있나 ?? 업데이트 했을텐데 ?? 처음 것에서 받아오기.
+        
+        // personDetails [PersonStruct] 쓰면 될 것 같은데 ??
+        // 먼저, 음...
+        
+        
+        // TODO: update ResultTuple using resultBinIndices
+        
+        for eachBinCouple in resultBinIndices {
+            
+            let senderIdxBin = eachBinCouple.from
+            let receiverIdxBin = eachBinCouple.to
+            
+            // convert Bin idx to idx array
+            let sendersIdx = convertBinIntoArr(using: senderIdxBin)
+            let receiversIdx = convertBinIntoArr(using: receiverIdxBin)
+            
+            
+            // -------------  Prepare senders, receivers (with idx and amt) --------------------
+            var sendersStruct = [PersonStruct]()
+            for senderIdx in sendersIdx {
+//                guard let matchedPerson = personDetails.filter({ $0.idx == senderIdx}).first else { fatalError() }
+                guard let matchedPerson = negativePersonDetails.filter({ $0.idx == senderIdx}).first else { fatalError() }
+                let spentAmt = matchedPerson.spentAmount
+                let senderPerson = PersonStruct(idx: senderIdx, spentAmount: spentAmt)
+                sendersStruct.append(senderPerson)
+            }
+            
+            // convert sign ( - -> + )
+            print("prev senders: \(sendersStruct)")
+            sendersStruct = sendersStruct.map { (personStruct) -> PersonStruct in
+                let newPersonStruct = PersonStruct(idx: personStruct.idx, spentAmount: -personStruct.spentAmount)
+                return newPersonStruct
+            }
+            print("after senders: \(sendersStruct)")
+            sendersStruct.sort(by: {$0.spentAmount > $1.spentAmount })
+            
+            
+            var receiversStruct = [PersonStruct]()
+            for receiverIdx in receiversIdx {
+//                guard let matchedPerson = personDetails.filter({ $0.idx == receiverIdx}).first else { fatalError() }
+                guard let matchedPerson = positivePersonDetails.filter({ $0.idx == receiverIdx}).first else { fatalError() }
+                let spentAmt = matchedPerson.spentAmount
+                let receiverPerson = PersonStruct(idx: receiverIdx, spentAmount: spentAmt)
+                receiversStruct.append(receiverPerson)
+            }
+            
+            receiversStruct.sort(by: { $0.spentAmount > $1.spentAmount }) // decending order
+            // ----------------------------------------------------------------------------------
+            
 
 
-        
-        
-        
-        
-        
-        
+            // 부호 조심해야함. sender: - ,  receiver: +
+            //  -------- make resultTuple with each sendersStruct and receiversStruct -----------------
+            print("current senders: \(sendersStruct)")
+            print("current receivers: \(receiversStruct)")
+            while (sendersStruct.count != 0) {
+                if var sender = sendersStruct.first, var receiver = receiversStruct.first {
+                        
+                    if sender.spentAmount == receiver.spentAmount {
+                        let amt = sender.spentAmount
+                        let resultTuple = ResultTuple(from: sender.idx, to: receiver.idx, amount: amt)
+                       print("appended resultTuple: \(resultTuple)")
+                        resultTuples.append(resultTuple)
+                        sendersStruct.removeFirst()
+                        receiversStruct.removeFirst()
+                    }
+                    else if sender.spentAmount > receiver.spentAmount {
+                        let receiverAmt = receiver.spentAmount
+                        
+                        let resultTuple = ResultTuple(from: sender.idx, to: receiver.idx, amount: receiverAmt)
+                        print("appended resultTuple: \(resultTuple)")
+                        resultTuples.append(resultTuple)
+                        
+                        let updatedSpentAmt = sender.spentAmount - receiver.spentAmount
+                        sender.updateSpentAmt(to: updatedSpentAmt)
+                        
+                        sendersStruct[0] = sender
+                        receiversStruct.removeFirst()
+                    
+                    }
+                    else if sender.spentAmount < receiver.spentAmount {
+                        let senderAmt = sender.spentAmount
+                        
+                        let resultTuple = ResultTuple(from: sender.idx, to: receiver.idx, amount: senderAmt)
+                        resultTuples.append(resultTuple)
+                        print("appended resultTuple: \(resultTuple)")
+                        let updatedSpentAmt = receiver.spentAmount - sender.spentAmount
+                        receiver.updateSpentAmt(to: updatedSpentAmt)
+                        
+                        receiversStruct[0] = receiver
+                        sendersStruct.removeFirst()
+                    }
+                }
+            }
+            // ---------------------------------------------------------------------------------------------
+        }
         
         print("end of n:n operation \n\n")
         
+        
+        
+        
+        
+
+        
         // MARK: - 하나 남았을 때 처리
         
-        if negativesDic.count == 1, let lastNagativeElement = negativesDic.first, lastNagativeElement.value.count == 1 {
-            let lastnName = lastNagativeElement.value[0]
-            for (amt, names) in positivesDic {
-                for name in names {
-                    let tupleResult: (ResultTuple) = (from: lastnName, to: name, amount: amt)
-                    resultTuples.append(tupleResult)
-                }
-                positivesDic[amt] = nil
-            }
-            let value = lastNagativeElement.key
-            negativesDic[value] = nil
-        }
+//        if negativesDic.count == 1, let lastNagativeElement = negativesDic.first, lastNagativeElement.value.count == 1 {
+//            let lastnName = lastNagativeElement.value[0]
+//            for (amt, names) in positivesDic {
+//                for name in names {
+//                    let tupleResult: (ResultTuple) = (from: lastnName, to: name, amount: amt)
+//                    resultTuples.append(tupleResult)
+//                }
+//                positivesDic[amt] = nil
+//            }
+//            let value = lastNagativeElement.key
+//            negativesDic[value] = nil
+//        }
         
         // 이미 1:n 에 대해 했기 때문에 굳이 할 필요가 없어보임.
 //        if positivesDic.count == 1, let lastPositiveElement = negativesDic.first,
