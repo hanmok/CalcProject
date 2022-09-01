@@ -1,0 +1,18 @@
+
+Input: [PersonTuple] (personIdx: Idx, amt: Amt)
+
+Output: [ResultTuple] (from: Idx, to: Idx, amt: Amt)
+
+
+
+Person Order 로 구분 하여 Input 만든 후,
+Input 을 어떻게 만들지??
+받아야 할 돈, 줘야할 돈을 어떻게 .. 음... 이미 만들었을걸?
+
+Output 을 구하고 해당 Idx ~ Person Idx 를 매치시키면 될 것 같아.
+그리고, 해당 결과 저장도 시켜주자.
+
+계산 할 때마다 답이 다르게 나올 수 있으니까. 그러면 헷갈리잖아...
+
+
+ㅇ

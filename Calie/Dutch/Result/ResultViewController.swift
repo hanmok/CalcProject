@@ -148,8 +148,6 @@ class ResultViewController: UIViewController {
         ].forEach { self.view.addSubview($0)}
         
         dismissBtn.snp.makeConstraints { make in
-//            make.leading.equalToSuperview()
-//            make.top.equalToSuperview().offset(60)
             
             make.top.equalToSuperview().offset(56)
             make.leading.equalToSuperview().offset(10)
@@ -222,6 +220,9 @@ class ResultViewController: UIViewController {
         briefInfoTableView.separatorStyle = .none
         
         briefInfoTableView.tableHeaderView = briefHeaderView
+        
+        
+        
     }
 }
 

@@ -309,6 +309,45 @@ extension DutchService {
         return dutchManager.createPersonPayInfos(gathering: gathering)
     }
     
+//    func create
+    
+}
+
+// MARK: - Result
+extension DutchService {
+    
+//    func calculateResults(gathering: Gathering, closure: @escaping ([DetailResultTuple]) -> Void) {
+    
+    func calculateResults(gathering: Gathering) -> [DetailResultTuple] {
+        
+
+        let overallPayInfos = createPersonPayInfos(gathering: gathering)
+
+        let people = gathering.people
+
+        //        let person = people.first?.
+                                                            // PersonTuple: (name: String, spentAmount: Int, idx: Idx)
+        let tupleIngredients = overallPayInfos.map { paymentInfo -> PersonTuple in
+            guard let person = people.filter({ $0.name == paymentInfo.name}).first else { fatalError() }
+            let correspondingIdx = Idx(person.order)
+            return PersonTuple(name: paymentInfo.name, spentAmount: Int(paymentInfo.toGet), idx: correspondingIdx )
+        }
+        // ResultTuple:  (from: Idx, to: Idx, amount: Int)
+        let resultsWithIndices = calculateUsing(personTuples: tupleIngredients)
+        
+        let ret = resultsWithIndices.map { resultTuple -> DetailResultTuple in
+            guard let sender = people.filter({ $0.order == resultTuple.from }).first,
+            let receiver = people.filter({ $0.order == resultTuple.to}).first else { fatalError() }
+        
+            let amt = resultTuple.amount
+            
+            return DetailResultTuple(from: sender.name, to: receiver.name, amount: amt )
+        }
+        
+        // DetailResultTuple:  (from: String, to: String, amount: Int)
+        return ret
+    }
+    
 }
 
 enum DutchError: Error {
