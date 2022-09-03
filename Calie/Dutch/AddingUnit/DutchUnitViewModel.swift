@@ -8,9 +8,6 @@
 
 import Foundation
 
-typealias DetailState = (spentAmount: Double, isAttended: Bool)
-
-typealias InitialState = (place: String, amount: String, date: Date)
 
 
 class DutchUnitViewModel {

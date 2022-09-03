@@ -909,7 +909,7 @@ extension DutchpayController: AddingUnitControllerDelegate {
 
 extension DutchpayController {
     
-    typealias NewNameAction = (Result<String, DutchError>) -> Void
+
     
     // Done!
     private func presentAskingGatheringName( completion: @escaping (NewNameAction)) {

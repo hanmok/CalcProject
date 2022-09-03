@@ -100,7 +100,7 @@ extension Gathering {
 }
 
 
-    
+
 
 extension NSManagedObjectContext {
     func saveCoreData(msg: String = "" ) {

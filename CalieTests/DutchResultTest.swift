@@ -13,12 +13,12 @@ import Darwin
 @testable import Calie
 
 
-typealias Idx = Int
-typealias Amt = Int
-typealias PersonTuple = (name: String, spentAmount: Int, idx: Idx)
-//typealias ResultTuple = (from: String, to: String, amount: Int)
-typealias ResultTuple = (from: Idx, to: Idx, amount: Int)
-typealias BinIndex = Int
+//typealias Idx = Int
+//typealias Amt = Int
+//typealias PersonTuple = (name: String, spentAmount: Int, idx: Idx)
+////typealias ResultTuple = (from: String, to: String, amount: Int)
+//typealias ResultTuple = (from: Idx, to: Idx, amount: Int)
+//typealias BinIndex = Int
 
 
 struct PersonStruct {
@@ -68,6 +68,14 @@ class DutchResultTest: XCTestCase {
             print("value: \(result), idxes: \(idxes)")
         }
     }
+    
+//    func test_basicTest() {
+//        let num1 = 0.1
+//        let num2 = 1.1
+//        let num3 = 1.2
+//
+//        XCTAssertEqual(num1 + num2, num3)
+//    }
     
 //    [(from: BinIndex, to: BinIndex)]
     func printBinResults(res: [(from:BinIndex, to: BinIndex)]) {
@@ -1444,5 +1452,43 @@ extension DutchResultTest {
     
     func backtrack(selectedIndexes: [Int], currentIndex: Int, candidates: [Int], target: Int ) {
         
+    }
+}
+
+
+extension DutchResultTest {
+    
+    func cutDigits(amt: Double, digitLocationToCut: Int) -> Double {
+        // if digitLocationToCut == 1 (일의 자리 버림)
+        // 123.45 -> 12345 -> (12345 / 1000) * 1000 -> 12000 -> 120
+        // amt: 123.45
+        // multipledAmt: 12345
+        // digitLocationToCut: 1
+        // multipliedDigit: 100
+        
+        let multipliedAmt = Int(amt * 100)
+        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+       
+        // 120
+        print("multipliedDigit: \(multipliedDigit)")
+        let cutAmt = (multipliedAmt / multipliedDigit) * multipliedDigit //
+        print("cutAmt: \(cutAmt)")
+        let dividedAmt = Double(cutAmt) / Double(100)
+        return Double(dividedAmt)
+    }
+    
+    func test_validDigits() {
+        
+        let amt = 123.45
+        let digitToCut = 1
+        
+        let cutDigit = cutDigits(amt: amt, digitLocationToCut: digitToCut)
+        XCTAssertEqual(cutDigit, Double(120))
+    }
+    
+    func test_max() {
+        let someInt = [1,1]
+        let max = someInt.max()
+        XCTAssertEqual(max, 1)
     }
 }

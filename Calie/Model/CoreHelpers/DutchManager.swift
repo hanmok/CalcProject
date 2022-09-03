@@ -147,8 +147,20 @@ extension DutchManager {
         return result
     }
     
+    // 이게 반드시 Int 이어야하나 ? 대부분의 경우, Yes.
+//    func getRelativeTobePaidAmount(from dutchUnit: DutchUnit) -> [Double] {
+    
+    /// 각 dutchUnit 에 대한 연산, 나머지 처리 되어있음.
     func getRelativeTobePaidAmount(from dutchUnit: DutchUnit) -> [Double] {
-        // 150
+        
+        // 각 amt 가 소숫점이 있는지 확인해야함
+        // 어떤 자릿수에서 끊을 것인지 알아야함
+        
+//        let isUsingFloatingPoint = true // 나중에 사용하기!
+        
+        // TODO: fetch from UserDefault
+        let digitToCut = 1
+        
         var totalAmount: Double
         
         if dutchUnit.isAmountEqual {
@@ -159,22 +171,65 @@ extension DutchManager {
         }
         
         // 불참 인원은 Average 계산에서 제외.
-        let average = getAverage(totalAmount: totalAmount, numOfPeople: dutchUnit.personDetails.filter { $0.isAttended }.count)
+//        let average = getAverage(totalAmount: totalAmount, numOfPeople: dutchUnit.personDetails.filter { $0.isAttended }.count)
+        
+        let participants = dutchUnit.personDetails.filter {$0.isAttended}.count
+        
+        let averageAmt = totalAmount / Double(participants)
         
         // 불참인 경우 -1 대입 ( flag )
-        let unitArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
+        let paidAmtArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
        
+
+
+        // TODO: 여기 연산만 현재는 손보면 됨.
         // 불참인 경우 계산 없이 0, 그 외: 본인 지불한 비용 - Average (개인당 지불해야하는 비용)
-        let result = unitArr.map { $0 < 0 ? 0 : $0 - average }
-        print("getRelativeTobePaidAmount result: \(result)")
-        return result
+        
+        
+        var rawResult = paidAmtArr.map { $0 < 0 ? 0 : dropDigits(amt: $0 - averageAmt, digitLocationToCut: digitToCut) }
+        
+        let remaining = rawResult.reduce(0, +) // 상대 금액의 차이
+        
+//        if let targetIdx = rawResult.firstIndex(where: { $0 > 0 }) {
+        if let targetAmt = rawResult.filter({ $0 > 0}).max(), let targetIdx = rawResult.firstIndex(where: {$0 == targetAmt}) {
+//             rawResult[targetIdx] += targetAmt + remaining
+            rawResult[targetIdx] = targetAmt - remaining
+        }
+        
+        print("relative flag, dutchUnit info: ")
+        for personDetail in dutchUnit.personDetails {
+            print("name: \(personDetail.person!.name), isAttended: \(personDetail.isAttended), spentAmt: \(personDetail.spentAmount)")
+        }
+        print("relative flag, result: \(rawResult)")
+        
+        
+        print("getRelativeTobePaidAmount result: \(rawResult)\n\n")
+        return rawResult
     }
     
+    /// digitLocationToCut: 1 -> 일의 자리 버림. 0 -> 소숫점 버림.
+    func dropDigits(amt: Double, digitLocationToCut: Int) -> Double {
+        // if digitLocationToCut == 1 (일의 자리 버림)
+        // 123.45 -> 12345 -> (12345 / 1000) * 1000 -> 12000 -> 120
+        // amt: 123.45
+        // multipledAmt: 12345
+        // digitLocationToCut: 1
+        // multipliedDigit: 100
+        let multipliedAmt = Int(amt * 100)
+        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+       
+        // 120
+        let cutAmt = (multipliedAmt / multipliedDigit) * multipliedDigit //
+        let dividedResult = Double(cutAmt) / Double(100)
+        
+        return dividedResult
+    }
     
     
     func getAverage(totalAmount: Double, numOfPeople: Int) -> Double {
         return totalAmount / Double(numOfPeople)
     }
+    
     // [이름, 받아야 하는 금액, 참여 항목]
     func createOverallInfo(gathering: Gathering) -> [OverallPersonInfo] {
 //        if gathering.people.contains(person) == false { fatalError("no target person found") }
@@ -239,12 +294,11 @@ extension DutchManager {
             let eachResult = getRelativeTobePaidAmount(from: eachUnit)
 
             for (idx, element) in eachResult.enumerated() {
-//                amtToPay[idx] += element
                 amtToPay[idx] += element
             }
             
             let spentAmountsForUnit = eachUnit.personDetails.sorted().map { $0.spentAmount }
-//            spentAmount
+            
             for idx in 0 ..< spentAmountsForUnit.count {
                 spentAmount[idx] += spentAmountsForUnit[idx]
                 print("paymentFlag 1, idx:\(idx), spentAmountsForUnit:\(spentAmountsForUnit[idx])")
@@ -260,7 +314,6 @@ extension DutchManager {
         var result = [PersonPaymentInfo]()
         
         for idx in 0 ..< amtToPay.count {
-//            sum[idx] = amtToPay[idx] + spentAmount[idx]
             sum[idx] = amtToPay[idx] + spentAmount[idx]
             let eachResult: PersonPaymentInfo = (name: names[idx], paidAmt: spentAmount[idx], toGet: amtToPay[idx], sum: sum[idx])
             result.append(eachResult)
@@ -277,9 +330,7 @@ extension DutchManager {
 }
 
 
-typealias OverallPersonInfo = (name: String, relativePaidAmount: Double, attendedPlaces: String)
 
-typealias PersonPaymentInfo = (name: String, paidAmt: Double, toGet: Double, sum: Double)
 
 extension DutchManager {
     

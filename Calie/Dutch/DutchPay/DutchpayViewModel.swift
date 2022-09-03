@@ -12,7 +12,7 @@ class DutchpayViewModel {
     
     let dutchService = DutchService()
     
-    typealias GatheringInfo = (title: String, totalPrice: String)
+
     
     // MARK: - Actions when Observed Properties changed.
     

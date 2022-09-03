@@ -51,63 +51,30 @@ class ResultViewController: UIViewController {
             $0.textAlignment = .right
              $0.text = "쓴 금액"
         }
-//
+
 //        // TODO: 여기에만 색상 넣기. 부호 넣어 말어..?
          let toPayLabel = UILabel().then {
             $0.textAlignment = .right
-//            $0.backgroundColor = .cyan
              $0.text = "받을 금액"
         }
-        
+
          let summaryLabel = UILabel().then {
             $0.textAlignment = .right
-//            $0.backgroundColor = .orange
-//             $0.text = "종합"
         }
-        
+
         let pricesContainer = UIView()
         
         $0.addSubview(nameLabel)
         $0.addSubview(pricesContainer)
         
-//        $0.addSubview(spentAmountLabel)
-//        $0.addSubview(toPayLabel)
-//        $0.addSubview(summaryLabel)
         [spentAmountLabel, toPayLabel, summaryLabel].forEach { pricesContainer.addSubview($0)}
         
-        
-//        nameLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(10)
-//            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(70)
-//        }
         
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
             make.top.bottom.equalToSuperview()
-//            make.width.equalTo(70)
             make.width.equalToSuperview().dividedBy(4)
         }
-        
-//        spentAmountLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-//            make.top.bottom.equalToSuperview()
-////            make.width.equalTo(100)
-//            make.width.equalToSuperview().dividedBy(4)
-//        }
-//
-//        toPayLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(10)
-//            make.top.bottom.equalToSuperview()
-////            make.width.equalTo(100)
-//            make.width.equalToSuperview().dividedBy(4)
-//        }
-//
-//        summaryLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(toPayLabel.snp.trailing).offset(10)
-//            make.trailing.equalToSuperview().inset(10)
-//            make.top.bottom.equalToSuperview()
-//        }
         
         pricesContainer.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
@@ -118,14 +85,12 @@ class ResultViewController: UIViewController {
         spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing)
             make.top.bottom.equalToSuperview()
-//            make.width.equalTo(100)
             make.width.equalToSuperview().dividedBy(3)
         }
         
         toPayLabel.snp.makeConstraints { make in
             make.leading.equalTo(spentAmountLabel.snp.trailing).offset(10)
             make.top.bottom.equalToSuperview()
-//            make.width.equalTo(100)
             make.width.equalToSuperview().dividedBy(3)
         }
         
@@ -134,8 +99,6 @@ class ResultViewController: UIViewController {
             make.trailing.equalToSuperview().inset(5)
             make.top.bottom.equalToSuperview()
         }
-        
-        
     }
     
     private func setupLayout() {
@@ -144,7 +107,8 @@ class ResultViewController: UIViewController {
             dismissBtn,
             titleLabel,
             briefInfoTableView,
-            dividerView
+            dividerView,
+            calculatedInfoTableView
         ].forEach { self.view.addSubview($0)}
         
         dismissBtn.snp.makeConstraints { make in
@@ -172,6 +136,12 @@ class ResultViewController: UIViewController {
             make.top.equalTo(briefInfoTableView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(1)
+        }
+        
+        calculatedInfoTableView.snp.makeConstraints { make in
+            make.top.equalTo(dividerView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(viewModel.calculatedResultTuples.count * 50)
         }
     }
     
@@ -211,6 +181,10 @@ class ResultViewController: UIViewController {
         $0.isScrollEnabled = false
     }
     
+    private let calculatedInfoTableView = UITableView().then {
+        $0.isScrollEnabled = false
+    }
+    
     
     private func registerTableView() {
         briefInfoTableView.register(ResultBriefInfoTableCell.self, forCellReuseIdentifier: ResultBriefInfoTableCell.identifier)
@@ -221,7 +195,11 @@ class ResultViewController: UIViewController {
         
         briefInfoTableView.tableHeaderView = briefHeaderView
         
-        
+        calculatedInfoTableView.register(CalculatedResultTableCell.self, forCellReuseIdentifier: CalculatedResultTableCell.identifier)
+        calculatedInfoTableView.delegate = self
+        calculatedInfoTableView.dataSource = self
+        calculatedInfoTableView.rowHeight = 50
+        calculatedInfoTableView.separatorStyle = .none
         
     }
 }
@@ -230,14 +208,30 @@ class ResultViewController: UIViewController {
 extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return viewModel.overallPersonInfos.count
-        return viewModel.overallPayInfos.count
+        if tableView == briefInfoTableView {
+            return viewModel.overallPayInfos.count
+        } else if tableView == calculatedInfoTableView {
+            return viewModel.calculatedResultTuples.count
+        }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ResultBriefInfoTableCell.identifier, for: indexPath) as! ResultBriefInfoTableCell
-//        cell.overallPersonInfo = viewModel.overallPersonInfos[indexPath.row]
-        cell.personCostInfo = viewModel.overallPayInfos[indexPath.row]
-        return cell
+
+        if tableView == briefInfoTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: ResultBriefInfoTableCell.identifier, for: indexPath) as! ResultBriefInfoTableCell
+            cell.personCostInfo = viewModel.overallPayInfos[indexPath.row]
+            return cell
+        } else if tableView == calculatedInfoTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: CalculatedResultTableCell.identifier, for: indexPath) as! CalculatedResultTableCell
+//            cell.description = viewModel.calcu
+//            cell.viewModel =
+            cell.exchangeInfo = viewModel.calculatedResultTuples[indexPath.row]
+            return cell
+        }
+      
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

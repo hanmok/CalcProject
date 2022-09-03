@@ -32,7 +32,7 @@ class DutchService {
         self.currentGathering = currentGathering
     }
     
-    typealias ResultTest = (Result<Gathering, DutchError>) -> Void
+
     
     func resetGathering(completion: @escaping ResultTest) {
         //        currentGathering
@@ -318,36 +318,66 @@ extension DutchService {
     
 //    func calculateResults(gathering: Gathering, closure: @escaping ([DetailResultTuple]) -> Void) {
     
-    func calculateResults(gathering: Gathering) -> [DetailResultTuple] {
+    // MARK: - 계산 후에 이름을 바꾸게 될 수도 있으니까, 우선 Order 로 하는게 좋지 않을까 ??
+    // MARK: - 음.. 아니면 Person 에 UUID 를 주거나.. 이름을 바꿀 수도 있고, 순서를 바꿀 수도 있으니까.
+    
+    func calculateResults(gathering: Gathering) -> [ResultTupleWithId] {
         
 
         let overallPayInfos = createPersonPayInfos(gathering: gathering)
 
         let people = gathering.people
-
-        //        let person = people.first?.
-                                                            // PersonTuple: (name: String, spentAmount: Int, idx: Idx)
+//      PersonPaymentInfo = (name: String, paidAmt: Double, toPay: Double, sum: Double)
+        // Double 을 Int 로 바꿈.. 음... 일단 pass
         let tupleIngredients = overallPayInfos.map { paymentInfo -> PersonTuple in
             guard let person = people.filter({ $0.name == paymentInfo.name}).first else { fatalError() }
             let correspondingIdx = Idx(person.order)
-            return PersonTuple(name: paymentInfo.name, spentAmount: Int(paymentInfo.toGet), idx: correspondingIdx )
+          
+            return PersonTuple(
+                name: paymentInfo.name,
+                spentAmount: Int(paymentInfo.toGet * 100) , // * 100 으로 Int 로 만들어버리기.
+                idx: correspondingIdx )
         }
-        // ResultTuple:  (from: Idx, to: Idx, amount: Int)
-        let resultsWithIndices = calculateUsing(personTuples: tupleIngredients)
         
-        let ret = resultsWithIndices.map { resultTuple -> DetailResultTuple in
+        let resultsWithIndices = calculateDutchResults(using: tupleIngredients)
+        
+        let ret = resultsWithIndices.map { resultTuple -> ResultTupleWithId in
             guard let sender = people.filter({ $0.order == resultTuple.from }).first,
             let receiver = people.filter({ $0.order == resultTuple.to}).first else { fatalError() }
         
-            let amt = resultTuple.amount
+            let amt = Double(resultTuple.amount / 100) // / 100 으로 다시 Double 로 변환.
             
-            return DetailResultTuple(from: sender.name, to: receiver.name, amount: amt )
+            return ResultTupleWithId(from: sender.id, to: receiver.id, amount: amt )
         }
         
-        // DetailResultTuple:  (from: String, to: String, amount: Int)
         return ret
     }
     
+    func convertResultIDIntoName(gathering: Gathering, resultTupleIds: [ResultTupleWithId]) -> [ResultTupleWithName] {
+        
+        let people = gathering.people
+        let ret = resultTupleIds.map { resultTupleId -> ResultTupleWithName in
+            let source = resultTupleId
+            guard let fromPerson = people.first(where: ({ source.from == $0.id })), // $0: person in people
+                    let toPerson = people.first(where: { source.to == $0.id}) else {
+                fatalError()
+            }
+            
+            return ResultTupleWithName(from: fromPerson.name, to: toPerson.name, amount: source.amount)
+        }
+        
+        return ret
+    }
+    
+    func returnValidInfoAfterCalculation(gathering: Gathering) -> [ResultTupleWithName] {
+//         ResultTupleWithId = (from: UUID, to: UUID, amount: Double)
+        let firstResult = calculateResults(gathering: gathering)
+        
+//         ResultTupleWithName = (from: String, to: String, amount: Double)
+        let finalResult = convertResultIDIntoName(gathering: gathering, resultTupleIds: firstResult)
+        print("finalResult: \(finalResult)")
+        return finalResult
+    }
 }
 
 enum DutchError: Error {

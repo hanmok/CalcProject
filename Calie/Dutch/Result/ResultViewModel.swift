@@ -37,8 +37,10 @@ class ResultViewModel {
     
     // TODO: 반올림! How ??
     
-    var resultTuples: [DetailResultTuple] { // from: String, to: String, amt: Int
-        return dutchService.calculateResults(gathering: currentGathering)
+    var calculatedResultTuples: [ResultTupleWithName] { // from: String, to: String, amt: Int
+//        return dutchService.calculateResults(gathering: currentGathering)
+        return dutchService.returnValidInfoAfterCalculation(gathering: currentGathering)
+        
     }
 }
 
@@ -55,13 +57,6 @@ class ResultViewModel {
 
 
 
-typealias Idx = Int
-typealias Amt = Int
-typealias PersonTuple = (name: String, spentAmount: Int, idx: Idx)
-//typealias ResultTuple = (from: String, to: String, amount: Int)
-typealias ResultTuple = (from: Idx, to: Idx, amount: Int)
-typealias BinIndex = Int
-typealias DetailResultTuple = (from: String, to: String, amount: Int)
 
 struct PersonStruct {
     var name: String?
@@ -85,7 +80,6 @@ extension PersonStruct {
     mutating func updateSpentAmt(to amt: Amt) {
         self.spentAmount = amt
     }
-    
 }
 
 extension PersonStruct: Hashable { }
@@ -441,7 +435,7 @@ func somefunc(numToPick: Int, candidatesDic: [Amt: [Idx]], targetArr: [Amt]) ->
 }
 
 
-func calculateUsing(personTuples: [PersonTuple]) -> [ResultTuple] {
+func calculateDutchResults(using personTuples: [PersonTuple]) -> [ResultTuple] {
     
     //        typealias PersonTuple = (name: String, spentAmount: Int)
     //        typealias ResultTuple = (from: String, to: String, amount: Int)
@@ -459,6 +453,8 @@ func calculateUsing(personTuples: [PersonTuple]) -> [ResultTuple] {
 //    ]
     
     let personDetailsIngre = personTuples
+    print("result flag, receivedData: \(personDetailsIngre)")
+    
     
     var personDetails: [PersonStruct] = personDetailsIngre.map { PersonStruct(name: $0.name, spentAmount: $0.spentAmount, idx: $0.idx)}
     
@@ -821,7 +817,10 @@ func calculateUsing(personTuples: [PersonTuple]) -> [ResultTuple] {
     
 //        bigLoop: while((numOfPlusPeople != 0 && numOfMinusPeople != 0) && testCount < 10) {
 bigLoop: while(numOfPlusPeople != 0 && numOfMinusPeople != 0) {
-    
+    // FIXME: remove after solving prob
+    if bigLoopCount == 100 {
+        break
+    }
         bigLoopCount += 1
 //            testCount += 1
         

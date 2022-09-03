@@ -810,66 +810,65 @@ extension DutchpayUnitTest {
     }
 }
 
-extension DutchpayUnitTest {
-    func test_fromTheTop() {
-        
-        typealias PersonTuple = (name: String, spentAmount: Int)
-        typealias ResultTuple = (from: String, to: String, amount: Int)
-        
-        let personDetails: [PersonTuple] = [("a1", 1), ("a2", 25), ("a3", 7), ("a4", 4), ("a5", 7), ("a6", 5), ("a7", 2), ("a8", 0), ("a9", 17), ("a10", 7), ("a11", 14),
-                                            ("b1", -54), ("b2", -13), ("b3", -2), ("b4", -1), ("b5", -5), ("b6", -7),("b7", -7) ]
-        
-        var positiveTuples = [PersonTuple]()
-        var negativeTuples = [PersonTuple]()
-        var resultTuples = [ResultTuple]()
-        
-        for tup in personDetails {
-            if tup.spentAmount >= 0 {
-                positiveTuples.append(tup)
-            } else {
-                negativeTuples.append(tup)
-            }
-        }
-        
-        // --------------------------------Test----------------------------- //
-        let positiveSum = positiveTuples.map { $0.spentAmount}.reduce(0, +)
-        let negativeSum = negativeTuples.map { $0.spentAmount }.reduce(0, +)
-        XCTAssertEqual(positiveSum, -negativeSum)
-        // ----------------------------------------------------------------- //
-        
-        // 0원 인 경우, Result 에 들어갈 필요 없이, 앞으로 연산 시 고려사항에서 제거되어있어야함.
-        let zeroPeople = positiveTuples.filter { $0.spentAmount == 0 }
-        let positiveTupleCountBefore = positiveTuples.count
-        XCTAssertNotEqual(zeroPeople.count, 0)
-        
-        positiveTuples = positiveTuples.filter { $0.spentAmount != 0 }
-        XCTAssertEqual(positiveTupleCountBefore - 1, positiveTuples.count)
-        
-        // MARK: - Make Dictionary for both signs
-        var positivesDic: [Int: [String]] = [:]
-        var negativesDic: [Int: [String]] = [:]
-        
-        for personTuple in positiveTuples {
-            if positivesDic[personTuple.spentAmount] != nil {
-                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
-                
-            } else {
-                positivesDic[personTuple.spentAmount] = [personTuple.name]
-            }
-        }
-        
-        for  personTuple in negativeTuples {
-            if negativesDic[personTuple.spentAmount] != nil {
-                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
-                
-            } else {
-                negativesDic[personTuple.spentAmount] = [personTuple.name]
-            }
-        }
-        
-        print("positivesDic: \(positivesDic)")
-        print("negativesDic: \(negativesDic)")
-        
-        // MARK: - Match 1 on 1 // Using Dynamic approach may reduce time complexity ..
-    }
-}
+//extension DutchpayUnitTest {
+//    func test_fromTheTop() {
+//
+//
+//
+//        let personDetails: [PersonTuple] = [("a1", 1), ("a2", 25), ("a3", 7), ("a4", 4), ("a5", 7), ("a6", 5), ("a7", 2), ("a8", 0), ("a9", 17), ("a10", 7), ("a11", 14),
+//                                            ("b1", -54), ("b2", -13), ("b3", -2), ("b4", -1), ("b5", -5), ("b6", -7),("b7", -7) ]
+//
+//        var positiveTuples = [PersonTuple]()
+//        var negativeTuples = [PersonTuple]()
+//        var resultTuples = [ResultTuple]()
+//
+//        for tup in personDetails {
+//            if tup.spentAmount >= 0 {
+//                positiveTuples.append(tup)
+//            } else {
+//                negativeTuples.append(tup)
+//            }
+//        }
+//
+//        // --------------------------------Test----------------------------- //
+//        let positiveSum = positiveTuples.map { $0.spentAmount}.reduce(0, +)
+//        let negativeSum = negativeTuples.map { $0.spentAmount }.reduce(0, +)
+//        XCTAssertEqual(positiveSum, -negativeSum)
+//        // ----------------------------------------------------------------- //
+//
+//        // 0원 인 경우, Result 에 들어갈 필요 없이, 앞으로 연산 시 고려사항에서 제거되어있어야함.
+//        let zeroPeople = positiveTuples.filter { $0.spentAmount == 0 }
+//        let positiveTupleCountBefore = positiveTuples.count
+//        XCTAssertNotEqual(zeroPeople.count, 0)
+//
+//        positiveTuples = positiveTuples.filter { $0.spentAmount != 0 }
+//        XCTAssertEqual(positiveTupleCountBefore - 1, positiveTuples.count)
+//
+//        // MARK: - Make Dictionary for both signs
+//        var positivesDic: [Int: [String]] = [:]
+//        var negativesDic: [Int: [String]] = [:]
+//
+//        for personTuple in positiveTuples {
+//            if positivesDic[personTuple.spentAmount] != nil {
+//                positivesDic[personTuple.spentAmount]!.append(personTuple.name)
+//
+//            } else {
+//                positivesDic[personTuple.spentAmount] = [personTuple.name]
+//            }
+//        }
+//
+//        for  personTuple in negativeTuples {
+//            if negativesDic[personTuple.spentAmount] != nil {
+//                negativesDic[personTuple.spentAmount]!.append(personTuple.name)
+//
+//            } else {
+//                negativesDic[personTuple.spentAmount] = [personTuple.name]
+//            }
+//        }
+//
+//        print("positivesDic: \(positivesDic)")
+//        print("negativesDic: \(negativesDic)")
+//
+//        // MARK: - Match 1 on 1 // Using Dynamic approach may reduce time complexity ..
+//    }
+//}
