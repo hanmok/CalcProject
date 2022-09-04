@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SnapKit
+//import JosaFormatter
 
 class CalculatedResultTableCell: UITableViewCell {
     static let identifier = "ResultOverallTableCell"
@@ -37,7 +38,12 @@ class CalculatedResultTableCell: UITableViewCell {
         
         var attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.systemFont(ofSize: 22)])
         
-        attributedStr.append(NSAttributedString(string: "이", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+        
+//        let correctJosa = KoreanUtils.format("'%@'는", from)
+//        print("correctJosa: \(correctJosa)")
+        
+        
+        attributedStr.append(NSAttributedString(string: "는(은)", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
         
         attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [.font:UIFont.systemFont(ofSize: 22)]))
         

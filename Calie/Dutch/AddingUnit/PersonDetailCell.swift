@@ -34,6 +34,7 @@ class PersonDetailCell: UICollectionViewCell {
         $0.textColor = .black
         $0.backgroundColor = .white
         $0.adjustsFontSizeToFitWidth = true
+//        $0.backgroundColor = .magenta
     }
     
 //    public let bottomLineView = UIView().then {
@@ -113,7 +114,8 @@ class PersonDetailCell: UICollectionViewCell {
         
         nameLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.leading.equalToSuperview().inset(10)
+//            make.leading.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().inset(15)
             make.width.equalTo(70)
         }
         

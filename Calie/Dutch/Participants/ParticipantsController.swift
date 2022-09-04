@@ -48,6 +48,7 @@ class ParticipantsController: UIViewController{
     
     weak var delegate: ParticipantsVCDelegate?
     
+    weak var addingDelegate: AddingUnitControllerDelegate?
     private var updatedParticipants: [Person] = []
     
     
@@ -106,9 +107,13 @@ class ParticipantsController: UIViewController{
 //        participants.forEach { print($0.name) }
 //        viewModel.updatePeople()
 //        delegate?.updateParticipants(with: participants)
-        delegate?.hideParticipantsController()
+        addingDelegate?.dismissChildVC()
+//        delegate?.hideParticipantsController()
+            
         
         delegate?.update()
+        self.navigationController?.popViewController(animated: true)
+        
     }
     
     
@@ -142,10 +147,11 @@ class ParticipantsController: UIViewController{
             }
             
             addPeopleBtn.snp.remakeConstraints { make in
-                make.bottom.equalToSuperview()
+//                make.bottom.equalToSuperview()
+                make.top.equalToSuperview()
                 make.height.equalTo(55)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(40)
+                make.width.equalTo(55)
             }
             
             participantsTableView.setEditing(false, animated: true)
@@ -164,9 +170,13 @@ class ParticipantsController: UIViewController{
             }
             
             addPeopleBtn.snp.remakeConstraints { make in
-                make.bottom.equalToSuperview().offset(50)
+//                make.bottom.equalToSuperview().offset(50)
+//                make.centerX.equalToSuperview()
+//                make.width.equalTo(40)
+//                make.height.equalTo(55)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(40)
+                make.width.equalTo(55)
+                make.top.equalToSuperview().offset(100)
                 make.height.equalTo(55)
             }
             
@@ -297,7 +307,10 @@ class ParticipantsController: UIViewController{
         plusImage.contentMode = .scaleAspectFit
         $0.addSubview(plusImage)
         
-        plusImage.tintColor = .blue
+//        plusImage.tintColor = .blue
+        
+        plusImage.tintColor = ColorList().bgColorForExtrasMiddle
+        
         plusImage.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
@@ -356,14 +369,16 @@ class ParticipantsController: UIViewController{
             make.leading.trailing.equalToSuperview()
 //            make.bottom.equalTo(addPeopleBtn.snp.top).offset(-10)
 //            make.bottom.equalTo(bottomContainerView.snp.top).offset(5)
-            make.bottom.equalToSuperview().inset(70)
+//            make.bottom.equalToSuperview().inset(70)
+            make.bottom.equalToSuperview().inset(100)
         }
         
         
         bottomContainerView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(70)
+//            make.height.equalTo(70)
+            make.height.equalTo(100)
             make.centerX.equalToSuperview()
         }
         
@@ -380,7 +395,8 @@ class ParticipantsController: UIViewController{
             make.height.equalTo(30)
             make.centerX.equalToSuperview()
             make.width.equalTo(200)
-            make.top.equalToSuperview().offset(10)
+//            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(56)
         }
         
         editingBtn.snp.makeConstraints { make in

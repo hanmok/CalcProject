@@ -21,6 +21,12 @@ class ResultViewController: UIViewController {
     let briefRowHeight: CGFloat = 80
     let calculatedRowHeight: CGFloat = 50
     
+    let scrollView = UIScrollView()
+//        .then {
+////        $0.backgroundColor = .magenta
+//    }
+    
+    var addingDelegate: AddingUnitControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +108,21 @@ class ResultViewController: UIViewController {
             calculatedInfoTableView
         ].forEach { self.view.addSubview($0)}
         
+//        view.addSubview(scrollView)
+//        scrollView.contentSize = CGSize(width: screenWidth, height: 10000)
+//        scrollView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+//        }
+//
+//        [
+//            dismissBtn,
+//            titleLabel,
+//            briefInfoTableView,
+//            dividerView,
+//            calculatedInfoTableView
+//        ].forEach { self.scrollView.addSubview($0)}
+        
+        
         dismissBtn.snp.makeConstraints { make in
             
             make.top.equalToSuperview().offset(56)
@@ -142,6 +163,7 @@ class ResultViewController: UIViewController {
     }
     
     @objc func dismissTapped(_ sender: UIButton) {
+        addingDelegate?.dismissChildVC()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -172,6 +194,7 @@ class ResultViewController: UIViewController {
     
     private let briefInfoTableView = UITableView().then {
         $0.isScrollEnabled = false
+        $0.backgroundColor = .cyan
     }
     
     private let calculatedInfoTableView = UITableView().then {
@@ -217,16 +240,21 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
         if tableView == briefInfoTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: ResultBriefInfoTableCell.identifier, for: indexPath) as! ResultBriefInfoTableCell
             cell.personCostInfo = viewModel.overallPayInfos[indexPath.row]
+            cell.isUserInteractionEnabled = false
             return cell
         } else if tableView == calculatedInfoTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: CalculatedResultTableCell.identifier, for: indexPath) as! CalculatedResultTableCell
-//            cell.description = viewModel.calcu
-//            cell.viewModel =
+            cell.isUserInteractionEnabled = false
+            
             cell.exchangeInfo = viewModel.calculatedResultTuples[indexPath.row]
             return cell
         }
       
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

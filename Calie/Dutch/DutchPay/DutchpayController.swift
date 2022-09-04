@@ -199,7 +199,7 @@ class DutchpayController: UIViewController {
         guard let gathering = viewModel.gathering else { fatalError() }
         
         let resultVC = ResultViewController(gathering: gathering)
-        
+        resultVC.addingDelegate = self
 
         navigationController?.pushViewController(resultVC, animated: true)
         dutchToMainTapDelegate?.shouldHideMainTab(true)
@@ -339,27 +339,32 @@ class DutchpayController: UIViewController {
         
         // TODO: Need Gathering
         participantsController = ParticipantsController(currentGathering: viewModel.gathering!)
+        participantsController!.delegate = self
+        participantsController!.addingDelegate = self
         
-        guard let participantsController = participantsController else {
-            fatalError()
-        }
+        navigationController?.pushViewController(participantsController!, animated: true)
+        dutchToMainTapDelegate?.shouldHideMainTab(true)
         
-        participantsController.delegate = self
-        
-        participantsNavController = UINavigationController(rootViewController: participantsController)
-        
-        guard let participantsNavController = participantsNavController else {
-            fatalError()
-        }
-        
-        self.addChild(participantsNavController)
-        
-        self.mainContainer.addSubview(participantsNavController.view)
-        participantsNavController.didMove(toParent: self)
-        
-        participantsNavController.view.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
+//        guard let participantsController = participantsController else {
+//            fatalError()
+//        }
+//
+//        participantsController.delegate = self
+//
+//        participantsNavController = UINavigationController(rootViewController: participantsController)
+//
+//        guard let participantsNavController = participantsNavController else {
+//            fatalError()
+//        }
+//
+//        self.addChild(participantsNavController)
+//
+//        self.mainContainer.addSubview(participantsNavController.view)
+//        participantsNavController.didMove(toParent: self)
+//
+//        participantsNavController.view.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+//        }
         
         
     }
@@ -485,13 +490,9 @@ class DutchpayController: UIViewController {
     }
     
     private let mainContainer = UIView()
-//        .then {
-//        $0.layer.cornerRadius = 16
-//        $0.clipsToBounds = true
-//    }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
-//        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
+
         $0.backgroundColor = .white
         $0.addBorders(edges: .bottom, color: UIColor(white: 0.8, alpha: 0.9))
     }
@@ -553,32 +554,23 @@ class DutchpayController: UIViewController {
     
     
     private let dutchTableView = UITableView()
-//        .then {
-//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
-//        $0.layer.borderWidth = 1
-//
-//    }
     
     private let tableViewBottomBorder = UIView().then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
     }
     
     private let totalPriceLabel = UILabel().then {
-//        $0.font = UIFont.systemFont(ofSize: 24)
         $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .center
-//        $0.text = "총 금액"
     }
     
     private let totalPriceValueLabel = UILabel().then {
-//        $0.font = UIFont.systemFont(ofSize: 24)
         $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .right
     }
     
     private let calculateBtn = UIButton().then {
         
-//        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
         let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold)])
         $0.setAttributedTitle(attr, for: .normal)
         $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
@@ -803,17 +795,17 @@ extension DutchpayController: ParticipantsVCDelegate {
     
     func hideParticipantsController() {
         
-        guard let participantsController = participantsController else { fatalError() }
-        
-        participantsController.willMove(toParent: nil)
-        participantsController.view.removeFromSuperview()
-        participantsController.removeFromParent()
-        
-        guard let participantsNavController = participantsNavController else { fatalError() }
-        
-        participantsNavController.willMove(toParent: nil)
-        participantsNavController.view.removeFromSuperview()
-        participantsNavController.removeFromParent()
+//        guard let participantsController = participantsController else { fatalError() }
+//
+//        participantsController.willMove(toParent: nil)
+//        participantsController.view.removeFromSuperview()
+//        participantsController.removeFromParent()
+//
+//        guard let participantsNavController = participantsNavController else { fatalError() }
+//
+//        participantsNavController.willMove(toParent: nil)
+//        participantsNavController.view.removeFromSuperview()
+//        participantsNavController.removeFromParent()
     }
     
     func updateParticipants(with participants: [Person]) {

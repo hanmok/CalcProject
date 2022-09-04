@@ -34,6 +34,9 @@ class DutchUnitController: NeedingController {
     /// 10
     private let smallPadding: CGFloat = 10
     
+    
+    let scrollView = UIScrollView()
+    
     var isShowingKeyboard = false {
         willSet {
             print("dismissing flag 4: isShowingKeyboard: \(newValue)")
@@ -345,8 +348,8 @@ class DutchUnitController: NeedingController {
         viewModel.reset {
             DispatchQueue.main.async {
                 self.personDetailCollectionView.snp.remakeConstraints { make in
-                    make.leading.equalToSuperview().inset(self.smallPadding)
-                    make.trailing.equalToSuperview().inset(self.smallPadding)
+                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
                     make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
                 }
@@ -370,7 +373,7 @@ class DutchUnitController: NeedingController {
     
     @objc func dismissTapped() {
         addingDelegate?.dismissChildVC()
-//        self.dismiss(animated: true)
+
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -545,12 +548,14 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(30)
-            make.width.equalTo(15)
+//            make.width.equalTo(15)
+            make.width.equalTo(30)
         }
         
         spentPlaceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(dismissBtn.snp.bottom).offset(20)
+//            make.top.equalTo(dismissBtn.snp.bottom).offset(20)
+            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
             make.width.equalTo(150)
             make.height.equalTo(20)
         }
@@ -609,7 +614,10 @@ class DutchUnitController: NeedingController {
         
         
         personDetailCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(smallPadding)
+//            make.leading.equalToSuperview().inset(smallPadding)
+//            make.leading.equalToSuperview().inset(smallPadding * 1.5)
+//            make.leading.equalToSuperview().offset(smallPadding * 1.5)
+            make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
             make.height.equalTo(45 * viewModel.personDetails.count - 20)
@@ -703,11 +711,16 @@ class DutchUnitController: NeedingController {
     private let dismissBtn: UIButton = {
         let btn = UIButton()
         let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
+
         btn.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
         }
+
         return btn
     }()
     
@@ -716,14 +729,21 @@ class DutchUnitController: NeedingController {
         $0.setTitle("인원 추가", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.layer.cornerRadius = 8
-        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
+        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
     }
     
     private let resetBtn = UIButton().then {
-        $0.setTitle("초기화", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
+        let imgView = UIImageView(image: UIImage(systemName: "arrow.counterclockwise"))
+        imgView.tintColor = .red
+        imgView.contentMode = .scaleAspectFit
+
+        $0.addSubview(imgView)
+        imgView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview().inset(6)
+        }
+        
         $0.layer.cornerRadius = 8
-        $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        $0.backgroundColor = UIColor(white: 0.88, alpha: 1)
     }
     
     private let confirmBtn = UIButton().then {

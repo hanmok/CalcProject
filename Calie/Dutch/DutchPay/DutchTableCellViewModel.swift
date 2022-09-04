@@ -47,7 +47,10 @@ extension DutchTableCellViewModel {
     }
     
     private func convertPeopleIntoStr(peopleDetails: Set<PersonDetail>) -> String {
-        return peopleDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
+        // print only attended people
+        let attendedPeople = peopleDetails.sorted().filter { $0.isAttended == true }
+        return attendedPeople.map { $0.person!.name}.joined(separator: ", ")
+//        return peopleDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
     }
     
     private func convertDateIntoStr(date: Date) -> String {
