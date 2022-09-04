@@ -234,7 +234,7 @@ extension DutchService {
         // FIXME: 여기 과정 때문에 UpdateUnit 이 제대로 이루어지지 않음.
         // 다른 personDetails 에서 새로운 Person 이 생기지 않음.
 //        let newPerson = dutchManager.addPersonToGathering(name: name, currentGathering: currentGathering)
-        let newPerson = dutchManager.createPerson(name: name, using: currentGathering)
+        let newPerson = dutchManager.createPerson(name: name, order: personDetails.count)
         
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
         
@@ -264,7 +264,7 @@ extension DutchService {
 extension DutchService {
     func swapPersonOrder(person1: Person, person2: Person, closure: @escaping () -> Void) {
         dutchManager.swapPersonOrder(of: person1, with: person2)
-    closure()
+        closure()
     }
     
     

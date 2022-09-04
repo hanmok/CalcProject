@@ -13,20 +13,6 @@ import SnapKit
 class CalculatedResultTableCell: UITableViewCell {
     static let identifier = "ResultOverallTableCell"
     
-//    var viewModel: ResultBriefInfoTableCellViewModel? {
-//        didSet {
-//            configureLayout()
-//        }
-//    }
-    
-//    public var overallPersonInfo: OverallPersonInfo? {
-//        didSet {
-//            configureLayout()
-//        }
-//    }
-    
-
-    
     public var exchangeInfo: ResultTupleWithName? {
         didSet {
             configureLayout()
@@ -34,7 +20,10 @@ class CalculatedResultTableCell: UITableViewCell {
     }
     
     
-    private let exchangeTextLabel = UILabel()
+    private let exchangeTextLabel = UILabel().then {
+        $0.font = UIFont.systemFont(ofSize: 22)
+//        $0.backgroundColor = .magenta
+    }
     
     private func configureLayout() {
         guard let exchangeInfo = exchangeInfo else {
@@ -43,8 +32,26 @@ class CalculatedResultTableCell: UITableViewCell {
         
         let (from, to, amt) = exchangeInfo
         
-        let str = " \(from) 이 \(to) 에게 \(amt) 를 보내주세요."
-        exchangeTextLabel.text = str
+//        let convertedAmt = amt.getStrWithoutDots()
+        let convertedAmt = amt.convertIntoKoreanPrice()
+        
+        var attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.systemFont(ofSize: 22)])
+        
+        attributedStr.append(NSAttributedString(string: "이", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+        
+        attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+        
+        attributedStr.append(NSAttributedString(string: "에게", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+
+        attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+
+        attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+//        let str = " \(from) 이 \(to) 에게 \(convertedAmt) 를 보내주세요."
+        exchangeTextLabel.attributedText = attributedStr
+        
+//        exchange
+        
+//        exchangeTextLabel.text = str
     }
     
     private func setupLayout() {
@@ -53,7 +60,6 @@ class CalculatedResultTableCell: UITableViewCell {
         exchangeTextLabel.snp.makeConstraints { make in
             make.leading.top.trailing.bottom.equalToSuperview().inset(5)
         }
-        
     }
     
     

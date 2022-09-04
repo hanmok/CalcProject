@@ -18,7 +18,6 @@ enum PopupScreens {
 
 protocol DutchpayControllerDelegate: AnyObject {
     func shouldHideMainTab(_ bool: Bool)
-    //    func dutchpayController(shouldShowSideView: Bool, dutchManager: DutchManager)
     
     func shouldShowSideView(_ bool: Bool)
 }
@@ -90,7 +89,6 @@ class DutchpayController: UIViewController {
         
     }
     private let topView = UIView().then {
-//        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
         $0.backgroundColor = .white
     }
     
@@ -473,32 +471,6 @@ class DutchpayController: UIViewController {
         return btn
     }()
     
-    let addGatheringBtn: UIButton = {
-        let btn = UIButton()
-        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
-        
-        let innerImage = UIImageView(image: UIImage(systemName: "plus")!)
-        
-        circle.tintColor = .white
-        innerImage.tintColor = .black
-        
-        btn.addSubview(circle)
-        circle.addSubview(innerImage)
-        
-        circle.snp.makeConstraints { make in
-            make.width.height.equalTo(50)
-            make.center.equalTo(btn)
-        }
-        
-        innerImage.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.center.equalTo(circle)
-        }
-        
-        return btn
-    }()
-    
-    
     private let titleLabelBtnInHeader = UIButton()
     
     private let groupBtnInHeader = UIButton().then {
@@ -539,20 +511,20 @@ class DutchpayController: UIViewController {
 //        $0.isHidden = true
 //    }
     
-    private let gatheringPlusBtn: UIButton = {
-        let btn = UIButton()
-        
-        let inner = UIImageView(image: UIImage(systemName: "plus.circle"))
-        
-        btn.addSubview(inner)
-        inner.snp.makeConstraints { make in
-            make.center.equalTo(btn)
-            make.width.equalTo(btn)
-            make.height.equalTo(btn)
-        }
-        
-        return btn
-    }()
+//    private let gatheringPlusBtn: UIButton = {
+//        let btn = UIButton()
+//
+//        let inner = UIImageView(image: UIImage(systemName: "plus.circle"))
+//
+//        btn.addSubview(inner)
+//        inner.snp.makeConstraints { make in
+//            make.center.equalTo(btn)
+//            make.width.equalTo(btn)
+//            make.height.equalTo(btn)
+//        }
+//
+//        return btn
+//    }()
     
     private let dutchUnitPlusBtn: UIButton = {
         let btn = UIButton()
@@ -588,11 +560,7 @@ class DutchpayController: UIViewController {
 //    }
     
     private let tableViewBottomBorder = UIView().then {
-//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
         $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
-//        $0.backgroundColor = .magenta
-//        $0.backgroundColor = UIColor
-//        $0.layer.borderWidth = 1
     }
     
     private let totalPriceLabel = UILabel().then {
@@ -628,13 +596,6 @@ class DutchpayController: UIViewController {
         
         view.addSubview(wholeContainerView)
         view.addSubview(topView)
-//        wholeContainerView.addSubview(historyBtn)
-        
-//        wholeContainerView.addSubview(resetGatheringBtn)
-        
-//        wholeContainerView.addSubview(groupBtn)
-
-        wholeContainerView.addSubview(gatheringPlusBtn)
         
         wholeContainerView.addSubview(mainContainer)
         
@@ -643,7 +604,6 @@ class DutchpayController: UIViewController {
         mainContainer.addSubview(resetGatheringBtn)
         
         view.addSubview(blurredView)
-//        wholeContainerView.addSubview(blurredView)
         // safeArea on the bottom
         
         wholeContainerView.snp.makeConstraints { make in
@@ -659,19 +619,6 @@ class DutchpayController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-//        historyBtn.snp.makeConstraints { make in
-//            make.leading.equalTo(wholeContainerView.snp.leading).offset(20)
-//            make.top.equalTo(view.safeAreaLayoutGuide)
-//            make.height.width.equalTo(40)
-//        }
-        
-        
-//        resetGatheringBtn.snp.makeConstraints { make in
-//            make.trailing.equalTo(wholeContainerView.snp.trailing).inset(20)
-//            make.top.equalTo(view.safeAreaLayoutGuide)
-//            make.height.width.equalTo(30)
-//        }
-        
         mainContainer.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalToSuperview()
@@ -679,11 +626,8 @@ class DutchpayController: UIViewController {
         }
         
         resetGatheringBtn.snp.makeConstraints { make in
-//            make.top.bottom.trailing.equalToSuperview().inset(3)
-//            make.trailing.bottom.equalToSuperview().inset(3)
             make.bottom.equalToSuperview().offset(-20)
             make.trailing.equalToSuperview()
-//            make.height.equalTo(54)
             make.width.height.equalTo(60)
         }
         
@@ -700,21 +644,23 @@ class DutchpayController: UIViewController {
         }
         
         totalPriceContainerView.snp.makeConstraints { make in
-//            make.bottom.equalTo(calculateBtn.snp.top).offset(-5)
             make.bottom.equalTo(calculateBtn.snp.top).offset(-20)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
+//            make.height.equalTo(50)
+            make.height.equalTo(70)
         }
         
         totalPriceLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+//            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.width.equalToSuperview().dividedBy(2.1)
             make.height.equalTo(50)
         }
         
         totalPriceValueLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+//            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview()
             make.trailing.equalToSuperview().inset(10)
             make.width.equalToSuperview().dividedBy(2.1)
             make.height.equalTo(50)

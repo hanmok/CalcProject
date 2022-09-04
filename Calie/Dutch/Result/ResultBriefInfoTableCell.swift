@@ -25,6 +25,13 @@ class ResultBriefInfoTableCell: UITableViewCell {
 //        }
 //    }
     
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 50))
+//
+//    }
+    
     public var personCostInfo: PersonPaymentInfo? {
         didSet {
             configureLayout()
@@ -32,30 +39,43 @@ class ResultBriefInfoTableCell: UITableViewCell {
     }
     
     private let nameLabel = UILabel()
-    
-
+//        .then {
+//        $0.font = UIFont.systemFont(ofSize: 24)
+//    $0.attributedText = NSAttributedString(string: <#T##String#>, attributes: <#T##[NSAttributedString.Key : Any]?#>)
+//    }
     
     private let pricesContainer = UIView()
     
     private let spentAmountLabel = UILabel().then {
         $0.textAlignment = .right
+        $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
     }
     
-    // TODO: 여기에만 색상 넣기. 부호 넣어 말어..?
+    private let spentAmountInfoLabel = UILabel().then {
+        $0.textAlignment = .center
+        $0.text = "지출"
+    }
+    
+
     private let toPayLabel = UILabel().then {
         $0.textAlignment = .right
-//        $0.backgroundColor = .cyan
+        $0.font = UIFont.systemFont(ofSize: 22, weight: .regular)
     }
     
-    private let summaryLabel = UILabel().then {
-        $0.textAlignment = .right
-//        $0.backgroundColor = .orange
+    private let toPayInfoLabel = UILabel().then {
+        $0.textAlignment = .center
+        $0.font = UIFont.systemFont(ofSize: 20)
     }
+    
+    
+//    private let summaryLabel = UILabel().then {
+//        $0.textAlignment = .right
+////        $0.backgroundColor = .orange
+//    }
     
 //    private let attendedPlacesLabel = UILabel().then {
 //        $0.textAlignment = .center
 //        $0.sizeToFit()
-//
 //    }
     
     
@@ -63,22 +83,36 @@ class ResultBriefInfoTableCell: UITableViewCell {
     private func configureLayout() {
 //        guard let overallPersonInfo = overallPersonInfo else {            return
 //        }
+        
+        let isUsingFloatingPoint = false
+        
         guard let personCostInfo = personCostInfo else {
             return
         }
 
+        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .light)])
+        
+//        nameLabel.text = personCostInfo.name
 
-//        nameLabel.text = overallPersonInfo.name
-        nameLabel.text = personCostInfo.name
+
+//        let spentAmtStr = personCostInfo.paidAmt.getStrWithoutDots()
+        let spentAmtStr = personCostInfo.paidAmt.convertIntoKoreanPrice()
+
+
+        spentAmountLabel.text = spentAmtStr
+
+        let toPayAmt = personCostInfo.toGet
+//        let toPayAmtStr = toPayAmt.getStrWithoutDots()
+        let unsignedAmt = toPayAmt > 0 ? toPayAmt : -toPayAmt
         
-        spentAmountLabel.text = personCostInfo.paidAmt.convertIntoKoreanPrice()
-        toPayLabel.text = personCostInfo.toGet.convertIntoKoreanPrice()
-        summaryLabel.text = personCostInfo.sum.convertIntoKoreanPrice()
+        let toPayAmtStr = unsignedAmt.convertIntoKoreanPrice()
         
         
-//        spentAmountLabel.text = overallPersonInfo.relativePaidAmount.convertIntoKoreanPrice()
+        toPayLabel.text = toPayAmtStr
         
-//        attendedPlacesLabel.text = overallPersonInfo.attendedPlaces
+        toPayInfoLabel.text = toPayAmt > 0 ? "받기" : "보내기"
+    
+        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
         
         
     }
@@ -94,43 +128,65 @@ class ResultBriefInfoTableCell: UITableViewCell {
 //         toPayLabel, summaryLabel
          
 //         spentAmountLabel, attendedPlacesLabel
+         
         ].forEach { addSubview($0)}
         
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
-            make.top.bottom.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(6)
 //            make.width.equalTo(70)
-            make.width.equalToSuperview().dividedBy(4)
+//            make.width.equalToSuperview().dividedBy(5)
+            make.width.equalTo(80)
         }
         
         pricesContainer.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-            make.top.bottom.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(6)
             make.trailing.equalToSuperview()
         }
         
-        [spentAmountLabel, toPayLabel, summaryLabel].forEach { self.pricesContainer.addSubview($0)}
+        [spentAmountLabel, toPayLabel,
+         spentAmountInfoLabel, toPayInfoLabel
+        ].forEach { self.pricesContainer.addSubview($0)}
         
+        spentAmountInfoLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
+            make.top.equalToSuperview()
+            make.height.equalToSuperview().dividedBy(2.1)
+            make.width.equalTo(70)
+        }
         
         spentAmountLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.trailing)
-            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(100)
-            make.width.equalToSuperview().dividedBy(3)
+            make.leading.equalTo(nameLabel.snp.trailing).offset(15)
+            make.top.equalToSuperview()
+            make.height.equalToSuperview().dividedBy(2.1)
+//            make.trailing.equalToSuperview().inset(10)
+            make.trailing.equalTo(spentAmountInfoLabel.snp.leading).offset(-5)
+        }
+        
+        toPayInfoLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
+//            make.top.equalToSuperview()
+            make.top.equalTo(spentAmountInfoLabel.snp.bottom).offset(3)
+//            make.height.equalToSuperview().dividedBy(2.1)
+            make.bottom.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         toPayLabel.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(10)
-            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(100)
-            make.width.equalToSuperview().dividedBy(3)
+//            make.leading.equalToSuperview()
+            make.leading.equalTo(nameLabel.snp.trailing).offset(15)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(3)
+            make.bottom.equalToSuperview()
+//            make.trailing.equalToSuperview().inset(10)
+            make.trailing.equalTo(toPayInfoLabel.snp.leading).offset(-5)
         }
         
-        summaryLabel.snp.makeConstraints { make in
-            make.leading.equalTo(toPayLabel.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().inset(5)
-            make.top.bottom.equalToSuperview()
-        }
+//        summaryLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(toPayLabel.snp.trailing).offset(10)
+//            make.trailing.equalToSuperview().inset(5)
+//            make.top.bottom.equalToSuperview()
+//        }
         
         
         

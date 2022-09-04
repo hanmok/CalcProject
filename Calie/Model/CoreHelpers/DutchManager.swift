@@ -462,16 +462,17 @@ extension DutchManager {
          }
      }
     
-    func createPerson(name: String, using currentGathering: Gathering) -> Person {
+    func createPerson(name: String, order: Idx) -> Person {
         let person = Person(context: mainContext)
         
         person.name = name
        person.id = UUID()
        
-       let numOfPeople = currentGathering.people.count
-       person.order = Int64(numOfPeople)
+//       let order = currentGathering.people.count
+//       person.order = Int64(numOfPeople)
+        person.order = Int64(order)
 
-       if currentGathering.dutchUnits.count == 0 { return person }
+//       if currentGathering.dutchUnits.count == 0 { return person }
        
        do {
             try mainContext.save()
