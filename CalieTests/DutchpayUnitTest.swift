@@ -213,7 +213,7 @@ extension DutchpayUnitTest {
         // remove person2 & add person3
         let updatedPeople = [person1, person3]
         
-        dutchpayManager.updatePeople(updatedPeople: updatedPeople, currentGathering: gathering)
+        dutchpayManager.updateAllDetailsWithNewPeople(updatedPeople: updatedPeople, currentGathering: gathering)
         
         XCTAssertEqual(gathering.people.filter { $0.name == "person1"}.first!.name, "person1")
         XCTAssertEqual(gathering.people.filter { $0.name == "person3"}.first!.name, "person3")

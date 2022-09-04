@@ -90,7 +90,6 @@ class DutchUnitViewModel {
         personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
         
         // Editing Mode
-        
         if let initialDutchUnit = selectedDutchUnit {
             
             dutchService.updateDutchUnit(
@@ -153,6 +152,7 @@ class DutchUnitViewModel {
                 
                 completion(.success("\(name) has added"))
                 return
+                
             case .failure(let e):
                 print(e.localizedDescription)
                 print("duplicate flag 2")

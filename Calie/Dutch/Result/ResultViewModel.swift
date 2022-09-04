@@ -32,10 +32,9 @@ class ResultViewModel {
     
 //    (name: String, paidAmt: Double, toGet: Double, sum: Double)
     var overallPayInfos: [PersonPaymentInfo] {
-        return dutchService.createPersonPayInfos(gathering: currentGathering) // TODO: <-- 여기 관련 함수에 반올림 로직 넣기.
+        return dutchService.createPersonPayInfos(gathering: currentGathering)
     }
     
-    // TODO: 반올림! How ??
     
     var calculatedResultTuples: [ResultTupleWithName] { // from: String, to: String, amt: Int
 //        return dutchService.calculateResults(gathering: currentGathering)

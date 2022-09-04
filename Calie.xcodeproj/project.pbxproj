@@ -76,6 +76,7 @@
 		9AABC59028C1248100EB3A04 /* DutchResults in Resources */ = {isa = PBXBuildFile; fileRef = 9AABC58F28C1248100EB3A04 /* DutchResults */; };
 		9AABC59228C13F3300EB3A04 /* CalculatedResultTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59128C13F3300EB3A04 /* CalculatedResultTableCell.swift */; };
 		9AABC59428C3221F00EB3A04 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59328C3221F00EB3A04 /* Typealiases.swift */; };
+		9AABC59628C4545800EB3A04 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59528C4545800EB3A04 /* HelperFunctions.swift */; };
 		9AADB33D28831B2800DAD657 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = 9AADB33C28831B2800DAD657 /* Notes */; };
 		9AADB33F2884773900DAD657 /* ToMake in Resources */ = {isa = PBXBuildFile; fileRef = 9AADB33E2884773900DAD657 /* ToMake */; };
 		9AADB3412885A94B00DAD657 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3402885A94B00DAD657 /* ResultViewController.swift */; };
@@ -213,6 +214,7 @@
 		9AABC58F28C1248100EB3A04 /* DutchResults */ = {isa = PBXFileReference; lastKnownFileType = text; path = DutchResults; sourceTree = "<group>"; };
 		9AABC59128C13F3300EB3A04 /* CalculatedResultTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatedResultTableCell.swift; sourceTree = "<group>"; };
 		9AABC59328C3221F00EB3A04 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
+		9AABC59528C4545800EB3A04 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		9AADB33C28831B2800DAD657 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		9AADB33E2884773900DAD657 /* ToMake */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToMake; sourceTree = "<group>"; };
 		9AADB3402885A94B00DAD657 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				9AB1BC3A28AD635C002F35AD /* Memo8.18 */,
 				9AABC58F28C1248100EB3A04 /* DutchResults */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
+				9AABC59528C4545800EB3A04 /* HelperFunctions.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF524CCDE04001057D2 /* Model */,
@@ -768,6 +771,7 @@
 				22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */,
 				9AD2FB57285788020075551B /* GroupTableCell.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
+				9AABC59628C4545800EB3A04 /* HelperFunctions.swift in Sources */,
 				9A2DBC09282181E800CF4E86 /* NumberButton.swift in Sources */,
 				9A083FED24CCDCAB001057D2 /* UIViewController+Ext.swift in Sources */,
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+// FIXME: Set person Property not optional
 extension PersonDetail : Comparable {
     public static func < (lhs: PersonDetail, rhs: PersonDetail) -> Bool {
         return lhs.person! < rhs.person!

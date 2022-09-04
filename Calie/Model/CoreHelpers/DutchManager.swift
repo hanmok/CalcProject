@@ -184,8 +184,9 @@ extension DutchManager {
 
         // TODO: 여기 연산만 현재는 손보면 됨.
         // 불참인 경우 계산 없이 0, 그 외: 본인 지불한 비용 - Average (개인당 지불해야하는 비용)
-        
-        
+
+
+
         var rawResult = paidAmtArr.map { $0 < 0 ? 0 : dropDigits(amt: $0 - averageAmt, digitLocationToCut: digitToCut) }
         
         let remaining = rawResult.reduce(0, +) // 상대 금액의 차이
@@ -278,6 +279,7 @@ extension DutchManager {
         return result
     }
     
+    // FIXME: What's the meaning of 'sum' ??
     func createPersonPayInfos(gathering: Gathering) -> [PersonPaymentInfo] {
         
         var amtToPay = Array(repeating: 0.0, count: gathering.people.count)
@@ -438,7 +440,7 @@ extension DutchManager {
 extension DutchManager {
     @discardableResult
 //    func createPerson(name: String, prevPeople: [Person]? = nil, givenIndex: Int = 100 ) -> Person {
-    func createPerson(name: String, currentGathering: Gathering ) -> Person {
+    func addPersonToGathering(name: String, currentGathering: Gathering ) -> Person {
         
          let person = Person(context: mainContext)
          
@@ -450,17 +452,7 @@ extension DutchManager {
         
         currentGathering.people.insert(person)
         
-        
         if currentGathering.dutchUnits.count == 0 { return person }
-        
-        let newPersonDetail = createPersonDetail(person: person, isAttended: false, spentAmount: 0)
-        
-//        for eachUnit in currentGathering.dutchUnits.sorted() {
-//            eachUnit.personDetails.update(with: newPersonDetail)
-//        }
-        
-//        addPeople(addedPeople: [person], currentGathering: currentGathering)
-        
         
         do {
              try mainContext.save()
@@ -469,6 +461,25 @@ extension DutchManager {
              fatalError(error.localizedDescription)
          }
      }
+    
+    func createPerson(name: String, using currentGathering: Gathering) -> Person {
+        let person = Person(context: mainContext)
+        
+        person.name = name
+       person.id = UUID()
+       
+       let numOfPeople = currentGathering.people.count
+       person.order = Int64(numOfPeople)
+
+       if currentGathering.dutchUnits.count == 0 { return person }
+       
+       do {
+            try mainContext.save()
+            return person
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+    }
     
     func changePersonOrder(of first: Person, with second: Person) {
         let tempOrder = first.order
@@ -526,37 +537,33 @@ extension DutchManager {
     }
     
     // TODO: 여기서 고쳐야함.
-    func updatePeople(updatedPeople: [Person], currentGathering: Gathering) {
+    func updateAllDetailsWithNewPeople(updatedPeople: [Person], currentGathering: Gathering) {
         // 이름 바꾸는 경우는 어떻게 처리하지... ??
         // 사람을 추가할 수도, 제거할 수도 있는 경우.
         let originalMemberSet = Set(currentGathering.people)
         let updatedMemberSet = Set(updatedPeople)
         
+        print("updating DutchUnit flag, originalMember: ")
+        printPeople(peopleSet: originalMemberSet)
+        
+        print("updating DutchUnit flag, updatedMember:")
+        printPeople(peopleSet: updatedMemberSet)
         let addedPeopleSet = updatedMemberSet.subtracting(originalMemberSet)
         
-        let removedPeopleSet = originalMemberSet.subtracting(updatedMemberSet)
+//        let removedPeopleSet = originalMemberSet.subtracting(updatedMemberSet)
         print("people flag 2, addedPeopleSet: \(addedPeopleSet)")
         
-        // 이 과정을 먼저 해야 Loop 를 짧게 돈다.
-        // removedPeopleSet
-        if removedPeopleSet.count != 0 {
-            for eachPerson in removedPeopleSet {
-                for eachUnit in currentGathering.dutchUnits.sorted() {
-                    for eachDetail in eachUnit.personDetails {
-                        if eachDetail.person! == eachPerson {
-                            eachUnit.personDetails.remove(eachDetail)
-                        }
-                    }
-                }
-                currentGathering.people.remove(eachPerson)
-            }
-        }
+        print("updating DutchUnit flag, addedPeopleSet: ")
+        printPeople(peopleSet: addedPeopleSet)
+        
+        
         
         
         // addedPeopleSet
         if addedPeopleSet.count != 0 {
             
-            for eachUnit in currentGathering.dutchUnits.sorted() { // 이게.. 존재하지 않아서 call 되지 않음.
+            // 이게.. 존재하지 않아서 call 되지 않음.
+            for eachUnit in currentGathering.dutchUnits.sorted() {
                 for eachPerson in addedPeopleSet {
                     let newPersonDetail = self.createPersonDetail(person: eachPerson, isAttended: false, spentAmount: 0)
                     // 순서가 중요함 !! 내부에서 새로 personDetail 만든 후 update 할 것!

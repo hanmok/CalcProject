@@ -134,7 +134,7 @@ class DutchService {
             return
         }
         
-        dutchManager.updatePeople(updatedPeople: newPeople, currentGathering: currentGathering)
+        dutchManager.updateAllDetailsWithNewPeople(updatedPeople: newPeople, currentGathering: currentGathering)
         let newGathering = currentGathering
         completion(newGathering)
         return
@@ -174,21 +174,27 @@ class DutchService {
     }
 }
 
+
+
+
+
 // MARK: -DutchUnitController
 extension DutchService {
 
     func updateDutchUnit(originalDutchUnit: DutchUnit, peopleDetail: [PersonDetail], spentAmount: Double,  spentPlace: String?, spentDate: Date? ) {
         
         guard let currentGathering = currentGathering else { fatalError() }
+        
         // TODO: Compare people
+        
         let updatedPeople = peopleDetail.map { $0.person! }
         
-        dutchManager.updatePeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
+        dutchManager.updateAllDetailsWithNewPeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
         
         dutchManager.updateDutchUnit(target: originalDutchUnit, spentTo: spentPlace ?? "somewhere", spentAmount: spentAmount, personDetails: peopleDetail, spentDate: spentDate)
     }
     
-    func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, personDetails: [PersonDetail]) -> Gathering{
+    func createDutchUnit(spentplace: String, spentAmount: Double, spentDate: Date, personDetails: [PersonDetail]) -> Gathering {
         // TODO: create DutchUnit
         
         guard let currentGathering = currentGathering else {fatalError("no gathering") }
@@ -199,7 +205,8 @@ extension DutchService {
         // personDetails : Updated
         let updatedPeople = personDetails.map { $0.person! }
             print("people flag 1, updatedPeople: \(updatedPeople)")
-        dutchManager.updatePeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
+        
+        dutchManager.updateAllDetailsWithNewPeople(updatedPeople: updatedPeople, currentGathering: currentGathering)
         
         // Need to be done inside DutchManger ?? 
         currentGathering.dutchUnits.insert(newDutchUnit)
@@ -207,13 +214,12 @@ extension DutchService {
         dutchManager.update()
         
         return currentGathering
-        
     }
     
     func addPerson(name: String, personDetails: [PersonDetail], completion: @escaping (Result<[PersonDetail], DutchUnitError>) -> Void) {
         
         // convert current personDetails into names Set
-        let personNames = Set(personDetails.map { $0.person!.name})
+        let personNames = Set(personDetails.map { $0.person!.name} )
         
         // Check if name set contains new name
         if personNames.contains(name) {
@@ -225,7 +231,10 @@ extension DutchService {
         
         guard let currentGathering = currentGathering else { fatalError() }
         
-        let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
+        // FIXME: 여기 과정 때문에 UpdateUnit 이 제대로 이루어지지 않음.
+        // 다른 personDetails 에서 새로운 Person 이 생기지 않음.
+//        let newPerson = dutchManager.addPersonToGathering(name: name, currentGathering: currentGathering)
+        let newPerson = dutchManager.createPerson(name: name, using: currentGathering)
         
         let newPersonDetail = dutchManager.createPersonDetail(person: newPerson)
         
@@ -263,7 +272,7 @@ extension DutchService {
         
         guard let currentGathering = currentGathering else { fatalError() }
         
-        let newPerson = dutchManager.createPerson(name: name, currentGathering: currentGathering)
+        let newPerson = dutchManager.addPersonToGathering(name: name, currentGathering: currentGathering)
         
         dutchManager.addPeople(addedPeople: [newPerson], currentGathering: currentGathering)
         

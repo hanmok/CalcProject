@@ -18,6 +18,7 @@ class AttendingButton: UIButton {
     
     private func setupLayout(using condition: Bool) {
         setTitle(condition ? "참가" : "불참", for: .normal)
+        setTitleColor(condition ? .black : .red, for: .normal)
 //        backgroundColor = condition ? .green : .red
     }
 
