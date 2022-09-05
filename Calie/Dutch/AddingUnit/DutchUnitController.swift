@@ -369,21 +369,24 @@ class DutchUnitController: NeedingController {
                     make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
                     make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
-                    make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+//                    make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+//                    make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
+                    make.height.equalTo(30 * self.viewModel.personDetails.count)
                 }
                 
-                self.resetBtn.snp.makeConstraints { make in
-                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-                    make.width.equalTo(80)
-                    make.height.equalTo(40)
-                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-                }
+//                self.resetBtn.snp.makeConstraints { make in
+//                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                    make.width.equalTo(80)
+//                    make.height.equalTo(40)
+//                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                }
                 
                 self.addPersonBtn.snp.makeConstraints { make in
-                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                    make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
+//                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                    make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                    make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
                     make.height.equalTo(40)
-                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
                 }
             }
         }
@@ -469,21 +472,26 @@ class DutchUnitController: NeedingController {
                         make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.top.equalTo(self.divider.snp.bottom).offset(30)
 
-                        make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+//                        make.height.equalTo(50 * self.viewModel.personDetails.count - 20) // -20 은 spacing
+                        
+//                        make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1)) // -20 은 spacing
+                        make.height.equalTo(30 * self.viewModel.personDetails.count)
                     }
                     
-                    self.resetBtn.snp.makeConstraints { make in
-                        make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-                        make.width.equalTo(80)
-                        make.height.equalTo(40)
-                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-                    }
+//                    self.resetBtn.snp.makeConstraints { make in
+//                        make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                        make.width.equalTo(80)
+//                        make.height.equalTo(40)
+//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                    }
                     
                     self.addPersonBtn.snp.makeConstraints { make in
-                        make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                        make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
+//                        make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                        make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                        make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
                         make.height.equalTo(40)
-                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
                     }
                 }
                 
@@ -504,21 +512,25 @@ class DutchUnitController: NeedingController {
                 make.trailing.equalToSuperview().inset(self.smallPadding)
                 make.top.equalTo(self.divider.snp.bottom).offset(30)
 
-                make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+//                make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
+//                make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
+                make.height.equalTo(30 * self.viewModel.personDetails.count)
             }
             
-            self.resetBtn.snp.makeConstraints { make in
-                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-                make.width.equalTo(80)
-                make.height.equalTo(40)
-                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-            }
+//            self.resetBtn.snp.makeConstraints { make in
+//                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                make.width.equalTo(80)
+//                make.height.equalTo(40)
+//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//            }
             
             self.addPersonBtn.snp.makeConstraints { make in
-                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
+//                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
+                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
                 make.height.equalTo(40)
-                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
             }
         }
         
@@ -639,22 +651,28 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            make.height.equalTo(45 * viewModel.personDetails.count - 20)
-        }
-        
-        resetBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(smallPadding * 1.5)
-            make.width.equalTo(80)
-            make.height.equalTo(40)
-            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
+//            make.height.equalTo(45 * viewModel.personDetails.count - 20)
+//            make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
+            make.height.equalTo(30 * self.viewModel.personDetails.count)
+//            make.height.equalTo(30 * self.viewModel.personDetails.count)
+//            make.height.equalTo(200)
             
         }
         
+//        resetBtn.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().inset(smallPadding * 1.5)
+//            make.width.equalTo(80)
+//            make.height.equalTo(40)
+//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
+//        }
+        
         addPersonBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(smallPadding * 1.5)
-            make.trailing.equalTo(resetBtn.snp.leading).offset(-10)
+//            make.leading.equalToSuperview().inset(smallPadding * 1.5)
+            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
+//            make.trailing.equalTo(resetBtn.snp.leading).offset(-10)
             make.height.equalTo(40)
-            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
+//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(15)
+            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
         }
         
         confirmBtn.snp.makeConstraints { make in
@@ -722,6 +740,7 @@ class DutchUnitController: NeedingController {
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
 //        cv.isScrollEnabled = false
+//        cv.backgroundColor = UIColor(white: 0.8, alpha: 1)
         return cv
     }()
     
@@ -888,11 +907,13 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 30)
+//        return CGSize(width: view.frame.width, height: 30)
+        return CGSize(width: view.frame.width - 30, height: 30)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
+//        return 20
+        return 0
     }
 }
 

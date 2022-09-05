@@ -17,10 +17,10 @@ class ResultViewController: UIViewController {
     var gathering: Gathering
     
     var viewModel: ResultViewModel
-    
-    let briefRowHeight: CGFloat = 80
+//    static let headerHeight = 50
+    let briefRowHeight: CGFloat = 65 // prev: 80
     let calculatedRowHeight: CGFloat = 50
-    
+    let headerHeight: CGFloat = 50
     let scrollView = UIScrollView()
 //        .then {
 ////        $0.backgroundColor = .magenta
@@ -51,50 +51,61 @@ class ResultViewController: UIViewController {
         }
     }
     
-    private let briefHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 40)).then {
+    private let briefHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: "개인별 지출 현황", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: "개인별 지출 현황", attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
         }
         
         $0.addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
+//            make.leading.top.trailing.bottom.equalToSuperview()
+            make.leading.top.trailing.equalToSuperview()
+//            make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
         }
         
         let bottomLineView = UIView().then {
-            $0.backgroundColor = UIColor(white: 0.6, alpha: 0.9)
+            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
+            $0.layer.cornerRadius = 2
+            $0.clipsToBounds = true
         }
         
         infoLabel.addSubview(bottomLineView)
         bottomLineView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
+            make.height.equalTo(3)
         }
     }
     
-    private let calculatedResultHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 40)).then {
+    private let calculatedResultHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: "정산 결과", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: "정산 결과", attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
         }
         
         $0.addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
+//            make.leading.top.trailing.bottom.equalToSuperview()
+            make.leading.top.trailing.equalToSuperview()
+            make.height.equalToSuperview()
         }
         
         
         let bottomLineView = UIView().then {
-            $0.backgroundColor = UIColor(white: 0.6, alpha: 0.9)
+            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
+            $0.layer.cornerRadius = 2
+            
+            $0.clipsToBounds = true
+//            $0.layer.borderWidth = 1
         }
         
         infoLabel.addSubview(bottomLineView)
         bottomLineView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
+            make.height.equalTo(5)
         }
     }
     
@@ -137,24 +148,36 @@ class ResultViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
         }
         
-        briefInfoTableView.snp.makeConstraints { make in
+//        briefInfoTableView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview().inset(16)
+//            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+//            make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
+//        }
+        
+        calculatedInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(titleLabel.snp.bottom).offset(30)
-//            make.height.equalTo(viewModel.overallPayInfos.count * 50 + 20 + 40)
-//            make.height.equalTo(viewModel.overallPayInfos.count * 50 + 40)
-            make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + 40)
+            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight)) // 40: Header Size
         }
         
         dividerView.snp.makeConstraints { make in
-            make.top.equalTo(briefInfoTableView.snp.bottom).offset(30)
+//            make.top.equalTo(briefInfoTableView.snp.bottom).offset(30)
+            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview().inset(8)
             make.height.equalTo(1)
         }
         
-        calculatedInfoTableView.snp.makeConstraints { make in
-            make.top.equalTo(dividerView.snp.bottom).offset(40)
+//        calculatedInfoTableView.snp.makeConstraints { make in
+//            make.top.equalTo(dividerView.snp.bottom).offset(40)
+//            make.leading.trailing.equalToSuperview().inset(16)
+//            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight)) // 40: Header Size
+//        }
+        
+        briefInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + 40) // 40: Header Size
+//            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(dividerView.snp.bottom).offset(40)
+            make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
     }
     
@@ -181,7 +204,7 @@ class ResultViewController: UIViewController {
     // MARK: - UI Properties
     
     private let titleLabel = UILabel().then {
-        $0.text = "정산 결과"
+//        $0.text = "정산 결과"
         $0.textAlignment = .center
         $0.textColor = .black
 //        $0.font = UIFont.preferredFont(forTextStyle: .headline)
@@ -190,11 +213,9 @@ class ResultViewController: UIViewController {
     }
     
     private let dividerView = UIView()
-//        .then { $0.backgroundColor = UIColor(white: 0.5, alpha: 1)}
     
     private let briefInfoTableView = UITableView().then {
         $0.isScrollEnabled = false
-        $0.backgroundColor = .cyan
     }
     
     private let calculatedInfoTableView = UITableView().then {
@@ -258,6 +279,6 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return self.headerHeight
     }
 }

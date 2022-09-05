@@ -115,12 +115,14 @@ class PersonDetailCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
 //            make.leading.equalToSuperview().inset(10)
-            make.leading.equalToSuperview().inset(15)
+//            make.leading.equalToSuperview().inset(15)
+            make.leading.equalToSuperview()
             make.width.equalTo(70)
         }
         
         attendingBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
+//            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview()
             make.width.equalTo(60)
             make.top.bottom.equalToSuperview()
         }

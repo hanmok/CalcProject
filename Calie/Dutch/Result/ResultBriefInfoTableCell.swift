@@ -38,7 +38,10 @@ class ResultBriefInfoTableCell: UITableViewCell {
         }
     }
     
-    private let nameLabel = UILabel()
+    private let nameLabel = UILabel().then {
+//        $0.sizeToFit()
+        $0.adjustsFontSizeToFitWidth = true
+    }
 //        .then {
 //        $0.font = UIFont.systemFont(ofSize: 24)
 //    $0.attributedText = NSAttributedString(string: <#T##String#>, attributes: <#T##[NSAttributedString.Key : Any]?#>)
@@ -48,7 +51,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
     
     private let spentAmountLabel = UILabel().then {
         $0.textAlignment = .right
-        $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        $0.font = UIFont.systemFont(ofSize: 16, weight: .regular) // 18
     }
     
     private let spentAmountInfoLabel = UILabel().then {
@@ -90,7 +93,12 @@ class ResultBriefInfoTableCell: UITableViewCell {
             return
         }
 
-        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .light)])
+//        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .light)])
+        
+        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .light)])
+        
+//        nameLabel.sizeToFit()
+//        nameLabel.tofit
         
 //        nameLabel.text = personCostInfo.name
 
@@ -107,27 +115,30 @@ class ResultBriefInfoTableCell: UITableViewCell {
         
         let toPayAmtStr = unsignedAmt.convertIntoKoreanPrice()
         
+        if unsignedAmt != 0 {
+            toPayLabel.text = toPayAmtStr
+        }
         
-        toPayLabel.text = toPayAmtStr
+//        toPayInfoLabel.text = toPayAmt > 0 ? "받기" : "보내기"
+        switch toPayAmt {
+        case _ where toPayAmt < 0:
+            toPayInfoLabel.text = "보내기"
+            
+        case _ where toPayAmt > 0:
+            toPayInfoLabel.text = "받기"
+            
+        default:
+            break
+        }
         
-        toPayInfoLabel.text = toPayAmt > 0 ? "받기" : "보내기"
-    
         toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
-        
-        
     }
     
     private func setupLayout() {
         
-//        separatorInset = UIEdgeInsets.zero
-//        layoutMargins = UIEdgeInsets.zero
         
         [nameLabel,
          pricesContainer
-//         spentAmountLabel,
-//         toPayLabel, summaryLabel
-         
-//         spentAmountLabel, attendedPlacesLabel
          
         ].forEach { addSubview($0)}
         
