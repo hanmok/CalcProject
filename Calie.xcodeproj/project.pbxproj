@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		225CBB4928C5F43100A4DF4A /* JosaTestingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225CBB4828C5F43100A4DF4A /* JosaTestingController.swift */; };
+		225CBB4B28C5F9B200A4DF4A /* HelperTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225CBB4A28C5F9B200A4DF4A /* HelperTest.swift */; };
 		226A46F4289A078700CCF29C /* DutchTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */; };
 		226A47E828A0C4FC00CCF29C /* SideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A47E728A0C4FC00CCF29C /* SideViewModel.swift */; };
 		22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F65E732845D08D00646FCD /* Group+Helper.swift */; };
@@ -131,6 +133,8 @@
 		07C795757253A50038B51B87 /* Pods-Caliy-CaliyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Caliy-CaliyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Caliy-CaliyUITests/Pods-Caliy-CaliyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		0B145D3A3D9F8409B180880B /* Pods-CalieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.release.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B8DE3669B73C4EB83245CDD /* Pods-CalieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalieTests.debug.xcconfig"; path = "Target Support Files/Pods-CalieTests/Pods-CalieTests.debug.xcconfig"; sourceTree = "<group>"; };
+		225CBB4828C5F43100A4DF4A /* JosaTestingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JosaTestingController.swift; sourceTree = "<group>"; };
+		225CBB4A28C5F9B200A4DF4A /* HelperTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperTest.swift; sourceTree = "<group>"; };
 		226A46F3289A078700CCF29C /* DutchTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchTableCellViewModel.swift; sourceTree = "<group>"; };
 		226A47E728A0C4FC00CCF29C /* SideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewModel.swift; sourceTree = "<group>"; };
 		22F65E732845D08D00646FCD /* Group+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+Helper.swift"; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				9AABC58F28C1248100EB3A04 /* DutchResults */,
 				9A2DBC33282822C600CF4E86 /* MyAlert.swift */,
 				9AABC59528C4545800EB3A04 /* HelperFunctions.swift */,
+				225CBB4828C5F43100A4DF4A /* JosaTestingController.swift */,
 				9A083FF224CCDDB9001057D2 /* Delegate */,
 				9A083FF324CCDDE4001057D2 /* ViewController */,
 				9A083FF524CCDE04001057D2 /* Model */,
@@ -451,6 +456,7 @@
 			children = (
 				9AA150FB287C7D4800DC4CED /* DutchpayUnitTest.swift */,
 				9AB1BC3828A948D4002F35AD /* DutchResultTest.swift */,
+				225CBB4A28C5F9B200A4DF4A /* HelperTest.swift */,
 				9AADB33C28831B2800DAD657 /* Notes */,
 				9AA15113287C833000DC4CED /* CoreDataTestStack.swift */,
 				9AA1511C287DDD1E00DC4CED /* SampleManagerTest.swift */,
@@ -823,6 +829,7 @@
 				9A1C85032815A865001020EF /* ParticipantsController.swift in Sources */,
 				9A083FA824CCD55D001057D2 /* SceneDelegate.swift in Sources */,
 				E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */,
+				225CBB4928C5F43100A4DF4A /* JosaTestingController.swift in Sources */,
 				9AABC59228C13F3300EB3A04 /* CalculatedResultTableCell.swift in Sources */,
 				9A083FDB24CCDC22001057D2 /* HistoryRecordVC.swift in Sources */,
 				9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */,
@@ -860,6 +867,7 @@
 				9AA1511D287DDD1E00DC4CED /* SampleManagerTest.swift in Sources */,
 				9AA1510A287C7E9700DC4CED /* DutchpayUnitTest.swift in Sources */,
 				9AB1BC3928A948D4002F35AD /* DutchResultTest.swift in Sources */,
+				225CBB4B28C5F9B200A4DF4A /* HelperTest.swift in Sources */,
 				9AA15114287C833000DC4CED /* CoreDataTestStack.swift in Sources */,
 				9AA1511F287DDD3F00DC4CED /* SampleCoreDataTestStack.swift in Sources */,
 			);
