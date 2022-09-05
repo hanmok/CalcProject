@@ -35,6 +35,8 @@ class DutchUnitController: NeedingController {
     private let smallPadding: CGFloat = 10
     
     
+    var spentPlaceTFJustTapped = false
+    
     let scrollView = UIScrollView()
     
     var isShowingKeyboard = false {
@@ -160,6 +162,10 @@ class DutchUnitController: NeedingController {
         
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
+//        let tap3 = UITapGestureRecognizer(target: self, action: #selector(selectAllText(_:)))
+        
+//        spentPlaceTF.addGestureRecognizer(tap3)
+        
         view.addGestureRecognizer(tap2)
         print("flag, dutchUnit: \(dutchUnit)")
         
@@ -227,21 +233,20 @@ class DutchUnitController: NeedingController {
     
     @objc func otherViewTapped() {
         
-        guard let validSelectedPriceTF = selectedPriceTF else { return }
+        print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
+        
+        if spentPlaceTFJustTapped == false {
+        
+            dismissKeyboard()
+            
+            guard let validSelectedPriceTF = selectedPriceTF else { return }
         
         let currentText = validSelectedPriceTF.text!
-        
-//        if validSelectedPriceTF.tag == -1 {
-//            spentAmount = currentText.convertToDouble()
-//        } else { //
-//            detailPriceDic[validSelectedPriceTF.tag] = currentText.convertToDouble()
-//            print("detailPriceDic updated!, tag: \(validSelectedPriceTF.tag)")
-//        }
         
         updateDictionary(tag: validSelectedPriceTF.tag, currentText: currentText)
         
         print("otherView Tapped!!")
-        dismissKeyboard()
+        
 //        needingDelegate?.hideNumberPad { print("hide!")}
         
         if validSelectedPriceTF.tag != -1 {
@@ -255,6 +260,7 @@ class DutchUnitController: NeedingController {
             print("selected flag 2")
         }
         print("selected flag 3")
+        }
     }
     
     
@@ -297,6 +303,22 @@ class DutchUnitController: NeedingController {
         addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
         dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped), for: .touchUpInside)
+        
+        spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
+//        spentPlaceTF.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: .)
+    }
+    
+    // 좀.. 이상한데 ??
+    @objc func selectAllText(_ sender: UITextField) {
+        print("selectAllText called")
+        sender.selectAll(nil)
+        
+        spentPlaceTFJustTapped = true
+        
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
+            print("spentPlaceTFJustTapped changed to false")
+            self.spentPlaceTFJustTapped = false
+        }
     }
     
     
@@ -591,6 +613,7 @@ class DutchUnitController: NeedingController {
             make.height.equalTo(20)
         }
         
+
         spentPlaceTF.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
@@ -1029,3 +1052,37 @@ extension DutchUnitController: UITextFieldDelegate {
         }
     }
 }
+
+
+//extension DutchUnitController {
+//    private func presentAskingSpentPlace( completion: @escaping (NewNameAction)) {
+//        let alertController = UIAlertController(title: "Edit Gathering Name", message: "새로운 모임 이름을 입력해주세요", preferredStyle: .alert)
+//
+//        alertController.addTextField { (textField: UITextField!) -> Void in
+//            textField.placeholder = "Gathering Name"
+//        }
+//
+//        let saveAction = UIAlertAction(title: "Done", style: .default) { alert -> Void in
+//            let textFieldInput = alertController.textFields![0] as UITextField
+//
+//            let newGroupName = textFieldInput.text!
+//
+//            guard newGroupName.count != 0 else {
+//                completion(.failure(.cancelAskingName))
+//                fatalError("Name must have at least one character")
+//            }
+//
+//            completion(.success(newGroupName))
+//        }
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+//            (action : UIAlertAction!) -> Void in
+//            completion(.failure(.cancelAskingName))
+//        })
+//
+//        alertController.addAction(cancelAction)
+//        alertController.addAction(saveAction)
+//
+//        self.present(alertController, animated: true)
+//    }
+//}
