@@ -95,7 +95,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
 
 //        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .light)])
         
-        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .light)])
+        nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 22, weight: .light)])
         
 //        nameLabel.sizeToFit()
 //        nameLabel.tofit

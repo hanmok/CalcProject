@@ -87,7 +87,6 @@ class DutchService {
         gathering.title = newName
         self.dutchManager.update()
         completion(gathering)
-        return
     }
     
     func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool, completion: @escaping (Gathering) -> Void) {

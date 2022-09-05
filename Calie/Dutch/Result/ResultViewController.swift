@@ -54,7 +54,7 @@ class ResultViewController: UIViewController {
     private let briefHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: "개인별 지출 현황", attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: "개인별 지출 현황", attributes: [.font: UIFont.systemFont(ofSize: 22, weight: .regular)])
         }
         
         $0.addSubview(infoLabel)
@@ -156,7 +156,8 @@ class ResultViewController: UIViewController {
         
         calculatedInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+//            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight)) // 40: Header Size
         }
         
@@ -176,7 +177,8 @@ class ResultViewController: UIViewController {
         briefInfoTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
 //            make.top.equalTo(titleLabel.snp.bottom).offset(30)
-            make.top.equalTo(dividerView.snp.bottom).offset(40)
+//            make.top.equalTo(dividerView.snp.bottom).offset(40)
+            make.top.equalTo(dividerView.snp.bottom).offset(60)
             make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
     }

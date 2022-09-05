@@ -43,7 +43,7 @@ extension UIViewController{
         toastLabel.clipsToBounds = true
         toastLabel.numberOfLines = 0
         self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 1, delay: 0.1, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 2, delay: 0.1, options: .curveEaseIn, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()

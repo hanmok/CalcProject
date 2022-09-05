@@ -28,9 +28,12 @@ class DutchpayViewModel {
         didSet {
             guard let gathering = gathering else { return }
             
-            let gatheringInfo = GatheringInfo(title: gathering.title, totalPrice: gathering.totalCostStr)
+            dutchService.currentGathering = gathering
             
+            let gatheringInfo = GatheringInfo(title: gathering.title, totalPrice: gathering.totalCostStr)
+
             updateGathering(gatheringInfo)
+            print("gathering flag 2, changedname: \(gathering.title)")
         }
     }
     
@@ -116,10 +119,14 @@ class DutchpayViewModel {
         
     }
     
+    // 이게 호출되지 않음. 왜 ?
     func changeGatheringNameAction(newName: String) {
+        print("gatheringName flag 6")
         dutchService.changeGatheringName(to: newName) { gathering in
             self.gathering = gathering
+        print("gatheringName has changed to \(newName)")
         }
+        
     }
     
     func calculateAction(needGathering: Bool) {

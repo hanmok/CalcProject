@@ -123,6 +123,7 @@ class DutchpayController: UIViewController {
         
         viewModel.updateGathering = { [weak self] gatheringInfo in
             guard let self = self else { return }
+            print("gathering flag 3")
             self.updateGatheringName(with: gatheringInfo.title)
             self.updateSpentTotalPrice(to: gatheringInfo.totalPrice)
             // TODO: update TableView
@@ -238,12 +239,14 @@ class DutchpayController: UIViewController {
     @objc private func changeGatheringNameAction() {
         
         self.presentAskingGatheringName { [weak self] result in
+            print("gathering name flag 1, result: \(result)")
             guard let self = self else { return }
             switch result {
                 
             case .success(let newName):
                 
                 self.viewModel.changeGatheringNameAction(newName: newName)
+                
             case .failure(let e):
                 print(e.localizedDescription)
             }
@@ -306,7 +309,7 @@ class DutchpayController: UIViewController {
     
     
     private func updateGatheringName(with title: String) {
-        
+        print("gathering flag 5")
         let styleCenter = NSMutableParagraphStyle()
         styleCenter.alignment = NSTextAlignment.center
         
@@ -866,6 +869,7 @@ extension DutchpayController {
                 completion(.failure(.cancelAskingName))
                 fatalError("Name must have at least one character")
             }
+            print("gatheringName flag 2, newName: \(newGroupName)")
             
             completion(.success(newGroupName))
         }
