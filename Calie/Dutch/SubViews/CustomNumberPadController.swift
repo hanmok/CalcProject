@@ -61,19 +61,32 @@ class CustomNumberPadController: UIViewController {
     private let num8 = NumberButton("8")
     private let num9 = NumberButton("9")
     
-    private let deleteBtn = UIButton().then { $0.setTitle("delete", for: .normal )
-        $0.setTitleColor(.black, for: .normal)
+    private let deleteBtn = UIButton()
+
+    
+    private let deleteImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.tintColor = .black
+        $0.image = UIImage(systemName: "delete.left")
     }
     
     
     private let inputBar = UIView().then {
-        $0.backgroundColor = UIColor.bgColorForExtrasLM
+//        $0.backgroundColor = UIColor.bgColorForExtrasLM
+//        $0.backgroundColor = UIColor.bgColorForExtrasDM
+        $0.backgroundColor = UIColor.bgColorForExtrasMiddle
     }
     
     private let completeBtn = UIButton().then {
-        $0.setTitle("완료", for: .normal )
-        $0.setTitleColor(.black, for: .normal)
+//        $0.setTitle("완료", for: .normal )
+//        $0.setTitleColor(.black, for: .normal)
         $0.backgroundColor = .bgColorForExtrasLM
+    }
+    
+    private let completeLabel = UILabel().then {
+        $0.text = "완료"
+        $0.textAlignment = .center
+        $0.textColor = UIColor.black
     }
     
     private func setupAddTargets() {
@@ -93,9 +106,12 @@ class CustomNumberPadController: UIViewController {
         
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
-        deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         
+        deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
 
+        deleteBtn.addTarget(self, action: #selector(applyTappedView(_:)), for: .touchDown)
+        
+        deleteBtn.addTarget(self, action: #selector(applyOriginalDeleteView(_:)), for: .touchDragExit)
     }
     
     @objc func changeColor(_ sender: NumberButton) {
@@ -120,12 +136,24 @@ class CustomNumberPadController: UIViewController {
         numberText = ""
     }
     
+    
+    @objc func applyTappedView(_ sender: UIButton) {
+        deleteImageView.image = UIImage(systemName: "delete.left.fill")
+    }
+    
+    @objc func applyOriginalDeleteView(_ sender: UIButton) {
+        deleteImageView.image = UIImage(systemName: "delete.left")
+    }
+    
+    
     @objc func deleteTapped(_ sender: UIButton) {
         print("delete Tapped!!2")
         if numberText != "" {
             numberText.removeLast()
         }
         numberPadDelegate?.numberPadView(updateWith: numberText)
+        
+        deleteImageView.image = UIImage(systemName: "delete.left")
     }
     
     
@@ -160,10 +188,22 @@ class CustomNumberPadController: UIViewController {
 //        }
         
         deleteBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(10)
-            make.width.equalTo(60)
+//            make.trailing.equalToSuperview().inset(10)
+            make.trailing.equalToSuperview()
+//            make.width.equalTo(60)
+            make.width.equalToSuperview().dividedBy(3)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+        
+        deleteBtn.addSubview(deleteImageView)
+        deleteImageView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+            make.center.equalToSuperview()
+//            make.width.equalToSuperview().dividedBy(2.7)
+//            make.height.equalToSuperview().dividedBy(2)
+            make.width.equalToSuperview().dividedBy(1.7)
+            make.height.equalToSuperview().dividedBy(1.7)
         }
         
         let hor3Stack = UIStackView(arrangedSubviews: [num7, num8, num9])
@@ -204,6 +244,14 @@ class CustomNumberPadController: UIViewController {
             make.top.equalTo(hor0Stack.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(70)
+        }
+        
+        completeBtn.addSubview(completeLabel)
+        completeLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
+            make.top.equalToSuperview().offset(5)
+            make.height.equalTo(40)
         }
     }
     

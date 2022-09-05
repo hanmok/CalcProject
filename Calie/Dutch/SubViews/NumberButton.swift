@@ -17,7 +17,21 @@ class NumberButton: UIButton {
         self.setTitle(wrapperString, for: .normal)
         self.setTitleColor(.white, for: .normal)
         self.backgroundColor = .black
+//        self.layer.borderColor = ColorList().bgColorForExtrasLM.cgColor
+//        self.layer.borderWidth = 0.3
     }
+    
+//    init(_ wrapperString: String, frame: CGRect = .zero, hasBoundary: Bool = false) {
+//        self.wrapperString = wrapperString
+//        super.init(frame: frame)
+//        self.setTitle(wrapperString, for: .normal)
+//        self.setTitleColor(.white, for: .normal)
+//        self.backgroundColor = .black
+//        if hasBoundary {
+//        self.layer.borderColor = ColorList().bgColorForExtrasLM.cgColor
+//        self.layer.borderWidth = 0.3
+//        }
+//    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
