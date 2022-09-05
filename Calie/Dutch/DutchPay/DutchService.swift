@@ -247,13 +247,26 @@ extension DutchService {
         return
     }
     
-    func returnPersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double]) -> [PersonDetail] {
+    func returnPersonDetails(initialDetails: [PersonDetail], detailPriceDic: [Int:Double], detailAttendingDic: [Idx: Bool]) -> [PersonDetail] {
         
         var newPersonDetails = initialDetails
+        
 //        newPersonDetails
-        for (idx, eachValue) in detailPriceDic {
-            newPersonDetails[idx].spentAmount = eachValue
+        
+//        for (idx, eachValue) in detailPriceDic {
+//            newPersonDetails[idx].spentAmount = eachValue
+//            guard let isAttended = detailAttendingDic[idx] else { fatalError() }
+//            newPersonDetails[idx].isAttended = isAttended
+//        }
+        
+        for idx in 0 ..< newPersonDetails.count {
+//            newPersonDetails[idx].spentAmount =
+            guard let spentAmt = detailPriceDic[idx], let isAttended = detailAttendingDic[idx] else { fatalError() }
+            newPersonDetails[idx].spentAmount = spentAmt
+            newPersonDetails[idx].isAttended = isAttended
         }
+        
+        
 //        dutchManager.update()
         
         return newPersonDetails

@@ -44,6 +44,7 @@ class DutchUnitViewModel {
         }
     }
     
+    
     private var spentAmount: Double = 0 {
         willSet {
             let condition = (newValue == sumOfIndividual) && (newValue != 0)
@@ -52,11 +53,14 @@ class DutchUnitViewModel {
         }
     }
     
+    // personDeails 에 따라 실시간 업데이트, condition 만족 여부를 확인.
     private var sumOfIndividual: Double = 0 {
         willSet {
-            let condition = (sumOfIndividual == spentAmount) && (newValue != 0)
+            let condition = (newValue == spentAmount) && (newValue != 0)
+            
             isConditionSatisfied = condition
-            print("condition flag 3, \(condition)")
+            print("condition flag 3, sumOfIndividual: \(newValue), spentAmount: \(spentAmount), condition: \(condition)")
+
         }
     }
     
@@ -83,19 +87,25 @@ class DutchUnitViewModel {
                                 spentAmount: Double,
                                 spentDate: Date,
                                 detailPriceDic: [Int:Double],
+                                detailAttendingDic: [Idx: Bool],
                                 completion: @escaping () -> Void ) {
     
         // Update PersonDetails with Dictionary
         
-        personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic)
+        // FIXME: ? 중간에 바뀌었을 가능성이 높은데 왜 이걸써? 아냐. 업데이트 하는거야...;; 왜 이거로 하지? 음.. isAttended 가 고려되지 않음
+        // 추가되었을 수도 있는데 ??
+        
+        personDetails = dutchService.returnPersonDetails(initialDetails: personDetails, detailPriceDic: detailPriceDic, detailAttendingDic: detailAttendingDic)
         
         // Editing Mode
         if let initialDutchUnit = selectedDutchUnit {
             
+            let spentAmt = spentAmount != 0 ? spentAmount : initialDutchUnit.spentAmount
+            
             dutchService.updateDutchUnit(
                 originalDutchUnit: initialDutchUnit,
                 peopleDetail: personDetails,
-                 spentAmount: spentAmount,
+                spentAmount: spentAmt,
                 spentPlace: spentPlace,
                 spentDate: Date())
         
@@ -119,6 +129,10 @@ class DutchUnitViewModel {
         completion()
     }
     
+    public func updateSpentAmount(to amt: Double) {
+        spentAmount = amt
+    }
+    
     public func initializePersonDetails(gathering: Gathering, dutchUnit: DutchUnit?) {
         print("initializing personDetails flag 1")
         print("dutchUnit: \(dutchUnit)")
@@ -126,13 +140,16 @@ class DutchUnitViewModel {
         if let dutchUnit = dutchUnit {
             personDetails = dutchUnit.personDetails.sorted()
             print("personDetail flag 1: \(personDetails)")
+            spentAmount = dutchUnit.spentAmount
         } else {
             personDetails = dutchService.createPersonDetails(from: gathering)
         }
     
+
+        
+        
         print("initializing personDetails flag 2")
         print("numOfPersonDetails: \(personDetails.count)")
-        // 사람을 생성하지 않았어..
     }
     
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {

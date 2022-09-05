@@ -74,11 +74,13 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    var detailAttendingDic: [Idx: Bool] = [:]
+    
     var spentAmount: Double = 0 {
         willSet {
             let condition = (sumOfIndividual == newValue) && (newValue != 0)
             updateConditionState(condition)
-            print("spentAmount updated \(newValue)")
+            print("condition flag 4, spentAmount updated \(newValue), sumOfIndividual: \(sumOfIndividual)")
         }
     }
     
@@ -86,7 +88,7 @@ class DutchUnitController: NeedingController {
         willSet {
         let condition = (newValue == spentAmount) && (newValue != 0)
             updateConditionState(condition)
-            print("sumOfIndividual updated \(newValue)")
+            print("condition flag 5, sumOfIndividual updated to \(newValue), spentAmount: \(spentAmount)")
         }
     }
     
@@ -98,6 +100,10 @@ class DutchUnitController: NeedingController {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
         self.dutchUnit = initialDutchUnit
         self.gathering = gathering
+//        self.spentAmount =
+        if let initialDutchUnit = initialDutchUnit {
+            self.spentAmount = initialDutchUnit.spentAmount
+        }
         print("initializing personDetails flag 0, dutchUnit: \(initialDutchUnit)")
         
         super.init(nibName: nil, bundle: nil)
@@ -200,8 +206,12 @@ class DutchUnitController: NeedingController {
     
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
+        print("setConditionBtnState to \(isActive)!!")
 //        confirmBtn.backgroundColor = isActive ? ColorList().bgColorForExtrasLM : UIColor(white: 0.85, alpha: 0.9)
-        confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.85, alpha: 0.9)
+        DispatchQueue.main.async {
+            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.85, alpha: 0.9)
+        }
+
     }
     
     
@@ -209,7 +219,10 @@ class DutchUnitController: NeedingController {
         
         for idx in 0 ..< viewModel.personDetails.count {
             detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
+            detailAttendingDic[idx] = viewModel.personDetails[idx].isAttended
         }
+//        self.spentAmount = viewModel.
+
     }
     
     @objc func otherViewTapped() {
@@ -251,6 +264,7 @@ class DutchUnitController: NeedingController {
         
         if tag == -1{
             spentAmount = currentText.convertToDouble()
+            viewModel.updateSpentAmount(to: spentAmount)
             print("dismissing flag 6, spentAmount: \(spentAmount)")
         } else {
             detailPriceDic[tag] = currentText.convertToDouble()
@@ -268,6 +282,12 @@ class DutchUnitController: NeedingController {
             self.relocateCollectionView()
             print("initializing personDetails flag 4")
             print("numOfDetails: \(self.viewModel.personDetails.count)")
+        }
+        
+        viewModel.changeableConditionState = {[weak self] bool in
+            guard let self = self else { return }
+            self.setConfirmBtnState(isActive: bool)
+            print("changeableConditionState changed to \(bool)")
         }
     }
     
@@ -296,8 +316,6 @@ class DutchUnitController: NeedingController {
             let newPersonName = textFieldInput.text!
             
             addPersonAction(with: newPersonName)
-            
-            
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
@@ -321,7 +339,6 @@ class DutchUnitController: NeedingController {
         }
         
         view.endEditing(true)
-//        self.needing
         
         needingDelegate?.presentNumberPad()
         let saveAction = UIAlertAction(title: "Confirm", style: .default) { [self] alert -> Void in
@@ -330,6 +347,7 @@ class DutchUnitController: NeedingController {
             let spentAmountStr = textFieldInput.text!
             
             spentAmount = spentAmountStr.convertToDouble()
+            viewModel.updateSpentAmount(to: spentAmount)
             spentAmountTF.text = spentAmount.addComma()
         }
         
@@ -384,7 +402,8 @@ class DutchUnitController: NeedingController {
         viewModel.updateDutchUnit(spentPlace: spentPlaceTF.text!,
                                   spentAmount: spentAmount,
                                   spentDate: Date(),
-                                  detailPriceDic: detailPriceDic) { [weak self] in
+                                  detailPriceDic: detailPriceDic,
+        detailAttendingDic: detailAttendingDic) { [weak self] in
             
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
@@ -847,13 +866,23 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-//        cell.spentAmountTF.text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString().applyNumberFormatter()
+
         cell.spentAmountTF.text = text
         
         print("newText: \(cell.spentAmountTF.text!)")
-//        cell.spentAmountTF.textColor = .magenta
+
         cell.spentAmountTF.textColor = .black
         cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+        
+        // update Dictionary
+        let currentIdx = indexPath.row
+        if detailPriceDic[currentIdx] == nil {
+            detailPriceDic[currentIdx] = 0
+        }
+        if detailAttendingDic[currentIdx] == nil {
+            detailAttendingDic[currentIdx] = true
+        }
+        
         
         return cell
     }
@@ -889,7 +918,6 @@ extension DutchUnitController: PersonDetailCellDelegate {
         let remaining = spentAmount - sumOfIndividual + prev
 
         
-        
         if remaining != 0 {
             detailPriceDic[idx] = remaining
 
@@ -904,7 +932,7 @@ extension DutchUnitController: PersonDetailCellDelegate {
     }
     
     func updateAttendingState(with tag: Int, to isAttending: Bool) {
-        //        attendingDic[tag] = isAttending
+        detailAttendingDic[tag] = isAttending
     }
     
     func cell(_ cell: PersonDetailCell, from peopleIndex: Int) {
