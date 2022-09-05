@@ -17,8 +17,8 @@ class NumberButton: UIButton {
         self.setTitle(wrapperString, for: .normal)
         self.setTitleColor(.white, for: .normal)
         self.backgroundColor = .black
-//        self.layer.borderColor = ColorList().bgColorForExtrasLM.cgColor
-//        self.layer.borderWidth = 0.3
+        self.layer.borderColor = ColorList().bgColorForExtrasLM.cgColor
+        self.layer.borderWidth = 0.3
     }
     
 //    init(_ wrapperString: String, frame: CGRect = .zero, hasBoundary: Bool = false) {
