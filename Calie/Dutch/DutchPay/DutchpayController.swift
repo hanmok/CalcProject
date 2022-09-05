@@ -182,6 +182,7 @@ class DutchpayController: UIViewController {
     
     
     @objc func blurredViewTapped() {
+        print("blurredView Tapped")
         if isShowingSideController {
             
             isShowingSideController = false
@@ -192,7 +193,6 @@ class DutchpayController: UIViewController {
     @objc func calculateBtnAction() {
         
         // MARK: - Original Code
-        
         
 //        viewModel.calculateAction(needGathering: true)
         print("calculateBtn Tapped !!")

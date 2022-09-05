@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate{ 
 
     var window: UIWindow?
 
@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
     
         var rootVC = MainTabController()
-        
+//        rootVC.delegate = self
 //        let rootVC = AddingUnitController(participants: [Person2(name: "hello"), Person2(name: "world")])
         
 //        let rootVC = CollectionTestViewController()

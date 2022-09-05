@@ -10,6 +10,8 @@
 // barTintColor: background color tab bar
 
 import UIKit
+import SnapKit
+import Then
 
 
 protocol MainTabDelegate: AnyObject {
@@ -17,14 +19,16 @@ protocol MainTabDelegate: AnyObject {
 }
 
 class MainTabController: UITabBarController, UINavigationControllerDelegate {
+    
     weak var mainToDutchDelegate: MainTabDelegate?
+     
     let updateUserDefaultNotification = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
     
     var userDefaultSetup = UserDefaultSetup()
     let colorList = ColorList()
     
-//    var sideViewController: SideViewController?
     var sideViewController: UINavigationController?
+    
     
     lazy var isDarkMode = userDefaultSetup.darkModeOn
     
@@ -39,6 +43,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         print("flag darkMode: \(isDarkMode)")
         print("userdefault: \(userDefaultSetup.darkModeOn)")
+        
+        self.delegate = self
     }
     
     func createObservers() {
@@ -86,7 +92,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "gear")!,
             rootViewController: settingsVC)
         
-        //        settings.delegate = self
+                settings.delegate = self
         
 
         
@@ -152,6 +158,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     private func showSideController() {
 //        let sidevc = SideViewController(dutchManager: dutchManager)
         
+        
+        
         let sideVC = SideViewController()
         sideVC.sideDelegate = self
 //        sideViewController = SideViewController(dutchManager: dutchManager)
@@ -175,16 +183,9 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         
         UIView.animate(withDuration: 0.3) {
-//            self.blurredView.isHidden = false // 이거.. ;;
-//            self.blurredView.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
             
             sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
             
-        } completion: { done in
-            if done {
-//                self.isShowingSideController = true
-//                print("isShowingSideController : \(self.isShowingSideController)")
-            }
         }
     } 
     
@@ -208,8 +209,10 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 extension MainTabController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-
+print("tab flag 1")
+        
         let index = viewControllers?.firstIndex(of: viewController)
+        
         if let validIndex = index {
             print("selected viewController: \(validIndex)")
         }
@@ -219,26 +222,32 @@ extension MainTabController: UITabBarControllerDelegate {
         } else {
             print("settingsVC")
         }
+        
+        hideSideController()
+        
         print("hi..")
+        
         return true
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        print("tab flag 2")
         let tabBarIndex = tabBarController.selectedIndex
         
-      
             print("selected tabBarIndex: \(tabBarIndex)")
       
-        
         print(#line, "didSelect in MainTabController triggered")
+        
         if tabBarIndex == 0 {
             self.viewDidLoad()
         }
+        hideSideController()
     }
     
 //    tabbarcontr
 }
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
+
 
 
 
@@ -268,16 +277,9 @@ extension MainTabController: DutchpayControllerDelegate {
 
 
 extension MainTabController: SideControllerDelegate {
-//    func dismissSideController() {
-//        hideSideController()
-//    }
     
-//    func addNewGathering() {
-//        <#code#>
-//    }
     
     func dismissSideVC(with gathering: Gathering) {
-//        dissmissSideVC(with: gathering)
         
         hideSideController()
     }
