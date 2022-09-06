@@ -522,18 +522,36 @@ extension DutchManager {
     }
     
     func removePeople(from gathering: Gathering, removedPeople: [Person]) {
+        
         if removedPeople.count == 0 { return }
         
         for removedPerson in removedPeople {
             for dutchUnit in gathering.dutchUnits.sorted() {
                 for eachDetail in dutchUnit.personDetails {
                     if eachDetail.person! == removedPerson {
+                        // 이 과정이 굳이 필요한가 .. ??
                         dutchUnit.personDetails.remove(eachDetail)
+                        delete(object: eachDetail)
+//                        mainContext.dele
                     }
                 }
             }
+            
             gathering.people.remove(removedPerson)
+            
+            mainContext.delete(removedPerson)
+            
+            print("gathering people removed. current people:")
+            print(gathering.people.count)
+            for each in gathering.people {
+                print(each.name)
+            }
         }
+        update()
+    }
+    
+    func delete(object: NSManagedObject) {
+        mainContext.delete(object)
         update()
     }
     

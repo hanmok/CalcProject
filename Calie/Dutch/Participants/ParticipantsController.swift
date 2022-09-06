@@ -49,8 +49,8 @@ class ParticipantsController: UIViewController{
     weak var delegate: ParticipantsVCDelegate?
     
     weak var addingDelegate: AddingUnitControllerDelegate?
+
     private var updatedParticipants: [Person] = []
-    
     
     init(currentGathering: Gathering) {
         self.viewModel = ParticipantsViewModel(gathering: currentGathering)
@@ -60,6 +60,10 @@ class ParticipantsController: UIViewController{
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("current People in ParticipantsController: \(viewModel.gathering.people.count)")
+        for eachPerson in viewModel.gathering.people {
+            print(eachPerson.name)
+        }
         
 //        view.backgroundColor = UIColor(white: 0.93, alpha: 1)
         view.backgroundColor = .white
@@ -438,10 +442,10 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let delete = UIContextualAction(style: .normal, title: "") { action, view, completionhandler in
+        let delete = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
             
             self.viewModel.removePerson(idx: indexPath.row) {
-                completionhandler(true)
+                completionHandler(true)
             }
         }
         

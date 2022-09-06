@@ -149,11 +149,12 @@ class DutchService {
         completion(currentGathering)
         return
     }
+    
     func createGathering( completion: @escaping (Gathering) -> Void) {
         let allGatheringsCount = dutchManager.fetchGatherings().count
         let newGathering = dutchManager.createGathering(title: String(allGatheringsCount + 1))
         completion(newGathering)
-        return
+        
     }
     
     func updateGathering(completion: @escaping (Gathering) -> Void) {

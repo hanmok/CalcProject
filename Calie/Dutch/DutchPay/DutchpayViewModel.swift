@@ -34,6 +34,10 @@ class DutchpayViewModel {
 
             updateGathering(gatheringInfo)
             print("gathering flag 2, changedname: \(gathering.title)")
+            print("current gathering in dutchpayViewmodel: \(gathering.people.count)")
+            for each in gathering.people {
+                print(each.name)
+            }
         }
     }
     
@@ -72,9 +76,11 @@ class DutchpayViewModel {
     }
     
     /// create `Gathering n`
-    private func createGathering() {
+    private func createGathering(completion: @escaping (Gathering) -> Void) {
         dutchService.createGathering { gathering in
-            self.gathering = gathering
+//            return gathering
+        completion(gathering)
+//            self.gathering = gathering
         }
     }
     
@@ -84,7 +90,10 @@ class DutchpayViewModel {
     
     func addDutchUnit(needGathering: Bool) {
         if needGathering && gathering == nil {
-            createGathering()
+//            createGathering()
+            createGathering { gathering in
+                self.gathering = gathering
+            }
         }
     }
     
@@ -97,7 +106,10 @@ class DutchpayViewModel {
     func resetGatheringAction(needGathering: Bool, completion: @escaping (Bool) -> Void ) {
         
         if needGathering && gathering == nil {
-            createGathering()
+            createGathering { gathering in
+                self.gathering = gathering
+            }
+            
         }
         
         dutchService.currentGathering = gathering
@@ -131,7 +143,9 @@ class DutchpayViewModel {
     
     func calculateAction(needGathering: Bool) {
         if needGathering && gathering == nil {
-            createGathering()
+            createGathering { gathering in
+                self.gathering = gathering
+            }
         }
         // TODO: Calculate! ?? 
     }
@@ -149,7 +163,9 @@ class DutchpayViewModel {
     
     func createIfNeeded() {
         if gathering == nil {
-            createGathering()
+            createGathering { gathering in
+                self.gathering = gathering
+            }
         }
     }
     func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool) {

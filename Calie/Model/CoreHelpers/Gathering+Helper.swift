@@ -37,12 +37,24 @@ extension Gathering {
         return numberFormatter.string(from: NSNumber(value: number))! + " 원"
     }
 
+    // Index 업데이트 할 것.
     var people: Set<Person> {
+        
         get {
             self.people_ as? Set<Person> ?? []
         }
         set {
             self.people_ = newValue as NSSet
+            let orderSet = Set(self.people.map { $0.order })
+            
+            if orderSet.count != self.people.count {
+            // 중복 Order 발생.
+                var sorted = self.people.sorted()
+                for idx in 0 ..< sorted.count {
+                    sorted[idx].order = Int64(idx)
+                }
+                self.people = Set(sorted)
+            }
         }
     }
 

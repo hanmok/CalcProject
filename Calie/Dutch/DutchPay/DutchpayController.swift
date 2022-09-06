@@ -98,6 +98,7 @@ class DutchpayController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
         
+        print("current People in DutchpayController: \(viewModel.gathering?.people)")
         
         registerTableView()
         setupLayout()
@@ -209,12 +210,6 @@ class DutchpayController: UIViewController {
         print("current Gathering: \(viewModel.gathering)")
         print("current participants: \(viewModel.gathering?.people)")
         
-        
-        
-        
-        // TODO: Handle this!
-        //        delegate?.dutchpayController(shouldHideMainTab: true)
-
     }
     
     @objc func editPeopleBtnAction() {
@@ -262,8 +257,8 @@ class DutchpayController: UIViewController {
     }
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
-        
-        viewModel.createIfNeeded()
+        // MARK: - 이미 하나는 어디선가 가지고 있어야함.
+//        viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else { fatalError() }
         
@@ -337,8 +332,8 @@ class DutchpayController: UIViewController {
     
     private func presentParticipantsController(with people: [Person]) {
         
-
-        viewModel.createIfNeeded()
+// MARK: - 이게 여기 있으면 안됨. 이미 하나는 가지고 있어야함.
+//        viewModel.createIfNeeded()
         
         // TODO: Need Gathering
         participantsController = ParticipantsController(currentGathering: viewModel.gathering!)
