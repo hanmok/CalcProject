@@ -121,7 +121,9 @@ class ResultViewController: UIViewController {
         let calculatedTableHeight: CGFloat = CGFloat(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight))
         let personalTableHeight: CGFloat = CGFloat(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 290)
+//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 290)
+        
+        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 84)
         
 //        scrollView.contentSize = CGSize(width: 1000, height: 3000)
     }
@@ -139,14 +141,12 @@ class ResultViewController: UIViewController {
             dismissBtn,
             titleLabel,
             briefInfoTableView,
-            dividerView,
+//            dividerView,
             calculatedInfoTableView
         ].forEach { self.scrollView.addSubview($0)}
         
 
         scrollView.isScrollEnabled = true
-//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: CGFloat(calculatedTableHeight + personalTableHeight + 290))
-        
         
         
         dismissBtn.snp.makeConstraints { make in
@@ -162,7 +162,8 @@ class ResultViewController: UIViewController {
             make.height.equalTo(50)
 //            make.top.equalTo(view.safeAreaLayoutGuide)
 //            make.top.equalToSuperview()
-            make.top.equalToSuperview().offset(30)
+//            make.top.equalToSuperview().offset(30)
+            make.centerY.equalTo(dismissBtn.snp.centerY)
         }
         
         
@@ -188,29 +189,20 @@ class ResultViewController: UIViewController {
 //        calculatedInfoTableView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
         
         calculatedInfoTableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+//            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight) + 50)
-            make.height.equalTo(1000)
-        }
-        
-        
-        dividerView.snp.makeConstraints { make in
-            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(30)
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.height.equalTo(1)
+            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight))
+
         }
         
         briefInfoTableView.snp.makeConstraints { make in
             make.leading.equalTo(scrollView.snp.leading).offset(16)
-//            make.width.equalTo(scrollView.snp.width)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.top.equalTo(dividerView.snp.bottom).offset(60)
-            make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight) + 50)
-            make.height.equalTo(1000)
+            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(40)
+            make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
-        
     }
     
     private func setupAddTargets() {
@@ -236,7 +228,7 @@ class ResultViewController: UIViewController {
     // MARK: - UI Properties
     
     private let titleLabel = UILabel().then {
-//        $0.text = "정산 결과"
+        $0.text = "정산 결과"
         $0.textAlignment = .center
         $0.textColor = .black
 //        $0.font = UIFont.preferredFont(forTextStyle: .headline)

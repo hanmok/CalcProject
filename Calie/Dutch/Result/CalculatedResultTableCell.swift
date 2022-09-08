@@ -98,7 +98,10 @@ extension CalculatedResultTableCell {
         guard let value = val else { return "는" }
         
     // 값
-        if value < 0xac00 { return "는" }
+        print("value: \(value)")
+        print("0xac00: \(0xac00)")
+        // 모음 하나만 있는 경우는 어떻게 처리되지 ??
+        if value < 0xac00 { return "는" } // 영어인 경우 필터
         let x = (value - 0xac00) / 28 / 21
         let y = ((value - 0xac00) / 28) % 21
         let z = (value - 0xac00) % 28 // 없을 경우 z 는 0
