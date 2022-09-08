@@ -44,7 +44,11 @@ class PersonDetailCell: UICollectionViewCell {
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
-        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
+//        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
+//        $0.backgroundColor = .magenta
+//        $0.backgroundColor = UIColor(rgb: 0xEFEFEF)
+//        $0.backgroundColor = UIColor(rgb: 0xFFFFFF)
+    
         $0.layer.cornerRadius = 5
     }
     

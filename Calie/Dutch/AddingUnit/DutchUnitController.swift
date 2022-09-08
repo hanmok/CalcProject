@@ -34,7 +34,9 @@ class DutchUnitController: NeedingController {
     /// 10
     private let smallPadding: CGFloat = 10
     
-    let cellHeight = 40
+
+    private let appliedCellHeight = 40
+
     
     var spentPlaceTFJustTapped = false
     
@@ -228,8 +230,6 @@ class DutchUnitController: NeedingController {
             detailPriceDic[idx] = viewModel.personDetails[idx].spentAmount
             detailAttendingDic[idx] = viewModel.personDetails[idx].isAttended
         }
-//        self.spentAmount = viewModel.
-
     }
     
     @objc func otherViewTapped() {
@@ -394,7 +394,10 @@ class DutchUnitController: NeedingController {
                     make.top.equalTo(self.divider.snp.bottom).offset(30)
 //                    make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
 //                    make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
-                    make.height.equalTo(self.cellHeight * self.viewModel.personDetails.count)
+
+//                    make.height.equalTo(30 * self.viewModel.personDetails.count)
+                    make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+
                 }
                 
 //                self.resetBtn.snp.makeConstraints { make in
@@ -498,7 +501,11 @@ class DutchUnitController: NeedingController {
 //                        make.height.equalTo(50 * self.viewModel.personDetails.count - 20) // -20 은 spacing
                         
 //                        make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1)) // -20 은 spacing
-                        make.height.equalTo(self.cellHeight * self.viewModel.personDetails.count)
+
+                        
+//                        make.height.equalTo(30 * self.viewModel.personDetails.count)
+                        make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+
                     }
                     
 //                    self.resetBtn.snp.makeConstraints { make in
@@ -537,7 +544,10 @@ class DutchUnitController: NeedingController {
 
 //                make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
 //                make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
-                make.height.equalTo(self.cellHeight * self.viewModel.personDetails.count)
+
+//                make.height.equalTo(30 * self.viewModel.personDetails.count)
+                make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+
             }
             
 //            self.resetBtn.snp.makeConstraints { make in
@@ -672,7 +682,14 @@ class DutchUnitController: NeedingController {
             make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().inset(smallPadding)
             make.top.equalTo(divider.snp.bottom).offset(30)
-            make.height.equalTo(self.cellHeight * self.viewModel.personDetails.count)
+//            make.height.equalTo(45 * viewModel.personDetails.count - 20)
+//            make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
+//            make.height.equalTo(30 * self.viewModel.personDetails.count)
+            make.height.equalTo(appliedCellHeight * self.viewModel.personDetails.count)
+//            make.height.equalTo(30 * self.viewModel.personDetails.count)
+//            make.height.equalTo(200)
+            
+
         }
         
         addPersonBtn.snp.makeConstraints { make in
@@ -892,7 +909,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-
         cell.spentAmountTF.text = text
         
         print("newText: \(cell.spentAmountTF.text!)")
