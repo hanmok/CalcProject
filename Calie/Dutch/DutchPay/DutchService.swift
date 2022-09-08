@@ -360,6 +360,10 @@ extension DutchService {
                 idx: correspondingIdx )
         }
         
+        print("just before calculate, Check info:")
+        for tuple in tupleIngredients {
+            print("name: \(tuple.name), idx: \(tuple.idx), amt: \(tuple.spentAmount)")
+        }
         let resultsWithIndices = calculateDutchResults(using: tupleIngredients)
         
         let ret = resultsWithIndices.map { resultTuple -> ResultTupleWithId in
@@ -377,6 +381,9 @@ extension DutchService {
     func convertResultIDIntoName(gathering: Gathering, resultTupleIds: [ResultTupleWithId]) -> [ResultTupleWithName] {
         
         let people = gathering.people
+
+//        let sortedResultTuple = resultTupleIds.sort
+        
         let ret = resultTupleIds.map { resultTupleId -> ResultTupleWithName in
             let source = resultTupleId
             guard let fromPerson = people.first(where: ({ source.from == $0.id })), // $0: person in people
@@ -393,9 +400,10 @@ extension DutchService {
     func returnValidInfoAfterCalculation(gathering: Gathering) -> [ResultTupleWithName] {
 //         ResultTupleWithId = (from: UUID, to: UUID, amount: Double)
         let firstResult = calculateResults(gathering: gathering)
-        
+
 //         ResultTupleWithName = (from: String, to: String, amount: Double)
         let finalResult = convertResultIDIntoName(gathering: gathering, resultTupleIds: firstResult)
+        // 여기에서 값이 틀리게 나오는건 아닌데, 왜.. 이상하게 나올까 ??
         print("finalResult: \(finalResult)")
         return finalResult
     }

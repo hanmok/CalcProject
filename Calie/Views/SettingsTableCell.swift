@@ -84,6 +84,7 @@ class SettingsTableCell: UITableViewCell {
                 
 //                self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
                 // changed .. why ? i don't know.
+                
                 self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
                 print("line 86, isDarkMode: \(self.isDarkMode)")
                 self.textLabel?.textColor = self.isDarkMode ? .white : .black
