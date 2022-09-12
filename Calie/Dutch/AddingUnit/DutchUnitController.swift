@@ -40,7 +40,7 @@ class DutchUnitController: NeedingController {
     
     var spentPlaceTFJustTapped = false
     
-    let scrollView = UIScrollView()
+//    let scrollView = UIScrollView()
     
     var isShowingKeyboard = false {
         willSet {
@@ -117,6 +117,11 @@ class DutchUnitController: NeedingController {
     
     /// set DetailPriceDic if viewDidLoad
    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1500)
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -591,26 +596,55 @@ class DutchUnitController: NeedingController {
             subview.removeFromSuperview()
         }
         
-        [
-            dismissBtn,
-            spentPlaceLabel, spentPlaceTF,
-            spentAmountLabel, spentAmountTF, currenyLabel,
-            spentDateLabel,
-            spentDatePicker,
-            divider,
-            personDetailCollectionView,
-            resetBtn, addPersonBtn,
-            confirmBtn
-        ].forEach { v in
-            self.view.addSubview(v)
+//        [
+//            dismissBtn,
+//            spentPlaceLabel, spentPlaceTF,
+//            spentAmountLabel, spentAmountTF, currenyLabel,
+//            spentDateLabel,
+//            spentDatePicker,
+//            divider,
+//            personDetailCollectionView,
+//            resetBtn, addPersonBtn,
+////            confirmBtn,
+//            bottomContainerView
+//        ].forEach { v in
+//            self.view.addSubview(v)
+//        }
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview()
+            
+            make.leading.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.bottom.equalToSuperview()
+            
+//            make.leading.top.bottom.equalToSuperview()
+//            make.width.equalToSuperview()
         }
+        
+                [
+                    dismissBtn,
+                    spentPlaceLabel, spentPlaceTF,
+                    spentAmountLabel, spentAmountTF, currenyLabel,
+                    spentDateLabel,
+                    spentDatePicker,
+                    divider,
+                    personDetailCollectionView,
+                    resetBtn, addPersonBtn
+//                    bottomContainerView
+                ].forEach { v in
+                    self.scrollView.addSubview(v)
+                }
+        view.addSubview(bottomContainerView)
         
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
         
         dismissBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalToSuperview().offset(56)
             make.height.equalTo(30)
 //            make.width.equalTo(15)
             make.width.equalTo(30)
@@ -672,7 +706,9 @@ class DutchUnitController: NeedingController {
         
         
         divider.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(5)
+//            make.leading.trailing.equalToSuperview().inset(5)
+            make.leading.equalToSuperview().inset(5)
+            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-10)
             make.height.equalTo(1)
             make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
         }
@@ -680,7 +716,9 @@ class DutchUnitController: NeedingController {
         
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(50)
-            make.trailing.equalToSuperview().inset(smallPadding)
+//            make.trailing.equalToSuperview().inset(smallPadding)
+//            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-2 * smallPadding)
+            make.width.equalTo(300)
             make.top.equalTo(divider.snp.bottom).offset(30)
 //            make.height.equalTo(45 * viewModel.personDetails.count - 20)
 //            make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
@@ -692,22 +730,55 @@ class DutchUnitController: NeedingController {
 
         }
         
-        addPersonBtn.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
-            make.height.equalTo(40)
-            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
+//        addPersonBtn.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
+//            make.height.equalTo(40)
+//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
+//        }
+  
+        bottomContainerView.snp.makeConstraints { make in
+//            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view)
+            make.height.equalTo(70)
         }
         
+//        confirmBtn.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+////            make.bottom.equalTo(view).inset(20)
+//            make.bottom.equalToSuperview().inset(20)
+//            make.width.equalTo(view.snp.width).dividedBy(2)
+//            make.height.equalTo(50)
+//        }
+        
+        bottomContainerView.addSubview(confirmBtn)
         confirmBtn.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(view).inset(20)
-            make.width.equalTo(view.snp.width).dividedBy(2)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.top.equalToSuperview().inset(10)
+            make.bottom.equalToSuperview().inset(20)
+        }
+        
+        addPersonBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.width.equalTo(150)
             make.height.equalTo(50)
+            make.bottom.equalToSuperview().inset(20)
         }
     }
     
     
     // MARK: - UI Properties
+    
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 3000)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.isScrollEnabled = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.backgroundColor = .cyan
+        return scrollView
+    }()
+    
     
     private let currenyLabel = UILabel().then {
         $0.text = "원"
@@ -787,7 +858,6 @@ class DutchUnitController: NeedingController {
     }()
     
     private let addPersonBtn = UIButton().then {
-        
         $0.setTitle("인원 추가", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.layer.cornerRadius = 8
@@ -814,6 +884,10 @@ class DutchUnitController: NeedingController {
         $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
+    }
+    
+    private let bottomContainerView = UIView().then {
+        $0.backgroundColor = .magenta
     }
     
     required init?(coder: NSCoder) {

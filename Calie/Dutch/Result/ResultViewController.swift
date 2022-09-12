@@ -194,7 +194,6 @@ class ResultViewController: UIViewController {
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
             make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight))
-
         }
         
         briefInfoTableView.snp.makeConstraints { make in
