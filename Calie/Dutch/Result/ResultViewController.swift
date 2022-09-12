@@ -123,7 +123,7 @@ class ResultViewController: UIViewController {
         
 //        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 290)
         
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 84)
+        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 84 + 30)
         
 //        scrollView.contentSize = CGSize(width: 1000, height: 3000)
     }
@@ -150,7 +150,6 @@ class ResultViewController: UIViewController {
         
         
         dismissBtn.snp.makeConstraints { make in
-            
             make.top.equalToSuperview().offset(30)
             make.leading.equalToSuperview().offset(10)
             make.width.height.equalTo(24)

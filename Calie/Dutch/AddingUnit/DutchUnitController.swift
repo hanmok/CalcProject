@@ -119,7 +119,7 @@ class DutchUnitController: NeedingController {
    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1500)
+        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 2000)
     }
     
     // MARK: - Life Cycle
@@ -613,10 +613,9 @@ class DutchUnitController: NeedingController {
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
-            
             make.leading.top.equalToSuperview()
-            make.width.equalToSuperview()
+//            make.width.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             
 //            make.leading.top.bottom.equalToSuperview()
@@ -632,7 +631,6 @@ class DutchUnitController: NeedingController {
                     divider,
                     personDetailCollectionView,
                     resetBtn, addPersonBtn
-//                    bottomContainerView
                 ].forEach { v in
                     self.scrollView.addSubview(v)
                 }
@@ -708,17 +706,21 @@ class DutchUnitController: NeedingController {
         divider.snp.makeConstraints { make in
 //            make.leading.trailing.equalToSuperview().inset(5)
             make.leading.equalToSuperview().inset(5)
-            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-10)
+//            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-10)
+            make.width.equalTo(view.snp.width).offset(-10)
             make.height.equalTo(1)
             make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
         }
         
         
         personDetailCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(50)
+//            make.leading.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().inset(5)
 //            make.trailing.equalToSuperview().inset(smallPadding)
 //            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-2 * smallPadding)
-            make.width.equalTo(300)
+//            make.width.equalTo(300)
+//            make.width.equalTo(view.snp.width).offset(-10)
+            make.width.equalTo(divider.snp.width)
             make.top.equalTo(divider.snp.bottom).offset(30)
 //            make.height.equalTo(45 * viewModel.personDetails.count - 20)
 //            make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
@@ -760,7 +762,8 @@ class DutchUnitController: NeedingController {
         
         addPersonBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
-            make.width.equalTo(150)
+//            make.width.equalTo(150)
+            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
             make.height.equalTo(50)
             make.bottom.equalToSuperview().inset(20)
         }
@@ -775,7 +778,7 @@ class DutchUnitController: NeedingController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .cyan
+//        scrollView.backgroundColor = .cyan
         return scrollView
     }()
     
