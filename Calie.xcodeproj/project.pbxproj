@@ -79,6 +79,8 @@
 		9AABC59228C13F3300EB3A04 /* CalculatedResultTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59128C13F3300EB3A04 /* CalculatedResultTableCell.swift */; };
 		9AABC59428C3221F00EB3A04 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59328C3221F00EB3A04 /* Typealiases.swift */; };
 		9AABC59628C4545800EB3A04 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59528C4545800EB3A04 /* HelperFunctions.swift */; };
+		9AABC59828D0FC6A00EB3A04 /* PersonDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59728D0FC6A00EB3A04 /* PersonDetailHeader.swift */; };
+		9AABC59A28D1122000EB3A04 /* PersonDetailFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AABC59928D1122000EB3A04 /* PersonDetailFooter.swift */; };
 		9AADB33D28831B2800DAD657 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = 9AADB33C28831B2800DAD657 /* Notes */; };
 		9AADB33F2884773900DAD657 /* ToMake in Resources */ = {isa = PBXBuildFile; fileRef = 9AADB33E2884773900DAD657 /* ToMake */; };
 		9AADB3412885A94B00DAD657 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3402885A94B00DAD657 /* ResultViewController.swift */; };
@@ -219,6 +221,8 @@
 		9AABC59128C13F3300EB3A04 /* CalculatedResultTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatedResultTableCell.swift; sourceTree = "<group>"; };
 		9AABC59328C3221F00EB3A04 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
 		9AABC59528C4545800EB3A04 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		9AABC59728D0FC6A00EB3A04 /* PersonDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailHeader.swift; sourceTree = "<group>"; };
+		9AABC59928D1122000EB3A04 /* PersonDetailFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailFooter.swift; sourceTree = "<group>"; };
 		9AADB33C28831B2800DAD657 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		9AADB33E2884773900DAD657 /* ToMake */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToMake; sourceTree = "<group>"; };
 		9AADB3402885A94B00DAD657 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
@@ -514,6 +518,8 @@
 				9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */,
 				9A2DBC002820698F00CF4E86 /* PersonDetailCell.swift */,
 				9A2DBC02282069AC00CF4E86 /* PersonDetailCellViewModel.swift */,
+				9AABC59728D0FC6A00EB3A04 /* PersonDetailHeader.swift */,
+				9AABC59928D1122000EB3A04 /* PersonDetailFooter.swift */,
 				9A2DBC322826DF6A00CF4E86 /* Tests */,
 			);
 			path = AddingUnit;
@@ -774,6 +780,7 @@
 				9A083FD924CCDBDE001057D2 /* BaseViewController.swift in Sources */,
 				9A1C85082815C5C7001020EF /* AttendingButton.swift in Sources */,
 				9AD2FB272847D2610075551B /* DutchUnit+Helper.swift in Sources */,
+				9AABC59828D0FC6A00EB3A04 /* PersonDetailHeader.swift in Sources */,
 				22F65E742845D08D00646FCD /* Group+Helper.swift in Sources */,
 				9AD2FB57285788020075551B /* GroupTableCell.swift in Sources */,
 				9A083FEF24CCDCB4001057D2 /* UIView+Ext.swift in Sources */,
@@ -783,6 +790,7 @@
 				9A083FE724CCDC90001057D2 /* ColorList.swift in Sources */,
 				226A46F4289A078700CCF29C /* DutchTableCellViewModel.swift in Sources */,
 				9AF62EFB2702145A00E183AB /* InputEnums.swift in Sources */,
+				9AABC59A28D1122000EB3A04 /* PersonDetailFooter.swift in Sources */,
 				9A1C84FB2814E822001020EF /* PersistenceController.swift in Sources */,
 				9AA1510E287C7EE800DC4CED /* DutchManager.swift in Sources */,
 				9AF62EEA26FF665800E183AB /* RatioConstants.swift in Sources */,

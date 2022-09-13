@@ -72,6 +72,18 @@ class SideViewController: UIViewController {
         }
     }
     
+    private let addBtn = UIButton().then {
+        
+        let imgView = UIImageView()
+        let plusImg = UIImage(systemName: "plus")
+        imgView.image = plusImg
+        
+        $0.addSubview(imgView)
+        imgView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+    }
+    
     private let gatheringTableView = UITableView().then {
 //        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
 //        $0.layer.borderWidth = 1
@@ -113,27 +125,27 @@ class SideViewController: UIViewController {
 //        sideDelegate?.addNewGathering()
     }
     
-    
     private func setupLayout() {
-        
-//        view.addSubview(dismissBtn)
-//        dismissBtn.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(10)
-//            make.width.height.equalTo(40)
-////            make.top.equalTo(view.safeAreaLayoutGuide).inset(15)
-//            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
-//        }
         
         view.addSubview(sideLabel)
         sideLabel.snp.makeConstraints { make in
 //            make.leading.equalTo(dismissBtn.snp.trailing).offset(75)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+//            make.trailing.equalToSuperview()
+            make.width.equalToSuperview().dividedBy(2)
 //            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(60)
             make.height.equalTo(40)
         }
         
+        view.addSubview(addBtn)
+        addBtn.snp.makeConstraints { make in
+//            make.top.trailing.equalToSuperview().inset(10)
+//            make.top.equalTo(view.safeAreaLayoutGuide).offset(60)
+            make.centerY.equalTo(sideLabel.snp.centerY)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.height.equalTo(24)
+        }
         
         view.addSubview(gatheringTableView)
         gatheringTableView.snp.makeConstraints { make in
@@ -167,11 +179,11 @@ class SideViewController: UIViewController {
     }()
     
     private let sideLabel = UILabel().then {
-//        $0.text = "지난 모임"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.text = "지난 모임"
+        $0.font = UIFont.systemFont(ofSize: 18)
         $0.textColor = .black
-//        $0.textAlignment = .left
-        $0.textAlignment = .center
+        $0.textAlignment = .left
+//        $0.textAlignment = .center
     }
 
     
@@ -213,10 +225,17 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
             completionhandler(true)
         }
         
+        let editName = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
+            // TODO: Implement Renaming
+        }
+        
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = .red
         
-        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        editName.image = UIImage(systemName: "pencil")
+        editName.backgroundColor = UIColor(white: 0.4, alpha: 1)
+        
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete, editName])
         
         return rightSwipe
     }

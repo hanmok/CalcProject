@@ -28,19 +28,51 @@ protocol DutchUnitDelegate: AnyObject {
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool)
 }
 
+extension DutchUnitController: PersonDetailHeaderDelegate {
+    func dismissAcion() {
+        addingDelegate?.dismissChildVC()
+
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func spentAmtTapped() {
+        
+    }
+    
+    func spentPlaceTapped(sender: UITextField) {
+//        @objc func selectAllText(_ sender: UITextField) {
+            print("selectAllText called")
+            sender.selectAll(nil)
+            
+            spentPlaceTFJustTapped = true
+            
+            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
+                print("spentPlaceTFJustTapped changed to false")
+                self.spentPlaceTFJustTapped = false
+            }
+//        }
+    }
+}
+
+extension DutchUnitController: PersonDetailFooterDelegate {
+    func addPersonAction() {
+        print("presentAddingPeopleAlert called")
+        self.presentAddingPeopleAlert()
+    }
+}
+
 class DutchUnitController: NeedingController {
+    
+    
     
     // MARK: - Properties
     /// 10
     private let smallPadding: CGFloat = 10
     
-
     private let appliedCellHeight = 40
 
-    
     var spentPlaceTFJustTapped = false
     
-//    let scrollView = UIScrollView()
     
     var isShowingKeyboard = false {
         willSet {
@@ -105,40 +137,36 @@ class DutchUnitController: NeedingController {
         self.viewModel = DutchUnitViewModel(selectedDutchUnit: initialDutchUnit, gathering: gathering)
         self.dutchUnit = initialDutchUnit
         self.gathering = gathering
-//        self.spentAmount =
         if let initialDutchUnit = initialDutchUnit {
             self.spentAmount = initialDutchUnit.spentAmount
         }
         print("initializing personDetails flag 0, dutchUnit: \(initialDutchUnit)")
         
         super.init(nibName: nil, bundle: nil)
-//        initializePersonDetails(initialDutchUnit: initialDutchUnit)
     }
     
-    /// set DetailPriceDic if viewDidLoad
-   
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
         
         var insets = view.safeAreaInsets
-            insets.top = 0
-//            tableView.contentInset = insets
-        scrollView.contentInset = insets
-    
-        
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 2000)
+        insets.top = 0
+        personDetailCollectionView.contentInset = insets
     }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        view.insetsLayoutMarginsFromSafeArea = false
+        
+        
+        personDetailCollectionView.contentInsetAdjustmentBehavior = .never
+        
+        navigationController?.navigationBar.isHidden = true
+        
         print("initializing personDetails flag 3")
         print("current personDetails: ")
         
-        view.backgroundColor = .white
+        view.backgroundColor = .brown
         
         setupBindings()
         
@@ -153,15 +181,19 @@ class DutchUnitController: NeedingController {
         
         setupCollectionView()
         
+        // TODO: 이거.. 여기서 하면 안될 것 같은데 ?? 구조가 많이 바뀌었음.
+        
         viewModel.setupInitialState { [weak self] initialState, newDutchUnitIndex in
             guard let self = self else { return }
             if let initialState = initialState {
+//                let headerViewModel =
+                
                 self.spentPlaceTF.text = initialState.place
                 self.spentAmountTF.text = initialState.amount
                 self.spentDatePicker.date = initialState.date
+            
             } else {
                 guard let numOfElements = newDutchUnitIndex else {return }
-                // TODO: Setup PlaceHolder? // 이미 되어있어야함.
                 self.spentPlaceTF.text = "항목 \(numOfElements)"
             }
         }
@@ -179,8 +211,6 @@ class DutchUnitController: NeedingController {
         
         
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
-        
-//        let tap3 = UITapGestureRecognizer(target: self, action: #selector(selectAllText(_:)))
         
 //        spentPlaceTF.addGestureRecognizer(tap3)
         
@@ -231,11 +261,9 @@ class DutchUnitController: NeedingController {
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
         print("setConditionBtnState to \(isActive)!!")
-//        confirmBtn.backgroundColor = isActive ? ColorList().bgColorForExtrasLM : UIColor(white: 0.85, alpha: 0.9)
         DispatchQueue.main.async {
             self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.85, alpha: 0.9)
         }
-
     }
     
     
@@ -252,30 +280,28 @@ class DutchUnitController: NeedingController {
         print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
         
         if spentPlaceTFJustTapped == false {
-        
+            
             dismissKeyboard()
             
             guard let validSelectedPriceTF = selectedPriceTF else { return }
-        
-        let currentText = validSelectedPriceTF.text!
-        
-        updateDictionary(tag: validSelectedPriceTF.tag, currentText: currentText)
-        
-        print("otherView Tapped!!")
-        
-//        needingDelegate?.hideNumberPad { print("hide!")}
-        
-        if validSelectedPriceTF.tag != -1 {
-            let selectedRow = validSelectedPriceTF.tag
-            personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
             
-            print("selected flag 1, updated row: \(selectedRow)")
-        } else {
-            spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
-            spentAmountTF.textColor = .black
-            print("selected flag 2")
-        }
-        print("selected flag 3")
+            let currentText = validSelectedPriceTF.text!
+            
+            updateDictionary(tag: validSelectedPriceTF.tag, currentText: currentText)
+            
+            print("otherView Tapped!!")
+            
+            if validSelectedPriceTF.tag != -1 {
+                let selectedRow = validSelectedPriceTF.tag
+                personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
+                
+                print("selected flag 1, updated row: \(selectedRow)")
+            } else {
+                spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+                spentAmountTF.textColor = .black
+                print("selected flag 2")
+            }
+            print("selected flag 3")
         }
     }
     
@@ -315,13 +341,13 @@ class DutchUnitController: NeedingController {
     
     
     private func setupTargets() {
-        resetBtn.addTarget(self, action: #selector(resetState), for: .touchUpInside)
-        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
-        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
+//        resetBtn.addTarget(self, action: #selector(resetState), for: .touchUpInside)
+//        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
+//        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
         confirmBtn.addTarget(nil, action: #selector(confirmTapped), for: .touchUpInside)
         
         spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
-//        spentPlaceTF.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: .)
+        
     }
     
     // 좀.. 이상한데 ??
@@ -404,40 +430,32 @@ class DutchUnitController: NeedingController {
         viewModel.reset {
             DispatchQueue.main.async {
                 self.personDetailCollectionView.snp.remakeConstraints { make in
-                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-                    make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                    make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
-//                    make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
-
-//                    make.height.equalTo(30 * self.viewModel.personDetails.count)
-                    make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
-
-                }
-                
-//                self.resetBtn.snp.makeConstraints { make in
-//                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                    make.width.equalTo(80)
-//                    make.height.equalTo(40)
-//                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-//                }
-                
-                self.addPersonBtn.snp.makeConstraints { make in
 //                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                    make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                    make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
-                    make.height.equalTo(40)
-                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
+//                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+                    make.leading.trailing.equalToSuperview()
+//                    make.top.equalTo(self.divider.snp.bottom).offset(30)
+                    make.top.equalToSuperview()
+
+//                    make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+                    make.height.equalToSuperview()
+//                    make.height.equalTo(100)
                 }
+
+
+//                self.addPersonBtn.snp.makeConstraints { make in
+//                    make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
+//                    make.height.equalTo(40)
+//                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
+//                }
             }
         }
     }
     
-    @objc func dismissTapped() {
-        addingDelegate?.dismissChildVC()
-
-        self.navigationController?.popViewController(animated: true)
-    }
+//    @objc func dismissTapped() {
+//        addingDelegate?.dismissChildVC()
+//
+//        self.navigationController?.popViewController(animated: true)
+//    }
     
     
     
@@ -456,18 +474,11 @@ class DutchUnitController: NeedingController {
     }
     
     
-    
-    
-    
-    
-    
-    
     @objc func dismissKeyboard() {
         
         view.endEditing(true)
         
         needingDelegate?.hideNumberPad()
-        
     }
     
     func dismissKeyboardOnly() {
@@ -492,8 +503,6 @@ class DutchUnitController: NeedingController {
     }
     
     
-    
-    
     private func addPersonAction(with newName: String) {
         guard newName.count != 0 else { fatalError("Name must have at least one character") }
         
@@ -509,35 +518,21 @@ class DutchUnitController: NeedingController {
                     self.personDetailCollectionView.reloadData()
                     
                     self.personDetailCollectionView.snp.remakeConstraints { make in
-                        make.leading.equalToSuperview().inset(self.smallPadding)
-                        make.trailing.equalToSuperview().inset(self.smallPadding)
-                        make.top.equalTo(self.divider.snp.bottom).offset(30)
-
-//                        make.height.equalTo(50 * self.viewModel.personDetails.count - 20) // -20 은 spacing
-                        
-//                        make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1)) // -20 은 spacing
-
-                        
-//                        make.height.equalTo(30 * self.viewModel.personDetails.count)
-                        make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
-
+//                        make.leading.equalToSuperview().inset(self.smallPadding)
+//                        make.trailing.equalToSuperview().inset(self.smallPadding)
+                        make.leading.trailing.equalToSuperview()
+//                        make.top.equalTo(self.divider.snp.bottom).offset(30)
+//                        make.top.equalToSuperview().offset(50)
+                        make.top.equalToSuperview()
+//                        make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+                        make.height.equalToSuperview()
+//                        make.height.equalTo(100)
                     }
-                    
-//                    self.resetBtn.snp.makeConstraints { make in
-//                        make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                        make.width.equalTo(80)
+//                    self.addPersonBtn.snp.makeConstraints { make in
+//                        make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
 //                        make.height.equalTo(40)
-//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
 //                    }
-                    
-                    self.addPersonBtn.snp.makeConstraints { make in
-//                        make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                        make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                        make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
-                        make.height.equalTo(40)
-//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
-                    }
                 }
                 
             case .failure(let errorMsg):
@@ -553,33 +548,22 @@ class DutchUnitController: NeedingController {
             self.personDetailCollectionView.reloadData()
             
             self.personDetailCollectionView.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().inset(self.smallPadding)
-                make.trailing.equalToSuperview().inset(self.smallPadding)
-                make.top.equalTo(self.divider.snp.bottom).offset(30)
-
-//                make.height.equalTo(50 * self.viewModel.personDetails.count - 20)
-//                make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
-
-//                make.height.equalTo(30 * self.viewModel.personDetails.count)
-                make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
-
+//                make.leading.equalToSuperview().inset(self.smallPadding)
+//                make.trailing.equalToSuperview().inset(self.smallPadding)
+                make.leading.trailing.equalToSuperview()
+//                make.top.equalTo(self.divider.snp.bottom).offset(30)
+//                make.top.equalToSuperview().offset(50)
+                make.top.equalToSuperview()
+//                make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
+                make.height.equalToSuperview()
+//                make.height.equalTo(100)
             }
             
-//            self.resetBtn.snp.makeConstraints { make in
-//                make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                make.width.equalTo(80)
+//            self.addPersonBtn.snp.makeConstraints { make in
+//                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
 //                make.height.equalTo(40)
-//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
+//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
 //            }
-            
-            self.addPersonBtn.snp.makeConstraints { make in
-//                make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                make.trailing.equalTo(self.resetBtn.snp.leading).offset(-10)
-                make.height.equalTo(40)
-//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(15)
-                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
-            }
         }
         
         print("relocate collectionView called, count: \(viewModel.personDetails.count)")
@@ -591,20 +575,39 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.delegate = self
         personDetailCollectionView.dataSource = self
         
-//        DispatchQueue.main.async {
-//            self.personDetailCollectionView.reloadData()
-//        }
-//        reloadInputViews()
+        
+//        personDetailCollectionView.register(PersonDetailHeader.self, forCellWithReuseIdentifier: <#T##String#>)
+        
+        personDetailCollectionView.register(PersonDetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonDetailHeader.headerIdentifier)
+        
+        personDetailCollectionView.register(PersonDetailFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: PersonDetailFooter.footerIdentifier)
+        
         
         
         relocateCollectionView()
     }
+    
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1500)
+//    }
     
     private func setupLayout() {
         
         for subview in view.subviews{
             subview.removeFromSuperview()
         }
+        
+        
+//        view.addSubview(scrollView)
+//
+//        scrollView.snp.makeConstraints { make in
+//            make.leading.top.equalToSuperview()
+//            make.trailing.equalToSuperview()
+//            make.bottom.equalToSuperview()
+//        }
+//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1500)
+//        CGSize(width: view.frame.size.width, height: 1500)
         
 //        [
 //            dismissBtn,
@@ -614,186 +617,161 @@ class DutchUnitController: NeedingController {
 //            spentDatePicker,
 //            divider,
 //            personDetailCollectionView,
-//            resetBtn, addPersonBtn,
-////            confirmBtn,
-//            bottomContainerView
+//            resetBtn, addPersonBtn
 //        ].forEach { v in
+////            self.scrollView.addSubview(v)
 //            self.view.addSubview(v)
 //        }
         
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview()
-//            make.top.equalTo(view)
-//            make.leading.equalToSuperview()
-//            make.width.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            
-//            make.leading.top.bottom.equalToSuperview()
-//            make.width.equalToSuperview()
-        }
+        view.addSubview(personDetailCollectionView)
         
-                [
-                    dismissBtn,
-                    spentPlaceLabel, spentPlaceTF,
-                    spentAmountLabel, spentAmountTF, currenyLabel,
-                    spentDateLabel,
-                    spentDatePicker,
-                    divider,
-                    personDetailCollectionView,
-                    resetBtn, addPersonBtn
-                ].forEach { v in
-                    self.scrollView.addSubview(v)
-                }
+        
+//        scrollView.isScrollEnabled = true
+        
         view.addSubview(bottomContainerView)
-        
+        bottomContainerView.addSubview(gradientView)
+        bottomContainerView.addSubview(remainingView)
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
         
-        dismissBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-//            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalToSuperview().offset(56)
-            make.height.equalTo(30)
+//        dismissBtn.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(20)
+//            make.top.equalToSuperview().offset(56)
+//            make.height.equalTo(30)
+//            make.width.equalTo(30)
+//        }
+//
+//        spentPlaceLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(smallPadding * 2)
+//            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
+//            make.width.equalTo(150)
+//            make.height.equalTo(20)
+//        }
+//
+//
+//        spentPlaceTF.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(15)
+//            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
+//            make.width.equalTo(170)
+//            make.height.equalTo(30)
+//        }
+//
+//        spentAmountLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(smallPadding * 2)
+//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(20)
+//            make.width.equalTo(150)
+//            make.height.equalTo(30)
+//        }
+//
+//        spentAmountTF.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(15)
+//            make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
+//            make.width.equalTo(170)
+//            make.height.equalTo(30)
+//        }
+//
+//        currenyLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
+//            make.height.equalTo(spentAmountTF.snp.height)
+//            make.centerY.equalTo(spentAmountTF.snp.centerY)
 //            make.width.equalTo(15)
-            make.width.equalTo(30)
-        }
-        
-        spentPlaceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalTo(dismissBtn.snp.bottom).offset(20)
-            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
-            make.width.equalTo(150)
-            make.height.equalTo(20)
-        }
-        
-
-        spentPlaceTF.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(15)
-            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
-            make.width.equalTo(170)
-            make.height.equalTo(30)
-        }
-        
-        spentAmountLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(spentPlaceTF.snp.bottom).offset(20)
-            make.width.equalTo(150)
-            make.height.equalTo(30)
-        }
-        
-        spentAmountTF.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(15)
-            make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
-            make.width.equalTo(170)
-            make.height.equalTo(30)
-        }
-        
-        currenyLabel.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
-            make.height.equalTo(spentAmountTF.snp.height)
-            make.centerY.equalTo(spentAmountTF.snp.centerY)
-            make.width.equalTo(15)
-        }
-        
-        spentDateLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(spentAmountTF.snp.bottom).offset(20)
-            make.width.equalTo(150)
-            make.height.equalTo(30)
-        }
-        
-        
-        spentDatePicker.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(15)
-//            make.width.equalToSuperview().dividedBy(1.7) // prev: 1.5
-//            make.width.equalToSuperview().dividedBy(2.0)
-//            make.top.equalTo(spentAmountTF.snp.bottom).offset(30)
-            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
-            make.height.equalTo(40)
-        }
-        
-        
-        divider.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview().inset(5)
-            make.leading.equalToSuperview().inset(5)
-//            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-10)
-            make.width.equalTo(view.snp.width).offset(-10)
-            make.height.equalTo(1)
-            make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
-        }
+//        }
+//
+//        spentDateLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(smallPadding * 2)
+//            make.top.equalTo(spentAmountTF.snp.bottom).offset(20)
+//            make.width.equalTo(150)
+//            make.height.equalTo(30)
+//        }
+//
+//
+//        spentDatePicker.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(15)
+//            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
+//            make.height.equalTo(40)
+//        }
+//
+//
+//        divider.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(5)
+//            make.width.equalTo(view.snp.width).offset(-10)
+////            make.width.equalTo(scrollView.snp.width).offset(-10)
+//
+//            make.height.equalTo(1)
+//            make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
+//        }
         
         
         personDetailCollectionView.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(50)
-            make.leading.equalToSuperview().inset(5)
-//            make.trailing.equalToSuperview().inset(smallPadding)
-//            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-2 * smallPadding)
-//            make.width.equalTo(300)
-//            make.width.equalTo(view.snp.width).offset(-10)
-            make.width.equalTo(divider.snp.width)
-            make.top.equalTo(divider.snp.bottom).offset(30)
-//            make.height.equalTo(45 * viewModel.personDetails.count - 20)
-//            make.height.equalTo(30 * self.viewModel.personDetails.count + 20 * (self.viewModel.personDetails.count - 1))
-//            make.height.equalTo(30 * self.viewModel.personDetails.count)
-            make.height.equalTo(appliedCellHeight * self.viewModel.personDetails.count)
-//            make.height.equalTo(30 * self.viewModel.personDetails.count)
-//            make.height.equalTo(200)
-            
-
+//            make.leading.equalToSuperview().inset(5)
+            make.leading.trailing.equalToSuperview()
+//            make.width.equalTo(divider.snp.width)
+//            make.width.equalToSuperview()
+//            make.top.equalTo(divider.snp.bottom).offset(30)
+//            make.top.equalToSuperview().offset(50)
+            make.top.equalToSuperview()
+//            make.height.equalTo(appliedCellHeight * self.viewModel.personDetails.count + 480)
+            make.height.equalToSuperview()
+//            make.height.equalTo(100)
         }
-        
-//        addPersonBtn.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview().inset(smallPadding * 1.5)
-//            make.height.equalTo(40)
-//            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
-//        }
   
         bottomContainerView.snp.makeConstraints { make in
-//            make.leading.trailing.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view)
-            make.height.equalTo(70)
+//            make.bottom.equalTo(view)
+//            make.bottom.equalToSuperview().offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
+//            make.height.equalTo(85)
+            make.height.equalTo(100)
         }
         
-//        confirmBtn.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-////            make.bottom.equalTo(view).inset(20)
-//            make.bottom.equalToSuperview().inset(20)
-//            make.width.equalTo(view.snp.width).dividedBy(2)
-//            make.height.equalTo(50)
-//        }
+        gradientView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(20)
+        }
+        
+        remainingView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(gradientView.snp.bottom)
+            make.bottom.equalToSuperview()
+        }
+        
         
         bottomContainerView.addSubview(confirmBtn)
         confirmBtn.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalToSuperview().inset(10)
-            make.bottom.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(20)
+//            make.bottom.equalToSuperview().inset(20)
+            make.height.equalTo(40)
         }
         
-        addPersonBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(10)
-//            make.width.equalTo(150)
-            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.height.equalTo(50)
-            make.bottom.equalToSuperview().inset(20)
-        }
+//        addPersonBtn.snp.makeConstraints { make in
+////            make.leading.equalToSuperview().inset(10)
+//            make.leading.equalTo(spentDatePicker.snp.trailing)
+//
+//            //            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
+////            make.width.equalTo(view.snp.width).offset(-32)
+//
+////            make.width.greaterThanOrEqualTo(view.snp.width).offset(-32)
+//            make.width.equalTo(100)
+//            make.height.equalTo(50)
+////            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
+//            make.top.equalTo(spentDatePicker.snp.top)
+//        }
     }
     
     
     // MARK: - UI Properties
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 3000)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.isScrollEnabled = true
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .cyan
-        scrollView.contentInsetAdjustmentBehavior = .never
-        return scrollView
-    }()
+//    lazy var scrollView: UIScrollView = {
+//        let scrollView = UIScrollView()
+//        scrollView.translatesAutoresizingMaskIntoConstraints = false
+//        scrollView.isScrollEnabled = true
+//        scrollView.showsVerticalScrollIndicator = true
+//        scrollView.backgroundColor = .cyan
+//
+////        scrollView.contentInsetAdjustmentBehavior = .never
+//        return scrollView
+//    }()
     
     
     private let currenyLabel = UILabel().then {
@@ -845,55 +823,57 @@ class DutchUnitController: NeedingController {
         return picker
     }()
     
-    private let personDetailCollectionView: UICollectionView = {
+    private lazy var personDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.isScrollEnabled = false
+        cv.delegate = self
+        cv.dataSource = self
+        cv.isScrollEnabled = true
 //        cv.isScrollEnabled = false
-//        cv.backgroundColor = UIColor(white: 0.8, alpha: 1)
-        
+        cv.showsVerticalScrollIndicator = true
+//        cv.isHidden = true
         return cv
     }()
     
     
     
-    private let dismissBtn: UIButton = {
-        let btn = UIButton()
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
-
-        btn.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-
-        return btn
-    }()
+//    private let dismissBtn: UIButton = {
+//        let btn = UIButton()
+//        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.tintColor = .black
+//
+//        btn.addSubview(imageView)
+//        imageView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.centerY.equalToSuperview()
+//            make.height.equalToSuperview()
+//        }
+//
+//        return btn
+//    }()
     
-    private let addPersonBtn = UIButton().then {
-        $0.setTitle("인원 추가", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.layer.cornerRadius = 8
-        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
-    }
+//    private let addPersonBtn = UIButton().then {
+//        $0.setTitle("인원 추가", for: .normal)
+//        $0.setTitleColor(.black, for: .normal)
+//        $0.layer.cornerRadius = 8
+//        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
+//    }
     
-    private let resetBtn = UIButton().then {
-        let imgView = UIImageView(image: UIImage(systemName: "arrow.counterclockwise"))
-        imgView.tintColor = .red
-        imgView.contentMode = .scaleAspectFit
-
-        $0.addSubview(imgView)
-        imgView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview().inset(6)
-        }
-        
-        $0.layer.cornerRadius = 8
-        $0.backgroundColor = UIColor(white: 0.88, alpha: 1)
-    }
+//    private let resetBtn = UIButton().then {
+//        let imgView = UIImageView(image: UIImage(systemName: "arrow.counterclockwise"))
+//        imgView.tintColor = .red
+//        imgView.contentMode = .scaleAspectFit
+//
+//        $0.addSubview(imgView)
+//        imgView.snp.makeConstraints { make in
+//            make.leading.top.trailing.bottom.equalToSuperview().inset(6)
+//        }
+//
+//        $0.layer.cornerRadius = 8
+//        $0.backgroundColor = UIColor(white: 0.88, alpha: 1)
+//    }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
@@ -903,8 +883,29 @@ class DutchUnitController: NeedingController {
         $0.isUserInteractionEnabled = false
     }
     
-    private let bottomContainerView = UIView().then {
-        $0.backgroundColor = .magenta
+    private let bottomContainerView = UIView()
+//        .then {
+//        $0.backgroundColor = .white
+//    }
+//        .then {
+//        $0.backgroundColor = .white
+//    }
+    
+    //    private let gradientView = UIView().then {
+    private let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 20)).then {
+        let colorTop =  UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.0).cgColor
+        let colorBottom = UIColor(red: 255.0/255.0, green: 255.5/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [colorTop, colorBottom]
+        gradientLayer.frame = $0.frame
+        
+        $0.layer.addSublayer(gradientLayer)
+        
+    }
+    
+    private let remainingView = UIView().then {
+        $0.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
@@ -925,45 +926,7 @@ class DutchUnitController: NeedingController {
         }
         
         selectedPriceTF.text = numberText
-        
-        let selectedTag = selectedPriceTF.tag
-        
-        //        switch selectedTag {
-        //        case -1: spentAmount = numberText.convertStrToDouble()
-        //        default:
-        //            textFieldWithPriceDic[selectedTag] = numberText.convertStrToDouble()
-        //            viewModel.personDetails[selectedTag].spentAmount = numberText.convertStrToDouble()
-        //        }
-        
     }
-    
-//    override func fullPriceAction2() {
-//        print("fullprice from addingUnitController!")
-//        guard let selectedPriceTF = selectedPriceTF else {
-//            fatalError()
-//        }
-//
-//        let totalAmount = spentAmountTF.text!.convertNumStrToDouble()
-//
-//        //        sumOfIndividual = 0
-//
-//        //        for (tag, number) in textFieldWithPriceDic {
-//        //            print("tag: \(tag), number: \(number)")
-//        //            sumOfIndividual += number
-//        //        }
-//
-//        //        var costRemaining = spentAmount - sumOfIndividual
-//
-//        //        costRemaining -= selectedPriceTF.text!.convertNumStrToDouble()
-//
-//        //        let remainingStr = costRemaining.addComma()
-//        //        textFieldWithPriceDic[selectedPriceTF.tag] = costRemaining
-//
-//        //        self.viewModel.personDetails[selectedPriceTF.tag].spentAmount = costRemaining
-//
-//        //        selectedPriceTF.text = remainingStr
-//
-//    }
 }
 
 
@@ -985,7 +948,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.fullPriceBtn.tag = indexPath.row
         
         cell.spentAmountTF.delegate = self
-        
         
         let target = viewModel.personDetails[indexPath.row]
         
@@ -1016,14 +978,13 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
             detailAttendingDic[currentIdx] = true
         }
         
-        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 30)
         
         return CGSize(width: Int(view.frame.width) - 30, height: 30)
+//        return CGSize(width: Int(view.frame.width) - 30, height: 60)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -1031,6 +992,40 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         return 0
     }
 }
+
+extension DutchUnitController {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        print("kind: \(kind)")
+        if kind == "UICollectionElementKindSectionHeader" {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
+            header.headerDelegate = self
+            
+            if dutchUnit == nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
+                    self.needingDelegate?.presentNumberPad()
+                    header.blinkSpentAmount()
+                    header.spentAmountTF.becomeFirstResponder()
+                }
+            }
+            
+            return header
+        } else {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailFooter.footerIdentifier, for: indexPath) as! PersonDetailFooter
+            footer.footerDelgate = self
+            return footer
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 360)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 180)
+    }
+}
+
 
 // MARK: - PersonDetailCell Delegate
 extension DutchUnitController: PersonDetailCellDelegate {
@@ -1178,3 +1173,18 @@ extension DutchUnitController: UITextFieldDelegate {
 //        self.present(alertController, animated: true)
 //    }
 //}
+
+
+func setGradientBackground() {
+    let colorTop =  UIColor(red: 255.0/255.0, green: 149.0/255.0, blue: 0.0/255.0, alpha: 1.0).cgColor
+    let colorBottom = UIColor(red: 255.0/255.0, green: 94.0/255.0, blue: 58.0/255.0, alpha: 1.0).cgColor
+                
+    let gradientLayer = CAGradientLayer()
+    gradientLayer.colors = [colorTop, colorBottom]
+    gradientLayer.locations = [0.0, 1.0]
+//    gradientLayer.frame = self.view.bounds
+            
+//    self.view.layer.insertSublayer(gradientLayer, at:0)
+}
+
+

@@ -21,10 +21,6 @@ class ResultViewController: UIViewController {
     let briefRowHeight: CGFloat = 65 // prev: 80
     let calculatedRowHeight: CGFloat = 50
     let headerHeight: CGFloat = 50
-//    let scrollView = UIScrollView()
-//        .then {
-////        $0.backgroundColor = .magenta
-//    }
     
     var addingDelegate: AddingUnitControllerDelegate?
     
@@ -39,10 +35,10 @@ class ResultViewController: UIViewController {
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 3000)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.backgroundColor = .magenta
         return scrollView
     }()
     
@@ -145,9 +141,7 @@ class ResultViewController: UIViewController {
             calculatedInfoTableView
         ].forEach { self.scrollView.addSubview($0)}
         
-
         scrollView.isScrollEnabled = true
-        
         
         dismissBtn.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(30)
@@ -159,36 +153,10 @@ class ResultViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalTo(50)
-//            make.top.equalTo(view.safeAreaLayoutGuide)
-//            make.top.equalToSuperview()
-//            make.top.equalToSuperview().offset(30)
             make.centerY.equalTo(dismissBtn.snp.centerY)
         }
         
-        
-//        calculatedInfoTableView.snp.makeConstraints { make in
-////            make.leading.trailing.equalToSuperview().inset(16)
-//            make.leading.equalTo(scrollView.snp.leading)
-//            make.trailing.equalTo(scrollView.snp.trailing)
-////            make.top.equalTo(titleLabel.snp.bottom).offset(30)
-//            make.top.equalTo(titleLabel.snp.bottom).offset(20)
-//            make.height.equalTo(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight)) // 40: Header Size
-//        }
-        
-
-//        calculatedInfoTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
-//        calculatedInfoTableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-//        calculatedInfoTableView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-//        calculatedInfoTableView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
-//        scrollView.addSubview(tfTableView)
-        
-//        calculatedInfoTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50).isActive = true
-//        calculatedInfoTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-//        calculatedInfoTableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-//        calculatedInfoTableView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
-        
         calculatedInfoTableView.snp.makeConstraints { make in
-//            make.top.equalTo(titleLabel.snp.bottom).offset(30)
             make.top.equalTo(dismissBtn.snp.bottom).offset(30)
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
@@ -212,7 +180,6 @@ class ResultViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    
     init(gathering: Gathering) {
         self.gathering = gathering
         self.viewModel = ResultViewModel(gathering: gathering)
@@ -229,8 +196,6 @@ class ResultViewController: UIViewController {
         $0.text = "정산 결과"
         $0.textAlignment = .center
         $0.textColor = .black
-//        $0.font = UIFont.preferredFont(forTextStyle: .headline)
-//        $0.font = UIFont.systemFont(ofSize: 32, weight: .regular)
         $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
     }
     
@@ -267,7 +232,7 @@ class ResultViewController: UIViewController {
 
 extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel.overallPersonInfos.count
+        
         if tableView == briefInfoTableView {
             return viewModel.overallPayInfos.count
         } else if tableView == calculatedInfoTableView {
@@ -300,8 +265,7 @@ print("index: \(indexPath)")
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
-    
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.headerHeight
     }
