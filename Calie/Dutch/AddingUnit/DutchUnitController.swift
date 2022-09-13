@@ -117,14 +117,24 @@ class DutchUnitController: NeedingController {
     
     /// set DetailPriceDic if viewDidLoad
    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        var insets = view.safeAreaInsets
+            insets.top = 0
+//            tableView.contentInset = insets
+        scrollView.contentInset = insets
+    
+        
         scrollView.contentSize = CGSize(width: view.frame.size.width, height: 2000)
     }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
+
         super.viewDidLoad()
+        view.insetsLayoutMarginsFromSafeArea = false
         print("initializing personDetails flag 3")
         print("current personDetails: ")
         
@@ -614,6 +624,8 @@ class DutchUnitController: NeedingController {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview()
+//            make.top.equalTo(view)
+//            make.leading.equalToSuperview()
 //            make.width.equalToSuperview()
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -778,7 +790,8 @@ class DutchUnitController: NeedingController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
-//        scrollView.backgroundColor = .cyan
+        scrollView.backgroundColor = .cyan
+        scrollView.contentInsetAdjustmentBehavior = .never
         return scrollView
     }()
     
@@ -836,6 +849,7 @@ class DutchUnitController: NeedingController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.isScrollEnabled = false
 //        cv.isScrollEnabled = false
 //        cv.backgroundColor = UIColor(white: 0.8, alpha: 1)
         
