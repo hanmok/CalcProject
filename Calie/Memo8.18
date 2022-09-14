@@ -20,3 +20,13 @@ ParticipantsController 로 이동할 때, 슬라이드로 자연스럽게 이동
 
 
 Input
+
+
+
+
+9.15
+SpentAmount 업데이트 어떻게 하지?
+SideViewController 에서 추가, 이름 편집, 삭제 기능 넣기.
+Delete 소리, 연속으로 지우기.
+
+결과 ClipBoard 에 복사하기.

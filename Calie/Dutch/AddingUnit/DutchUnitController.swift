@@ -503,17 +503,9 @@ class DutchUnitController: NeedingController {
         
         needingDelegate?.hideNumberPad()
         
-//        UIView.animate(withDuration: 0.3) {
-            self.personDetailCollectionView.snp.updateConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalToSuperview()
-            }
-//        }
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
+        moveDownCollectionView()
+        updateWithAnimation()
+
         
         
 //        personDetailCollectionView.snp.remakeConstraints { make in
@@ -560,30 +552,11 @@ class DutchUnitController: NeedingController {
                 DispatchQueue.main.async {
                     self.personDetailCollectionView.reloadData()
                     
-                    self.personDetailCollectionView.snp.updateConstraints { make in
-//                        make.leading.equalToSuperview().inset(self.smallPadding)
-//                        make.trailing.equalToSuperview().inset(self.smallPadding)
-                        make.leading.trailing.equalToSuperview()
-//                        make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                        make.top.equalToSuperview().offset(50)
-                        make.top.equalToSuperview()
-//                        make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
-                        make.height.equalToSuperview()
-//                        make.height.equalTo(100)
-                    }
-                    
-
-                    
-//                    self.addPersonBtn.snp.makeConstraints { make in
-//                        make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                        make.height.equalTo(40)
-//                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
-//                    }
+                    self.moveDownCollectionView()
                 }
                 
-                UIView.animate(withDuration: 0.3) {
-                    self.view.layoutIfNeeded()
-                }
+                self.updateWithAnimation()
+               
                 
             case .failure(let errorMsg):
                 print("duplicate flag 3")
@@ -597,23 +570,7 @@ class DutchUnitController: NeedingController {
             
             self.personDetailCollectionView.reloadData()
             
-            self.personDetailCollectionView.snp.remakeConstraints { make in
-//                make.leading.equalToSuperview().inset(self.smallPadding)
-//                make.trailing.equalToSuperview().inset(self.smallPadding)
-                make.leading.trailing.equalToSuperview()
-//                make.top.equalTo(self.divider.snp.bottom).offset(30)
-//                make.top.equalToSuperview().offset(50)
-                make.top.equalToSuperview()
-//                make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
-                make.height.equalToSuperview()
-//                make.height.equalTo(100)
-            }
-            
-//            self.addPersonBtn.snp.makeConstraints { make in
-//                make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                make.height.equalTo(40)
-//                make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
-//            }
+            self.moveDownCollectionView()
         }
         
         print("relocate collectionView called, count: \(viewModel.personDetails.count)")
@@ -982,13 +939,15 @@ extension DutchUnitController: PersonDetailCellDelegate {
         
         delegate?.hideNumberPad()
         
-        UIView.animate(withDuration: 0.3) {
+//        UIView.animate(withDuration: 0.3) {
             self.personDetailCollectionView.snp.remakeConstraints { make in
                 make.leading.trailing.equalToSuperview()
                 make.top.equalToSuperview()
                 make.height.equalToSuperview()
             }
-        }
+//        }
+        
+        updateWithAnimation()
         
 //        personDetailCollectionView.snp.remakeConstraints { make in
 //            make.leading.trailing.equalToSuperview()
@@ -1057,18 +1016,9 @@ extension DutchUnitController: UITextFieldDelegate {
             needingDelegate?.presentNumberPad()
             
             // TODO: move up collectionview
-//            UIView.animate(withDuration: 0.3) {
-                self.personDetailCollectionView.snp.updateConstraints { make in
-                    make.leading.trailing.equalToSuperview()
-                    make.height.equalToSuperview()
-                    //                make.top.equalToSuperview().offset(-370)
-                    make.top.equalToSuperview().offset(-190)
-                }
-//            }
+                moveUpCollectionView()
             
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
+updateWithAnimation()
             
             isShowingKeyboard = true
             
@@ -1086,22 +1036,13 @@ extension DutchUnitController: UITextFieldDelegate {
             
             needingDelegate?.hideNumberPad()
             
-//            UIView.animate(withDuration: 0.3) {
-                self.personDetailCollectionView.snp.updateConstraints { make in
-                    make.leading.trailing.equalToSuperview()
-                    make.top.equalToSuperview()
-                    make.height.equalToSuperview()
-                }
-//            }
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
             
-//            personDetailCollectionView.snp.remakeConstraints { make in
-//                make.leading.trailing.equalToSuperview()
-//                make.top.equalToSuperview()
-//                make.height.equalToSuperview()
-//            }
+            moveDownCollectionView()
+            
+            
+            updateWithAnimation()
+            
+            
             
             isShowingKeyboard = false
             
@@ -1118,9 +1059,30 @@ func setGradientBackground() {
     let gradientLayer = CAGradientLayer()
     gradientLayer.colors = [colorTop, colorBottom]
     gradientLayer.locations = [0.0, 1.0]
-//    gradientLayer.frame = self.view.bounds
-            
-//    self.view.layer.insertSublayer(gradientLayer, at:0)
+    
 }
 
 
+extension DutchUnitController {
+    private func moveUpCollectionView() {
+        self.personDetailCollectionView.snp.updateConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalToSuperview()
+            make.top.equalToSuperview().offset(-190)
+        }
+    }
+    
+    private func moveDownCollectionView() {
+        self.personDetailCollectionView.snp.updateConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+    }
+    
+    private func updateWithAnimation() {
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+}
