@@ -1161,6 +1161,7 @@ class BasicCalculator {
             {
                 pasteStates()
             }
+            
             ansPressed = false
             // case0_ "="
             if process[process.index(before:process.endIndex)] == "="{ // = 을 지울 경우.

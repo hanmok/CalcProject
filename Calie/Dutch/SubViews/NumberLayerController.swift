@@ -72,13 +72,13 @@ class NumberLayerController : UIViewController {
     }
     
     private func showNumberPadAction() {
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.3) {
             self.numberPadController.view.frame = CGRect(x: 0, y: UIScreen.height - 370 + 10, width: UIScreen.width, height: 370)
         }
     }
     
     private func hideNumberPadAction() {
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.3) {
             self.numberPadController.view.frame = CGRect(x: 0, y: UIScreen.height, width: UIScreen.width, height: 370)
         }
     }

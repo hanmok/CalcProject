@@ -14,7 +14,8 @@ typealias PersonPaymentInfo = (name: String, paidAmt: Double, toGet: Double, sum
 
 typealias DetailState = (spentAmount: Double, isAttended: Bool)
 
-typealias InitialState = (place: String, amount: String, date: Date)
+//typealias InitialState = (place: String, amount: String, date: Date)
+typealias InitialState = (place: String, amount: Double, date: Date)
 
 
 

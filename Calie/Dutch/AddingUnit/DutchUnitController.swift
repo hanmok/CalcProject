@@ -36,12 +36,21 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
     }
     
     func spentAmtTapped() {
-        
+        self.needingDelegate?.initializeNumberText()
     }
     
-    func spentPlaceTapped(sender: UITextField) {
-//        @objc func selectAllText(_ sender: UITextField) {
-            print("selectAllText called")
+    func textFieldTapAction(sender: UITextField, shouldShowCustomPad: Bool) {
+        print("selectAllText called")
+        
+        if shouldShowCustomPad {
+            
+            dismissKeyboardOnly()
+            self.needingDelegate?.presentNumberPad()
+            
+            
+            
+            self.needingDelegate?.initializeNumberText()
+        } else {
             sender.selectAll(nil)
             
             spentPlaceTFJustTapped = true
@@ -50,7 +59,12 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
                 print("spentPlaceTFJustTapped changed to false")
                 self.spentPlaceTFJustTapped = false
             }
-//        }
+        }
+    }
+    
+    func valueUpdated(spentAmount: Double, spentPlace: String) {
+        self.spentPlace = spentPlace
+        self.spentAmount = spentAmount
     }
 }
 
@@ -121,6 +135,9 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    var spentPlace: String = ""
+    var spentDate: Date = Date()
+    
     var sumOfIndividual: Double = 0 {
         willSet {
         let condition = (newValue == spentAmount) && (newValue != 0)
@@ -166,7 +183,8 @@ class DutchUnitController: NeedingController {
         print("initializing personDetails flag 3")
         print("current personDetails: ")
         
-        view.backgroundColor = .brown
+//        view.backgroundColor = .brown
+        view.backgroundColor = .white
         
         setupBindings()
         
@@ -188,9 +206,14 @@ class DutchUnitController: NeedingController {
             if let initialState = initialState {
 //                let headerViewModel =
                 
-                self.spentPlaceTF.text = initialState.place
-                self.spentAmountTF.text = initialState.amount
-                self.spentDatePicker.date = initialState.date
+//                self.spentPlaceTF.text = initialState.place
+//                self.spentAmountTF.text = initialState.amount
+//                self.spentDatePicker.date = initialState.date
+                
+                self.spentPlace = initialState.place
+                self.spentAmount = initialState.amount // Double, String
+                self.spentDate = initialState.date
+                
             
             } else {
                 guard let numOfElements = newDutchUnitIndex else {return }
@@ -391,7 +414,7 @@ class DutchUnitController: NeedingController {
         self.present(alertController, animated: true)
     }
     
-    // TODO: 이거, Custom 으로 만들어야겠어 ;;
+    // TODO: 만약에 Header 로 하다가 잘 안되면, 이것도 방법이겠다..
     @objc private func presentAskingSpentAmountAlert(completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: "지출 금액", message: "지출한 총 비용을 입력해주세요.", preferredStyle: .alert)
         
@@ -479,6 +502,26 @@ class DutchUnitController: NeedingController {
         view.endEditing(true)
         
         needingDelegate?.hideNumberPad()
+        
+//        UIView.animate(withDuration: 0.3) {
+            self.personDetailCollectionView.snp.updateConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalToSuperview()
+                make.height.equalToSuperview()
+            }
+//        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        
+        
+//        personDetailCollectionView.snp.remakeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.top.equalToSuperview()
+//            make.height.equalToSuperview()
+//        }
+        
     }
     
     func dismissKeyboardOnly() {
@@ -517,7 +560,7 @@ class DutchUnitController: NeedingController {
                 DispatchQueue.main.async {
                     self.personDetailCollectionView.reloadData()
                     
-                    self.personDetailCollectionView.snp.remakeConstraints { make in
+                    self.personDetailCollectionView.snp.updateConstraints { make in
 //                        make.leading.equalToSuperview().inset(self.smallPadding)
 //                        make.trailing.equalToSuperview().inset(self.smallPadding)
                         make.leading.trailing.equalToSuperview()
@@ -528,11 +571,18 @@ class DutchUnitController: NeedingController {
                         make.height.equalToSuperview()
 //                        make.height.equalTo(100)
                     }
+                    
+
+                    
 //                    self.addPersonBtn.snp.makeConstraints { make in
 //                        make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
 //                        make.height.equalTo(40)
 //                        make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
 //                    }
+                }
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
                 }
                 
             case .failure(let errorMsg):
@@ -599,34 +649,9 @@ class DutchUnitController: NeedingController {
         }
         
         
-//        view.addSubview(scrollView)
-//
-//        scrollView.snp.makeConstraints { make in
-//            make.leading.top.equalToSuperview()
-//            make.trailing.equalToSuperview()
-//            make.bottom.equalToSuperview()
-//        }
-//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1500)
-//        CGSize(width: view.frame.size.width, height: 1500)
-        
-//        [
-//            dismissBtn,
-//            spentPlaceLabel, spentPlaceTF,
-//            spentAmountLabel, spentAmountTF, currenyLabel,
-//            spentDateLabel,
-//            spentDatePicker,
-//            divider,
-//            personDetailCollectionView,
-//            resetBtn, addPersonBtn
-//        ].forEach { v in
-////            self.scrollView.addSubview(v)
-//            self.view.addSubview(v)
-//        }
         
         view.addSubview(personDetailCollectionView)
         
-        
-//        scrollView.isScrollEnabled = true
         
         view.addSubview(bottomContainerView)
         bottomContainerView.addSubview(gradientView)
@@ -634,94 +659,16 @@ class DutchUnitController: NeedingController {
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
         
-//        dismissBtn.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(20)
-//            make.top.equalToSuperview().offset(56)
-//            make.height.equalTo(30)
-//            make.width.equalTo(30)
-//        }
-//
-//        spentPlaceLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
-//            make.width.equalTo(150)
-//            make.height.equalTo(20)
-//        }
-//
-//
-//        spentPlaceTF.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(15)
-//            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(5)
-//            make.width.equalTo(170)
-//            make.height.equalTo(30)
-//        }
-//
-//        spentAmountLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalTo(spentPlaceTF.snp.bottom).offset(20)
-//            make.width.equalTo(150)
-//            make.height.equalTo(30)
-//        }
-//
-//        spentAmountTF.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(15)
-//            make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
-//            make.width.equalTo(170)
-//            make.height.equalTo(30)
-//        }
-//
-//        currenyLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
-//            make.height.equalTo(spentAmountTF.snp.height)
-//            make.centerY.equalTo(spentAmountTF.snp.centerY)
-//            make.width.equalTo(15)
-//        }
-//
-//        spentDateLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(smallPadding * 2)
-//            make.top.equalTo(spentAmountTF.snp.bottom).offset(20)
-//            make.width.equalTo(150)
-//            make.height.equalTo(30)
-//        }
-//
-//
-//        spentDatePicker.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(15)
-//            make.top.equalTo(spentDateLabel.snp.bottom).offset(5)
-//            make.height.equalTo(40)
-//        }
-//
-//
-//        divider.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(5)
-//            make.width.equalTo(view.snp.width).offset(-10)
-////            make.width.equalTo(scrollView.snp.width).offset(-10)
-//
-//            make.height.equalTo(1)
-//            make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
-//        }
-        
-        
         personDetailCollectionView.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(5)
             make.leading.trailing.equalToSuperview()
-//            make.width.equalTo(divider.snp.width)
-//            make.width.equalToSuperview()
-//            make.top.equalTo(divider.snp.bottom).offset(30)
-//            make.top.equalToSuperview().offset(50)
             make.top.equalToSuperview()
-//            make.height.equalTo(appliedCellHeight * self.viewModel.personDetails.count + 480)
             make.height.equalToSuperview()
-//            make.height.equalTo(100)
         }
   
         bottomContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(view)
-//            make.bottom.equalToSuperview().offset(30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
-//            make.height.equalTo(85)
-            make.height.equalTo(100)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-70)
+            make.height.equalTo(110)
         }
         
         gradientView.snp.makeConstraints { make in
@@ -740,39 +687,12 @@ class DutchUnitController: NeedingController {
         confirmBtn.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalToSuperview().inset(20)
-//            make.bottom.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+            make.height.equalTo(50)
         }
-        
-//        addPersonBtn.snp.makeConstraints { make in
-////            make.leading.equalToSuperview().inset(10)
-//            make.leading.equalTo(spentDatePicker.snp.trailing)
-//
-//            //            make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-////            make.width.equalTo(view.snp.width).offset(-32)
-//
-////            make.width.greaterThanOrEqualTo(view.snp.width).offset(-32)
-//            make.width.equalTo(100)
-//            make.height.equalTo(50)
-////            make.top.equalTo(personDetailCollectionView.snp.bottom).offset(20)
-//            make.top.equalTo(spentDatePicker.snp.top)
-//        }
     }
     
     
     // MARK: - UI Properties
-    
-//    lazy var scrollView: UIScrollView = {
-//        let scrollView = UIScrollView()
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.isScrollEnabled = true
-//        scrollView.showsVerticalScrollIndicator = true
-//        scrollView.backgroundColor = .cyan
-//
-////        scrollView.contentInsetAdjustmentBehavior = .never
-//        return scrollView
-//    }()
-    
     
     private let currenyLabel = UILabel().then {
         $0.text = "원"
@@ -996,7 +916,9 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
 extension DutchUnitController {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print("kind: \(kind)")
+        
         if kind == "UICollectionElementKindSectionHeader" {
+            
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
             header.headerDelegate = self
             
@@ -1007,6 +929,9 @@ extension DutchUnitController {
                     header.blinkSpentAmount()
                     header.spentAmountTF.becomeFirstResponder()
                 }
+            } else {
+                let amtString = spentAmount.addComma()
+                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate)
             }
             
             return header
@@ -1056,6 +981,21 @@ extension DutchUnitController: PersonDetailCellDelegate {
         }
         
         delegate?.hideNumberPad()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.personDetailCollectionView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalToSuperview()
+                make.height.equalToSuperview()
+            }
+        }
+        
+//        personDetailCollectionView.snp.remakeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.top.equalToSuperview()
+//            make.height.equalToSuperview()
+//        }
+        
     }
     
     func cell(_ cell: PersonDetailCell, isAttending: Bool) {
@@ -1116,6 +1056,20 @@ extension DutchUnitController: UITextFieldDelegate {
             
             needingDelegate?.presentNumberPad()
             
+            // TODO: move up collectionview
+//            UIView.animate(withDuration: 0.3) {
+                self.personDetailCollectionView.snp.updateConstraints { make in
+                    make.leading.trailing.equalToSuperview()
+                    make.height.equalToSuperview()
+                    //                make.top.equalToSuperview().offset(-370)
+                    make.top.equalToSuperview().offset(-190)
+                }
+//            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+            
             isShowingKeyboard = true
             
             selectedPriceTF = tf
@@ -1132,6 +1086,23 @@ extension DutchUnitController: UITextFieldDelegate {
             
             needingDelegate?.hideNumberPad()
             
+//            UIView.animate(withDuration: 0.3) {
+                self.personDetailCollectionView.snp.updateConstraints { make in
+                    make.leading.trailing.equalToSuperview()
+                    make.top.equalToSuperview()
+                    make.height.equalToSuperview()
+                }
+//            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+            
+//            personDetailCollectionView.snp.remakeConstraints { make in
+//                make.leading.trailing.equalToSuperview()
+//                make.top.equalToSuperview()
+//                make.height.equalToSuperview()
+//            }
+            
             isShowingKeyboard = false
             
             print("tag : \(textField.tag)")
@@ -1139,41 +1110,6 @@ extension DutchUnitController: UITextFieldDelegate {
         }
     }
 }
-
-
-//extension DutchUnitController {
-//    private func presentAskingSpentPlace( completion: @escaping (NewNameAction)) {
-//        let alertController = UIAlertController(title: "Edit Gathering Name", message: "새로운 모임 이름을 입력해주세요", preferredStyle: .alert)
-//
-//        alertController.addTextField { (textField: UITextField!) -> Void in
-//            textField.placeholder = "Gathering Name"
-//        }
-//
-//        let saveAction = UIAlertAction(title: "Done", style: .default) { alert -> Void in
-//            let textFieldInput = alertController.textFields![0] as UITextField
-//
-//            let newGroupName = textFieldInput.text!
-//
-//            guard newGroupName.count != 0 else {
-//                completion(.failure(.cancelAskingName))
-//                fatalError("Name must have at least one character")
-//            }
-//
-//            completion(.success(newGroupName))
-//        }
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
-//            (action : UIAlertAction!) -> Void in
-//            completion(.failure(.cancelAskingName))
-//        })
-//
-//        alertController.addAction(cancelAction)
-//        alertController.addAction(saveAction)
-//
-//        self.present(alertController, animated: true)
-//    }
-//}
-
 
 func setGradientBackground() {
     let colorTop =  UIColor(red: 255.0/255.0, green: 149.0/255.0, blue: 0.0/255.0, alpha: 1.0).cgColor

@@ -36,7 +36,7 @@ extension String {
         self = result
     }
     
-    /// used to convert formatted String To Double
+    /// Convert formatted String To Double
     public func convertToDouble() -> Double {
         var str = self
         guard str != "" else { return 0 }

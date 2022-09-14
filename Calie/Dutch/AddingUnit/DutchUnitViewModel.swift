@@ -53,6 +53,11 @@ class DutchUnitViewModel {
         }
     }
     
+    private var spentPlace: String = ""
+    
+    private var spentDate: Date = Date()
+    
+    
     // personDeails 에 따라 실시간 업데이트, condition 만족 여부를 확인.
     private var sumOfIndividual: Double = 0 {
         willSet {
@@ -141,6 +146,8 @@ class DutchUnitViewModel {
             personDetails = dutchUnit.personDetails.sorted()
             print("personDetail flag 1: \(personDetails)")
             spentAmount = dutchUnit.spentAmount
+            spentPlace = dutchUnit.placeName
+            spentDate = dutchUnit.spentDate
         } else {
             personDetails = dutchService.createPersonDetails(from: gathering)
         }
@@ -184,7 +191,8 @@ class DutchUnitViewModel {
             completion(nil, gathering.dutchUnits.count + 1)
             return }
         
-        let initialState = InitialState(place: initialDutchUnit.placeName, amount: initialDutchUnit.spentAmount.addComma(), date: initialDutchUnit.spentDate)
+        let initialState = InitialState(place: initialDutchUnit.placeName, amount: initialDutchUnit.spentAmount, date: initialDutchUnit.spentDate)
+        
         completion(initialState, nil)
     }
     

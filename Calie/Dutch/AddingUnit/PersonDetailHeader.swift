@@ -13,7 +13,8 @@ import Then
 protocol PersonDetailHeaderDelegate: AnyObject {
     func dismissAcion()
     func spentAmtTapped()
-    func spentPlaceTapped(sender: UITextField)
+    func textFieldTapAction(sender: UITextField, shouldShowCustomPad: Bool)
+    func valueUpdated(spentAmount: Double, spentPlace: String)
 }
 
 
@@ -26,7 +27,6 @@ struct PersonHeaderViewModel {
 class PersonDetailHeader: UICollectionReusableView {
     
     var viewModel: PersonHeaderViewModel? {
-//        configureLayout()
         didSet {
             configureLayout()
         }
@@ -60,6 +60,28 @@ class PersonDetailHeader: UICollectionReusableView {
     
     private func setupAddTargets() {
         dismissBtn.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        
+        // not working ;;
+//        spentPlaceTF.addTarget(self, action: #selector(spentPlaceTapped(_:)), for: .touchDown)
+        
+        spentPlaceTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
+        
+        spentAmountTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
+        
+        spentPlaceTF.delegate = self
+        spentAmountTF.delegate = self
+    }
+    
+    // not called ;;
+    @objc func textFieldTapped(_ sender: UITextField) {
+        print("spentPlace Tapped!")
+//        headerDelegate?.textFieldTapAction(sender: sender)
+//        var shouldShowCustomPad = false
+//        if sender == spentAmountTF {
+//            shouldShowCustomPad =
+//        }
+        
+        headerDelegate?.textFieldTapAction(sender: sender, shouldShowCustomPad: sender == spentAmountTF)
     }
     
     @objc func dismissTapped(_ sender: UIButton) {
@@ -175,12 +197,9 @@ class PersonDetailHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let currenyLabel = UILabel().then {
-        $0.text = "원"
-    }
+    private let currenyLabel = UILabel().then { $0.text = "원" }
     
-    private let spentPlaceLabel = UILabel().then {
-        $0.text = "지출 항목"}
+    private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목" }
     
     
     private let spentPlaceTF = UITextField(withPadding: true).then {
@@ -235,3 +254,22 @@ class PersonDetailHeader: UICollectionReusableView {
     }()
 }
 
+
+
+extension PersonDetailHeader: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        //        if textField == spentPlaceTF {
+        
+        let spentAmt = spentAmountTF.text!.convertToDouble()
+        let spentPlace = spentPlaceTF.text!
+        headerDelegate?.valueUpdated(spentAmount: spentAmt, spentPlace: spentPlace)
+        
+        //        } else if textField == spentAmountTF {
+        //
+        //        }
+        
+        return true
+    }
+}
