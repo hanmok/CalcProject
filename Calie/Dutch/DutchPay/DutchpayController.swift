@@ -32,7 +32,7 @@ class DutchpayController: UIViewController {
     var viewModel: DutchpayViewModel
     
     var mainTabController: MainTabController
-    var sideViewController: SideViewController?
+//    var sideViewController: SideViewController?
     
 //    var currentGathering
     
@@ -178,16 +178,17 @@ class DutchpayController: UIViewController {
     // MARK: - Actions
     @objc func resetGatheringBtnAction() {
         
-        viewModel.resetGatheringAction(needGathering: true) { [weak self]
-            bool in
+        viewModel.resetGatheringAction(needGathering: true) { [weak self] in
+            // TODO: reset tableView
+//            dutchTableView
+            self?.dutchTableView.reloadData()
+            self?.updateGatheringName(with: "")
         }
     }
     
     
     @objc func blurredViewTapped() {
-        print("blurredView Tapped")
         if isShowingSideController {
-            
             isShowingSideController = false
             hideSideController()
         }
@@ -334,9 +335,8 @@ class DutchpayController: UIViewController {
     
     private func presentParticipantsController(with people: [Person]) {
         
-// MARK: - 이게 여기 있으면 안됨. 이미 하나는 가지고 있어야함.
-//        viewModel.createIfNeeded()
-        
+        // MARK: - 이게 여기 있으면 안됨. 이미 하나는 가지고 있어야함.
+        // ???
         // TODO: Need Gathering
         participantsController = ParticipantsController(currentGathering: viewModel.gathering!)
         participantsController!.delegate = self
@@ -344,28 +344,6 @@ class DutchpayController: UIViewController {
         
         navigationController?.pushViewController(participantsController!, animated: true)
         dutchToMainTapDelegate?.shouldHideMainTab(true)
-        
-//        guard let participantsController = participantsController else {
-//            fatalError()
-//        }
-//
-//        participantsController.delegate = self
-//
-//        participantsNavController = UINavigationController(rootViewController: participantsController)
-//
-//        guard let participantsNavController = participantsNavController else {
-//            fatalError()
-//        }
-//
-//        self.addChild(participantsNavController)
-//
-//        self.mainContainer.addSubview(participantsNavController.view)
-//        participantsNavController.didMove(toParent: self)
-//
-//        participantsNavController.view.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
-//        }
-        
         
     }
     
@@ -381,8 +359,6 @@ class DutchpayController: UIViewController {
             }
         })
         
-        //        delegate?.dutchpayController(shouldShowSideView: false, dutchManager: dutchManager)
-        //        delegate?.shouldShowSideView(_ bool: false)
         dutchToMainTapDelegate?.shouldShowSideView(false)
     }
     
@@ -896,9 +872,24 @@ extension Set {
 }
 
 
-extension DutchpayController: MainTabDelegate {
-    //    func updateGatheringFromMainTab(with newGathering: Gathering) {
-    //        updateGatheringInfo(with: newGathering)
+extension DutchpayController: MainTabToDutchDelegate {
     
-    //    }
+    func clearifyBlurredView() {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.blurredView.backgroundColor = UIColor(white: 1, alpha: 0)
+        }, completion: { done in
+            if done {
+                self.blurredView.isHidden = true
+                self.isShowingSideController = false
+            }
+        })
+        //        self.hideSideController()
+        
+//        self.blurredView.backgroundColor = .white
+    }
+    
+    func updateGatheringFromMainTab(with newGathering: Gathering) {
+        self.viewModel.gathering = newGathering
+    }
 }

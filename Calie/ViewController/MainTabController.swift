@@ -14,13 +14,14 @@ import SnapKit
 import Then
 
 
-protocol MainTabDelegate: AnyObject {
-//    func updateGatheringFromMainTab(with newGathering: Gathering)
+protocol MainTabToDutchDelegate: AnyObject {
+    func updateGatheringFromMainTab(with newGathering: Gathering)
+    func clearifyBlurredView()
 }
 
 class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
-    weak var mainToDutchDelegate: MainTabDelegate?
+    weak var mainToDutchDelegate: MainTabToDutchDelegate?
      
     let updateUserDefaultNotification = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
     
@@ -165,9 +166,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 //        sideViewController = SideViewController(dutchManager: dutchManager)
         
         let sideInNavController = UINavigationController(rootViewController: sideVC)
-//        sideViewController = sideVC
         sideViewController = sideInNavController
-//        sideViewController?.sideDelegate = self
         guard let sideViewController = sideViewController else {
             return
         }
@@ -185,17 +184,16 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         UIView.animate(withDuration: 0.3) {
             
             sideViewController.view.frame = CGRect(x: 0, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
-            
         }
     } 
     
     private func hideSideController() {
         guard let sideViewController = sideViewController else { return }
-    
+
         UIView.animate(withDuration: 0.3) {
 
             sideViewController.view.frame = CGRect(x: -self.screenWidth / 1.5, y: 0, width: self.screenWidth / 1.5, height: self.screenHeight)
-            
+
         } completion: { done in
             if done {
                 sideViewController.willMove(toParent: nil)
@@ -277,10 +275,15 @@ extension MainTabController: DutchpayControllerDelegate {
 
 
 extension MainTabController: SideControllerDelegate {
+   
     
-    
-    func dismissSideVC(with gathering: Gathering) {
+    func dismissSideVC(with gathering: Gathering?) {
         
-        hideSideController()
+        
+        mainToDutchDelegate?.clearifyBlurredView()
+        
+        mainToDutchDelegate?.updateGatheringFromMainTab(with: gathering!)
+            hideSideController()
+            print("hideSideController called")
     }
 }

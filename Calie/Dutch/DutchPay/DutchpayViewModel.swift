@@ -97,33 +97,20 @@ class DutchpayViewModel {
         }
     }
     
-//    func changeGatheringName(newName: String) {
-//        changeGatheringNameAction(newName: newName)
-//    }
-    
-    
-    
-    func resetGatheringAction(needGathering: Bool, completion: @escaping (Bool) -> Void ) {
+    func resetGatheringAction(needGathering: Bool, completion: @escaping (Void) -> Void ) {
         
         if needGathering && gathering == nil {
             createGathering { gathering in
                 self.gathering = gathering
             }
-            
         }
         
         dutchService.currentGathering = gathering
         
         dutchService.resetGathering { newGathering in
-            switch newGathering {
-            case .success(let newGathering):
                 self.gathering = newGathering
                 self.dutchUnits = self.gathering!.dutchUnits.sorted()
-                completion(true)
-            case .failure(let e):
-                print(e.localizedDescription)
-                completion(false)
-            }
+                completion(())
         }
     }
     
@@ -198,7 +185,9 @@ class DutchpayViewModel {
             print("gathering.dutchunits.count: \(gathering.dutchUnits.count)")
         }
     }
+    
 }
+
 
 extension DutchpayViewModel {
     

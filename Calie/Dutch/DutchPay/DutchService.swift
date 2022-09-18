@@ -33,12 +33,15 @@ class DutchService {
     }
     
 
-    
-    func resetGathering(completion: @escaping ResultTest) {
-        //        currentGathering
+    // 실패할 수 있나 ?? 현재 gathering 이 없는 경우 ; ?
+    func resetGathering(completion: @escaping (Gathering) -> Void ) {
+
         guard let gathering = currentGathering else {
-            completion(.failure(.failedToGetGathering))
-            return }
+            fatalError()
+//            completion(.failure(.failedToGetGathering))
+//            return
+            
+        }
         
         gathering.people = []
         gathering.dutchUnits = []
@@ -46,9 +49,11 @@ class DutchService {
         
         gathering.createdAt = Date()
         gathering.updatedAt = Date()
+        gathering.title = ""
         
         dutchManager.update()
-        completion(.success(gathering))
+//        completion(.success(gathering))
+        completion(gathering)
         return
         // order updating to viewmodel
     }
@@ -74,9 +79,8 @@ class DutchService {
     func fetchLatestGathering(completion: @escaping (Gathering) -> Void) {
         
         let latestGathering = dutchManager.fetchGathering(.latest)
-        guard let latestGathering = latestGathering else {
-            return
-        }
+        
+        guard let latestGathering = latestGathering else { return }
 
         completion(latestGathering)
     }
@@ -87,6 +91,17 @@ class DutchService {
         gathering.title = newName
         self.dutchManager.update()
         completion(gathering)
+    }
+    
+    func changeGatheringName(to newName: String, target: Gathering, completion: @escaping () -> Void) {
+//        guard let gathering = currentGathering else { return }
+//        let gathering =
+//        var gathering = target
+//        gathering.title = newName
+        target.title = newName
+        self.dutchManager.update()
+//        completion(gathering)
+        completion()
     }
     
     func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool, completion: @escaping (Gathering) -> Void) {
@@ -152,9 +167,10 @@ class DutchService {
     
     func createGathering( completion: @escaping (Gathering) -> Void) {
         let allGatheringsCount = dutchManager.fetchGatherings().count
-        let newGathering = dutchManager.createGathering(title: String(allGatheringsCount + 1))
+        let newTitle = "Gathering " + String(allGatheringsCount + 1)
+
+        let newGathering = dutchManager.createGathering(title: newTitle)
         completion(newGathering)
-        
     }
     
     func updateGathering(completion: @escaping (Gathering) -> Void) {
@@ -312,7 +328,7 @@ extension DutchService {
             let allGatherings = self.dutchManager.fetchGatherings()
             completion(.success(allGatherings))
         }
-        completion(.failure(.failedToDelete))
+//        completion(.failure(.failedToDelete))
     }
     
     func fetchAllGatherings(completion: @escaping (([Gathering]) -> Void)) {

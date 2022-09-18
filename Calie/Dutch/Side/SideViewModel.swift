@@ -33,15 +33,36 @@ class SideViewModel {
         }
     }
 
-    func removeGathering(target: Gathering) {
+    func removeGathering(target: Gathering, completion: @escaping () -> Void) {
         dutchService.removeGathering(target: target) { result in
             switch result {
                 
             case .success(let updatedGatherings):
                 self.allGatherings = updatedGatherings
+                completion()
             case .failure(_):
+                // FIXME: called when
                 fatalError("failed to remove gathering")
             }
         }
     }
+    
+    func addGathering(completion: @escaping (Gathering) -> Void) {
+        print("sideViewModel addGathering called")
+        dutchService.createGathering { gathering in
+            print("side flag 2")
+            self.allGatherings.append(gathering)
+            completion(gathering)
+        }
+    }
+    
+    func changeGatheringNameAction(newName: String, target: Gathering, completion: @escaping () -> Void ) {
+        print("gatheringName flag 6")
+        dutchService.changeGatheringName(to: newName, target: target) {
+            completion()
+        }
+//        dutchService.changeGatheringName(to: newName) { gathering in
+//            self.gathering = gathering
+        print("gatheringName has changed to \(newName)")
+        }
 }

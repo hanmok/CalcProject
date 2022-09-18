@@ -11,11 +11,17 @@ Gathering 자체를 새로 만드는 버튼이 메인 페이지에 있으면 좋
 9.15
 
 
-음.. spentPlace 가 이상함.
-수정시, 아무런 입력 안하고 Confirm 누르면 기존 정보 무시한 채, 빈 spentPlace 가 들어감.
+
 
 
 SideViewController 에서 추가, 이름 편집, 삭제 기능 넣기.
+
+추가 했을 때, 적용이 잘 안됨.. 음....
+
+음.. SideController 에서 눌렀을 때, DutchPayController 의 정보가 업데이트 되지 않음. (연동이 안됨.)
+SideController 에서 이름 바꿔도 DutchPayController 에서 바뀌지 않음.
+SideController 에서 DutchPayController 의 Gathering 지워도 DutchPayController 에는 남아있음. ㅆㅂ
+둘이 싱크 맞춰야함 ... 
 
 
 
@@ -34,7 +40,7 @@ Currency 별로 다를 수 있으니, 한쪽에 단위를 써놓고 나머지는
 총 금액과 개인이 낸 비용의 합이 안맞을 경우는 ??
 (이미 결제를 한 사람이 삭제될 경우는 ?? )
 
-연속해서 DutchUnit 추가하기 ??
+연속해서 DutchUnit 추가하기 ?? 굳이 ;
 
 PersonDetail 에서
 숫자가 매우 높아지면 적절히 처리하기. Crash 발생.
@@ -60,7 +66,7 @@ PersonDetail 에서
 
 5. ParticipantsController 로 이동할 때, 슬라이드로 자연스럽게 완료.
 
-
+6. DutchUnit Header 와 함께 업데이트 완료.
 
 **************************
 
