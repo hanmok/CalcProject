@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 import Then
-
+import AudioToolbox
 
 protocol CustomNumberPadDelegate: AnyObject {
     
@@ -32,6 +32,15 @@ class CustomNumberPadController: UIViewController {
         }
     }
     
+    var deletionTerm = 0.5
+    let deletionPausedAt = 2.35
+    let deletionTimeForInitialState = 2.5
+    
+//    deletionForFasterTrigger =
+    var deletionForFasterTrigger = Timer()
+    var deletionTimerForPause = Timer()
+    var deletionTimerForInitialSetup = Timer()
+    var deletionTimerForFaster = Timer()
     static let colorList = ColorList()
     
     weak var numberPadDelegate: CustomNumberPadDelegate?
@@ -44,6 +53,8 @@ class CustomNumberPadController: UIViewController {
         setupAddTargets()
         view.backgroundColor = .blue
     }
+    
+    
     
     
     private let num0 = NumberButton("0")
@@ -95,6 +106,7 @@ class CustomNumberPadController: UIViewController {
             $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchUpInside)
             
             $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchDragExit)
+            $0.addTarget(self, action: #selector(makeBtnSound), for: .touchUpInside)
         }
         
         
@@ -105,7 +117,81 @@ class CustomNumberPadController: UIViewController {
 
         deleteBtn.addTarget(self, action: #selector(applyTappedView(_:)), for: .touchDown)
         
+        deleteBtn.addTarget(self, action: #selector(applyTappedView(_:)), for: .touchUpInside)
+        
         deleteBtn.addTarget(self, action: #selector(applyOriginalDeleteView(_:)), for: .touchDragExit)
+        
+        // Detail Delete action
+        deleteBtn.addTarget(self, action: #selector(handleDeletePressedDown), for: .touchDown)
+        
+        deleteBtn.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
+        deleteBtn.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
+        
+        deleteBtn.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchUpInside)
+        
+        deleteBtn.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
+        
+        
+    }
+    
+    @objc func handleDeleteDragOutAction(sender : UIButton){ // deleteDragOut
+        invalidateAllTimers()
+    }
+    
+    
+    @objc func didDragOutDelete() {
+        
+        invalidateAllTimers()
+    }
+    
+    
+    @objc func handleDeletePressedDown(sender : UIButton){
+
+// SET COLOR
+        
+        if deletionTerm == 0.5 {
+            deleteAction()
+            
+        }
+        // after 0.5s, make deleteSpeed 0.1 (5times faster)
+        deletionForFasterTrigger = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(deleteFaster), userInfo: nil, repeats: false)
+        // pauseDelete
+        deletionTimerForPause = Timer.scheduledTimer(timeInterval: deletionPausedAt, target: self, selector: #selector(pauseDelete), userInfo: nil, repeats: false)
+        //initialSetup
+        deletionTimerForInitialSetup = Timer.scheduledTimer(timeInterval: deletionTimeForInitialState, target: self, selector: #selector(didPressedDeleteLong), userInfo: nil, repeats: false)
+    }
+    
+    @objc func handleDeleteTapped(sender : UIButton){
+        invalidateAllTimers()
+        deletionTerm = 0.5
+    }
+    
+    @objc public func didPressedDeleteLong() { // initialSetup
+//        clear()
+        numberText = ""
+        
+        deletionTerm = 0.5
+        
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
+        deletionTimerForInitialSetup.invalidate()
+    }
+    
+    private func invalidateAllTimers() {
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
+        deletionTimerForPause.invalidate()
+        deletionTimerForInitialSetup.invalidate()
+    }
+    
+    @objc func deleteFaster() {
+        deletionTerm = 0.1
+        deletionTimerForFaster = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(deleteTapped(_:)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func pauseDelete(){
+        deletionForFasterTrigger.invalidate()
+        deletionTimerForFaster.invalidate()
     }
     
     @objc func changeColor(_ sender: NumberButton) {
@@ -113,10 +199,21 @@ class CustomNumberPadController: UIViewController {
         sender.backgroundColor = colorList.bgColorForExtrasLM
     }
     
-    @objc func turnIntoOriginalColor(_ sender: NumberButton) {
-        sender.backgroundColor = .black
+    @objc func makeBtnSound() {
+        AudioServicesPlaySystemSound(1104)
     }
-        
+    
+    @objc func turnIntoOriginalColor(_ sender: UIButton) {
+        if sender is NumberButton {
+            sender.backgroundColor = .black
+        } else { // delete btn
+            //            print("deleteBtn tapped")
+            DispatchQueue.main.async {
+                self.deleteImageView.image = UIImage(systemName: "delete.left")
+            }
+        }
+    }
+    
     @objc func completeTapped(_ sender: UIButton) {
         print("complete Tapped!!1")
         numberPadDelegate?.completeAction()
@@ -127,19 +224,30 @@ class CustomNumberPadController: UIViewController {
     
     
     @objc func applyTappedView(_ sender: UIButton) {
-        deleteImageView.image = UIImage(systemName: "delete.left.fill")
+        DispatchQueue.main.async {
+            self.deleteImageView.image = UIImage(systemName: "delete.left.fill")
+        }
     }
     
     @objc func applyOriginalDeleteView(_ sender: UIButton) {
-        deleteImageView.image = UIImage(systemName: "delete.left")
+        DispatchQueue.main.async {
+            self.deleteImageView.image = UIImage(systemName: "delete.left")
+        }
     }
     
     
     @objc func deleteTapped(_ sender: UIButton) {
         print("delete Tapped!!2")
+        deleteAction()
+    }
+    
+    private func deleteAction() {
+        
         if numberText != "" {
+            makeBtnSound()
             numberText.removeLast()
         }
+        
         numberPadDelegate?.numberPadView(updateWith: numberText)
         
         deleteImageView.image = UIImage(systemName: "delete.left")

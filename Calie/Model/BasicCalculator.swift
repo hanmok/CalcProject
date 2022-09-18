@@ -1413,10 +1413,7 @@ class BasicCalculator {
     }
     
     public func didDragOutDelete() {
-//        deletionForFasterTrigger.invalidate()
-//        deletionTimerForFaster.invalidate()
-//        deletionTimerForPause.invalidate()
-//        deletionTimerForInitialSetup.invalidate()
+        
         invalidateAllTimers()
     }
     

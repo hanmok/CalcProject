@@ -944,12 +944,16 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         openParenthesis.addTarget(self, action: #selector( handlePerenthesisTapped), for: .touchUpInside)
         closeParenthesis.addTarget(self, action: #selector( handlePerenthesisTapped), for: .touchUpInside)
         
-        deleteButton.addTarget(self, action: #selector( handleDeletePressedDown), for: .touchDown)
+        
+        
+        deleteButton.addTarget(self, action: #selector(handleDeletePressedDown), for: .touchDown)
         deleteButton.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
         deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
+        
+        
         
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchUpInside)
         historyClickButton.addTarget(self, action: #selector(moveToHistoryTable), for: .touchDragExit)
