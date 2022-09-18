@@ -94,6 +94,8 @@ class DutchpayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        print("max Int: \(Int.max)")
+//        print("max double: \(Double.ma)")
         print("viewDidLoad in DutchpayController called")
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM

@@ -21,7 +21,6 @@ class DutchUnitViewModel {
         self.selectedDutchUnit = selectedDutchUnit
         self.gathering = gathering
         dutchService.currentGathering = gathering
-        
     }
     
     var initialParticipants: [Person] = []
@@ -112,7 +111,7 @@ class DutchUnitViewModel {
                 peopleDetail: personDetails,
                 spentAmount: spentAmt,
                 spentPlace: spentPlace,
-                spentDate: Date())
+                spentDate: spentDate)
         
             // Making Mode
         } else {
@@ -120,7 +119,7 @@ class DutchUnitViewModel {
             gathering = dutchService.createDutchUnit(
                 spentplace: spentPlace,
                 spentAmount: spentAmount,
-                spentDate: Date(),
+                spentDate: spentDate,
                 personDetails: personDetails)
         }
         

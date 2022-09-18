@@ -8,29 +8,16 @@ Gathering 자체를 새로 만드는 버튼이 메인 페이지에 있으면 좋
 
 
 
-우측 하단에, X Btn ??
-uialert
-
-
-ParticipantsController 로 이동할 때, 슬라이드로 자연스럽게 이동하기.
-
-
-
-
-Input
-
-
-
-
 9.15
 
-SpentAmount 업데이트 어떻게 하지? 완료
+
 음.. spentPlace 가 이상함.
+수정시, 아무런 입력 안하고 Confirm 누르면 기존 정보 무시한 채, 빈 spentPlace 가 들어감.
 
 
 SideViewController 에서 추가, 이름 편집, 삭제 기능 넣기.
 
-Delete 소리, 연속으로 지우기.
+
 
 
 
@@ -65,7 +52,13 @@ PersonDetail 에서
 
 
 
-Custom Key 누를 때 Key Color 바꾸기.
+2.Custom Key 누를 때 Key Color 바꾸기.
+
+3. Delete 소리, 연속으로 지우기, Delete 누를 때 Img 바꾸기
+
+4. Header SpentAmount 업데이트 완료
+
+5. ParticipantsController 로 이동할 때, 슬라이드로 자연스럽게 완료.
 
 
 

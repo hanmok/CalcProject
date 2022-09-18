@@ -18,6 +18,10 @@ protocol PersonDetailHeaderDelegate: AnyObject {
     func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool)
     func valueUpdated(spentAmount: Double, spentPlace: String)
     
+//    func updateSpentPlace() {
+//
+//    }
+    
 }
 
 
@@ -59,6 +63,19 @@ class PersonDetailHeader: UICollectionReusableView {
         NotificationCenter.default.addObserver(self, selector: #selector(changeStateToInactive(_:)), name: .changePriceStateIntoInactive, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateSpentAmt(_:)), name: .updateSpentAmt, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(notifiedOtherViewTapped(_:)), name: .notifyOtherViewTapped, object: nil)
+    }
+    
+    @objc func notifiedOtherViewTapped(_ notification: Notification) {
+        print("changeStateToActive called!!")
+//        spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
+//        spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
+        
+        let headerInfoDic: [AnyHashable: Any] = ["spentPlace": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
+        
+        NotificationCenter.default.post(name: .sendHeaderInfoBack, object: nil, userInfo: headerInfoDic)
+        
     }
     
     @objc func changeStateToActive(_ notification: Notification) {
@@ -231,7 +248,9 @@ class PersonDetailHeader: UICollectionReusableView {
     private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목" }
     
     
-    private let spentPlaceTF = UITextField(withPadding: true).then {
+//    private let spentPlaceTF =
+    public let spentPlaceTF =
+    UITextField(withPadding: true).then {
         $0.textAlignment = .right
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = 1
@@ -306,7 +325,11 @@ public enum NotificationKeys {
     
     static let updateSpentAmt = Notification.Name(rawValue: "updateSpentAmt")
     
+    static let updateSpentPlace = Notification.Name(rawValue: "updateSpentPlace")
     
+    static let notifyOtherViewTapped = Notification.Name(rawValue: "notifyOtherViewTapped")
+    
+    static let sendHeaderInfoBack = Notification.Name(rawValue: "sendHeaderInfoBack")
 }
 
 
@@ -317,6 +340,10 @@ extension Notification.Name {
     static let changePriceStateIntoInactive = NotificationKeys.changePriceStateIntoInactive
     
     static let updateSpentAmt = NotificationKeys.updateSpentAmt
+    
+    static let notifyOtherViewTapped = NotificationKeys.notifyOtherViewTapped
+    
+    static let sendHeaderInfoBack = NotificationKeys.sendHeaderInfoBack
 }
 
 

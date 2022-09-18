@@ -130,8 +130,6 @@ class CustomNumberPadController: UIViewController {
         deleteBtn.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchUpInside)
         
         deleteBtn.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
-        
-        
     }
     
     @objc func handleDeleteDragOutAction(sender : UIButton){ // deleteDragOut
@@ -147,12 +145,10 @@ class CustomNumberPadController: UIViewController {
     
     @objc func handleDeletePressedDown(sender : UIButton){
 
-// SET COLOR
-        
         if deletionTerm == 0.5 {
             deleteAction()
-            
         }
+        
         // after 0.5s, make deleteSpeed 0.1 (5times faster)
         deletionForFasterTrigger = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(deleteFaster), userInfo: nil, repeats: false)
         // pauseDelete
@@ -224,6 +220,10 @@ class CustomNumberPadController: UIViewController {
     
     
     @objc func applyTappedView(_ sender: UIButton) {
+        applyTappedState()
+    }
+    
+    private func applyTappedState() {
         DispatchQueue.main.async {
             self.deleteImageView.image = UIImage(systemName: "delete.left.fill")
         }
@@ -250,7 +250,9 @@ class CustomNumberPadController: UIViewController {
         
         numberPadDelegate?.numberPadView(updateWith: numberText)
         
-        deleteImageView.image = UIImage(systemName: "delete.left")
+        applyTappedState()
+//        deleteImageView.image = UIImage(systemName: "delete.left.fill")
+//        applyTappedView(<#T##sender: UIButton##UIButton#>)
     }
     
     

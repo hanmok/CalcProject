@@ -48,13 +48,11 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
 
             NotificationCenter.default.post(name: .changePriceStateIntoActive, object: nil)
 
-            
-            
             dismissKeyboardOnly()
             self.needingDelegate?.presentNumberPad()
             
             self.needingDelegate?.initializeNumberText()
-        } else {
+        } else { // spentPlace
             sender.selectAll(nil)
             
             spentPlaceTFJustTapped = true
@@ -174,11 +172,29 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.contentInset = insets
     }
     
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWithHeaderInfo(_:)), name: .sendHeaderInfoBack, object: nil)
+    }
+    
+    @objc func updateWithHeaderInfo(_ notification: Notification) {
+        print("changeStateToActive called!!")
+        
+//        guard let amtInput = notification.userInfo?["spentAmt"] as? Double else {return }
+        guard let spentPlace = notification.userInfo?["spentPlace"] as? String,
+              let spentAmt = notification.userInfo?["spentAmt"] as? String,
+              let spentDate = notification.userInfo?["spentDate"] as? Date else { return }
+        
+        self.spentPlace = spentPlace
+        self.spentAmount = spentAmt.convertToDouble()
+        self.spentDate = spentDate
+    }
+    
+        
+        
     // MARK: - Life Cycle
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        
         
         personDetailCollectionView.contentInsetAdjustmentBehavior = .never
         
@@ -187,7 +203,6 @@ class DutchUnitController: NeedingController {
         print("initializing personDetails flag 3")
         print("current personDetails: ")
         
-//        view.backgroundColor = .brown
         view.backgroundColor = .white
         
         setupBindings()
@@ -198,27 +213,30 @@ class DutchUnitController: NeedingController {
         
         setupDictionary()
         
-        setupLayout()
-        setupTargets()
-        
-        setupCollectionView()
-        
-        // TODO: 이거.. 여기서 하면 안될 것 같은데 ?? 구조가 많이 바뀌었음.
-        
         viewModel.setupInitialState { [weak self] initialState, newDutchUnitIndex in
             guard let self = self else { return }
+            
+            
             if let initialState = initialState {
-//                let headerViewModel =
-                
                 self.spentPlace = initialState.place
                 self.spentAmount = initialState.amount // Double, String
                 self.spentDate = initialState.date
                 
             } else {
-                guard let numOfElements = newDutchUnitIndex else {return }
-                self.spentPlaceTF.text = "항목 \(numOfElements)"
+                guard let numOfElements = newDutchUnitIndex else { return }
+                self.spentPlace = "항목 \(numOfElements)"
+                print("slef.spentPlace, numOfElements: \(numOfElements)")
+                
             }
         }
+        
+        
+        setupLayout()
+        setupTargets()
+        
+        self.setupCollectionView()
+                
+        // TODO: 이거.. 여기서 하면 안될 것 같은데 ?? 구조가 많이 바뀌었음.
         
         viewModel.setupInitialCells { [weak self] cells in
             guard let self = self else { return }
@@ -233,8 +251,6 @@ class DutchUnitController: NeedingController {
         
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
-//        spentPlaceTF.addGestureRecognizer(tap3)
-        
         view.addGestureRecognizer(tap2)
         print("flag, dutchUnit: \(dutchUnit)")
         
@@ -243,6 +259,8 @@ class DutchUnitController: NeedingController {
         } else {
             askTotalSpentAmount()
         }
+        
+        setupNotification()
     }
     
 //    @objc func headerAmtChanged(_ textField: UITextField) {
@@ -260,37 +278,13 @@ class DutchUnitController: NeedingController {
         NotificationCenter.default.post(name: .updateSpentAmt, object: nil, userInfo: spentAmt)
         
     }
-    private func blinkSpentAmount() {
-        
-        UIView.animate(withDuration: 0.2) {
-            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
-        } completion: { bool in
-            if bool {
-                UIView.animate(withDuration: 0.2) {
-                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                } completion: { bool in
-                    if bool {
-                        UIView.animate(withDuration: 0.2) {
-                            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
-                        } completion: { bool in
-                            if bool {
-                                UIView.animate(withDuration: 0.2) {
-                                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     private func askTotalSpentAmount() {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.spentAmountTF.becomeFirstResponder()
+            // prev code
+//            self.spentAmountTF.becomeFirstResponder()
             self.needingDelegate?.presentNumberPad()
-            self.blinkSpentAmount()
         }
     }
     
@@ -315,16 +309,8 @@ class DutchUnitController: NeedingController {
         
         NotificationCenter.default.post(name: .changePriceStateIntoInactive, object: nil)
         
+        NotificationCenter.default.post(name: .notifyOtherViewTapped, object: nil)
         
-        
-    // MARK: - Header 눌렸을 때, 각 입력마다 호출하기.
-//        let amt: Double = 100
-//
-//        let spentAmt: [AnyHashable: Any] = ["spentAmt": amt]
-//
-//        NotificationCenter.default.post(name: .updateSpentAmt, object: nil, userInfo: spentAmt)
-        
-    
         print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
         
         if spentPlaceTFJustTapped == false {
@@ -339,13 +325,17 @@ class DutchUnitController: NeedingController {
             
             print("otherView Tapped!!")
             
+            // meaningless..
             if validSelectedPriceTF.tag != -1 {
+                
                 let selectedRow = validSelectedPriceTF.tag
                 personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
                 
                 print("selected flag 1, updated row: \(selectedRow)")
             } else {
-                //
+                
+//                textFieldShouldReturn(<#T##textField: UITextField##UITextField#>)
+                
 //                spentAmountTF.backgroundColor = .magenta
 //                spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
 //                spentAmountTF.textColor = .black
@@ -396,15 +386,10 @@ class DutchUnitController: NeedingController {
     
     
     private func setupTargets() {
-//        resetBtn.addTarget(self, action: #selector(resetState), for: .touchUpInside)
-//        addPersonBtn.addTarget(self, action: #selector(presentAddingPeopleAlert), for: .touchUpInside)
-//        dismissBtn.addTarget(nil, action: #selector(dismissTapped), for: .touchUpInside)
         
         confirmBtn.addTarget(nil, action: #selector(confirmTapped), for: .touchUpInside)
-        
-        spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
-        
-        
+        // prev code
+//        spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
         
     }
     
@@ -450,37 +435,37 @@ class DutchUnitController: NeedingController {
     }
     
     // TODO: 만약에 Header 로 하다가 잘 안되면, 이것도 방법이겠다..
-    @objc private func presentAskingSpentAmountAlert(completion: @escaping () -> Void) {
-        let alertController = UIAlertController(title: "지출 금액", message: "지출한 총 비용을 입력해주세요.", preferredStyle: .alert)
-        
-        alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "cost"
-            textField.tag = 100
-            textField.delegate = self
-            textField.keyboardType = .decimalPad // replace with custom numberpad
-        }
-        
-        view.endEditing(true)
-        
-        needingDelegate?.presentNumberPad()
-        let saveAction = UIAlertAction(title: "Confirm", style: .default) { [self] alert -> Void in
-            let textFieldInput = alertController.textFields![0] as UITextField
-        
-            let spentAmountStr = textFieldInput.text!
-            
-            spentAmount = spentAmountStr.convertToDouble()
-            viewModel.updateSpentAmount(to: spentAmount)
-            spentAmountTF.text = spentAmount.addComma()
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
-            (action : UIAlertAction!) -> Void in })
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(saveAction)
-        
-        self.present(alertController, animated: true)
-    }
+//    @objc private func presentAskingSpentAmountAlert(completion: @escaping () -> Void) {
+//        let alertController = UIAlertController(title: "지출 금액", message: "지출한 총 비용을 입력해주세요.", preferredStyle: .alert)
+//
+//        alertController.addTextField { (textField: UITextField!) -> Void in
+//            textField.placeholder = "cost"
+//            textField.tag = 100
+//            textField.delegate = self
+//            textField.keyboardType = .decimalPad // replace with custom numberpad
+//        }
+//
+//        view.endEditing(true)
+//
+//        needingDelegate?.presentNumberPad()
+//        let saveAction = UIAlertAction(title: "Confirm", style: .default) { [self] alert -> Void in
+//            let textFieldInput = alertController.textFields![0] as UITextField
+//
+//            let spentAmountStr = textFieldInput.text!
+//
+//            spentAmount = spentAmountStr.convertToDouble()
+//            viewModel.updateSpentAmount(to: spentAmount)
+//            spentAmountTF.text = spentAmount.addComma()
+//        }
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+//            (action : UIAlertAction!) -> Void in })
+//
+//        alertController.addAction(cancelAction)
+//        alertController.addAction(saveAction)
+//
+//        self.present(alertController, animated: true)
+//    }
     
     
 
@@ -518,10 +503,11 @@ class DutchUnitController: NeedingController {
     
     
     @objc func confirmTapped() {
-        
-        viewModel.updateDutchUnit(spentPlace: spentPlaceTF.text!,
-                                  spentAmount: spentAmount,
-                                  spentDate: Date(),
+    // 여기에 Header 고려해서 업데이트 해주면 좋겠는데...
+        viewModel.updateDutchUnit(spentPlace: self.spentPlace,
+                                  spentAmount: self.spentAmount,
+                                  spentDate: self.spentDate,
+                                  
                                   detailPriceDic: detailPriceDic,
         detailAttendingDic: detailAttendingDic) { [weak self] in
             
@@ -540,15 +526,6 @@ class DutchUnitController: NeedingController {
         
         moveDownCollectionView()
         updateWithAnimation()
-
-        
-        
-//        personDetailCollectionView.snp.remakeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.top.equalToSuperview()
-//            make.height.equalToSuperview()
-//        }
-        
     }
     
     func dismissKeyboardOnly() {
@@ -557,11 +534,11 @@ class DutchUnitController: NeedingController {
     
     
     @objc func textDidBegin(_ textField: UITextField) {
-        if textField == spentAmountTF {
-            print("it's spentAmountTF")
-        } else if textField == spentPlaceTF {
-            print("it's spentPlaceTF")
-        }
+//        if textField == spentAmountTF {
+//            print("it's spentAmountTF")
+//        } else if textField == spentPlaceTF {
+//            print("it's spentPlaceTF")
+//        }
         
         
         if let tf = textField as? PriceTextField {
@@ -634,16 +611,14 @@ class DutchUnitController: NeedingController {
             subview.removeFromSuperview()
         }
         
-        
-        
         view.addSubview(personDetailCollectionView)
         
         
         view.addSubview(bottomContainerView)
         bottomContainerView.addSubview(gradientView)
         bottomContainerView.addSubview(remainingView)
-        spentPlaceTF.delegate = self
-        spentAmountTF.delegate = self
+//        spentPlaceTF.delegate = self
+//        spentAmountTF.delegate = self
         
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -680,40 +655,7 @@ class DutchUnitController: NeedingController {
     
     // MARK: - UI Properties
     
-    private let currenyLabel = UILabel().then {
-        $0.text = "원"
-    }
     
-    private let spentPlaceLabel = UILabel().then {
-        $0.text = "지출 항목"}
-    
-    
-    private let spentPlaceTF = UITextField(withPadding: true).then {
-        $0.textAlignment = .right
-        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
-        $0.tag = 1
-        $0.layer.cornerRadius = 5
-        $0.autocorrectionType = .no
-    }
-    
-    private let divider = UIView().then {
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-    }
-    
-    private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
-    
-    private let spentAmountTF = PriceTextField(placeHolder: "비용").then {
-        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
-        $0.tag = -1
-        $0.isTotalPrice = true
-        $0.layer.cornerRadius = 5
-    }
-    
-    private let spentDateLabel = UILabel().then {
-//        $0.textAlignment = .right
-        $0.text = "지출 일시"
-    }
     
     private let spentDatePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -846,6 +788,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         return viewModel.personDetails.count
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PersonDetailCell
         
@@ -908,10 +851,10 @@ extension DutchUnitController {
         if kind == "UICollectionElementKindSectionHeader" {
             
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
+            
             header.headerDelegate = self
             header.spentAmountTF.delegate = self
-            // 모름.
-//            header.spentAmountTF.addTarget(self, action: #selector(headerAmtChanged), for: .editingChanged)
+            header.spentPlaceTF.delegate = self
             
             if dutchUnit == nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -920,9 +863,13 @@ extension DutchUnitController {
                     header.blinkSpentAmount()
                     header.spentAmountTF.becomeFirstResponder()
                 }
+                
+                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date())
+                
             } else {
                 let amtString = spentAmount.addComma()
                 header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate)
+                
             }
             
             return header
@@ -932,6 +879,8 @@ extension DutchUnitController {
             return footer
         }
     }
+    
+//    invalidate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 360)
@@ -1004,14 +953,17 @@ extension DutchUnitController: PersonDetailCellDelegate {
 
 extension DutchUnitController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textField returned")
+        // adding people succeessively, tag 100: Alert Controller
         
-        if textField == spentPlaceTF {
-            spentAmountTF.becomeFirstResponder()
+        // header.spentPlaceTF
+        if textField.tag == 1 {
+            self.spentPlace = textField.text!
+            print("text input: \(textField.text!)")
+            self.dismissKeyboardOnly()
+            spentPlaceTFJustTapped = true
         }
         
-        
-        
-        // adding people succeessively, tag 100: Alert Controller
         if textField.tag == 100 {
             addPersonAction(with: textField.text!) // alert's tag
             textField.text = ""
@@ -1025,12 +977,13 @@ extension DutchUnitController: UITextFieldDelegate {
 
     // Cell 의 TF 누를 때 Trigger. 여기서.. 구분해주면 되겠다 .
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        personDetailCollectionView.reloadItems(at: [IndexPath(row: , section: <#T##Int#>)])
         // FIXME: dismissKeyboardOnly, dismissKeyboard 두개 구분해서 사용하기.
         if let tf = textField as? PriceTextField {
             
             if tf.tag == -1 {
                 print("header spentAmt tapped!")
+            } else {
+                moveUpCollectionView()
             }
             
             
@@ -1042,7 +995,6 @@ extension DutchUnitController: UITextFieldDelegate {
                 prevSelectedPriceTF.textColor = .black
             }
             
-            
             // NeedingController delegate
             delegate?.initializeNumberText()
             
@@ -1051,7 +1003,8 @@ extension DutchUnitController: UITextFieldDelegate {
             needingDelegate?.presentNumberPad()
             
             // TODO: move up collectionview
-                moveUpCollectionView()
+            
+
             
             updateWithAnimation()
             
@@ -1118,6 +1071,3 @@ extension DutchUnitController {
         }
     }
 }
-
-
-
