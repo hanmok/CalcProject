@@ -33,15 +33,9 @@ class CalculatedResultTableCell: UITableViewCell {
         
         let (from, to, amt) = exchangeInfo
         
-//        let convertedAmt = amt.getStrWithoutDots()
-        
         let convertedAmt = amt.convertIntoKoreanPrice()
         
         var attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.systemFont(ofSize: 22)])
-        
-        
-//        let correctJosa = KoreanUtils.format("'%@'는", from)
-//        print("correctJosa: \(correctJosa)")
         
         let postPosition = getCorrectPostPosition(from: from)
         
@@ -56,10 +50,8 @@ class CalculatedResultTableCell: UITableViewCell {
         attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
 //        let str = " \(from) 이 \(to) 에게 \(convertedAmt) 를 보내주세요."
         exchangeTextLabel.attributedText = attributedStr
+        // 이거를 Copy 해야함. How ??
         
-//        exchange
-        
-//        exchangeTextLabel.text = str
     }
     
     private func setupLayout() {

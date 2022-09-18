@@ -49,7 +49,9 @@ class GroupButton: UIButton {
         if isSelected {
             self.backgroundColor = .black
         } else {
-            self.backgroundColor = .magenta
+//            self.backgroundColor = .magenta
+//            break
+            
         }
     }
     

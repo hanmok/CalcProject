@@ -68,7 +68,9 @@ extension NeedingController: NumberLayerToChildDelegate {
     
     func update(with numberText: String) {
         print("printed from needingController: \(numberText)")
+    // TODO: 음..;; header 인지 아닌지 어떻게 구분하지?
         
         updateNumber(with: numberText)
     }
+    
 }

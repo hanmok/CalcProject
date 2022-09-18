@@ -372,7 +372,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor = colorList.bgColorForExtrasDM
                 basicCalc.invalidateAllTimers()
             default :
-                sender.backgroundColor = .magenta
+//                sender.backgroundColor = .magenta
+                break
             }
         }else{
             switch sender.tag {
@@ -386,7 +387,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor = colorList.bgColorForExtrasLM
                 basicCalc.invalidateAllTimers()
             default :
-                sender.backgroundColor = .magenta
+//                sender.backgroundColor = .magenta
+                break
             }
         }
     }

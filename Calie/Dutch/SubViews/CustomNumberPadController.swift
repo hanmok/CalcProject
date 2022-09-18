@@ -18,9 +18,7 @@ protocol CustomNumberPadDelegate: AnyObject {
     
     /// number
     func numberPadView(updateWith numTextInput: String) // include delete Action
-    
-//    func fullPriceAction()
-    
+
     func completeAction()
 }
 
@@ -72,14 +70,10 @@ class CustomNumberPadController: UIViewController {
     
     
     private let inputBar = UIView().then {
-//        $0.backgroundColor = UIColor.bgColorForExtrasLM
-//        $0.backgroundColor = UIColor.bgColorForExtrasDM
         $0.backgroundColor = UIColor.bgColorForExtrasMiddle
     }
     
     private let completeBtn = UIButton().then {
-//        $0.setTitle("완료", for: .normal )
-//        $0.setTitleColor(.black, for: .normal)
         $0.backgroundColor = .bgColorForExtrasLM
     }
     
@@ -115,19 +109,14 @@ class CustomNumberPadController: UIViewController {
     }
     
     @objc func changeColor(_ sender: NumberButton) {
-//        sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+
         sender.backgroundColor = colorList.bgColorForExtrasLM
     }
     
     @objc func turnIntoOriginalColor(_ sender: NumberButton) {
         sender.backgroundColor = .black
     }
-    
-//    @objc func fullPriceTapped(_ sender: UIButton) {
-//        delegate?.fullPriceAction()
-//        delegate?.numberPadViewShouldReturn()
-//    }
-    
+        
     @objc func completeTapped(_ sender: UIButton) {
         print("complete Tapped!!1")
         numberPadDelegate?.completeAction()
@@ -170,27 +159,14 @@ class CustomNumberPadController: UIViewController {
         inputBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(50)
-//            make.bottom.equalTo(hor3Stack.snp.top)
             make.top.equalToSuperview()
         }
         
         [
-//            fullPriceBtn,
          deleteBtn].forEach { self.inputBar.addSubview($0) }
-//        inputBar.addSubview(deleteBtn)
-        
-//        fullPriceBtn.snp.makeConstraints { make in
-////            make.leading.top.trailing.bottom.equalToSuperview()
-////            make.centerX.equalToSuperview()
-//            make.leading.equalToSuperview().inset(10)
-//            make.top.bottom.equalToSuperview().inset(5)
-//            make.width.equalTo(80)
-//        }
-        
+    
         deleteBtn.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(10)
             make.trailing.equalToSuperview()
-//            make.width.equalTo(60)
             make.width.equalToSuperview().dividedBy(3)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -198,10 +174,7 @@ class CustomNumberPadController: UIViewController {
         
         deleteBtn.addSubview(deleteImageView)
         deleteImageView.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
             make.center.equalToSuperview()
-//            make.width.equalToSuperview().dividedBy(2.7)
-//            make.height.equalToSuperview().dividedBy(2)
             make.width.equalToSuperview().dividedBy(1.7)
             make.height.equalToSuperview().dividedBy(1.7)
         }

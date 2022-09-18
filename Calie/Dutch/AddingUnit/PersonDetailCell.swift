@@ -33,20 +33,10 @@ class PersonDetailCell: UICollectionViewCell {
         $0.textColor = .black
         $0.backgroundColor = .white
         $0.adjustsFontSizeToFitWidth = true
-//        $0.backgroundColor = .magenta
     }
-    
-//    public let bottomLineView = UIView().then {
-//        $0.backgroundColor = .green
-//        $0.isHidden = true
-//    }
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
-//        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
-//        $0.backgroundColor = .magenta
-//        $0.backgroundColor = UIColor(rgb: 0xEFEFEF)
-//        $0.backgroundColor = UIColor(rgb: 0xFFFFFF)
     
         $0.layer.cornerRadius = 5
     }
@@ -62,9 +52,7 @@ class PersonDetailCell: UICollectionViewCell {
         $0.setTitleColor(.black, for: .normal)
         $0.backgroundColor = UIColor(white: 240 / 255, alpha: 1)
     }
-    
-    
-    
+
     private func setupTargets() {
         fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
         attendingBtn.addTarget(self, action: #selector(attendingBtnTapped(_:)), for: .touchUpInside)
@@ -107,23 +95,17 @@ class PersonDetailCell: UICollectionViewCell {
     
     private func setupLayout() {
         [nameLabel, spentAmountTF, currencyLabel,
-//         bottomLineView,
          fullPriceBtn, attendingBtn].forEach { v in
             addSubview(v)
         }
         
-        spentAmountTF.delegate = self
-        
         nameLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-//            make.leading.equalToSuperview().inset(10)
-//            make.leading.equalToSuperview().inset(15)
             make.leading.equalToSuperview()
             make.width.equalTo(70)
         }
         
         attendingBtn.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().offset(-20)
             make.trailing.equalToSuperview()
             make.width.equalTo(60)
             make.top.bottom.equalToSuperview()
@@ -136,7 +118,6 @@ class PersonDetailCell: UICollectionViewCell {
         }
         
         currencyLabel.snp.makeConstraints { make in
-//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-35)
             make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-15)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(15)
@@ -144,24 +125,11 @@ class PersonDetailCell: UICollectionViewCell {
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
             make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
             make.top.bottom.equalToSuperview()
         }
         
-//        bottomLineView.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountTF.snp.leading)
-//            make.trailing.equalTo(spentAmountTF.snp.trailing)
-//            make.bottom.equalTo(spentAmountTF.snp.bottom)
-//            make.height.equalTo(1)
-//        }
     }
 }
 
-extension PersonDetailCell: UITextFieldDelegate {
-    // need to communicate to.. the viewController that contains CollectionView which is of type PersonDetailCell for its cell
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        print("textFieldDidBeginEditing called !!")
-//        bottomLineView.isHidden = false
-//    }
-}
+

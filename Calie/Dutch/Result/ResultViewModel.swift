@@ -32,23 +32,6 @@ class ResultViewModel {
         self.calculatedResultTuples = dutchService.returnValidInfoAfterCalculation(gathering: gathering)
         self.overallPayInfos = dutchService.createPersonPayInfos(gathering: gathering)
     }
-    
-//    var overallPersonInfos: [OverallPersonInfo] {
-//        return dutchService.createOverallInfo(gathering: currentGathering)
-//    }
-    
-
-//    var overallPayInfos: [PersonPaymentInfo] {
-//        return dutchService.createPersonPayInfos(gathering: currentGathering)
-//    }
-    
-    // viewModel.calculatedResultTuples 를 사용할 때마다 계산을 하는건 너무 비효율적 ;; 어떻게 줄일 수 있을까? 이거 줄여야 버그도 더 안나올 것 같아 .
-//    var calculatedResultTuples: [ResultTupleWithName] { // from: String, to: String, amt: Int
-////        return dutchService.calculateResults(gathering: currentGathering)
-////        return dutchService.returnValidInfoAfterCalculation(gathering: currentGathering)
-//        return calculatedResultTuples2
-//
-//    }
 }
 
 

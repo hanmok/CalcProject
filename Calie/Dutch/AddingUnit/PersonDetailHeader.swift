@@ -6,6 +6,8 @@
 //  Copyright © 2022 Mac mini. All rights reserved.
 //
 
+// Notifcation pattern 쓰는게 가장 좋을 것 같은데 ?
+
 import Foundation
 import UIKit
 import Then
@@ -13,8 +15,9 @@ import Then
 protocol PersonDetailHeaderDelegate: AnyObject {
     func dismissAcion()
     func spentAmtTapped()
-    func textFieldTapAction(sender: UITextField, shouldShowCustomPad: Bool)
+    func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool)
     func valueUpdated(spentAmount: Double, spentPlace: String)
+    
 }
 
 
@@ -47,7 +50,38 @@ class PersonDetailHeader: UICollectionReusableView {
         
         setupLayout()
         setupAddTargets()
+        setupNotification()
     }
+    
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(changeStateToActive(_:)), name: .changePriceStateIntoActive, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changeStateToInactive(_:)), name: .changePriceStateIntoInactive, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSpentAmt(_:)), name: .updateSpentAmt, object: nil)
+    }
+    
+    @objc func changeStateToActive(_ notification: Notification) {
+        print("changeStateToActive called!!")
+        spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
+        spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
+    }
+    
+    // TODO: Add Animation
+    @objc func changeStateToInactive(_ notification: Notification) {
+        print("changeStateToActive called!!")
+        
+        spentAmountTF.textColor = .black
+        spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+    }
+    
+    @objc func updateSpentAmt(_ notification: Notification) {
+        print("changeStateToActive called!!")
+        guard let amtInput = notification.userInfo?["spentAmt"] as? Double else {return }
+                
+                spentAmountTF.text = amtInput.addComma()
+    }
+    
     
     private func configureLayout() {
         guard let viewModel = viewModel else { return }
@@ -75,13 +109,8 @@ class PersonDetailHeader: UICollectionReusableView {
     // not called ;;
     @objc func textFieldTapped(_ sender: UITextField) {
         print("spentPlace Tapped!")
-//        headerDelegate?.textFieldTapAction(sender: sender)
-//        var shouldShowCustomPad = false
-//        if sender == spentAmountTF {
-//            shouldShowCustomPad =
-//        }
         
-        headerDelegate?.textFieldTapAction(sender: sender, shouldShowCustomPad: sender == spentAmountTF)
+        headerDelegate?.textFieldTapAction(sender: sender, isSpentAmountTF: sender == spentAmountTF)
     }
     
     @objc func dismissTapped(_ sender: UIButton) {
@@ -260,16 +289,41 @@ extension PersonDetailHeader: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        //        if textField == spentPlaceTF {
         
-        let spentAmt = spentAmountTF.text!.convertToDouble()
-        let spentPlace = spentPlaceTF.text!
-        headerDelegate?.valueUpdated(spentAmount: spentAmt, spentPlace: spentPlace)
-        
-        //        } else if textField == spentAmountTF {
-        //
-        //        }
-        
+//        let spentAmt = spentAmountTF.text!.convertToDouble()
+//        let spentPlace = spentPlaceTF.text!
+//        headerDelegate?.valueUpdated(spentAmount: spentAmt, spentPlace: spentPlace)
+//
         return true
     }
 }
+
+
+public enum NotificationKeys {
+    static let changePriceStateIntoActive = Notification.Name(rawValue: "changePriceStateIntoActive")
+    
+    static let changePriceStateIntoInactive = Notification.Name(rawValue: "changePriceStateIntoInactive")
+    
+    static let updateSpentAmt = Notification.Name(rawValue: "updateSpentAmt")
+    
+    
+}
+
+
+extension Notification.Name {
+
+    static let changePriceStateIntoActive = NotificationKeys.changePriceStateIntoActive
+
+    static let changePriceStateIntoInactive = NotificationKeys.changePriceStateIntoInactive
+    
+    static let updateSpentAmt = NotificationKeys.updateSpentAmt
+}
+
+
+
+
+
+//tapped Btn wrapper: 4
+//updated value: 524
+//printed from needingController: 524
+//hi, 524
