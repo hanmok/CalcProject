@@ -16,11 +16,11 @@ class DutchpayViewModel {
     
     // MARK: - Actions when Observed Properties changed.
     
-    var updateDutchUnitCells: ([DutchUnitCellComponents]) -> Void = { _ in}
+    var updateDutchUnitCellsHandler: ([DutchUnitCellComponents]) -> Void = { _ in}
     
-    var updateGathering: (GatheringInfo) -> Void = { _ in }
+    var updateGatheringHandler: (GatheringInfo) -> Void = { _ in }
     
-    var updateDutchUnits: () -> Void = { }
+    var updateDutchUnitsHandler: () -> Void = { }
     
     // MARK: - Properties To be Observed
     
@@ -32,21 +32,17 @@ class DutchpayViewModel {
             
             let gatheringInfo = GatheringInfo(title: gathering.title, totalPrice: gathering.totalCostStr)
 
-            updateGathering(gatheringInfo)
-            print("gathering flag 2, changedname: \(gathering.title)")
-            print("current gathering in dutchpayViewmodel: \(gathering.people.count)")
-            for each in gathering.people {
-                print(each.name)
-            }
+            updateGatheringHandler(gatheringInfo)
+            
+            updateDutchUnits2(gathering: gathering)
+            
         }
     }
     
     var dutchUnits: [DutchUnit] = [] {
         didSet {
-//            let cellComponents = convertDutchUnits(dutchUnits: dutchUnits)
-//            updateDutchUnitCells(cellComponents)
             
-            updateDutchUnits()
+            updateDutchUnitsHandler()
         }
     }
 
@@ -65,7 +61,7 @@ class DutchpayViewModel {
         return dutchUnitCellComponents
     }
     
-    func updateDutchUnits(gathering: Gathering) {
+    func updateDutchUnits2(gathering: Gathering) {
         self.dutchUnits = gathering.dutchUnits.sorted()
     }
     
@@ -158,7 +154,7 @@ class DutchpayViewModel {
     func updateDutchUnit(dutchUnit: DutchUnit, isNew: Bool) {
         dutchService.updateDutchUnit(dutchUnit: dutchUnit, isNew: isNew) { gathering in
             self.gathering = gathering
-            self.updateDutchUnits(gathering: gathering)
+            self.updateDutchUnits2(gathering: gathering)
         }
     }
     
@@ -169,7 +165,7 @@ class DutchpayViewModel {
     func updatePeople(updatedPeople: [Person]) {
         dutchService.updatePeople(with: updatedPeople) { gathering in
             self.gathering = gathering
-            self.updateDutchUnits(gathering: gathering)
+            self.updateDutchUnits2(gathering: gathering)
         }
     }
     

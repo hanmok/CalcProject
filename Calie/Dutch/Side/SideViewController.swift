@@ -15,6 +15,10 @@ protocol SideControllerDelegate: AnyObject {
 //    func dismissSideController()
 //    func addNewGathering()
     func dismissSideVC(with gathering: Gathering?)
+    
+    func renameGathering(gathering: Gathering)
+    
+    func deleteGathering(gathering: Gathering)
 }
 
 class SideViewController: UIViewController {
@@ -195,11 +199,11 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
             // must have at least one gathering
             if self.viewModel.allGatherings.count != 1 {
                 self.viewModel.removeGathering(target: targetGathering) {
-                    DispatchQueue.main.async {
-                        self.gatheringTableView.reloadData()
-                    }
+                    self.gatheringTableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.sideDelegate?.deleteGathering(gathering: targetGathering)
                 }
             }
+
             
             completionHandler(true)
         }
@@ -212,11 +216,12 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
                 switch result {
                     
                 case .success(let newName):
-
-                    self.viewModel.changeGatheringNameAction(newName: newName, target: self.viewModel.allGatherings[indexPath.row]) {
+                    let target = self.viewModel.allGatherings[indexPath.row]
+                    self.viewModel.changeGatheringNameAction(newName: newName, target: target) {
                         DispatchQueue.main.async {
                             self.gatheringTableView.reloadData()
                         }
+                        self.sideDelegate?.deleteGathering(gathering: target)
                     }
                     
                 case .failure(let e):

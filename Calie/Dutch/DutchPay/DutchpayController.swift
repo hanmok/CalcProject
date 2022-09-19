@@ -117,14 +117,14 @@ class DutchpayController: UIViewController {
     
     private func setupBindings() {
         
-        viewModel.updateDutchUnits = { [weak self] in
+        viewModel.updateDutchUnitsHandler = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.dutchTableView.reloadData()
             }
         }
         
-        viewModel.updateGathering = { [weak self] gatheringInfo in
+        viewModel.updateGatheringHandler = { [weak self] gatheringInfo in
             guard let self = self else { return }
             print("gathering flag 3")
             self.updateGatheringName(with: gatheringInfo.title)
@@ -135,6 +135,7 @@ class DutchpayController: UIViewController {
             DispatchQueue.main.async {
                 self.dutchTableView.reloadData()
             }
+            
             print("Gathering has updated, current dutchUnit number: \(self.viewModel.dutchUnits)")
         }
         
@@ -714,12 +715,6 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
         print("dutchpay cell has appeared")
         
-        
-        // cell.dutchUnitCellComponents = cellData[indexPath.row]
-        // TODO: Use Cell's ViewModel
-        
-        //        cell.viewModel = viewModel.dutch
-        
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
@@ -873,6 +868,21 @@ extension Set {
 
 
 extension DutchpayController: MainTabToDutchDelegate {
+    func renameTriggered(target: Gathering) {
+        if self.viewModel.gathering == target {
+            // update!
+//            viewModel.updateGatheringHandler
+            viewModel.gathering = target
+        }
+    }
+    
+    func deleteTriggered(target: Gathering) {
+        if self.viewModel.gathering == target {
+            // update with latest!
+            viewModel.fetchLatestGathering()
+        }
+    }
+    
     
     func clearifyBlurredView() {
         
@@ -884,12 +894,12 @@ extension DutchpayController: MainTabToDutchDelegate {
                 self.isShowingSideController = false
             }
         })
-        //        self.hideSideController()
-        
-//        self.blurredView.backgroundColor = .white
     }
     
     func updateGatheringFromMainTab(with newGathering: Gathering) {
+        print("dutchpayController gathering changed")
         self.viewModel.gathering = newGathering
     }
 }
+
+// 현재 Gathering 이 바뀔 때 적절히 handling 하지 못하고있음.

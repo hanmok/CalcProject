@@ -17,6 +17,9 @@ import Then
 protocol MainTabToDutchDelegate: AnyObject {
     func updateGatheringFromMainTab(with newGathering: Gathering)
     func clearifyBlurredView()
+    
+    func renameTriggered(target: Gathering)
+    func deleteTriggered(target: Gathering)
 }
 
 class MainTabController: UITabBarController, UINavigationControllerDelegate {
@@ -285,5 +288,13 @@ extension MainTabController: SideControllerDelegate {
         mainToDutchDelegate?.updateGatheringFromMainTab(with: gathering!)
             hideSideController()
             print("hideSideController called")
+    }
+    
+    func renameGathering(gathering: Gathering) {
+        mainToDutchDelegate?.renameTriggered(target: gathering)
+    }
+    
+    func deleteGathering(gathering: Gathering) {
+        mainToDutchDelegate?.deleteTriggered(target: gathering)
     }
 }

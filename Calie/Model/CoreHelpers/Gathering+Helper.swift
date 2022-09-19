@@ -57,6 +57,21 @@ extension Gathering {
             }
         }
     }
+    
+    public var id: UUID {
+        get {
+            if let validId = self.id_ {
+                return validId
+            } else {
+                let newId = UUID()
+                self.id_ = newId
+                return self.id_!
+            }
+        }
+        set {
+            self.id_ = newValue
+        }
+    }
 
     var sortedPeople: [Person] {
         get {
