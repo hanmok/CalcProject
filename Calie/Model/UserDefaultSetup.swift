@@ -29,8 +29,18 @@ struct UserDefaultSetup{
         case everChanged
         case deviceSize
         case deviceVersion
+        case workingGatheringId
     }
     
+    
+    public var workingGatheringId: String {
+        get {
+            return defaults.string(forKey: UserDefaultKey.workingGatheringId.rawValue) ?? ""
+        }
+        set {
+            defaults.set(newValue, forKey: UserDefaultKey.workingGatheringId.rawValue)
+        }
+    }
     
     public var soundOn: Bool {
         get {

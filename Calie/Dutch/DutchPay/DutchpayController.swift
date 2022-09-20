@@ -176,15 +176,40 @@ class DutchpayController: UIViewController {
         }
     }
     
-    // MARK: - Actions
-    @objc func resetGatheringBtnAction() {
+    
+    private func presentResetAlert() {
+        let alertController = UIAlertController(title: "Reset Gathering", message: "Are you sure to reset current gathering infos?", preferredStyle: .alert)
         
+        let confirmAction = UIAlertAction(title: "Reset", style: .destructive) { _ in
+            self.resetAction()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
+    private func resetAction() {
         viewModel.resetGatheringAction(needGathering: true) { [weak self] in
             // TODO: reset tableView
 //            dutchTableView
             self?.dutchTableView.reloadData()
             self?.updateGatheringName(with: "")
         }
+    }
+    // MARK: - Actions
+    @objc func resetGatheringBtnAction() {
+        
+//        UIAlertController.
+        
+        
+       
+        
+        self.presentResetAlert()
+        
     }
     
     
@@ -868,10 +893,17 @@ extension Set {
 
 
 extension DutchpayController: MainTabToDutchDelegate {
+    func initializeCurrentGathering() {
+        viewModel.resetGatheringAction(needGathering: false) { [weak self] _ in
+            guard let self = self else { return }
+            self.dutchTableView.reloadData()
+            self.updateGatheringName(with: "")
+        }
+    }
+    
     func renameTriggered(target: Gathering) {
         if self.viewModel.gathering == target {
             // update!
-//            viewModel.updateGatheringHandler
             viewModel.gathering = target
         }
     }

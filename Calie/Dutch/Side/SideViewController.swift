@@ -19,6 +19,8 @@ protocol SideControllerDelegate: AnyObject {
     func renameGathering(gathering: Gathering)
     
     func deleteGathering(gathering: Gathering)
+    
+    func removeLastGathering()
 }
 
 class SideViewController: UIViewController {
@@ -202,6 +204,9 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
                     self.gatheringTableView.deleteRows(at: [indexPath], with: .automatic)
                     self.sideDelegate?.deleteGathering(gathering: targetGathering)
                 }
+            } else {
+
+                self.sideDelegate?.removeLastGathering()
             }
 
             

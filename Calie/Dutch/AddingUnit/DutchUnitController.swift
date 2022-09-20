@@ -89,6 +89,7 @@ class DutchUnitController: NeedingController {
 
     var spentPlaceTFJustTapped = false
     
+    var hasLoadedFirst = true
     
     var isShowingKeyboard = false {
         willSet {
@@ -562,7 +563,9 @@ class DutchUnitController: NeedingController {
                 self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
                 
                 DispatchQueue.main.async {
-                    self.personDetailCollectionView.reloadData()
+//                    self.personDetailCollectionView.reloadData()
+                    self.personDetailCollectionView.reloadItems(inSection: 0)
+//                    self.personDetailCollectionView.reload
                     
                     self.moveDownCollectionView()
                 }
@@ -580,7 +583,8 @@ class DutchUnitController: NeedingController {
     private func relocateCollectionView() {
         DispatchQueue.main.async {
             
-            self.personDetailCollectionView.reloadData()
+//            self.personDetailCollectionView.reloadData()
+            self.personDetailCollectionView.reloadItems(inSection: 0)
             
             self.moveDownCollectionView()
         }
@@ -839,7 +843,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 20
         return 0
     }
 }
@@ -856,15 +859,17 @@ extension DutchUnitController {
             header.spentAmountTF.delegate = self
             header.spentPlaceTF.delegate = self
             
-            if dutchUnit == nil {
+//            if dutchUnit == nil {
+            if dutchUnit == nil && hasLoadedFirst == true {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-
                     self.needingDelegate?.presentNumberPad()
                     header.blinkSpentAmount()
                     header.spentAmountTF.becomeFirstResponder()
                 }
                 
                 header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date())
+                
+                hasLoadedFirst = false
                 
             } else {
                 let amtString = spentAmount.addComma()
@@ -1069,5 +1074,13 @@ extension DutchUnitController {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension UICollectionView {
+    func reloadItems(inSection section: Int) {
+        reloadItems(at: (0 ..< numberOfItems(inSection: section)).map {
+            IndexPath(item: $0, section: section)
+        })
     }
 }
