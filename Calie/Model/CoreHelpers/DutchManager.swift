@@ -69,12 +69,13 @@ extension DutchManager {
     }
 
     func resetCurrentGathering(gathering: Gathering, handler: @escaping (Gathering) -> Void ) {
-
-        gathering.people.removeAll()
+        
+        //        gathering.people.removeAll()
+        self.removePeople(from: gathering, removedPeople: gathering.people.sorted())
         gathering.dutchUnits.removeAll()
         gathering.title = ""
-                gathering.createdAt = Date()
-                gathering.updatedAt = Date()
+        gathering.createdAt = Date()
+        gathering.updatedAt = Date()
         
         update {
             handler(gathering)
@@ -100,6 +101,7 @@ extension DutchManager {
             fetchRequest.predicate = NSPredicate(format: "\(String.GatheringKeys.title) == %@", name)
         case .id(let uuidString):
             fetchRequest.predicate = NSPredicate(format: "\(String.GatheringKeys.id) == %@", uuidString)
+//            fetchRequest.predicate
         }
         
         do {

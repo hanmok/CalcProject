@@ -171,10 +171,31 @@ class DutchpayViewModel {
         }
     }
     
-    func viewDidLoadAction() {
-//        fetchLastUsedGathering()
-        fetchLatestGathering()
+    func viewDidLoadAction(gathering: Gathering? = nil) {
+        
+        if let gathering = gathering {
+//            print("fetchSelectedGathering called")
+            print("selected flag 1")
+            fetchSelectedGathering(gathering: gathering)
+        } else {
+            fetchLatestGathering()
+            print("selected flag 2")
+        }
+    }
     
+    func fetchSelectedGathering(gathering: Gathering) {
+        
+        dutchService.fetchAllGatherings { allGatherings in
+            if let selectedGathering = allGatherings.filter({ $0 == gathering}).first {
+                print("selectedGathering title: \(selectedGathering.title)")
+                self.gathering = selectedGathering
+                self.dutchUnits = selectedGathering.dutchUnits.sorted()
+            } else {
+                guard let latestGathering = allGatherings.sorted(by: { $0.updatedAt > $1.updatedAt}).first else { fatalError() }
+                self.gathering = latestGathering
+                self.dutchUnits = latestGathering.dutchUnits.sorted()
+            }
+        }
     }
     
 //    func fetchLastUsedGathering() {

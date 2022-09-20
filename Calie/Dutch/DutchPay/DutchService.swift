@@ -102,6 +102,7 @@ class DutchService {
     }
     
     
+    
     func changeGatheringName(to newName: String, completion: @escaping (Gathering) -> Void) {
         guard let gathering = currentGathering else { return }
         gathering.title = newName

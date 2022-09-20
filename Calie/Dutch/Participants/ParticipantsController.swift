@@ -26,18 +26,7 @@ protocol ParticipantsVCDelegate: AnyObject {
     func hideParticipantsController()
     //    func initializeGathering(with gathering: Gathering)
     func updateParticipants(with participants: [Person])
-    func update()
-}
-
-extension ParticipantsController: DutchpayToParticipantsDelegate {
-    func updateParticipants3(gathering: Gathering) {
-        //        self.gathering = gathering
-        //        self.participants = gathering.people.sorted()
-        DispatchQueue.main.async {
-            self.participantsTableView.reloadData()
-        }
-        print("updating flag!!")
-    }
+    func update(gathering: Gathering)
 }
 
 class ParticipantsController: UIViewController{
@@ -108,14 +97,9 @@ class ParticipantsController: UIViewController{
 //    @objc func confirmAction() {
     @objc func dismissTapped() {
         
-//        participants.forEach { print($0.name) }
-//        viewModel.updatePeople()
-//        delegate?.updateParticipants(with: participants)
         addingDelegate?.dismissChildVC()
-//        delegate?.hideParticipantsController()
-            
-        
-        delegate?.update()
+
+        delegate?.update(gathering: viewModel.gathering)
         self.navigationController?.popViewController(animated: true)
         
     }

@@ -22,10 +22,6 @@ protocol DutchpayControllerDelegate: AnyObject {
     func shouldShowSideView(_ bool: Bool)
 }
 
-protocol DutchpayToParticipantsDelegate: AnyObject {
-    func updateParticipants3(gathering: Gathering)
-}
-
 
 class DutchpayController: UIViewController {
     
@@ -38,7 +34,6 @@ class DutchpayController: UIViewController {
     
     // MARK: - Properties
     weak var dutchToMainTapDelegate: DutchpayControllerDelegate?
-    weak var dutchToPartiDelegate: DutchpayToParticipantsDelegate?
     
     var participantsController: ParticipantsController?
     
@@ -749,6 +744,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
         print("dutchpay cell has appeared")
         
+        // FIXME: Fatal Error! index out of range!
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
@@ -799,18 +795,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
 extension DutchpayController: ParticipantsVCDelegate {
     
     func hideParticipantsController() {
-        
-//        guard let participantsController = participantsController else { fatalError() }
-//
-//        participantsController.willMove(toParent: nil)
-//        participantsController.view.removeFromSuperview()
-//        participantsController.removeFromParent()
-//
-//        guard let participantsNavController = participantsNavController else { fatalError() }
-//
-//        participantsNavController.willMove(toParent: nil)
-//        participantsNavController.view.removeFromSuperview()
-//        participantsNavController.removeFromParent()
+
     }
     
     func updateParticipants(with participants: [Person]) {
@@ -818,13 +803,16 @@ extension DutchpayController: ParticipantsVCDelegate {
         viewModel.updatePeople(updatedPeople: participants)
     }
     
-    func update() {
-        viewModel.viewDidLoadAction()
+//    func update() {
+    func update(gathering: Gathering) {
+        viewModel.viewDidLoadAction(gathering: gathering)
+    }
+//        viewModel.viewDidLoadAction()
         // 업데이트 어떻게 시켜주지..?? ;;
         
 //        viewModel.gathering =
         // Gathering.. ??? ddd
-    }
+//    }
 }
 
 
