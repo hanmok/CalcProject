@@ -205,7 +205,6 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
                     self.sideDelegate?.deleteGathering(gathering: targetGathering)
                 }
             } else {
-
                 self.sideDelegate?.removeLastGathering()
             }
 

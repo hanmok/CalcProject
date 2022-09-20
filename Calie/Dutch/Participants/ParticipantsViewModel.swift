@@ -72,6 +72,6 @@ class ParticipantsViewModel {
         dutchService.removePerson(person: targetPerson) {
             self.participants.remove(at: idx)
             completion()
-    }
+        }
     }
 }

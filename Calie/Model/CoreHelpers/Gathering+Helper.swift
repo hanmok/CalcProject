@@ -18,6 +18,7 @@ extension Gathering {
         set {
             self.dutchUnits_ = newValue as NSSet
             print("gathering dutchUnits set triggered")
+            self.updatedAt = Date()
         }
     }
 
@@ -55,14 +56,17 @@ extension Gathering {
                 }
                 self.people = Set(sorted)
             }
+            self.updatedAt = Date()
         }
     }
     
+//    public var id: String {
     public var id: UUID {
         get {
             if let validId = self.id_ {
                 return validId
             } else {
+//                let newId = UUID().uuidString
                 let newId = UUID()
                 self.id_ = newId
                 return self.id_!

@@ -16,7 +16,6 @@ class CoreDataStack {
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
 
-//    private init() {
     public init() {
         persistentContainer = NSPersistentContainer(name: "Dutch")
         let description = persistentContainer.persistentStoreDescriptions.first

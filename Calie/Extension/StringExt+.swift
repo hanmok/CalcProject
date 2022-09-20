@@ -77,6 +77,7 @@ extension String {
         static let updatedAt = "updatedAt_"
         static let dutchUnits = "dutchUnits_"
         static let people = "people_"
+        static let id = "id_"
     }
     
     struct GroupKeys {

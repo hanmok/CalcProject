@@ -38,23 +38,25 @@ class DutchService {
 
         guard let gathering = currentGathering else {
             fatalError()
-//            completion(.failure(.failedToGetGathering))
-//            return
-            
+        
         }
         
-        gathering.people = []
-        gathering.dutchUnits = []
-        gathering.totalCost_ = 0
+        dutchManager.resetCurrentGathering(gathering: gathering) { cleanGathering in
+            completion(cleanGathering)
+        }
         
-        gathering.createdAt = Date()
-        gathering.updatedAt = Date()
-        gathering.title = ""
+//        gathering.people = []
+//        gathering.dutchUnits = []
+//        gathering.totalCost_ = 0
+//
+//        gathering.createdAt = Date()
+//        gathering.updatedAt = Date()
+//        gathering.title = ""
         
-        dutchManager.update()
-//        completion(.success(gathering))
-        completion(gathering)
-        return
+//        dutchManager.update()
+        
+//        completion(gathering)
+//        return
         // order updating to viewmodel
     }
     
@@ -74,7 +76,21 @@ class DutchService {
     return personDetails
     }
     
-    
+    func fetchLastUsedGathering(lastUsedGatheringId: String, completion: @escaping (Gathering) -> Void) {
+//        let lastUsedGatheringUUID = UserDefaultSetup
+        if let lastUsedGathering = dutchManager.fetchGathering(.id(lastUsedGatheringId)) {
+            completion(lastUsedGathering)
+        } else {
+            
+            let latestGathering = dutchManager.fetchGathering(.latest)
+            
+            guard let latestGathering = latestGathering else { return }
+
+            completion(latestGathering)
+            
+        }
+        
+    }
     
     func fetchLatestGathering(completion: @escaping (Gathering) -> Void) {
         

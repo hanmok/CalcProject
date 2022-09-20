@@ -68,17 +68,38 @@ extension DutchManager {
         }
     }
 
+    func resetCurrentGathering(gathering: Gathering, handler: @escaping (Gathering) -> Void ) {
+
+        gathering.people.removeAll()
+        gathering.dutchUnits.removeAll()
+        gathering.title = ""
+                gathering.createdAt = Date()
+                gathering.updatedAt = Date()
+        
+        update {
+            handler(gathering)
+        }
+        
+        
+        
+//        return gathering
+        
+    }
     
     func fetchGathering(_ option: GatheringFetchingEnum) -> Gathering? {
         let fetchRequest = NSFetchRequest<Gathering>(entityName: String.EntityName.Gathering)
+        
         fetchRequest.fetchLimit = 1
         
         switch option {
+            
         case .latest:
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: .GatheringKeys.createdAt, ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: .GatheringKeys.updatedAt, ascending: false)]
             
         case .title(let name):
             fetchRequest.predicate = NSPredicate(format: "\(String.GatheringKeys.title) == %@", name)
+        case .id(let uuidString):
+            fetchRequest.predicate = NSPredicate(format: "\(String.GatheringKeys.id) == %@", uuidString)
         }
         
         do {
@@ -90,16 +111,17 @@ extension DutchManager {
     }
 
     
-    func update() {
+    func update(handler: @escaping () -> Void = {  }  ) {
         mainContext.saveCoreData()
+        handler()
     }
 
     func deleteGathering(gathering: Gathering, completion: @escaping () -> Void) {
         mainContext.delete(gathering)
 
-        update()
-        completion()
-        
+        update {
+            completion()
+        }
     }
     
     
@@ -339,6 +361,7 @@ extension DutchManager {
     enum GatheringFetchingEnum {
         case latest
         case title(String)
+        case id(String)
     }
 }
 

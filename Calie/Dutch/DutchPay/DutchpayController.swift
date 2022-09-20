@@ -84,10 +84,17 @@ class DutchpayController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.portrait)
         print("viewWillAppear in DutchpayController called")
         viewModel.viewDidLoadAction()
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppUtility.lockOrientation(.all)
+    }
+    
     private let topView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -203,12 +210,13 @@ class DutchpayController: UIViewController {
     // MARK: - Actions
     @objc func resetGatheringBtnAction() {
         
-//        UIAlertController.
+        guard let currentGathering = viewModel.gathering else { return }
         
-        
-       
-        
-        self.presentResetAlert()
+        if !(currentGathering.title == "" && currentGathering.dutchUnits.count == 0 && currentGathering.people.count == 0) {
+            self.presentResetAlert()
+        } else {
+            print("no info to reset")
+        }
         
     }
     
@@ -656,7 +664,8 @@ class DutchpayController: UIViewController {
 //            make.centerY.equalToSuperview()
             make.bottom.equalToSuperview()
             make.trailing.equalToSuperview().inset(10)
-            make.width.equalToSuperview().dividedBy(2.1)
+//            make.width.equalToSuperview().dividedBy(2.1)
+            make.width.equalToSuperview()
             make.height.equalTo(50)
         }
         
@@ -931,6 +940,8 @@ extension DutchpayController: MainTabToDutchDelegate {
     func updateGatheringFromMainTab(with newGathering: Gathering) {
         print("dutchpayController gathering changed")
         self.viewModel.gathering = newGathering
+//        userDefaultSetup.workingGatheringId = newGathering.id
+//        userDefaultSetup.workingGatheringId = newGathering.id.uuidString
     }
 }
 

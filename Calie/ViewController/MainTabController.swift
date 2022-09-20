@@ -306,8 +306,4 @@ extension MainTabController: SideControllerDelegate {
         hideSideController()
         mainToDutchDelegate?.initializeCurrentGathering()
     }
-    
-    
 }
-
-

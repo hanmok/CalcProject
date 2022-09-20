@@ -12,7 +12,7 @@ class DutchpayViewModel {
     
     let dutchService = DutchService()
     
-
+    var userDefaultSetup = UserDefaultSetup()
     
     // MARK: - Actions when Observed Properties changed.
     
@@ -103,9 +103,11 @@ class DutchpayViewModel {
         
         dutchService.currentGathering = gathering
         
+        // 인원 초기화에 문제가 있음.
         dutchService.resetGathering { newGathering in
                 self.gathering = newGathering
                 self.dutchUnits = self.gathering!.dutchUnits.sorted()
+            
                 completion(())
         }
     }
@@ -170,8 +172,18 @@ class DutchpayViewModel {
     }
     
     func viewDidLoadAction() {
+//        fetchLastUsedGathering()
         fetchLatestGathering()
+    
     }
+    
+//    func fetchLastUsedGathering() {
+        
+//        let lastUsedId = userDefaultSetup.workingGatheringId
+//        dutchService.fetchLastUsedGathering(lastUsedGatheringId: lastUsedId) { gathering in
+//            self.gathering = gathering
+//        }
+//    }
     
     func fetchLatestGathering() {
         
