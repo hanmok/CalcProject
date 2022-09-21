@@ -106,10 +106,8 @@ class CustomNumberPadController: UIViewController {
             $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchUpInside)
             
             $0.addTarget(self, action: #selector(turnIntoOriginalColor(_:)), for: .touchDragExit)
-            $0.addTarget(self, action: #selector(makeBtnSound), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(makeBtnSound), for: .touchDown)
         }
-        
-        
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         
