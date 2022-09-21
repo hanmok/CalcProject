@@ -101,6 +101,11 @@ class DutchService {
         completion(latestGathering)
     }
     
+//    func makeGatheringLatest
+    func updateDate(gathering: Gathering) {
+        dutchManager.updateDate(gathering: gathering)
+    }
+    
     
     
     func changeGatheringName(to newName: String, completion: @escaping (Gathering) -> Void) {

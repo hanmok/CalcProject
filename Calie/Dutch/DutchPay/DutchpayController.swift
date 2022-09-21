@@ -96,14 +96,11 @@ class DutchpayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("max Int: \(Int.max)")
-//        print("max double: \(Double.ma)")
-        print("viewDidLoad in DutchpayController called")
+        
+
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
-        
-        print("current People in DutchpayController: \(viewModel.gathering?.people)")
-        
+                
         registerTableView()
         setupLayout()
         setupAddTargets()
@@ -112,8 +109,6 @@ class DutchpayController: UIViewController {
         
         view.insetsLayoutMarginsFromSafeArea = false
         
-        // for simplicity.
-//        handleAddDutchUnit()
     }
     
     
@@ -735,7 +730,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         totalPriceLabel.isHidden = (viewModel.dutchUnits.count == 0)
-        
+        print("bug flag 1, count: \(viewModel.dutchUnits.count)")
         return viewModel.dutchUnits.count
     }
     
@@ -743,6 +738,7 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
         print("dutchpay cell has appeared")
+        print("bug flag 2, indexPath.row: \(indexPath.row)")
         
         // FIXME: Fatal Error! index out of range!
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
@@ -805,7 +801,7 @@ extension DutchpayController: ParticipantsVCDelegate {
     
 //    func update() {
     func update(gathering: Gathering) {
-        viewModel.viewDidLoadAction(gathering: gathering)
+//        viewModel.viewDidLoadAction(gathering: gathering)
     }
 //        viewModel.viewDidLoadAction()
         // 업데이트 어떻게 시켜주지..?? ;;

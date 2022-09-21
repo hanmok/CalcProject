@@ -87,6 +87,11 @@ extension DutchManager {
         
     }
     
+    func updateDate(gathering: Gathering) {
+        gathering.updatedAt = Date()
+        update()
+    }
+    
     func fetchGathering(_ option: GatheringFetchingEnum) -> Gathering? {
         let fetchRequest = NSFetchRequest<Gathering>(entityName: String.EntityName.Gathering)
         

@@ -63,6 +63,8 @@ class ParticipantsController: UIViewController{
         registerTableView()
         setupLayout()
         setupAddTargets()
+        
+        viewModel.makeGatheringLatest()
     }
     
     private func setupBindings() {

@@ -170,17 +170,9 @@ class DutchpayViewModel {
             self.updateDutchUnits2(gathering: gathering)
         }
     }
-    
-    func viewDidLoadAction(gathering: Gathering? = nil) {
         
-        if let gathering = gathering {
-//            print("fetchSelectedGathering called")
-            print("selected flag 1")
-            fetchSelectedGathering(gathering: gathering)
-        } else {
-            fetchLatestGathering()
-            print("selected flag 2")
-        }
+    func viewDidLoadAction() {
+        fetchLatestGathering()
     }
     
     func fetchSelectedGathering(gathering: Gathering) {

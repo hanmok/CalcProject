@@ -39,6 +39,10 @@ class ParticipantsViewModel {
 //        dutchService.update()
 //    }
     
+    func makeGatheringLatest() {
+        dutchService.updateDate(gathering: gathering)
+    }
+    
     func addPerson(name: String, needDuplicateCheck: Bool = false, completion: (Result<Void, DutchError>) -> Void ) {
         
         if needDuplicateCheck {
