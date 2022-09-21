@@ -45,19 +45,6 @@ class DutchService {
             completion(cleanGathering)
         }
         
-//        gathering.people = []
-//        gathering.dutchUnits = []
-//        gathering.totalCost_ = 0
-//
-//        gathering.createdAt = Date()
-//        gathering.updatedAt = Date()
-//        gathering.title = ""
-        
-//        dutchManager.update()
-        
-//        completion(gathering)
-//        return
-        // order updating to viewmodel
     }
     
     

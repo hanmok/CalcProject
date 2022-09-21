@@ -70,10 +70,17 @@ extension DutchManager {
 
     func resetCurrentGathering(gathering: Gathering, handler: @escaping (Gathering) -> Void ) {
         
-        //        gathering.people.removeAll()
+        let allGatherings = self.fetchGatherings().sorted { $0.createdAt < $1.createdAt }
+        guard let matchingIdx = allGatherings.firstIndex(of: gathering) else {fatalError() }
+        
         self.removePeople(from: gathering, removedPeople: gathering.people.sorted())
+        
+        let newName = "Gathering \(matchingIdx + 1)"
+        print("newName: \(newName)")
+        
         gathering.dutchUnits.removeAll()
-        gathering.title = ""
+//        gathering.title = ""
+        gathering.title = newName
         gathering.createdAt = Date()
         gathering.updatedAt = Date()
         

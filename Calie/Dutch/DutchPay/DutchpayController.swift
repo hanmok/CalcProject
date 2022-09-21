@@ -97,7 +97,6 @@ class DutchpayController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = colorList.bgColorForExtrasLM
                 
@@ -108,7 +107,6 @@ class DutchpayController: UIViewController {
         setupBindings()
         
         view.insetsLayoutMarginsFromSafeArea = false
-        
     }
     
     
@@ -194,7 +192,8 @@ class DutchpayController: UIViewController {
             // TODO: reset tableView
 //            dutchTableView
             self?.dutchTableView.reloadData()
-            self?.updateGatheringName(with: "")
+//            self?.updateGatheringName(with: "")
+            
         }
     }
     // MARK: - Actions
@@ -924,9 +923,5 @@ extension DutchpayController: MainTabToDutchDelegate {
     func updateGatheringFromMainTab(with newGathering: Gathering) {
         print("dutchpayController gathering changed")
         self.viewModel.gathering = newGathering
-//        userDefaultSetup.workingGatheringId = newGathering.id
-//        userDefaultSetup.workingGatheringId = newGathering.id.uuidString
     }
 }
-
-// 현재 Gathering 이 바뀔 때 적절히 handling 하지 못하고있음.
