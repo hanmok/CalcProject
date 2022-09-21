@@ -13,6 +13,7 @@ import SnapKit
 class ResultBriefInfoTableCell: UITableViewCell {
     static let identifier = "ResultBriefInfoTableCell"
     
+    let userDefaultSetup = UserDefaultSetup()
 //    var viewModel: ResultBriefInfoTableCellViewModel? {
 //        didSet {
 //            configureLayout()
@@ -104,7 +105,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
 
 
 //        let spentAmtStr = personCostInfo.paidAmt.getStrWithoutDots()
-        let spentAmtStr = personCostInfo.paidAmt.convertIntoKoreanPrice()
+        let spentAmtStr = personCostInfo.paidAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
 
 
         spentAmountLabel.text = spentAmtStr
@@ -113,7 +114,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
 //        let toPayAmtStr = toPayAmt.getStrWithoutDots()
         let unsignedAmt = toPayAmt > 0 ? toPayAmt : -toPayAmt
         
-        let toPayAmtStr = unsignedAmt.convertIntoKoreanPrice()
+        let toPayAmtStr = unsignedAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
         
         if unsignedAmt != 0 {
             toPayLabel.text = toPayAmtStr

@@ -24,12 +24,13 @@ extension Double {
 }
 
 extension Double {
-    func convertIntoKoreanPrice(isUsingFloatingPoint: Bool = false) -> String {
+    func convertIntoCurrencyUnit(isKorean: Bool, isUsingFloatingPoint: Bool = false) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         numberFormatter.string(from: NSNumber(value:self))
         var result = numberFormatter.string(from: NSNumber(value: self))!
-         if result == "-0" { return "0원"}
+        
+        if result == "-0" { return isKorean ? "0원" : "$0"}
         
         if isUsingFloatingPoint == false {
             if result.contains(".0") {
@@ -37,7 +38,12 @@ extension Double {
                 result.removeLast()
             }
         }
-        return result + "원"
+//        return result + isKorean ? "원" :
+        if isKorean {
+            return result + "원"
+        } else {
+            return "$" + result
+        }
     }
     
     func getStrWithoutDots() -> String {

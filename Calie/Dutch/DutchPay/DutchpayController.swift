@@ -107,6 +107,10 @@ class DutchpayController: UIViewController {
         setupBindings()
         
         view.insetsLayoutMarginsFromSafeArea = false
+        
+        
+        // FIXME: Test Code
+        userDefaultSetup.isKorean = false
     }
     
     

@@ -30,11 +30,18 @@ class CalculatedResultTableCell: UITableViewCell {
         guard let exchangeInfo = exchangeInfo else {
             return
         }
+//        let userdefault = UserDefaultSetup()
+//        userdefault
+        let isKorean = true
         
         let (from, to, amt) = exchangeInfo
         
-        let convertedAmt = amt.convertIntoKoreanPrice()
+        let userDefault = UserDefaultSetup()
         
+        
+        if userDefault.isKorean {
+        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
+
         var attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.systemFont(ofSize: 22)])
         
         let postPosition = getCorrectPostPosition(from: from)
@@ -48,9 +55,27 @@ class CalculatedResultTableCell: UITableViewCell {
         attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
 
         attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
-//        let str = " \(from) 이 \(to) 에게 \(convertedAmt) 를 보내주세요."
-        exchangeTextLabel.attributedText = attributedStr
-        // 이거를 Copy 해야함. How ??
+        
+            exchangeTextLabel.attributedText = attributedStr
+        } else {
+            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: false)
+
+            var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.systemFont(ofSize: 22)])
+
+            attributedStr.append(NSAttributedString(string: " should send ", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+            
+            attributedStr.append(NSAttributedString(string: convertedAmt , attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+            
+            attributedStr.append(NSAttributedString(string: " to ", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+            
+            attributedStr.append(NSAttributedString(string: to, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+
+            exchangeTextLabel.attributedText = attributedStr
+        }
+        
+        
+        
+
         
     }
     

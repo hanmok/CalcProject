@@ -29,6 +29,7 @@ struct UserDefaultSetup{
         case everChanged
         case deviceSize
         case deviceVersion
+        case isKorean
 //        case workingGatheringId
     }
     
@@ -41,6 +42,17 @@ struct UserDefaultSetup{
 //            defaults.set(newValue, forKey: UserDefaultKey.workingGatheringId.rawValue)
 //        }
 //    }
+    
+    
+    public var isKorean: Bool {
+        get {
+            defaults.bool(forKey: UserDefaultKey.isKorean.rawValue)
+        }
+        set {
+            defaults.set(newValue ,forKey: UserDefaultKey.isKorean.rawValue)
+        }
+    }
+    
     
     public var soundOn: Bool {
         get {

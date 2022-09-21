@@ -358,11 +358,18 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
         
         let (from, to, amt) = exchangeInfo
         
-        let convertedAmt = amt.convertIntoKoreanPrice()
+        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
         
         let postPosition = getCorrectPostPosition(from: from)
         
-        let ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
+        var ret: String
+        
+        if userDefaultSetup.isKorean {
+         ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
+        } else {
+         ret = from + " should send " + convertedAmt + " to " + to
+        }
+        
         return ret
     }
     
