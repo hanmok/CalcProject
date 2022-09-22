@@ -48,9 +48,14 @@ class PersonDetailCell: UICollectionViewCell {
     public let attendingBtn = AttendingButton()
     
     public let fullPriceBtn = UIButton().then {
-        $0.setTitle("전액", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+//        $0.setTitle("전액", for: .normal)
+//        $0.setTitleColor(.black, for: .normal)
+        
         $0.backgroundColor = UIColor(white: 240 / 255, alpha: 1)
+        $0.isHidden = true
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(white: 200/255, alpha: 1).cgColor
+        $0.layer.cornerRadius = 8
     }
 
     private func setupTargets() {
@@ -61,6 +66,8 @@ class PersonDetailCell: UICollectionViewCell {
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
         delegate?.fullPriceAction(idx: sender.tag)
+        // TODO: Post to hide fullPrices
+        NotificationCenter.default.post(name: .hideRemainingPriceBtn, object: nil)
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
@@ -75,8 +82,7 @@ class PersonDetailCell: UICollectionViewCell {
         guard let viewModel = viewModel else { return }
         nameLabel.text = viewModel.name
         
-        attendingBtn.setTitle(viewModel.attendingBtnTitle, for: .normal)
-        attendingBtn.setTitleColor(viewModel.attendingBtnColor, for: .normal)
+        attendingBtn.markAttendedState(using: viewModel.isAttended )
         
         spentAmountTF.text = viewModel.spentAmount
         
@@ -87,15 +93,36 @@ class PersonDetailCell: UICollectionViewCell {
         
         setupLayout()
         setupTargets()
+        addObservers()
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceBtn, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceBtn, object: nil)
+    }
+    
+    @objc func hideFullPriceBtn() {
+        if let viewModel = viewModel, viewModel.isAttended {
+            fullPriceBtn.isHidden = true
+        }
+    }
+    
+    @objc func showUpFullPriceBtn() {
+        if let viewModel = viewModel, viewModel.isAttended {
+            fullPriceBtn.isHidden = false
+        }
+    }
+    
     private func setupLayout() {
         [nameLabel, spentAmountTF, currencyLabel,
-         fullPriceBtn, attendingBtn].forEach { v in
+         fullPriceBtn,
+         attendingBtn].forEach { v in
             addSubview(v)
         }
         
@@ -111,14 +138,8 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
-        fullPriceBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(attendingBtn.snp.leading).offset(-10)
-            make.width.equalTo(60)
-            make.top.bottom.equalToSuperview()
-        }
-        
         currencyLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(fullPriceBtn.snp.leading).offset(-15)
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(15)
         }
@@ -129,7 +150,10 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
+        fullPriceBtn.snp.makeConstraints { make in
+            make.leading.equalTo(spentAmountTF.snp.leading)
+            make.trailing.equalTo(currencyLabel.snp.trailing)
+            make.top.bottom.equalToSuperview()
+        }
     }
 }
-
-

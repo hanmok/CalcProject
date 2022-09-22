@@ -33,12 +33,6 @@ class ParticipantsViewModel {
         self.dutchService = DutchService(currentGathering: gathering)
     }
     
-//    public func updatePeople() {
-//
-//        dutchService.updatePeople(with: participants) { _ in }
-//        dutchService.update()
-//    }
-    
     func makeGatheringLatest() {
         dutchService.updateDate(gathering: gathering)
     }
@@ -52,7 +46,6 @@ class ParticipantsViewModel {
             }
         }
         
-        // MARK: - It works !! ㅠㅠ...
         dutchService.addPerson(name: name) { [weak self] newPerson in
             guard let self = self else { return }
             self.participants.append(newPerson)
@@ -71,11 +64,15 @@ class ParticipantsViewModel {
         }
     }
     
-    public func removePerson(idx: Int, completion: @escaping () -> Void ) {
+    public func removePerson(idx: Int, completion: @escaping (Bool) -> Void ) {
         let targetPerson = participants[idx]
-        dutchService.removePerson(person: targetPerson) {
-            self.participants.remove(at: idx)
-            completion()
+        dutchService.removePerson(person: targetPerson) { success in
+            if success {
+                self.participants.remove(at: idx)
+                completion(success)
+            } else {
+                completion(false)
+            }
         }
     }
 }

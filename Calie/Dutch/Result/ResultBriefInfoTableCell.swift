@@ -146,8 +146,6 @@ class ResultBriefInfoTableCell: UITableViewCell {
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
             make.top.bottom.equalToSuperview().inset(6)
-//            make.width.equalTo(70)
-//            make.width.equalToSuperview().dividedBy(5)
             make.width.equalTo(80)
         }
         
@@ -172,49 +170,22 @@ class ResultBriefInfoTableCell: UITableViewCell {
             make.leading.equalTo(nameLabel.snp.trailing).offset(15)
             make.top.equalToSuperview()
             make.height.equalToSuperview().dividedBy(2.1)
-//            make.trailing.equalToSuperview().inset(10)
             make.trailing.equalTo(spentAmountInfoLabel.snp.leading).offset(-5)
         }
         
         toPayInfoLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(10)
-//            make.top.equalToSuperview()
             make.top.equalTo(spentAmountInfoLabel.snp.bottom).offset(3)
-//            make.height.equalToSuperview().dividedBy(2.1)
             make.bottom.equalToSuperview()
             make.width.equalTo(70)
         }
         
         toPayLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview()
             make.leading.equalTo(nameLabel.snp.trailing).offset(15)
             make.top.equalTo(spentAmountLabel.snp.bottom).offset(3)
             make.bottom.equalToSuperview()
-//            make.trailing.equalToSuperview().inset(10)
             make.trailing.equalTo(toPayInfoLabel.snp.leading).offset(-5)
         }
-        
-//        summaryLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(toPayLabel.snp.trailing).offset(10)
-//            make.trailing.equalToSuperview().inset(5)
-//            make.top.bottom.equalToSuperview()
-//        }
-        
-        
-        
-        
-//        spentAmountLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-//            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(100)
-//        }
-        
-//        attendedPlacesLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountLabel.snp.trailing).offset(10)
-//            make.trailing.equalToSuperview().inset(10)
-//            make.top.bottom.equalToSuperview()
-//        }
-        
     }
     
     

@@ -10,16 +10,25 @@ import UIKit
 
 class AttendingButton: UIButton {
     
+    // toggle when btn tapped
     var isAttending: Bool {
         willSet {
-            setupLayout(using: newValue)
+            markAttendedState(using: newValue)
         }
     }
     
-    private func setupLayout(using condition: Bool) {
-        setTitle(condition ? "참석" : "불참", for: .normal)
-        setTitleColor(condition ? .black : .red, for: .normal)
-//        backgroundColor = condition ? .green : .red
+    private let innerImageView = UIImageView()
+    
+    public func markAttendedState(using condition: Bool) {
+
+//        let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "xmark.rectangle")
+        let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "rectangle")
+        
+//        let color: UIColor = condition ? .systemBlue : .systemRed
+        let color: UIColor = condition ? .systemBlue : .gray
+        
+        innerImageView.image = image
+        innerImageView.tintColor = color
     }
 
     init( _ attending: Bool = true, _ frame: CGRect = .zero) {
@@ -30,11 +39,17 @@ class AttendingButton: UIButton {
     }
     
     private func setupInitialLayout() {
-        self.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+//        self.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
 //        self.backgroundColor = .green
-        self.layer.cornerRadius = 5
+//        self.layer.cornerRadius = 5
 //        self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
 //        self.layer.borderWidth = 1
+        
+        addSubview(innerImageView)
+        innerImageView.snp.makeConstraints { make in
+            make.left.top.trailing.bottom.equalToSuperview()
+        }
+        
         
     }
     

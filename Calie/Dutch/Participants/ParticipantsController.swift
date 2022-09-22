@@ -96,7 +96,7 @@ class ParticipantsController: UIViewController{
 //        delegate?.hideParticipantsController()
 //    }
     
-//    @objc func confirmAction() {
+
     @objc func dismissTapped() {
         
         addingDelegate?.dismissChildVC()
@@ -439,14 +439,21 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
             
-            self.viewModel.removePerson(idx: indexPath.row) {
-                completionHandler(true)
+            self.viewModel.removePerson(idx: indexPath.row) { success in
+                if success {
+                    completionHandler(true)
+                } else {
+                    // TODO: Show failure toast
+                    self.showToast(message: "failed! \n current person has paid somewhere. \n ", defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.1, fontsize: 16)
+                    DispatchQueue.main.async {
+                        self.participantsTableView.reloadRows(at: [indexPath], with: .none)
+                    }
+                }
             }
         }
         
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = .red
-        
         
         let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
         

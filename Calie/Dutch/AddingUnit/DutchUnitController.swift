@@ -79,6 +79,12 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
         self.spentPlace = spentPlace
         self.spentAmount = spentAmount
     }
+    
+    
+    func remainingBtnTapped() {
+        // observer: Cell
+//        NotificationCenter.default.post(name: <#T##NSNotification.Name#>, object: <#T##Any?#>)
+    }
 }
 
 extension DutchUnitController: PersonDetailFooterDelegate {
@@ -131,6 +137,12 @@ class DutchUnitController: NeedingController {
             for (_, value2) in newValue.enumerated() {
                 sum += value2.value
             }
+            let diff = spentAmount - sum
+            let diffString = "남은 금액: " +  diff.addComma() + "원"
+            
+            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+            NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
+            
             sumOfIndividual = sum
             print("detailPriceDic updated \(newValue), \nspentAmount: \(spentAmount), \nsumOfIndividual:\(sumOfIndividual)")
         }
@@ -145,6 +157,13 @@ class DutchUnitController: NeedingController {
         willSet {
             let condition = (sumOfIndividual == newValue) && (newValue != 0)
             updateConditionState(condition)
+            
+            let diff = newValue - sumOfIndividual
+            let diffString = "남은 금액: " + diff.addComma() + "원"
+            
+            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+            NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
+            
             print("condition flag 4, spentAmount updated \(newValue), sumOfIndividual: \(sumOfIndividual)")
         }
     }
@@ -363,6 +382,7 @@ class DutchUnitController: NeedingController {
     func updateDictionary(tag: Int, currentText: String) {
         print("dismissing flag::  tag: \(tag), currentText: \(currentText)")
         
+        // header.spentAmt
         if tag == -1 {
             
             spentAmount = currentText.convertToDouble()
@@ -446,72 +466,21 @@ class DutchUnitController: NeedingController {
         self.present(alertController, animated: true)
     }
     
-    // TODO: 만약에 Header 로 하다가 잘 안되면, 이것도 방법이겠다..
-//    @objc private func presentAskingSpentAmountAlert(completion: @escaping () -> Void) {
-//        let alertController = UIAlertController(title: "지출 금액", message: "지출한 총 비용을 입력해주세요.", preferredStyle: .alert)
-//
-//        alertController.addTextField { (textField: UITextField!) -> Void in
-//            textField.placeholder = "cost"
-//            textField.tag = 100
-//            textField.delegate = self
-//            textField.keyboardType = .decimalPad // replace with custom numberpad
-//        }
-//
-//        view.endEditing(true)
-//
-//        needingDelegate?.presentNumberPad()
-//        let saveAction = UIAlertAction(title: "Confirm", style: .default) { [self] alert -> Void in
-//            let textFieldInput = alertController.textFields![0] as UITextField
-//
-//            let spentAmountStr = textFieldInput.text!
-//
-//            spentAmount = spentAmountStr.convertToDouble()
-//            viewModel.updateSpentAmount(to: spentAmount)
-//            spentAmountTF.text = spentAmount.addComma()
-//        }
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
-//            (action : UIAlertAction!) -> Void in })
-//
-//        alertController.addAction(cancelAction)
-//        alertController.addAction(saveAction)
-//
-//        self.present(alertController, animated: true)
-//    }
-    
-    
 
     @objc func resetState() {
         viewModel.reset {
             DispatchQueue.main.async {
                 self.personDetailCollectionView.snp.remakeConstraints { make in
-//                    make.leading.equalToSuperview().inset(self.smallPadding * 1.5)
-//                    make.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
                     make.leading.trailing.equalToSuperview()
-//                    make.top.equalTo(self.divider.snp.bottom).offset(30)
                     make.top.equalToSuperview()
 
-//                    make.height.equalTo(self.appliedCellHeight * self.viewModel.personDetails.count)
                     make.height.equalToSuperview()
-//                    make.height.equalTo(100)
                 }
 
 
-//                self.addPersonBtn.snp.makeConstraints { make in
-//                    make.leading.trailing.equalToSuperview().inset(self.smallPadding * 1.5)
-//                    make.height.equalTo(40)
-//                    make.top.equalTo(self.personDetailCollectionView.snp.bottom).offset(20)
-//                }
             }
         }
     }
-    
-//    @objc func dismissTapped() {
-//        addingDelegate?.dismissChildVC()
-//
-//        self.navigationController?.popViewController(animated: true)
-//    }
-    
     
     
     @objc func confirmTapped() {
@@ -546,12 +515,6 @@ class DutchUnitController: NeedingController {
     
     
     @objc func textDidBegin(_ textField: UITextField) {
-//        if textField == spentAmountTF {
-//            print("it's spentAmountTF")
-//        } else if textField == spentPlaceTF {
-//            print("it's spentPlaceTF")
-//        }
-        
         
         if let tf = textField as? PriceTextField {
             print("tag: \(tf.tag)")
@@ -571,18 +534,14 @@ class DutchUnitController: NeedingController {
                 
             case .success(let msg):
                 
-                self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
+                self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
                 
                 DispatchQueue.main.async {
-//                    self.personDetailCollectionView.reloadData()
                     self.personDetailCollectionView.reloadItems(inSection: 0)
-//                    self.personDetailCollectionView.reload
-                    
                     self.moveDownCollectionView()
                 }
                 
                 self.updateWithAnimation()
-               
                 
             case .failure(let errorMsg):
                 print("duplicate flag 3")
@@ -594,7 +553,6 @@ class DutchUnitController: NeedingController {
     private func relocateCollectionView() {
         DispatchQueue.main.async {
             
-//            self.personDetailCollectionView.reloadData()
             self.personDetailCollectionView.reloadItems(inSection: 0)
             
             self.moveDownCollectionView()
@@ -676,13 +634,8 @@ class DutchUnitController: NeedingController {
         let picker = UIDatePicker()
         picker.datePickerMode = .dateAndTime
         picker.preferredDatePickerStyle = .automatic
-//        picker.backgroundColor = .magenta
         picker.contentMode = .left
         picker.sizeThatFits(CGSize(width: 150, height: 40))
-//        picker.sizeToFit()
-//        picker.semanticContentAttribute = .forceRightToLeft
-//        picker.subviews.first?.semanticContentAttribute = .forceRightToLeft
-//        picker.semanticContentAttribute = .forceLeftToRight
         return picker
     }()
     
@@ -693,50 +646,10 @@ class DutchUnitController: NeedingController {
         cv.delegate = self
         cv.dataSource = self
         cv.isScrollEnabled = true
-//        cv.isScrollEnabled = false
         cv.showsVerticalScrollIndicator = true
-//        cv.isHidden = true
         return cv
     }()
     
-    
-    
-//    private let dismissBtn: UIButton = {
-//        let btn = UIButton()
-//        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.tintColor = .black
-//
-//        btn.addSubview(imageView)
-//        imageView.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.centerY.equalToSuperview()
-//            make.height.equalToSuperview()
-//        }
-//
-//        return btn
-//    }()
-    
-//    private let addPersonBtn = UIButton().then {
-//        $0.setTitle("인원 추가", for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
-//        $0.layer.cornerRadius = 8
-//        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
-//    }
-    
-//    private let resetBtn = UIButton().then {
-//        let imgView = UIImageView(image: UIImage(systemName: "arrow.counterclockwise"))
-//        imgView.tintColor = .red
-//        imgView.contentMode = .scaleAspectFit
-//
-//        $0.addSubview(imgView)
-//        imgView.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview().inset(6)
-//        }
-//
-//        $0.layer.cornerRadius = 8
-//        $0.backgroundColor = UIColor(white: 0.88, alpha: 1)
-//    }
     
     private let confirmBtn = UIButton().then {
         $0.setTitle("Confirm", for: .normal)
@@ -747,14 +660,7 @@ class DutchUnitController: NeedingController {
     }
     
     private let bottomContainerView = UIView()
-//        .then {
-//        $0.backgroundColor = .white
-//    }
-//        .then {
-//        $0.backgroundColor = .white
-//    }
     
-    //    private let gradientView = UIView().then {
     private let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 20)).then {
         let colorTop =  UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.0).cgColor
         let colorBottom = UIColor(red: 255.0/255.0, green: 255.5/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
@@ -870,7 +776,7 @@ extension DutchUnitController {
             header.spentAmountTF.delegate = self
             header.spentPlaceTF.delegate = self
             
-//            if dutchUnit == nil {
+                // 처음 생성한 DutchUnit && 처음 화면에 나타날 때
             if dutchUnit == nil && hasLoadedFirst == true {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.needingDelegate?.presentNumberPad()
@@ -878,14 +784,14 @@ extension DutchUnitController {
                     header.spentAmountTF.becomeFirstResponder()
                 }
                 
-                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date())
+                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remaining: "남은 금액: 0원")
                 
                 hasLoadedFirst = false
                 
             } else {
-                let amtString = spentAmount.addComma()
-                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate)
                 
+                let amtString = spentAmount.addComma()
+                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remaining: "남은 금액: 0원")
             }
             
             return header
@@ -898,10 +804,13 @@ extension DutchUnitController {
     
 //    invalidate
     
+    // Header Size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 360)
+//        return CGSize(width: view.frame.width, height: 360)
+        return CGSize(width: view.frame.width, height: 390)
     }
     
+    // Footer Size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 180)
     }
@@ -980,6 +889,7 @@ extension DutchUnitController: UITextFieldDelegate {
             spentPlaceTFJustTapped = true
         }
         
+        // new person name TF
         if textField.tag == 100 {
             addPersonAction(with: textField.text!) // alert's tag
             textField.text = ""

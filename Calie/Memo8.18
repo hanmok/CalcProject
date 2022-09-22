@@ -13,15 +13,7 @@ Gathering 자체를 새로 만드는 버튼이 메인 페이지에 있으면 좋
 
 
 
-
-SideViewController 에서 추가, 이름 편집, 삭제 기능 넣기.
-
-추가 했을 때, 적용이 잘 안됨.. 음....
-
-음.. SideController 에서 눌렀을 때, DutchPayController 의 정보가 업데이트 되지 않음. (연동이 안됨.)
-SideController 에서 이름 바꿔도 DutchPayController 에서 바뀌지 않음.
-SideController 에서 DutchPayController 의 Gathering 지워도 DutchPayController 에는 남아있음. ㅆㅂ
-둘이 싱크 맞춰야함 ... 
+ 
 
 
 
@@ -37,16 +29,42 @@ Currency 별로 다를 수 있으니, 한쪽에 단위를 써놓고 나머지는
 반올림 자릿수 정하기
 
 
-총 금액과 개인이 낸 비용의 합이 안맞을 경우는 ??
-(이미 결제를 한 사람이 삭제될 경우는 ?? )
 
-연속해서 DutchUnit 추가하기 ?? 굳이 ;
 
+
+
+
+9.23
+
+4. 언어
+
+5. 기기별 사이즈 맞추기.
+
+6. 사람 불러오기 ㅋㅋㅋ
+
+
+**************  진행중  ************
+
+1. 사람 제거할 때, 비용이 맞지 않는 문제.?
+sol: a 일단.. 제거하는 과정에서 막아주자. (일단 이거로 선택!)
+     b 제거하면 알아서 totalSpent 도 업데이트 시켜주기.
+   
+   
+2. 전액, 남은 금액 결제
+오.. 기능은 거의 완벽에 가깝게 됨..
+남은 금액이 0원인 경우와 아닌 경우, 버튼 Design 변경 필요.
+아닌 경우 조금 더 누르고 싶게 생긴 버튼으로...
+
+
+3. 참석 / 불참
+
+
+4.
 PersonDetail 에서
-숫자가 매우 높아지면 적절히 처리하기. Crash 발생.
+숫자가 매우 높아지면 적절히 처리하기. Crash 발생. 1000 조단위까지 가능.
 
 
-
+**************************
 
 *********  완료  ************
 
@@ -55,7 +73,6 @@ PersonDetail 에서
 완료 !
 캡쳐할 때 소리나면 좋겠음... 완료 !
 사진첩에도 저장되어야하고..글쎄!
-
 
 
 2.Custom Key 누를 때 Key Color 바꾸기.
@@ -68,12 +85,31 @@ PersonDetail 에서
 
 6. DutchUnit Header 와 함께 업데이트 완료.
 
+7.
+음.. SideController 에서 눌렀을 때, DutchPayController 의 정보가 업데이트 되지 않음. (연동이 안됨.)
+SideController 에서 이름 바꿔도 DutchPayController 에서 바뀌지 않음.
+SideController 에서 DutchPayController 의 Gathering 지워도 DutchPayController 에는 남아있음.
+둘이 싱크 맞춰야함 ...
+
+8.
+SideViewController 에서 추가, 이름 편집, 삭제 기능 넣기.
+
+
+
 **************************
 
 
+
+
+
 ***********  보류  ***********
+
+복사 아이콘을 바꾸면 좋겠다
+
 음.. 어떻게 복사하는지 알려주면 좋을 것 같아
 아니면 어디 부분을 복사할 것인지 ??
 보류 ;;
 1. 정산 결과 2. 개인별 지출 현황 3. 전체 보류;;
+
+(연속해서 DutchUnit 추가하기 ?? 굳이 ;)
 **************************

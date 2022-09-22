@@ -891,4 +891,15 @@ extension DutchpayUnitTest {
             }
         }
     }
+    
+    func test_maxNumber() {
+        let maxInt = Int.max //
+        let maxDouble = Double.greatestFiniteMagnitude //
+        
+//        XCTAssertEqual(Double(100), maxDouble)
+        XCTAssertNotEqual(Double(maxInt), maxDouble)
+        // intDouble: 9.223372036854776e+18
+        // maxDouble: 1.7976931348623157e+308
+//        XCTAssertEqual failed: ("") is not equal to ("")
+    }
 }

@@ -30,10 +30,20 @@ extension String {
         guard let int = Int(self),
               let result = numberFormatter.string(for: int) else {
             print("self: \(self)")
+
+//            return 2100000000
             fatalError("fail to convert str to Int! ", file: #function, line: #line)
+
         }
        
         self = result
+        
+//        if let int = Int(self), let result = numberFormatter.string(for: int) {
+//            self = result
+//        } else {
+//            self = "2,100,000,000"
+//        }
+        
     }
     
     /// Convert formatted String To Double

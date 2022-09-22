@@ -317,10 +317,22 @@ extension DutchService {
         completion(newPerson)
     }
     
-    func removePerson(person: Person, completion: @escaping () -> Void) {
+    func removePerson(person: Person, completion: @escaping (Bool) -> Void) {
         guard let currentGathering = currentGathering else { fatalError() }
-        dutchManager.removePeople(from: currentGathering, removedPeople: [person])
-        completion()
+        
+        var personDetails: [PersonDetail] = []
+        for eachUnit in currentGathering.dutchUnits {
+            personDetails = eachUnit.personDetails.filter { $0.person == person }
+        }
+
+        if personDetails.filter({ $0.spentAmount != 0 }).count != 0 {
+            completion(false)
+        } else {
+            dutchManager.removePeople(from: currentGathering, removedPeople: [person])
+            completion(true)
+        }
+        
+
     }
     
     func update() {

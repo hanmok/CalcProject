@@ -17,7 +17,7 @@ protocol PersonDetailHeaderDelegate: AnyObject {
     func spentAmtTapped()
     func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool)
     func valueUpdated(spentAmount: Double, spentPlace: String)
-    
+    func remainingBtnTapped()
 //    func updateSpentPlace() {
 //
 //    }
@@ -29,6 +29,7 @@ struct PersonHeaderViewModel {
     var spentAmt: String
     var spentPlace: String
     var spentDate: Date
+    var remaining: String
 }
 
 class PersonDetailHeader: UICollectionReusableView {
@@ -65,6 +66,8 @@ class PersonDetailHeader: UICollectionReusableView {
         NotificationCenter.default.addObserver(self, selector: #selector(updateSpentAmt(_:)), name: .updateSpentAmt, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(notifiedOtherViewTapped(_:)), name: .notifyOtherViewTapped, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(remainingPriceChanged), name: .remainingPriceChanged, object: nil)
     }
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
@@ -77,6 +80,15 @@ class PersonDetailHeader: UICollectionReusableView {
         NotificationCenter.default.post(name: .sendHeaderInfoBack, object: nil, userInfo: headerInfoDic)
         
     }
+    
+    @objc func remainingPriceChanged(_ notification: Notification) {
+        
+//        let remainingInfoDic: [AnyHashable: Any] = ["remainingPrice": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
+        guard let remainingInfo = notification.userInfo?["remainingPrice"] as? String else { return }
+        
+        self.remainingPrice.setTitle(remainingInfo, for: .normal)
+    }
+    
     
     @objc func changeStateToActive(_ notification: Notification) {
         print("changeStateToActive called!!")
@@ -94,9 +106,9 @@ class PersonDetailHeader: UICollectionReusableView {
     
     @objc func updateSpentAmt(_ notification: Notification) {
         print("changeStateToActive called!!")
-        guard let amtInput = notification.userInfo?["spentAmt"] as? Double else {return }
+        guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
-                spentAmountTF.text = amtInput.addComma()
+        spentAmountTF.text = amtInput.addComma()
     }
     
     
@@ -106,7 +118,7 @@ class PersonDetailHeader: UICollectionReusableView {
         spentAmountTF.text = viewModel.spentAmt
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
-        
+        remainingPrice.setTitle(viewModel.remaining, for: .normal)
     }
     
     private func setupAddTargets() {
@@ -118,6 +130,8 @@ class PersonDetailHeader: UICollectionReusableView {
         spentPlaceTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
         
         spentAmountTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
+        
+        remainingPrice.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
         
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
@@ -134,7 +148,28 @@ class PersonDetailHeader: UICollectionReusableView {
         headerDelegate?.dismissAcion()
     }
     
+    @objc func remainingPriceTapped(_ sender: UIButton) {
+//        headerDelegate
+        print("updateRemainingPrice noti called ")
+        NotificationCenter.default.post(name: .showRemainingPriceBtn, object: nil)
+    }
     
+    // shouln't be btn
+    private let attendedLabel = UILabel().then {
+        $0.text = "attended"
+        $0.textColor = UIColor(white: 0.28, alpha: 1)
+        $0.textAlignment = .center
+    }
+    
+    private let remainingPrice = UIButton().then {
+        $0.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+        $0.layer.cornerRadius = 8
+        
+//        $0.setTitle(<#T##title: String?##String?#>, for: <#T##UIControl.State#>)
+        
+        $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
+        
+    }
     
     private func setupLayout() {
         
@@ -144,7 +179,8 @@ class PersonDetailHeader: UICollectionReusableView {
             spentAmountLabel, spentAmountTF, currenyLabel,
             spentDateLabel,
             spentDatePicker,
-            divider
+            divider,
+            remainingPrice, attendedLabel
         ].forEach { v in
             self.addSubview(v)
         }
@@ -211,6 +247,20 @@ class PersonDetailHeader: UICollectionReusableView {
             make.width.equalTo(self.snp.width).offset(-10)
             make.height.equalTo(1)
             make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
+        }
+        
+        attendedLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.width.equalTo(90)
+            make.top.equalTo(divider.snp.bottom).offset(10)
+            make.bottom.equalToSuperview()
+        }
+        
+        remainingPrice.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.centerY.equalTo(attendedLabel.snp.centerY)
+            make.trailing.equalTo(attendedLabel.snp.leading).offset(-10)
+            make.height.equalTo(30)
         }
     }
     
@@ -307,12 +357,7 @@ class PersonDetailHeader: UICollectionReusableView {
 extension PersonDetailHeader: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        
-//        let spentAmt = spentAmountTF.text!.convertToDouble()
-//        let spentPlace = spentPlaceTF.text!
-//        headerDelegate?.valueUpdated(spentAmount: spentAmt, spentPlace: spentPlace)
-//
+
         return true
     }
 }
@@ -330,6 +375,12 @@ public enum NotificationKeys {
     static let notifyOtherViewTapped = Notification.Name(rawValue: "notifyOtherViewTapped")
     
     static let sendHeaderInfoBack = Notification.Name(rawValue: "sendHeaderInfoBack")
+    
+    static let showRemainingPriceBtn = Notification.Name(rawValue: "showRemainingPriceBtn")
+    
+    static let hideRemainingPriceBtn = Notification.Name(rawValue: "hideRemainingPriceBtn")
+    
+    static let remainingPriceChanged = Notification.Name(rawValue: "remainingPriceChanged")
 }
 
 
@@ -344,6 +395,12 @@ extension Notification.Name {
     static let notifyOtherViewTapped = NotificationKeys.notifyOtherViewTapped
     
     static let sendHeaderInfoBack = NotificationKeys.sendHeaderInfoBack
+    
+    static let showRemainingPriceBtn = NotificationKeys.showRemainingPriceBtn
+    
+    static let hideRemainingPriceBtn = NotificationKeys.hideRemainingPriceBtn
+    
+    static let remainingPriceChanged = NotificationKeys.remainingPriceChanged
 }
 
 
