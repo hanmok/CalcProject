@@ -138,9 +138,10 @@ class DutchUnitController: NeedingController {
                 sum += value2.value
             }
             let diff = spentAmount - sum
-            let diffString = "남은 금액: " +  diff.addComma() + "원"
+//            let diffString = "남은 금액: " +  diff.addComma() + "원"
             
-            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+//            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+            let dic: [AnyHashable: Any] = ["remainingPrice": diff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
             sumOfIndividual = sum
@@ -159,9 +160,10 @@ class DutchUnitController: NeedingController {
             updateConditionState(condition)
             
             let diff = newValue - sumOfIndividual
-            let diffString = "남은 금액: " + diff.addComma() + "원"
+//            let diffString = "남은 금액: " + diff.addComma() + "원"
             
-            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+//            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+            let dic: [AnyHashable: Any] = ["remainingPrice": diff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
             print("condition flag 4, spentAmount updated \(newValue), sumOfIndividual: \(sumOfIndividual)")
@@ -337,6 +339,8 @@ class DutchUnitController: NeedingController {
     }
     
     @objc func otherViewTapped() {
+        
+        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
         
         NotificationCenter.default.post(name: .changePriceStateIntoInactive, object: nil)
         
@@ -652,7 +656,8 @@ class DutchUnitController: NeedingController {
     
     
     private let confirmBtn = UIButton().then {
-        $0.setTitle("Confirm", for: .normal)
+
+        $0.setTitle(ASD.confirm.localized, for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
         $0.layer.cornerRadius = 10
@@ -784,14 +789,14 @@ extension DutchUnitController {
                     header.spentAmountTF.becomeFirstResponder()
                 }
                 
-                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remaining: "남은 금액: 0원")
+                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remainder: 0)
                 
                 hasLoadedFirst = false
                 
             } else {
                 
                 let amtString = spentAmount.addComma()
-                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remaining: "남은 금액: 0원")
+                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remainder: 0)
             }
             
             return header

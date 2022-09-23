@@ -29,7 +29,8 @@ struct PersonHeaderViewModel {
     var spentAmt: String
     var spentPlace: String
     var spentDate: Date
-    var remaining: String
+//    var remainder: String
+    var remainder: Double
 }
 
 class PersonDetailHeader: UICollectionReusableView {
@@ -49,6 +50,8 @@ class PersonDetailHeader: UICollectionReusableView {
     private let emptyView = UIView().then {
         $0.backgroundColor = .yellow
     }
+    
+    var remainingBtnTapped: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,9 +87,25 @@ class PersonDetailHeader: UICollectionReusableView {
     @objc func remainingPriceChanged(_ notification: Notification) {
         
 //        let remainingInfoDic: [AnyHashable: Any] = ["remainingPrice": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
-        guard let remainingInfo = notification.userInfo?["remainingPrice"] as? String else { return }
         
-        self.remainingPrice.setTitle(remainingInfo, for: .normal)
+        guard let remainderInfo = notification.userInfo?["remainingPrice"] as? Double else { return }
+        
+        let remainderString = "남은 금액: " +  remainderInfo.addComma() + "원"
+        
+        self.remainingPriceBtn.setTitle(remainderString, for: .normal)
+        
+        self.remainingPriceBtn.isUserInteractionEnabled = remainderInfo != 0
+        
+        if remainderInfo >= 0.009 {
+            // enabled // 디자인이 좀 별로임.
+            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+            self.remainingPriceBtn.layer.borderWidth = 1
+            self.remainingPriceBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+        } else {
+            // disabled 이건 현재 괜찮은데..
+            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
+            
+        }
     }
     
     
@@ -118,7 +137,21 @@ class PersonDetailHeader: UICollectionReusableView {
         spentAmountTF.text = viewModel.spentAmt
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
-        remainingPrice.setTitle(viewModel.remaining, for: .normal)
+        
+        let remainingStr = "남은 금액: \(viewModel.remainder.addComma())원"
+
+        remainingPriceBtn.setTitle(remainingStr, for: .normal)
+        
+        if viewModel.remainder >= 0.009 { // != 0 for Double
+            self.remainingPriceBtn.isUserInteractionEnabled = true
+            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+            self.remainingPriceBtn.layer.borderWidth = 1
+            self.remainingPriceBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+        } else {
+            self.remainingPriceBtn.isUserInteractionEnabled = false
+
+            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
+        }
     }
     
     private func setupAddTargets() {
@@ -131,7 +164,7 @@ class PersonDetailHeader: UICollectionReusableView {
         
         spentAmountTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
         
-        remainingPrice.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
+        remainingPriceBtn.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
         
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
@@ -150,25 +183,26 @@ class PersonDetailHeader: UICollectionReusableView {
     
     @objc func remainingPriceTapped(_ sender: UIButton) {
 //        headerDelegate
-        print("updateRemainingPrice noti called ")
-        NotificationCenter.default.post(name: .showRemainingPriceBtn, object: nil)
+        if remainingBtnTapped {
+            print("updateRemainingPrice noti called ")
+            NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+        } else {
+            NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
+        }
+        remainingBtnTapped.toggle()
     }
     
     // shouln't be btn
     private let attendedLabel = UILabel().then {
-        $0.text = "attended"
+        $0.text = ASD.attended.localized
         $0.textColor = UIColor(white: 0.28, alpha: 1)
         $0.textAlignment = .center
     }
     
-    private let remainingPrice = UIButton().then {
+    private let remainingPriceBtn = UIButton().then {
         $0.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
         $0.layer.cornerRadius = 8
-        
-//        $0.setTitle(<#T##title: String?##String?#>, for: <#T##UIControl.State#>)
-        
         $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
-        
     }
     
     private func setupLayout() {
@@ -180,7 +214,7 @@ class PersonDetailHeader: UICollectionReusableView {
             spentDateLabel,
             spentDatePicker,
             divider,
-            remainingPrice, attendedLabel
+            remainingPriceBtn, attendedLabel
         ].forEach { v in
             self.addSubview(v)
         }
@@ -256,7 +290,7 @@ class PersonDetailHeader: UICollectionReusableView {
             make.bottom.equalToSuperview()
         }
         
-        remainingPrice.snp.makeConstraints { make in
+        remainingPriceBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.centerY.equalTo(attendedLabel.snp.centerY)
             make.trailing.equalTo(attendedLabel.snp.leading).offset(-10)
@@ -293,9 +327,9 @@ class PersonDetailHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let currenyLabel = UILabel().then { $0.text = "원" }
+    private let currenyLabel = UILabel().then { $0.text = ASD.USD.localized }
     
-    private let spentPlaceLabel = UILabel().then { $0.text = "지출 항목" }
+    private let spentPlaceLabel = UILabel().then { $0.text = ASD.spentFor.localized }
     
     
 //    private let spentPlaceTF =
@@ -313,9 +347,10 @@ class PersonDetailHeader: UICollectionReusableView {
         $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
     }
     
-    private let spentAmountLabel = UILabel().then { $0.text = "지출 금액"}
+    private let spentAmountLabel = UILabel().then { $0.text = ASD.SpentAmt.localized}
     
-    public let spentAmountTF = PriceTextField(placeHolder: "비용").then {
+//    public let spentAmountTF = PriceTextField(placeHolder: "비용").then {
+    public let spentAmountTF = PriceTextField().then {
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
         $0.isTotalPrice = true
@@ -323,7 +358,7 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     private let spentDateLabel = UILabel().then {
-        $0.text = "지출 일시"
+        $0.text = ASD.SpentDate.localized
     }
     
     private let spentDatePicker: UIDatePicker = {
@@ -396,9 +431,9 @@ extension Notification.Name {
     
     static let sendHeaderInfoBack = NotificationKeys.sendHeaderInfoBack
     
-    static let showRemainingPriceBtn = NotificationKeys.showRemainingPriceBtn
+    static let showRemainingPriceSelectors = NotificationKeys.showRemainingPriceBtn
     
-    static let hideRemainingPriceBtn = NotificationKeys.hideRemainingPriceBtn
+    static let hideRemainingPriceSelectors = NotificationKeys.hideRemainingPriceBtn
     
     static let remainingPriceChanged = NotificationKeys.remainingPriceChanged
 }

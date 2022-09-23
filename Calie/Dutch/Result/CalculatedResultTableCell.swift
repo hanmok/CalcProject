@@ -22,8 +22,10 @@ class CalculatedResultTableCell: UITableViewCell {
     
     
     private let exchangeTextLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 22)
+//        $0.font = UIFont.systemFont(ofSize: 22)
+        
 //        $0.backgroundColor = .magenta
+        $0.sizeToFit()
     }
     
     private func configureLayout() {
@@ -40,43 +42,40 @@ class CalculatedResultTableCell: UITableViewCell {
         
         
         if userDefault.isKorean {
-        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
-
-        var attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.systemFont(ofSize: 22)])
-        
-        let postPosition = getCorrectPostPosition(from: from)
-        
-        attributedStr.append(NSAttributedString(string: postPosition, attributes: [.font:UIFont.systemFont(ofSize: 18)]))
-        
-        attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [.font:UIFont.systemFont(ofSize: 22)]))
-        
-        attributedStr.append(NSAttributedString(string: "에게", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
-
-        attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
-
-        attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
-        
+            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
+            
+            let attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
+            
+            let postPosition = getCorrectPostPosition(from: from)
+            
+            attributedStr.append(NSAttributedString(string: postPosition, attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
+            
+            attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            
+            attributedStr.append(NSAttributedString(string: "에게", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
+            
+//            attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+            attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            
+            attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
+            
             exchangeTextLabel.attributedText = attributedStr
+            
         } else {
             let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: false)
-
-            var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.systemFont(ofSize: 22)])
-
-            attributedStr.append(NSAttributedString(string: " should send ", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
             
-            attributedStr.append(NSAttributedString(string: convertedAmt , attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+            var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
             
-            attributedStr.append(NSAttributedString(string: " to ", attributes: [.font:UIFont.systemFont(ofSize: 18)]))
+            attributedStr.append(NSAttributedString(string: " should send ", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-            attributedStr.append(NSAttributedString(string: to, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
+            attributedStr.append(NSAttributedString(string: convertedAmt , attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            
+            attributedStr.append(NSAttributedString(string: " to ", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
+            
+            attributedStr.append(NSAttributedString(string: to, attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
 
             exchangeTextLabel.attributedText = attributedStr
         }
-        
-        
-        
-
-        
     }
     
     private func setupLayout() {

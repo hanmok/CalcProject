@@ -51,7 +51,7 @@ class PersonDetailCell: UICollectionViewCell {
 //        $0.setTitle("전액", for: .normal)
 //        $0.setTitleColor(.black, for: .normal)
         
-        $0.backgroundColor = UIColor(white: 240 / 255, alpha: 1)
+        $0.backgroundColor = UIColor(white: 240 / 255, alpha: 0.8)
         $0.isHidden = true
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(white: 200/255, alpha: 1).cgColor
@@ -67,7 +67,7 @@ class PersonDetailCell: UICollectionViewCell {
         print("fullPrice Tapped!")
         delegate?.fullPriceAction(idx: sender.tag)
         // TODO: Post to hide fullPrices
-        NotificationCenter.default.post(name: .hideRemainingPriceBtn, object: nil)
+        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
@@ -102,11 +102,14 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceBtn, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceBtn, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceSelectors, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceSelectors, object: nil)
     }
     
+    //MARK: -  ViewModel 을 바꿔주는 주기를 알아야함.. 그렇지 않으면 해당 조건문이 소용이 없다.
     @objc func hideFullPriceBtn() {
         if let viewModel = viewModel, viewModel.isAttended {
             fullPriceBtn.isHidden = true

@@ -160,7 +160,7 @@ class SideViewController: UIViewController {
     }()
     
     private let sideLabel = UILabel().then {
-        $0.text = "지난 모임"
+        $0.text = ASD.gatheringRecord.localized
         $0.font = UIFont.systemFont(ofSize: 18)
         $0.textColor = .black
         $0.textAlignment = .left

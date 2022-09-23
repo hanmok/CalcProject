@@ -574,7 +574,7 @@ class DutchpayController: UIViewController {
     
     private let calculateBtn = UIButton().then {
         
-        let attr = NSMutableAttributedString(string: "정산하기", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold)])
+        let attr = NSMutableAttributedString(string: ASD.calculate.localized, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold)])
         $0.setAttributedTitle(attr, for: .normal)
         $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
         $0.layer.cornerRadius = 8

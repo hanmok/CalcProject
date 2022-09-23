@@ -25,10 +25,11 @@ class AttendingButton: UIButton {
         let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "rectangle")
         
 //        let color: UIColor = condition ? .systemBlue : .systemRed
-        let color: UIColor = condition ? .systemBlue : .gray
+        let color: UIColor = condition ? .systemBlue : UIColor(white: 0.8, alpha: 1)
         
         innerImageView.image = image
         innerImageView.tintColor = color
+        innerImageView.contentMode = .scaleAspectFit
     }
 
     init( _ attending: Bool = true, _ frame: CGRect = .zero) {

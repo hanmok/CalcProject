@@ -244,7 +244,11 @@ class ParticipantsController: UIViewController{
     }
     
     private let titleLabel = UILabel().then {
-        let attrTitle = NSAttributedString(string: "참가 인원", attributes: [
+//        let attrTitle = NSAttributedString(string: "참가 인원", attributes: [
+//            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+//        ])
+        
+        let attrTitle = NSAttributedString(string: ASD.attendances.localized, attributes: [
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ])
         

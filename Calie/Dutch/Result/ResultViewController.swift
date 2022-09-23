@@ -117,7 +117,7 @@ class ResultViewController: UIViewController {
     private let briefHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width - 16, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: "개인별 지출 현황", attributes: [.font: UIFont.systemFont(ofSize: 22, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: ASD.personalResult.localized, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
         }
         
         $0.addSubview(infoLabel)
@@ -143,12 +143,11 @@ class ResultViewController: UIViewController {
     private let calculatedResultHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width - 100, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: "정산 결과", attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: ASD.overallResult.localized, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
         }
         
         $0.addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
-//            make.leading.top.trailing.bottom.equalToSuperview()
             make.leading.top.trailing.equalToSuperview()
             make.height.equalToSuperview()
         }
@@ -157,7 +156,6 @@ class ResultViewController: UIViewController {
         let bottomLineView = UIView().then {
             $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
             $0.layer.cornerRadius = 2
-            
             $0.clipsToBounds = true
         }
         
@@ -175,11 +173,8 @@ class ResultViewController: UIViewController {
         let calculatedTableHeight: CGFloat = CGFloat(viewModel.calculatedResultTuples.count * Int(self.calculatedRowHeight) + Int(self.headerHeight))
         let personalTableHeight: CGFloat = CGFloat(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         
-//        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 290)
+        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 84 + 30 + 30 + 60)
         
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: calculatedTableHeight + personalTableHeight + 84 + 30 + 30)
-        
-//        scrollView.contentSize = CGSize(width: 1000, height: 3000)
     }
     
     private func setupLayout() {
@@ -194,7 +189,6 @@ class ResultViewController: UIViewController {
         [
             dismissBtn, titleLabel, takingCaptureBtn, copyBtn,
             briefInfoTableView,
-//            dividerView,
             calculatedInfoTableView
         ].forEach { self.scrollView.addSubview($0)}
         
@@ -236,7 +230,7 @@ class ResultViewController: UIViewController {
         briefInfoTableView.snp.makeConstraints { make in
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(40)
+            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(100)
             make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
     }
@@ -280,7 +274,7 @@ class ResultViewController: UIViewController {
     // MARK: - UI Properties
     
     private let titleLabel = UILabel().then {
-        $0.text = "정산 결과"
+        $0.text = ASD.overallResult.localized
         $0.textAlignment = .center
         $0.textColor = .black
         $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -365,9 +359,9 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
         var ret: String
         
         if userDefaultSetup.isKorean {
-         ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
+            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
         } else {
-         ret = from + " should send " + convertedAmt + " to " + to
+            ret = from + " should send " + convertedAmt + " to " + to
         }
         
         return ret

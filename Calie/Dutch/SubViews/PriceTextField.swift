@@ -39,6 +39,7 @@ class PriceTextField: UITextField {
         setupLayout()
         setLeftPaddingPoints(5)
         setRightPaddingPoints(5)
+        self.textAlignment = .right
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
     

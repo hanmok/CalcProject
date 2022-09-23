@@ -39,3 +39,43 @@
 "general" = "일반";
 "rate" = "평가하러 가기";
 "review" = "리뷰하러 가기";
+
+// ResultController
+
+// 정산 결과
+
+"Overall Result" = "정산결과"; // 수정할 것.
+
+"Personal Result" = "개인별 지출 현황"; // 수정할 것.
+
+"expenses" = "지출";
+"Get" = "받기"; // 수정할 것.
+"Send" = "보내기"; // 수정할 것.
+"send" = "보내기";
+//"__ has spent $50,000. __ need to get $25,000";
+
+//"__ has spent no money. __ need to send $25,000";
+
+" " = "항목";
+
+"Gathering Record" = "지난 모임";
+
+"Attendances" = "참가 인원";
+
+"Calculate" = "정산하기"; // 수정할 것.
+"remainder" = "남은 금액";
+"Spent for" = "지출 항목"; // 수정할 것. 아래와 일관성 맞지 않음.
+"Spent Amt" = "지출 금액";
+
+"Spent Date" = "지출 일시";
+
+"Add Person" = "인원 추가";
+"attended" = "참가";
+
+"Gathering" = "모임";
+
+"USD" = "원";
+
+
+
+"Confirm" = "완료";

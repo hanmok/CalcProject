@@ -29,9 +29,8 @@ class PersonDetailFooter: UICollectionReusableView {
     weak var footerDelgate: PersonDetailFooterDelegate?
     
     private let addPersonBtn = UIButton().then {
-        $0.setTitle("인원 추가", for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
-//        $0.setTitleColor(<#T##color: UIColor?##UIColor?#>, for: <#T##UIControl.State#>)
+        $0.setTitle(ASD.AddPerson.localized, for: .normal)
+
         let titleColor = UIColor(white: 0.2, alpha: 1)
         $0.setTitleColor(titleColor, for: .normal)
         $0.layer.cornerRadius = 8

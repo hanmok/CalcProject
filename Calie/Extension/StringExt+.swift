@@ -27,22 +27,22 @@ extension String {
         
         guard self != "" else { return }
         
-        guard let int = Int(self),
-              let result = numberFormatter.string(for: int) else {
-            print("self: \(self)")
-
-//            return 2100000000
-            fatalError("fail to convert str to Int! ", file: #function, line: #line)
-
-        }
-       
-        self = result
-        
-//        if let int = Int(self), let result = numberFormatter.string(for: int) {
-//            self = result
-//        } else {
-//            self = "2,100,000,000"
+//        guard let int = Int(self),
+//              let result = numberFormatter.string(for: int) else {
+//            print("self: \(self)")
+//
+//            //            return 2100000000
+//            fatalError("fail to convert str to Int! ", file: #function, line: #line)
+//
 //        }
+       
+//        self = result
+        
+        if let int = Int(self), let result = numberFormatter.string(for: int) {
+            self = result
+        } else {
+            self = Int.maxNum.addCommas()
+        }
         
     }
     
@@ -104,5 +104,20 @@ extension String {
         static let spentAmount = "spentAmount"
         static let isAttended = "isAttended"
         static let person = "person"
+    }
+}
+
+
+
+
+extension Double {
+    static var maxNum: Double {
+        return Double(1_000_000_000_000_000)
+    }
+}
+
+extension Int {
+    static var maxNum: Int {
+        return 1_000_000_000_000_000
     }
 }
