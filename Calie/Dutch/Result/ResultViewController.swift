@@ -100,7 +100,8 @@ class ResultViewController: UIViewController {
     }
     
     private let copyBtn = UIButton().then {
-        let imageView = UIImageView(image: UIImage(systemName: "doc.on.doc.fill")!)
+//        let imageView = UIImageView(image: UIImage(systemName: "doc.on.doc.fill")!)
+        let imageView = UIImageView(image: UIImage(systemName: "doc.on.clipboard")!)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .black
         $0.addSubview(imageView)
