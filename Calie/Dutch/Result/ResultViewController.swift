@@ -434,15 +434,13 @@ extension ResultViewController {
                 let filename = getDocumentsDirectory().appendingPathComponent("copy.png")
                 
                 do {
+                    
                     try data.write(to: filename)
                     let activityController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
                     
-//                    indicator.stopAnimating()
-                    
-                    Timer.scheduledTimer(withTimeInterval: 0.53, repeats: false) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.53) {
                         self.present(activityController, animated: true, completion: nil)
                     }
-
                     
                 } catch let error {
                     print("error saving file \(error.localizedDescription)")
@@ -487,7 +485,7 @@ extension ResultViewController {
         briefInfoTableView.snp.updateConstraints { make in
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(40)
+            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(100)
             make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
     }
@@ -503,7 +501,7 @@ extension ResultViewController {
         briefInfoTableView.snp.updateConstraints { make in
             make.leading.equalTo(scrollView.snp.leading).offset(16)
             make.width.greaterThanOrEqualTo(scrollView.snp.width).offset(-32)
-            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(40)
+            make.top.equalTo(calculatedInfoTableView.snp.bottom).offset(100)
             make.height.equalTo(viewModel.overallPayInfos.count * Int(self.briefRowHeight) + Int(self.headerHeight))
         }
     }

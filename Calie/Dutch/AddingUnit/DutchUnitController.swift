@@ -348,6 +348,8 @@ class DutchUnitController: NeedingController {
         
         print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
         
+//        DispatchQueue.asyncAfter(DispatchQueue()
+        
         if spentPlaceTFJustTapped == false {
             
             dismissKeyboard()
