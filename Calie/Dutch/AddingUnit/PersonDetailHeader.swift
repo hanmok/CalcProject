@@ -37,6 +37,7 @@ class PersonDetailHeader: UICollectionReusableView {
     
     var viewModel: PersonHeaderViewModel? {
         didSet {
+            print("personDetailHeader viewModel changed") // not called!
             configureLayout()
         }
     }
@@ -71,6 +72,12 @@ class PersonDetailHeader: UICollectionReusableView {
         NotificationCenter.default.addObserver(self, selector: #selector(notifiedOtherViewTapped(_:)), name: .notifyOtherViewTapped, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(remainingPriceChanged), name: .remainingPriceChanged, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toggleRemainingBtnTapped), name: .hideRemainingPriceSelectors, object: nil)
+    }
+    
+    @objc func toggleRemainingBtnTapped(_ notification: Notification) {
+        remainingBtnTapped = false
     }
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
@@ -81,7 +88,6 @@ class PersonDetailHeader: UICollectionReusableView {
         let headerInfoDic: [AnyHashable: Any] = ["spentPlace": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
         
         NotificationCenter.default.post(name: .sendHeaderInfoBack, object: nil, userInfo: headerInfoDic)
-        
     }
     
     @objc func remainingPriceChanged(_ notification: Notification) {
@@ -182,15 +188,19 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     @objc func remainingPriceTapped(_ sender: UIButton) {
-//        headerDelegate
+        print("remainingPriceTapped! state: \(remainingBtnTapped)")
+        
         if remainingBtnTapped {
             print("updateRemainingPrice noti called ")
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+            remainingBtnTapped = false
         } else {
             NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
+            remainingBtnTapped = true
         }
-        remainingBtnTapped.toggle()
     }
+    
+    
     
     // shouln't be btn
     private let attendedLabel = UILabel().then {
