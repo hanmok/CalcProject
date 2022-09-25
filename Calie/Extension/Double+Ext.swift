@@ -60,4 +60,6 @@ extension Double {
 
         return result
     }
+    
+    static let minimumValue = 0.009
 }

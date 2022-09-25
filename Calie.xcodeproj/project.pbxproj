@@ -88,6 +88,7 @@
 		9AADB3452895E5E400DAD657 /* DutchpayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */; };
 		9AADB3472895F10A00DAD657 /* DutchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB3462895F10A00DAD657 /* DutchService.swift */; };
 		9AADB34D2896C2BC00DAD657 /* DutchUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */; };
+		9AAFA35028E05C950038FBAE /* CAGradientLayerExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAFA34F28E05C950038FBAE /* CAGradientLayerExt+.swift */; };
 		9AB1BC2E28A00C4A002F35AD /* ToSolve in Resources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2D28A00C4A002F35AD /* ToSolve */; };
 		9AB1BC3028A0311F002F35AD /* ParticipantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */; };
 		9AB1BC3328A2D5CF002F35AD /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */; };
@@ -230,6 +231,7 @@
 		9AADB3442895E5E400DAD657 /* DutchpayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchpayViewModel.swift; sourceTree = "<group>"; };
 		9AADB3462895F10A00DAD657 /* DutchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchService.swift; sourceTree = "<group>"; };
 		9AADB34C2896C2BC00DAD657 /* DutchUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DutchUnitViewModel.swift; sourceTree = "<group>"; };
+		9AAFA34F28E05C950038FBAE /* CAGradientLayerExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayerExt+.swift"; sourceTree = "<group>"; };
 		9AB1BC2D28A00C4A002F35AD /* ToSolve */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToSolve; sourceTree = "<group>"; };
 		9AB1BC2F28A0311F002F35AD /* ParticipantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsViewModel.swift; sourceTree = "<group>"; };
 		9AB1BC3228A2D5CF002F35AD /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				9A083FF024CCDCC3001057D2 /* UIDevice+Ext.swift */,
 				9AADB342288C4B8300DAD657 /* Double+Ext.swift */,
 				9AB1BC3C28AEE8F3002F35AD /* UIBezierPathExt+.swift */,
+				9AAFA34F28E05C950038FBAE /* CAGradientLayerExt+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				9A07FF3F280DC9C2007110D8 /* DutchpayController.swift in Sources */,
 				9A083FE324CCDC7B001057D2 /* HistoryRecord.swift in Sources */,
 				9A083FDF24CCDC66001057D2 /* RealmService.swift in Sources */,
+				9AAFA35028E05C950038FBAE /* CAGradientLayerExt+.swift in Sources */,
 				9A2DBC012820698F00CF4E86 /* PersonDetailCell.swift in Sources */,
 				9AADB3452895E5E400DAD657 /* DutchpayViewModel.swift in Sources */,
 				9AC3CC632819999C00C9A37F /* DutchUnitController.swift in Sources */,

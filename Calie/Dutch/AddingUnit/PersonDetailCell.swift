@@ -48,14 +48,33 @@ class PersonDetailCell: UICollectionViewCell {
     public let attendingBtn = AttendingButton()
     
     public let fullPriceBtn = UIButton().then {
-//        $0.setTitle("전액", for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
         
-        $0.backgroundColor = UIColor(white: 240 / 255, alpha: 0.8)
+        $0.backgroundColor = UIColor(white: 220.0 / 255.0, alpha: 0.95)
         $0.isHidden = true
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(white: 200/255, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor(white: 200.0/255.0, alpha: 1).cgColor
         $0.layer.cornerRadius = 8
+        
+        let imgView = UIImageView()
+
+        imgView.image = UIImage(systemName: "checkmark")
+
+        imgView.tintColor = UIColor(white: 175.0 / 255.0, alpha: 1)
+        imgView.contentMode = .scaleAspectFit
+        $0.addSubview(imgView)
+        imgView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalToSuperview().inset(3)
+            make.width.equalToSuperview()
+        }
+    }
+    
+    private let checkMark = UIImageView().then {
+        $0.image = UIImage(named: "checkmark")
+//        $0.tintColor = UIColor(white: 0.186 / 0.255, alpha: 1)
+        $0.tintColor = .magenta
+        $0.contentMode = .scaleAspectFit
+        
     }
 
     private func setupTargets() {
@@ -157,6 +176,14 @@ class PersonDetailCell: UICollectionViewCell {
             make.leading.equalTo(spentAmountTF.snp.leading)
             make.trailing.equalTo(currencyLabel.snp.trailing)
             make.top.bottom.equalToSuperview()
+        }
+        
+        fullPriceBtn.addSubview(checkMark)
+        checkMark.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalToSuperview()
+//            make.width.equalTo(fullPriceBtn.snp.height)
+            make.width.equalTo(30)
         }
     }
 }

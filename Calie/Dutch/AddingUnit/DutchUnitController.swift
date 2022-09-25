@@ -369,11 +369,6 @@ class DutchUnitController: NeedingController {
                 print("selected flag 1, updated row: \(selectedRow)")
             } else {
                 
-//                textFieldShouldReturn(<#T##textField: UITextField##UITextField#>)
-                
-//                spentAmountTF.backgroundColor = .magenta
-//                spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
-//                spentAmountTF.textColor = .black
                 
                 print("selected flag 2")
             }

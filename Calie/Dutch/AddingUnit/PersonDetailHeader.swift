@@ -42,6 +42,14 @@ class PersonDetailHeader: UICollectionReusableView {
         }
     }
     
+    var gradientLayer: CAGradientLayer?
+    
+    var remainder = 0.0 {
+        didSet {
+            self.layoutSubviews()
+        }
+    }
+    
     static let headerIdentifier = "HeaderIdentifier"
     
     weak var headerDelegate: PersonDetailHeaderDelegate?
@@ -52,7 +60,7 @@ class PersonDetailHeader: UICollectionReusableView {
         $0.backgroundColor = .yellow
     }
     
-    var remainingBtnTapped: Bool = false
+    var remainderBtnTapped: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,8 +70,44 @@ class PersonDetailHeader: UICollectionReusableView {
         setupNotification()
     }
     
+//    override viewd
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        
+        print("layoutSublayers called")
+
+        if remainder >= Double.minimumValue {
+            print("layout flag 1")
+            
+            gradientLayer?.removeFromSuperlayer()
+            
+            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 1).cgColor,
+                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 1).cgColor
+            ], type: .axial)
+            guard let gradientLayer = gradientLayer else { return }
+            gradientLayer.frame = remainderBtn.bounds
+            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+            
+        } else {
+            gradientLayer?.removeFromSuperlayer()
+
+            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+                UIColor(white: 0.4, alpha: 0.5).cgColor,
+                UIColor(white: 0.4, alpha: 0.5).cgColor
+            ], type: .axial)
+            guard let gradientLayer = gradientLayer else { return }
+
+            gradientLayer.frame = remainderBtn.bounds
+            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+        }
+    }
+    
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(changeStateToActive(_:)), name: .changePriceStateIntoActive, object: nil)
+        
+        self.layoutSubviews()
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeStateToInactive(_:)), name: .changePriceStateIntoInactive, object: nil)
         
@@ -77,7 +121,7 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     @objc func toggleRemainingBtnTapped(_ notification: Notification) {
-        remainingBtnTapped = false
+        remainderBtnTapped = false
     }
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
@@ -96,22 +140,31 @@ class PersonDetailHeader: UICollectionReusableView {
         
         guard let remainderInfo = notification.userInfo?["remainingPrice"] as? Double else { return }
         
-        let remainderString = "남은 금액: " +  remainderInfo.addComma() + "원"
+        remainder = remainderInfo
         
-        self.remainingPriceBtn.setTitle(remainderString, for: .normal)
+        let remainderString = remainderInfo.addComma() + "원 "
         
-        self.remainingPriceBtn.isUserInteractionEnabled = remainderInfo != 0
+        self.remainderBtn.setTitle(remainderString, for: .normal)
+        
+        
+        self.remainderBtn.isUserInteractionEnabled = remainderInfo != 0
         
         if remainderInfo >= 0.009 {
             // enabled // 디자인이 좀 별로임.
-            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
-            self.remainingPriceBtn.layer.borderWidth = 1
-            self.remainingPriceBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+//            self.remainderBtn.backgroundColor = .orange
+//            self.remainderBtn.layer.borderWidth = 1
+            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
         } else {
-            // disabled 이건 현재 괜찮은데..
-            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
+//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
+//            self.remainderBtn.backgroundColor = .brown
+            self.remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
             
         }
+        
+        remainderBtn.setTitleColor(.black, for: .normal)
+        
+        self.layoutSubviews()
     }
     
     
@@ -124,7 +177,6 @@ class PersonDetailHeader: UICollectionReusableView {
     // TODO: Add Animation
     @objc func changeStateToInactive(_ notification: Notification) {
         print("changeStateToActive called!!")
-        
         spentAmountTF.textColor = .black
         spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
     }
@@ -138,26 +190,57 @@ class PersonDetailHeader: UICollectionReusableView {
     
     
     private func configureLayout() {
+        print("configureLayout called")
         guard let viewModel = viewModel else { return }
         
         spentAmountTF.text = viewModel.spentAmt
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
         
-        let remainingStr = "남은 금액: \(viewModel.remainder.addComma())원"
+        let remainingStr =  viewModel.remainder.addComma() + "원 "
 
-        remainingPriceBtn.setTitle(remainingStr, for: .normal)
+        remainderBtn.setTitle(remainingStr, for: .normal)
         
         if viewModel.remainder >= 0.009 { // != 0 for Double
-            self.remainingPriceBtn.isUserInteractionEnabled = true
-            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
-            self.remainingPriceBtn.layer.borderWidth = 1
-            self.remainingPriceBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
-        } else {
-            self.remainingPriceBtn.isUserInteractionEnabled = false
+            self.remainderBtn.isUserInteractionEnabled = true
+//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+//            self.remainderBtn.backgroundColor = .magenta
+            
+            gradientLayer?.removeFromSuperlayer()
 
-            self.remainingPriceBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
+            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+                UIColor(white: 0.8, alpha: 0.7).cgColor,
+                UIColor(white: 0.8, alpha: 0.7).cgColor
+            ], type: .axial)
+            guard let gradientLayer = gradientLayer else { return }
+
+            gradientLayer.frame = remainderBtn.bounds
+            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+
+            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+        } else {
+            self.remainderBtn.isUserInteractionEnabled = false
+
+//            self.remainderBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
+//            self.remainderBtn.backgroundColor = UIColor(white: 1.0, alpha: 1)
+//            self.remainderBtn.backgroundColor = .white
+            
+            gradientLayer?.removeFromSuperlayer()
+
+            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+                UIColor(white: 0.8, alpha: 0.7).cgColor,
+                UIColor(white: 0.8, alpha: 0.7).cgColor
+            ], type: .axial)
+            guard let gradientLayer = gradientLayer else { return }
+
+            gradientLayer.frame = remainderBtn.bounds
+            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+            
+//            self.remainderBtn.backgroundColor = .cyan
         }
+        
+//        self.remainderTextLabel
+//        self.layoutSubviews()
     }
     
     private func setupAddTargets() {
@@ -170,7 +253,7 @@ class PersonDetailHeader: UICollectionReusableView {
         
         spentAmountTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
         
-        remainingPriceBtn.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
+        remainderBtn.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
         
         spentPlaceTF.delegate = self
         spentAmountTF.delegate = self
@@ -188,31 +271,59 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     @objc func remainingPriceTapped(_ sender: UIButton) {
-        print("remainingPriceTapped! state: \(remainingBtnTapped)")
+        print("remainingPriceTapped! state: \(remainderBtnTapped)")
         
-        if remainingBtnTapped {
+        if remainderBtnTapped {
             print("updateRemainingPrice noti called ")
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
-            remainingBtnTapped = false
+            remainderBtnTapped = false
+            remainderBtn.setTitleColor(.black, for: .normal)
         } else {
             NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
-            remainingBtnTapped = true
+            remainderBtnTapped = true
+            
+            gradientLayer?.removeFromSuperlayer()
+
+            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 0.3).cgColor,
+                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 0.3).cgColor
+            ], type: .axial)
+            guard let gradientLayer = gradientLayer else { return }
+
+            gradientLayer.frame = remainderBtn.bounds
+            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
         }
     }
     
     
-    
-    // shouln't be btn
     private let attendedLabel = UILabel().then {
         $0.text = ASD.attended.localized
         $0.textColor = UIColor(white: 0.28, alpha: 1)
         $0.textAlignment = .center
     }
     
-    private let remainingPriceBtn = UIButton().then {
-        $0.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+    private let remainderBtn = UIButton().then {
+//    private let remainderBtn = UIView().then {
+//        $0.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
+//        $0.backgroundColor = .magenta
         $0.layer.cornerRadius = 8
         $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
+        $0.layer.masksToBounds = true
+        $0.contentHorizontalAlignment = .right
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        
+    }
+    
+    private let remainderBG = UIView().then {
+        $0.layer.cornerRadius = 8
+        $0.layer.borderWidth = 2
+        $0.layer.borderColor = UIColor.clear.cgColor
+    }
+    
+    /// 남은 금액
+    private let remainderTextLabel = UILabel().then {
+        $0.text = "남은 금액"
     }
     
     private func setupLayout() {
@@ -224,7 +335,7 @@ class PersonDetailHeader: UICollectionReusableView {
             spentDateLabel,
             spentDatePicker,
             divider,
-            remainingPriceBtn, attendedLabel
+            remainderTextLabel ,remainderBtn, attendedLabel
         ].forEach { v in
             self.addSubview(v)
         }
@@ -299,13 +410,29 @@ class PersonDetailHeader: UICollectionReusableView {
             make.top.equalTo(divider.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
-        
-        remainingPriceBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
+
+        remainderTextLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(15)
             make.centerY.equalTo(attendedLabel.snp.centerY)
-            make.trailing.equalTo(attendedLabel.snp.leading).offset(-10)
+            make.width.equalTo(70)
             make.height.equalTo(30)
         }
+        
+        remainderBtn.snp.makeConstraints { make in
+            make.leading.equalTo(remainderTextLabel.snp.trailing).offset(10)
+            make.centerY.equalTo(attendedLabel.snp.centerY)
+            make.trailing.equalTo(attendedLabel.snp.leading).offset(-5)
+            make.height.equalTo(30)
+        }
+        
+        
+//        remainderBtn.layer.shadowOffset = CGSize(width: 5, height: 5)
+//        remainderBtn.layer.shouldRasterize = true
+//        remainderBtn.layer.shadowOpacity = 0.5
+        
+        
+        
+        
     }
     
     public func blinkSpentAmount() {
@@ -359,7 +486,7 @@ class PersonDetailHeader: UICollectionReusableView {
     
     private let spentAmountLabel = UILabel().then { $0.text = ASD.SpentAmt.localized}
     
-//    public let spentAmountTF = PriceTextField(placeHolder: "비용").then {
+
     public let spentAmountTF = PriceTextField().then {
         $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
         $0.tag = -1
