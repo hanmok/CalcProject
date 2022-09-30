@@ -738,8 +738,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         print("newText: \(cell.spentAmountTF.text!)")
 
         // MARK: - 색상 원상태로 변경
-//        cell.spentAmountTF.textColor = .black
-//        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+        cell.spentAmountTF.textColor = .black
+        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
         
         // update Dictionary
         let currentIdx = indexPath.row

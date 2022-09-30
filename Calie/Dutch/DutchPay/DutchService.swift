@@ -375,19 +375,15 @@ extension DutchService {
 // MARK: - Result
 extension DutchService {
     
-//    func calculateResults(gathering: Gathering, closure: @escaping ([DetailResultTuple]) -> Void) {
-    
     // MARK: - 계산 후에 이름을 바꾸게 될 수도 있으니까, 우선 Order 로 하는게 좋지 않을까 ??
     // MARK: - 음.. 아니면 Person 에 UUID 를 주거나.. 이름을 바꿀 수도 있고, 순서를 바꿀 수도 있으니까.
     
     func calculateResults(gathering: Gathering) -> [ResultTupleWithId] {
         
-
         let overallPayInfos = createPersonPayInfos(gathering: gathering)
 
         let people = gathering.people
-//      PersonPaymentInfo = (name: String, paidAmt: Double, toPay: Double, sum: Double)
-        // Double 을 Int 로 바꿈.. 음... 일단 pass
+
         let tupleIngredients = overallPayInfos.map { paymentInfo -> PersonTuple in
             guard let person = people.filter({ $0.name == paymentInfo.name}).first else { fatalError() }
             let correspondingIdx = Idx(person.order)
@@ -399,9 +395,11 @@ extension DutchService {
         }
         
         print("just before calculate, Check info:")
+        
         for tuple in tupleIngredients {
             print("name: \(tuple.name), idx: \(tuple.idx), amt: \(tuple.spentAmount)")
         }
+        
         let resultsWithIndices = calculateDutchResults(using: tupleIngredients)
         
         let ret = resultsWithIndices.map { resultTuple -> ResultTupleWithId in

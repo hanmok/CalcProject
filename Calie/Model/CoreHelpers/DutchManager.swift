@@ -186,7 +186,8 @@ extension DutchManager {
     // 이게 반드시 Int 이어야하나 ? 대부분의 경우, Yes.
 //    func getRelativeTobePaidAmount(from dutchUnit: DutchUnit) -> [Double] {
     
-    /// 각 dutchUnit 에 대한 연산, 나머지 처리 되어있음.
+    // FIXME: 여기에, '참가 여부' 에 따른 계산 로직만 수정하면 됨. 불참자도 금액을 낼 수 있도록.
+    /// 각 dutchUnit 에 대한 연산, 나머지 처리까지.
     func getRelativeTobePaidAmount(from dutchUnit: DutchUnit) -> [Double] {
         
         // 각 amt 가 소숫점이 있는지 확인해야함
@@ -207,40 +208,36 @@ extension DutchManager {
         }
         
         // 불참 인원은 Average 계산에서 제외.
-//        let average = getAverage(totalAmount: totalAmount, numOfPeople: dutchUnit.personDetails.filter { $0.isAttended }.count)
         
         let participants = dutchUnit.personDetails.filter {$0.isAttended}.count
         
         let averageAmt = totalAmount / Double(participants)
         
         // 불참인 경우 -1 대입 ( flag )
+        // [Double]
         let paidAmtArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
        
-
-
+        
         // TODO: 여기 연산만 현재는 손보면 됨.
         // 불참인 경우 계산 없이 0, 그 외: 본인 지불한 비용 - Average (개인당 지불해야하는 비용)
-
-
 
         var rawResult = paidAmtArr.map { $0 < 0 ? 0 : dropDigits(amt: $0 - averageAmt, digitLocationToCut: digitToCut) }
         
         let remaining = rawResult.reduce(0, +) // 상대 금액의 차이
         
-//        if let targetIdx = rawResult.firstIndex(where: { $0 > 0 }) {
+
         if let targetAmt = rawResult.filter({ $0 > 0}).max(), let targetIdx = rawResult.firstIndex(where: {$0 == targetAmt}) {
-//             rawResult[targetIdx] += targetAmt + remaining
             rawResult[targetIdx] = targetAmt - remaining
         }
         
-        print("relative flag, dutchUnit info: ")
-        for personDetail in dutchUnit.personDetails {
-            print("name: \(personDetail.person!.name), isAttended: \(personDetail.isAttended), spentAmt: \(personDetail.spentAmount)")
-        }
-        print("relative flag, result: \(rawResult)")
-        
-        
-        print("getRelativeTobePaidAmount result: \(rawResult)\n\n")
+//        print("relative flag, dutchUnit info: ")
+//        for personDetail in dutchUnit.personDetails {
+//            print("name: \(personDetail.person!.name), isAttended: \(personDetail.isAttended), spentAmt: \(personDetail.spentAmount)")
+//        }
+//        print("relative flag, result: \(rawResult)")
+//
+//
+//        print("getRelativeTobePaidAmount result: \(rawResult)\n\n")
         return rawResult
     }
     

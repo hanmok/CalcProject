@@ -28,15 +28,16 @@ class PersonDetailCell: UICollectionViewCell {
         }
     }
     
-    var isAttended: Bool = true {
-        didSet {
+    var isAttended: Bool = true
+//    {
+//        didSet {
             
-            spentAmountTF.isUserInteractionEnabled = isAttended
+//            spentAmountTF.isUserInteractionEnabled = isAttended
 // 처음부터 정해지지는 않음.. 흐음...
 //                        spentAmountTF.backgroundColor = .magenta
-            spentAmountTF.backgroundColor = isAttended ? .clear : UIColor(white: 123.0 / 255.0, alpha: 1)
-        }
-    }
+//            spentAmountTF.backgroundColor = isAttended ? .clear : UIColor(white: 123.0 / 255.0, alpha: 1)
+//        }
+//    }
     
     weak var delegate: PersonDetailCellDelegate?
     
@@ -75,15 +76,16 @@ class PersonDetailCell: UICollectionViewCell {
         $0.tintColor = UIColor(white: 188.0 / 255.0, alpha: 1)
 //        $0.tintColor = .magenta
         $0.contentMode = .scaleAspectFit
-        $0.isHidden = true
+//        $0.isHidden = true
+        
     }
     
-    private let multiplyMark = UIImageView().then {
-        $0.image = UIImage(systemName: "multiply")
-        $0.tintColor = UIColor(red: 255, green: 61, blue: 0)
-        $0.contentMode = .scaleAspectFit
-        $0.isHidden = true
-    }
+//    private let multiplyMark = UIImageView().then {
+//        $0.image = UIImage(systemName: "multiply")
+//        $0.tintColor = UIColor(red: 255, green: 61, blue: 0)
+//        $0.contentMode = .scaleAspectFit
+////        $0.isHidden = true
+//    }
 
 
 
@@ -121,21 +123,21 @@ class PersonDetailCell: UICollectionViewCell {
         
         isAttended = !isAttended
 
-        if isAttended {
-            print("attended flag, checkMark is showing")
-            checkMark.isHidden = false
-            multiplyMark.isHidden = true
-            DispatchQueue.main.async {
-                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
-            }
-        } else {
-            print("attended flag, checkMark is hidden")
-            checkMark.isHidden = true
-            multiplyMark.isHidden = false
-            DispatchQueue.main.async {
-                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
-            }
-        }
+//        if isAttended {
+//            print("attended flag, checkMark is showing")
+//            checkMark.isHidden = false
+//            multiplyMark.isHidden = true
+//            DispatchQueue.main.async {
+//                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
+//            }
+//        } else {
+//            print("attended flag, checkMark is hidden")
+//            checkMark.isHidden = true
+//            multiplyMark.isHidden = false
+//            DispatchQueue.main.async {
+//                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
+//            }
+//        }
     }
     
     private func loadView() {
@@ -145,9 +147,9 @@ class PersonDetailCell: UICollectionViewCell {
         isAttended = viewModel.isAttended
         nameLabel.text = viewModel.name
         
-        spentAmountTF.backgroundColor = isAttended ? UIColor(rgb: 0xE7E7E7) : UIColor(white: 123.0 / 255.0, alpha: 1)
+//        spentAmountTF.backgroundColor = isAttended ? UIColor(rgb: 0xE7E7E7) : UIColor(white: 123.0 / 255.0, alpha: 1)
 
-        spentAmountTF.textColor = isAttended ? .black : UIColor(white: 160.0 / 255.0, alpha: 1)
+//        spentAmountTF.textColor = isAttended ? .black : UIColor(white: 160.0 / 255.0, alpha: 1)
         
         attendingBtn.isAttending = isAttended
         attendingBtn.markAttendedState(using: isAttended)
@@ -155,22 +157,23 @@ class PersonDetailCell: UICollectionViewCell {
         spentAmountTF.text = viewModel.spentAmount
         
 
-        if isAttended {
-            multiplyMark.isHidden = true
-            checkMark.isHidden = false
-            
-            DispatchQueue.main.async {
-                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
-            }
-            
-        } else {
-
-            multiplyMark.isHidden = false
-            checkMark.isHidden = true
-            DispatchQueue.main.async {
-                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
-            }
-        }
+//        if isAttended {
+//            multiplyMark.isHidden = true
+//            checkMark.isHidden = false
+//
+//            DispatchQueue.main.async {
+//                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
+//            }
+//
+//        } else {
+//
+//            multiplyMark.isHidden = false
+//            checkMark.isHidden = true
+//            DispatchQueue.main.async {
+//                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
+//            }
+//        }
+        
     }
     
     override init(frame: CGRect) {
@@ -251,11 +254,11 @@ class PersonDetailCell: UICollectionViewCell {
             make.width.equalTo(30)
         }
         
-        fullPriceBtn.addSubview(multiplyMark)
-        multiplyMark.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalToSuperview()
-            make.width.equalTo(30)
-        }
+//        fullPriceBtn.addSubview(multiplyMark)
+//        multiplyMark.snp.makeConstraints { make in
+//            make.center.equalToSuperview()
+//            make.height.equalToSuperview()
+//            make.width.equalTo(30)
+//        }
     }
 }
