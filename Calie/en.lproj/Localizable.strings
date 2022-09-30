@@ -44,32 +44,40 @@
 "rate" = "Rate";
 "review" = "Review";
 
+// MARK: - DutchPay
 
+"Overall Result" = "Overall Result";
 
-////
-//
-//"A numberLength Limit" = "최대 15 자릿수까지 입력이 가능합니다.";
-//"A answerLength Limit" = "결과값은 15 자릿수 이내여야 합니다. ";
-//
-//"Sound On" = "소리 꺼짐";
-//"Sound Off" = "소리 켜짐";
-//"Noti On" = "자동수정 알림 켜짐";
-//"Noti Off" = "자동수정 알림 꺼짐";
-//
-//"Modification" = "수정되었습니다.";
-//
-//"darkMode" = "다크모드";
-//"lightMode" = "라이트 모드";
-//
-//"removeAlertMessage" = "모든 데이터를 지우시겠어요?";
-//
-//"copy" = "복사";
-//"share" = "공유";
-//"delete" = "삭제";
-//
-//"copy complete" = "복사되었습니다.";
-//"delete complete" = "제거되었습니다. ";
-//"delete all complete" = "모든 기록이 제거되었습니다.";
-//
-//"saved to history" = "저장되었습니다.";
-//
+"Personal Result" = "Personal Result";
+
+"expenses" = "expenses";
+"Get" = "Get";
+"Send" = "Send";
+"send" = "send";
+//"__ has spent $50,000. __ need to get $25,000";
+
+//"__ has spent no money. __ need to send $25,000";
+
+"element" = "Element";
+
+"Gathering Record" = "Gathering Record";
+
+"Attendances" = "Attendances";
+
+"Calculate" = "Calculate";
+"remainder" = "remainder";
+"Spent for" = "Spent for";
+"Spent Amt" = "Spent Amt";
+
+"Spent Date" = "Spent Date";
+
+"Add Person" = "Add Person";
+"attended" = "attended";
+
+"Gathering" = "Gathering";
+
+"Currency" = "USD";
+
+"Confirm" = "Confirm";
+
+"addingPersonMsg" = "Enter name to add";

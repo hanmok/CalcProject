@@ -22,9 +22,7 @@ class CalculatedResultTableCell: UITableViewCell {
     
     
     private let exchangeTextLabel = UILabel().then {
-//        $0.font = UIFont.systemFont(ofSize: 22)
-        
-//        $0.backgroundColor = .magenta
+        $0.adjustsFontSizeToFitWidth = true
         $0.sizeToFit()
     }
     
@@ -42,7 +40,8 @@ class CalculatedResultTableCell: UITableViewCell {
         
         
         if userDefault.isKorean {
-            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
+//            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
+            let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
             let attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
             
@@ -62,7 +61,8 @@ class CalculatedResultTableCell: UITableViewCell {
             exchangeTextLabel.attributedText = attributedStr
             
         } else {
-            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: false)
+//            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: false)
+            let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
             var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
             

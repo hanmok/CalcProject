@@ -164,6 +164,7 @@ class SideViewController: UIViewController {
         $0.font = UIFont.systemFont(ofSize: 18)
         $0.textColor = .black
         $0.textAlignment = .left
+        $0.adjustsFontSizeToFitWidth = true
     }
 }
 

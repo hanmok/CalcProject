@@ -254,7 +254,7 @@ class DutchUnitController: NeedingController {
                 
             } else {
                 guard let numOfElements = newDutchUnitIndex else { return }
-                self.spentPlace = "항목 \(numOfElements)"
+                self.spentPlace = "\(ASD.element.localized) \(numOfElements)"
                 print("slef.spentPlace, numOfElements: \(numOfElements)")
                 
             }
@@ -440,7 +440,7 @@ class DutchUnitController: NeedingController {
     
 
     @objc private func presentAddingPeopleAlert() {
-        let alertController = UIAlertController(title: "Add People", message: "추가할 사람의 이름을 입력해주세요", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add People", message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
             textField.placeholder = "Name"

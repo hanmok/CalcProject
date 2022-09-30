@@ -218,19 +218,16 @@ extension DutchpayViewModel {
             numberFormatter.numberStyle = .decimal
             
             if let intValue = amt.convertToInt() {
-                return convertIntoKoreanPrice(number: Double(intValue))
+                let double = Double(intValue)
+//                return convertIntoKoreanPrice(number: Double(intValue))
+                return double.applyDecimalFormatWithCurrency()
             } else {
-                return convertIntoKoreanPrice(number: amt)
+//                return convertIntoKoreanPrice(number: amt)
+                return amt.applyDecimalFormatWithCurrency()
             }
         }()
     }
     
-    private func convertIntoKoreanPrice(number: Double) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.string(from: NSNumber(value:number))
-        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
-    }
     
     private func convertPeopleIntoStr(peopleDetails: Set<PersonDetail>) -> String {
         return peopleDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
@@ -251,3 +248,4 @@ struct DutchUnitCellComponents {
     var peopleNameList: String
     var date: String
 }
+

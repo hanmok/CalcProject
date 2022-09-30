@@ -57,7 +57,9 @@ class ResultBriefInfoTableCell: UITableViewCell {
     
     private let spentAmountInfoLabel = UILabel().then {
         $0.textAlignment = .center
-        $0.text = "지출"
+        $0.text = ASD.expenses.localized
+//        $0.sizeToFit()
+        $0.adjustsFontSizeToFitWidth = true
     }
     
 
@@ -105,8 +107,9 @@ class ResultBriefInfoTableCell: UITableViewCell {
 
 
 //        let spentAmtStr = personCostInfo.paidAmt.getStrWithoutDots()
-        let spentAmtStr = personCostInfo.paidAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
-
+//        let spentAmtStr = personCostInfo.paidAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
+        
+        let spentAmtStr = personCostInfo.paidAmt.applyDecimalFormatWithCurrency()
 
         spentAmountLabel.text = spentAmtStr
 
@@ -114,20 +117,21 @@ class ResultBriefInfoTableCell: UITableViewCell {
 //        let toPayAmtStr = toPayAmt.getStrWithoutDots()
         let unsignedAmt = toPayAmt > 0 ? toPayAmt : -toPayAmt
         
-        let toPayAmtStr = unsignedAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
+//        let toPayAmtStr = unsignedAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
+        let toPayAmtStr = unsignedAmt.applyDecimalFormatWithCurrency()
         
         if unsignedAmt != 0 {
             toPayLabel.text = toPayAmtStr
         }
         
-//        toPayInfoLabel.text = toPayAmt > 0 ? "받기" : "보내기"
+
         
         switch toPayAmt {
         case _ where toPayAmt < 0:
-            toPayInfoLabel.text = "보내기"
+            toPayInfoLabel.text = ASD.Send.localized
             
         case _ where toPayAmt > 0:
-            toPayInfoLabel.text = "받기"
+            toPayInfoLabel.text = ASD.get.localized
             
         default:
             break

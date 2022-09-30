@@ -24,6 +24,27 @@ extension Double {
 }
 
 extension Double {
+    
+    public func applyDecimalFormatWithCurrency() -> String {
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//
+//
+//        print("currency flag 3, formatted Str: \(numberFormatter.string(from: NSNumber(value:self)))")
+//        return numberFormatter.string(from: NSNumber(value: self))! + " 원"
+
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+
+        numberFormatter.decimalSeparator = "-"
+
+        var initialStr = numberFormatter.string(from: self as NSNumber)!
+        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
+        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
+        
+        return initialStr + " " + ASD.currency.localized
+    }
+    
     func convertIntoCurrencyUnit(isKorean: Bool, isUsingFloatingPoint: Bool = false) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal

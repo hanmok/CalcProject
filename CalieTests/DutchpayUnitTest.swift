@@ -903,3 +903,23 @@ extension DutchpayUnitTest {
 //        XCTAssertEqual failed: ("") is not equal to ("")
     }
 }
+
+extension DutchpayUnitTest {
+    func test_format() {
+        
+        let num = 10000.5
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+
+        numberFormatter.decimalSeparator = "-"
+
+        var initialStr = numberFormatter.string(from: num as NSNumber)!
+        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
+        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
+        
+        
+        XCTAssertEqual("10,000.5", initialStr)
+        
+    }
+}

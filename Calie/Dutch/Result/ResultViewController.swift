@@ -188,7 +188,9 @@ class ResultViewController: UIViewController {
         
 
         [
-            dismissBtn, titleLabel, takingCaptureBtn, copyBtn,
+            dismissBtn,
+//            titleLabel,
+            takingCaptureBtn, copyBtn,
             briefInfoTableView,
             calculatedInfoTableView
         ].forEach { self.scrollView.addSubview($0)}
@@ -201,12 +203,12 @@ class ResultViewController: UIViewController {
             make.width.height.equalTo(24)
         }
         
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(50)
-            make.centerY.equalTo(dismissBtn.snp.centerY)
-        }
+//        titleLabel.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(100)
+//            make.height.equalTo(50)
+//            make.centerY.equalTo(dismissBtn.snp.centerY)
+//        }
         
         
         takingCaptureBtn.snp.makeConstraints { make in
@@ -274,12 +276,12 @@ class ResultViewController: UIViewController {
     
     // MARK: - UI Properties
     
-    private let titleLabel = UILabel().then {
-        $0.text = ASD.overallResult.localized
-        $0.textAlignment = .center
-        $0.textColor = .black
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-    }
+//    private let titleLabel = UILabel().then {
+//        $0.text = ASD.overallResult.localized
+//        $0.textAlignment = .center
+//        $0.textColor = .black
+//        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+//    }
     
     private let dividerView = UIView()
     
@@ -342,7 +344,7 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
             cell.exchangeInfo = viewModel.calculatedResultTuples[indexPath.row]
             print("cell.exchangeInfo: \(cell.exchangeInfo)")
             let correspondingText = convertExchangeInfoIntoString(exchangeInfo: viewModel.calculatedResultTuples[indexPath.row])
-            textToCopy += correspondingText
+            textToCopy += correspondingText + "\n"
             return cell
         }
       
@@ -350,22 +352,25 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func convertExchangeInfoIntoString(exchangeInfo: ResultTupleWithName) -> String {
+//        print("current Language: \(userDefaultSetup.isKorean)")
         
         let (from, to, amt) = exchangeInfo
         
-        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
+//        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
         
-        let postPosition = getCorrectPostPosition(from: from)
+//        let postPosition = getCorrectPostPosition(from: from)
         
-        var ret: String
+//        var ret: String
         
-        if userDefaultSetup.isKorean {
-            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
-        } else {
-            ret = from + " should send " + convertedAmt + " to " + to
-        }
+//        if userDefaultSetup.isKorean {
+//            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
+//        } else {
+//            ret = from + " should send " + convertedAmt + " to " + to
+//        }
         
-        return ret
+        return ASD.convertDutchResultMsg(from: from, to: to, amt: amt)
+        
+//        return ret
     }
     
     func getCorrectPostPosition(from name: String) -> String {
@@ -437,9 +442,11 @@ extension ResultViewController {
                 do {
                     
                     try data.write(to: filename)
-                    let activityController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.53) {
+
+                        let activityController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
+                        activityController.popoverPresentationController?.sourceView = self.view
                         self.present(activityController, animated: true, completion: nil)
                     }
                     
@@ -452,29 +459,26 @@ extension ResultViewController {
     
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        print("")
-        print("getDocumentsDirectory called")
+
         return paths[0]
     }
     
     
     private func hideTopViews() {
         dismissBtn.isHidden = true
-        titleLabel.isHidden = true
+//        titleLabel.isHidden = true
         copyBtn.isHidden = true
         takingCaptureBtn.isHidden = true
     }
     
     private func showTopViews() {
         dismissBtn.isHidden = false
-        titleLabel.isHidden = false
+//        titleLabel.isHidden = false
         copyBtn.isHidden = false
         takingCaptureBtn.isHidden = false
     }
     
     private func moveUpCollectionViews() {
-        
-//        calculatedInfoTableView
         
         calculatedInfoTableView.snp.updateConstraints { make in
             make.top.equalTo(dismissBtn.snp.bottom)
@@ -516,18 +520,17 @@ extension ResultViewController {
     private func playCaptureSound() {
         AudioServicesPlaySystemSound(1108)
     }
+    
     // TODO: get correct scrollView frame without top infos
     func snapshot() -> UIImage?
     {
-        
-        
         // update for 0.3s
         
         hideTopViews()
         moveUpCollectionViews()
         updateWithAnimation()
 
-        
+
         Timer.scheduledTimer(withTimeInterval: 0.4, repeats: false) { _ in
             self.scrollView.alpha = 0.2
             UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveLinear, .autoreverse]) {
@@ -563,65 +566,17 @@ extension ResultViewController {
         return image
     }
     
-//    func snapshotWithAnimation() -> UIImage?
-//    {
-//
-//        UIView.animate(withDuration: 0.1) {
-//            self.hideTopViews()
-//            self.moveUpCollectionViews()
-//
-//            UIView.animate(withDuration: 0.3) {
-//                self.view.layoutIfNeeded()
-//            }
-//
-//        } completion: { bool in
-//            if bool {
-//                UIGraphicsBeginImageContext(self.scrollView.contentSize)
-//
-//                let savedContentOffset = self.scrollView.contentOffset
-//                let savedFrame = self.scrollView.frame
-//
-//                self.scrollView.contentOffset = CGPoint.zero
-//                self.scrollView.frame = CGRect(x: 0, y: 0, width: self.scrollView.contentSize.width, height: self.scrollView.contentSize.height)
-//
-//                scrollView.layer.render(in: UIGraphicsGetCurrentContext()!)
-//                let image = UIGraphicsGetImageFromCurrentImageContext()
-//
-//                self.scrollView.contentOffset = savedContentOffset
-//                self.scrollView.frame = savedFrame
-//
-//                UIGraphicsEndImageContext()
-//
-//
-//                    self.showTopViews()
-//                    self.moveDownCollectionViews()
-//
-//                UIView.animate(withDuration: 0.3) {
-//                    self.view.layoutIfNeeded()
-//                }
-//
-//
-//                return image
-//            }
-//        }
-//    }
-    
     func snapshot2() -> UIImage?
     {
-//        UIGraphicsBeginImageContext(scrollView.contentSize)
-//        UIGraphicsBeginImageContext(scrollView.contentSize - 150)
+        
         UIGraphicsBeginImageContext(CGSize(width: scrollView.frame.width, height: scrollView.frame.height - 150))
         
-//        let savedContentOffset = scrollView.contentOffset
-//        let savedContentOffset = scrollView.contentOffset
         let savedContentOffset = CGPoint(x: 0, y: 150)
-//        let savedFrame = scrollView.frame
+        
         let savedFrame = CGRect(x: 0, y: 150, width: scrollView.frame.width, height: scrollView.frame.height - 150)
         
-//        scrollView.contentOffset = CGPoint.zero
         scrollView.contentOffset = CGPoint(x: 0, y: 150)
         
-//        scrollView.frame = CGRect(x: 0, y: 0, width: scrollView.contentSize.width, height: scrollView.contentSize.height)
         scrollView.frame = CGRect(x: 0, y: 150, width: scrollView.contentSize.width, height: scrollView.contentSize.height - 150)
         
         scrollView.layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -639,68 +594,6 @@ extension ResultViewController {
 
 
 
-// MARK: - Print ScrollView ;;
-
-//extension ResultViewController {
-//    func onPrintReceipt(from view: UIScrollView, onPrintFailed: @escaping () -> Void) {
-//        let screenshot = view.toImage()
-//
-//        if (screenshot == nil) {
-//            onPrintFailed()
-//            return
-//        }
-//
-//        let printController = UIPrintInteractionController.shared
-//        let printInfo = UIPrintInfo(dictionary: [:])
-//        printInfo.outputType = UIPrintInfo.OutputType.general
-//        printInfo.orientation = UIPrintInfo.Orientation.portrait
-//        printInfo.jobName = "Print"
-//        printController.printInfo = printInfo
-//        printController.showsPageRange = true
-//        printController.printingItem = screenshot
-//
-//        printController.present(animated: true) { (controller, completed, error) in
-//            if(!completed && error != nil){
-//                onPrintFailed()
-//            }
-//        }
-//    }
-//}
-//
-//
-//
-//
-//
-//import UIKit
-//extension UIScrollView {
-//    func toImage() -> UIImage? {
-//        UIGraphicsBeginImageContext(contentSize)
-//
-//        let savedContentOffset = contentOffset
-//        let savedFrame = frame
-//        let saveVerticalScroll = showsVerticalScrollIndicator
-//        let saveHorizontalScroll = showsHorizontalScrollIndicator
-//
-//        showsVerticalScrollIndicator = false
-//        showsHorizontalScrollIndicator = false
-//        contentOffset = CGPoint.zero
-//        frame = CGRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height)
-//
-//        layer.render(in: UIGraphicsGetCurrentContext()!)
-//        let image = UIGraphicsGetImageFromCurrentImageContext()
-//
-//        contentOffset = savedContentOffset
-//        frame = savedFrame
-//        showsVerticalScrollIndicator = saveVerticalScroll
-//        showsHorizontalScrollIndicator = saveHorizontalScroll
-//
-//        UIGraphicsEndImageContext()
-//
-//        return image
-//    }
-//}
-
-
 extension ResultViewController {
     func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
         showToast(message: msg,
@@ -709,5 +602,4 @@ extension ResultViewController {
                   widthRatio: wRatio, heightRatio: hRatio,
                   fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
     }
-    
 }

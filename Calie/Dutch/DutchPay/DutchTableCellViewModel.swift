@@ -28,29 +28,30 @@ struct DutchTableCellViewModel {
 extension DutchTableCellViewModel {
     private func convertSpentAmount(amt: Double) -> String {
         return {
+            print("currency flag 1, input amt: \(amt)")
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             
             if let intValue = amt.convertToInt() {
-                return convertIntoKoreanPrice(number: Double(intValue))
+                let double = Double(intValue)
+                print("currency flag 2a, double: \(double)")
+//                return double.convertIntoKoreanPrice()
+//                return numberFormatter.string(from: double as NSNumber)!
+                return double.applyDecimalFormatWithCurrency()
+//                return convertIntoKoreanPrice(number: Double(intValue))
             } else {
-                return convertIntoKoreanPrice(number: amt)
+                print("currency flag 2b, double: \(amt)")
+//                return convertIntoKoreanPrice(number: amt)
+                return amt.applyDecimalFormatWithCurrency()
             }
         }()
     }
     
-    private func convertIntoKoreanPrice(number: Double) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.string(from: NSNumber(value:number))
-        return numberFormatter.string(from: NSNumber(value: number))! + " 원"
-    }
     
     private func convertPeopleIntoStr(peopleDetails: Set<PersonDetail>) -> String {
-        // print only attended people
+        // print attended people only
         let attendedPeople = peopleDetails.sorted().filter { $0.isAttended == true }
         return attendedPeople.map { $0.person!.name}.joined(separator: ", ")
-//        return peopleDetails.sorted().map { $0.person!.name}.joined(separator: ", ")
     }
     
     private func convertDateIntoStr(date: Date) -> String {

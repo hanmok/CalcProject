@@ -183,7 +183,7 @@ class ParticipantsController: UIViewController{
     }
     
     private func presentAddingPeopleAlert() {
-        let alertController = UIAlertController(title: "Add People", message: "추가할 사람을 입력해주세요", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add People", message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
             textField.placeholder = "Name"

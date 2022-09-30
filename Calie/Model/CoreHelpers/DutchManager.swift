@@ -201,7 +201,7 @@ extension DutchManager {
         }
         
         // TODO: fetch from UserDefault
-        let digitToCut = 1
+        let digitToCut = 0 // 일의 자리까지만 표시. (소숫점 버림)
         
         var totalAmount: Double
         

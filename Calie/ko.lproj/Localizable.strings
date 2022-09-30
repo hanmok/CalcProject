@@ -42,6 +42,8 @@
 
 // ResultController
 
+// MARK: - DUTCHPAY
+
 // 정산 결과
 
 "Overall Result" = "정산결과"; // 수정할 것.
@@ -56,7 +58,7 @@
 
 //"__ has spent no money. __ need to send $25,000";
 
-" " = "항목";
+"element" = "항목";
 
 "Gathering Record" = "지난 모임";
 
@@ -74,8 +76,8 @@
 
 "Gathering" = "모임";
 
-"USD" = "원";
-
-
+"Currency" = "원";
 
 "Confirm" = "완료";
+
+"addingPersonMsg" = "추가할 사람의 이름을 입력해주세요.";

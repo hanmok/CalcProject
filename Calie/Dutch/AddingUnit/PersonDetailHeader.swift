@@ -381,7 +381,7 @@ class PersonDetailHeader: UICollectionReusableView {
             make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
             make.height.equalTo(spentAmountTF.snp.height)
             make.centerY.equalTo(spentAmountTF.snp.centerY)
-            make.width.equalTo(15)
+            make.width.equalTo(100)
         }
         
         spentDateLabel.snp.makeConstraints { make in
@@ -464,7 +464,7 @@ class PersonDetailHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let currenyLabel = UILabel().then { $0.text = ASD.USD.localized }
+    private let currenyLabel = UILabel().then { $0.text = ASD.currency.localized }
     
     private let spentPlaceLabel = UILabel().then { $0.text = ASD.spentFor.localized }
     
