@@ -121,6 +121,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
         }
         
 //        toPayInfoLabel.text = toPayAmt > 0 ? "받기" : "보내기"
+        
         switch toPayAmt {
         case _ where toPayAmt < 0:
             toPayInfoLabel.text = "보내기"

@@ -14,17 +14,26 @@ struct PersonDetailCellViewModel {
     private let personDetail: PersonDetail
     
     var name: String { return personDetail.person!.name }
-    //    var spentAmount: String { return String(personDetail.spentAmount) + " 원"}
+    
     var spentAmount: String {
         return personDetail.spentAmount.convertToIntString()}
     
-    var isAttended: Bool { return personDetail.isAttended }
-    
-//    var attendingBtnTitle: String { return personDetail.isAttended ? "참석" : "불참"}
-//    var attendingBtnColor: UIColor { return personDetail.isAttended ? .black : .red }
-    
+//    var isAttended: Bool { return personDetail.isAttended }
+    var isAttended: Bool {
+        get {
+            return personDetail.isAttended
+        }
+        set {
+            
+        }
+    }
+
     init(personDetail: PersonDetail) {
         self.personDetail = personDetail
+    }
+    
+    mutating func toggleIsAttended() {
+        self.isAttended = !isAttended
     }
 }
 

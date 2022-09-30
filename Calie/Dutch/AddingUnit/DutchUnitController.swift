@@ -160,9 +160,6 @@ class DutchUnitController: NeedingController {
             updateConditionState(condition)
             
             let diff = newValue - sumOfIndividual
-//            let diffString = "남은 금액: " + diff.addComma() + "원"
-            
-//            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
             let dic: [AnyHashable: Any] = ["remainingPrice": diff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
@@ -325,7 +322,8 @@ class DutchUnitController: NeedingController {
         confirmBtn.isUserInteractionEnabled = isActive
         print("setConditionBtnState to \(isActive)!!")
         DispatchQueue.main.async {
-            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.85, alpha: 0.9)
+            self.confirmBtn.setTitleColor(isActive ? .black : UIColor(white: 0.2, alpha: 1), for: .normal)
+            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.45, alpha: 0.9)
         }
     }
     
@@ -655,8 +653,10 @@ class DutchUnitController: NeedingController {
     private let confirmBtn = UIButton().then {
 
         $0.setTitle(ASD.confirm.localized, for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
+//        $0.setTitleColor(.black, for: .normal)
+//        $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
+        $0.backgroundColor = UIColor(white: 0.65, alpha: 0.9)
+//        $0.backgroundColor = UIColor(white: 0.45, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
@@ -672,7 +672,6 @@ class DutchUnitController: NeedingController {
         gradientLayer.frame = $0.frame
         
         $0.layer.addSublayer(gradientLayer)
-        
     }
     
     private let remainingView = UIView().then {

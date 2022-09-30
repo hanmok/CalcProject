@@ -22,10 +22,13 @@ class PersonDetailCell: UICollectionViewCell {
     
     var viewModel: PersonDetailCellViewModel? {
         didSet {
+            self.isAttended = viewModel!.isAttended
             self.loadView()
             self.setupTargets()
         }
     }
+    
+    var isAttended: Bool = true
     
     weak var delegate: PersonDetailCellDelegate?
     
@@ -49,33 +52,32 @@ class PersonDetailCell: UICollectionViewCell {
     
     public let fullPriceBtn = UIButton().then {
         
-        $0.backgroundColor = UIColor(white: 220.0 / 255.0, alpha: 0.95)
+
+        $0.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
         $0.isHidden = true
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(white: 200.0/255.0, alpha: 1).cgColor
         $0.layer.cornerRadius = 8
         
         let imgView = UIImageView()
-
-        imgView.image = UIImage(systemName: "checkmark")
-
-        imgView.tintColor = UIColor(white: 175.0 / 255.0, alpha: 1)
-        imgView.contentMode = .scaleAspectFit
-        $0.addSubview(imgView)
-        imgView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalToSuperview().inset(3)
-            make.width.equalToSuperview()
-        }
     }
     
     private let checkMark = UIImageView().then {
-        $0.image = UIImage(named: "checkmark")
-//        $0.tintColor = UIColor(white: 0.186 / 0.255, alpha: 1)
-        $0.tintColor = .magenta
+        $0.image = UIImage(systemName: "checkmark")
+        $0.tintColor = UIColor(white: 188.0 / 255.0, alpha: 1)
+//        $0.tintColor = .magenta
         $0.contentMode = .scaleAspectFit
-        
+        $0.isHidden = true
     }
+    
+    private let multiplyMark = UIImageView().then {
+        $0.image = UIImage(systemName: "multiply")
+        $0.tintColor = UIColor(red: 255, green: 61, blue: 0)
+        $0.contentMode = .scaleAspectFit
+        $0.isHidden = true
+    }
+
+
 
     private func setupTargets() {
         fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
@@ -84,27 +86,81 @@ class PersonDetailCell: UICollectionViewCell {
     
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
         print("fullPrice Tapped!")
-        delegate?.fullPriceAction(idx: sender.tag)
-        // TODO: Post to hide fullPrices
-        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+//        if viewModel?.isAttended {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
+//        if viewModel.isAttended {
+        if isAttended {
+            delegate?.fullPriceAction(idx: sender.tag)
+            // Post notify to hide fullPrices
+            NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+        }
+
+
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
+
+        guard var viewModel = viewModel else {
+            return
+        }
+                
         print("Attended Btn Tapped!")
+        // UI update
         attendingBtn.isAttending.toggle()
-        
+        // DutchUnitController 의 '값' 만 업데이트.
         delegate?.updateAttendingState(with: sender.tag, to: sender.isAttending)
+        
+        isAttended = !isAttended
+
+        if isAttended {
+            print("attended flag, checkMark is showing")
+            checkMark.isHidden = false
+            multiplyMark.isHidden = true
+            DispatchQueue.main.async {
+                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
+            }
+        } else {
+            print("attended flag, checkMark is hidden")
+            checkMark.isHidden = true
+            multiplyMark.isHidden = false
+            DispatchQueue.main.async {
+                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
+            }
+        }
     }
     
     private func loadView() {
         print("load View triggered")
         guard let viewModel = viewModel else { return }
+        
         nameLabel.text = viewModel.name
         
-        attendingBtn.markAttendedState(using: viewModel.isAttended )
+        attendingBtn.isAttending = isAttended
+        attendingBtn.markAttendedState(using: isAttended)
         
         spentAmountTF.text = viewModel.spentAmount
         
+
+        if isAttended {
+//            multiplyMark.isHidden = true
+            multiplyMark.isHidden = true
+            checkMark.isHidden = false
+            
+            DispatchQueue.main.async {
+                self.fullPriceBtn.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
+            }
+            
+        } else {
+
+            multiplyMark.isHidden = false
+            checkMark.isHidden = true
+            DispatchQueue.main.async {
+                self.fullPriceBtn.backgroundColor = UIColor(white: 123.0 / 255.0, alpha: 1)
+            }
+        }
     }
     
     override init(frame: CGRect) {
@@ -122,7 +178,6 @@ class PersonDetailCell: UICollectionViewCell {
     
     private func addObservers() {
         
-
         NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceSelectors, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceSelectors, object: nil)
@@ -130,15 +185,15 @@ class PersonDetailCell: UICollectionViewCell {
     
     //MARK: -  ViewModel 을 바꿔주는 주기를 알아야함.. 그렇지 않으면 해당 조건문이 소용이 없다.
     @objc func hideFullPriceBtn() {
-        if let viewModel = viewModel, viewModel.isAttended {
+//        if let viewModel = viewModel, viewModel.isAttended {
             fullPriceBtn.isHidden = true
-        }
+//        }
     }
     
     @objc func showUpFullPriceBtn() {
-        if let viewModel = viewModel, viewModel.isAttended {
+//        if let viewModel = viewModel, viewModel.isAttended {
             fullPriceBtn.isHidden = false
-        }
+//        }
     }
     
     private func setupLayout() {
@@ -183,6 +238,13 @@ class PersonDetailCell: UICollectionViewCell {
             make.center.equalToSuperview()
             make.height.equalToSuperview()
 //            make.width.equalTo(fullPriceBtn.snp.height)
+            make.width.equalTo(30)
+        }
+        
+        fullPriceBtn.addSubview(multiplyMark)
+        multiplyMark.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalToSuperview()
             make.width.equalTo(30)
         }
     }

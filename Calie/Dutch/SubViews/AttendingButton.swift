@@ -17,19 +17,19 @@ class AttendingButton: UIButton {
         }
     }
     
-    private let innerImageView = UIImageView()
+    private let innerImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
     
     public func markAttendedState(using condition: Bool) {
-
-//        let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "xmark.rectangle")
+        print("markAttended")
         let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "rectangle")
-        
-//        let color: UIColor = condition ? .systemBlue : .systemRed
+   
         let color: UIColor = condition ? .systemBlue : UIColor(white: 0.8, alpha: 1)
-        
-        innerImageView.image = image
-        innerImageView.tintColor = color
-        innerImageView.contentMode = .scaleAspectFit
+        DispatchQueue.main.async {
+            self.innerImageView.image = image
+            self.innerImageView.tintColor = color
+        }
     }
 
     init( _ attending: Bool = true, _ frame: CGRect = .zero) {
@@ -40,11 +40,6 @@ class AttendingButton: UIButton {
     }
     
     private func setupInitialLayout() {
-//        self.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
-//        self.backgroundColor = .green
-//        self.layer.cornerRadius = 5
-//        self.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
-//        self.layer.borderWidth = 1
         
         addSubview(innerImageView)
         innerImageView.snp.makeConstraints { make in
