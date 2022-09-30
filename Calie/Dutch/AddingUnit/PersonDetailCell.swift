@@ -22,13 +22,21 @@ class PersonDetailCell: UICollectionViewCell {
     
     var viewModel: PersonDetailCellViewModel? {
         didSet {
-            self.isAttended = viewModel!.isAttended
+//            self.isAttended = viewModel!.isAttended
             self.loadView()
             self.setupTargets()
         }
     }
     
-    var isAttended: Bool = true
+    var isAttended: Bool = true {
+        didSet {
+            
+            spentAmountTF.isUserInteractionEnabled = isAttended
+// 처음부터 정해지지는 않음.. 흐음...
+//                        spentAmountTF.backgroundColor = .magenta
+            spentAmountTF.backgroundColor = isAttended ? .clear : UIColor(white: 123.0 / 255.0, alpha: 1)
+        }
+    }
     
     weak var delegate: PersonDetailCellDelegate?
     
@@ -97,8 +105,6 @@ class PersonDetailCell: UICollectionViewCell {
             // Post notify to hide fullPrices
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
         }
-
-
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
@@ -135,8 +141,13 @@ class PersonDetailCell: UICollectionViewCell {
     private func loadView() {
         print("load View triggered")
         guard let viewModel = viewModel else { return }
-        
+//        viewModel
+        isAttended = viewModel.isAttended
         nameLabel.text = viewModel.name
+        
+        spentAmountTF.backgroundColor = isAttended ? UIColor(rgb: 0xE7E7E7) : UIColor(white: 123.0 / 255.0, alpha: 1)
+
+        spentAmountTF.textColor = isAttended ? .black : UIColor(white: 160.0 / 255.0, alpha: 1)
         
         attendingBtn.isAttending = isAttended
         attendingBtn.markAttendedState(using: isAttended)
@@ -145,7 +156,6 @@ class PersonDetailCell: UICollectionViewCell {
         
 
         if isAttended {
-//            multiplyMark.isHidden = true
             multiplyMark.isHidden = true
             checkMark.isHidden = false
             
