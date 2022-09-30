@@ -194,6 +194,11 @@ extension DutchManager {
         // 어떤 자릿수에서 끊을 것인지 알아야함
         
 //        let isUsingFloatingPoint = true // 나중에 사용하기!
+
+        print("input data: ")
+        for eachDetail in dutchUnit.personDetails {
+            print("name: \(eachDetail.person?.name), amt: \(eachDetail.spentAmount)")
+        }
         
         // TODO: fetch from UserDefault
         let digitToCut = 1
@@ -215,13 +220,17 @@ extension DutchManager {
         
         // 불참인 경우 -1 대입 ( flag )
         // [Double]
-        let paidAmtArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
-       
         
+//        let paidAmtArr = dutchUnit.personDetails.sorted().map { $0.isAttended ? $0.spentAmount : -1 }
+       
         // TODO: 여기 연산만 현재는 손보면 됨.
         // 불참인 경우 계산 없이 0, 그 외: 본인 지불한 비용 - Average (개인당 지불해야하는 비용)
+        // 여기만 수정하면 될 것 같은데 ??
+        
+//        var rawResult = paidAmtArr.map { $0 < 0 ? 0 : dropDigits(amt: $0 - averageAmt, digitLocationToCut: digitToCut) }
 
-        var rawResult = paidAmtArr.map { $0 < 0 ? 0 : dropDigits(amt: $0 - averageAmt, digitLocationToCut: digitToCut) }
+
+        var rawResult = dutchUnit.personDetails.sorted().map { $0.isAttended ? dropDigits(amt: $0.spentAmount - averageAmt, digitLocationToCut: digitToCut) : dropDigits(amt: $0.spentAmount, digitLocationToCut: digitToCut)}
         
         let remaining = rawResult.reduce(0, +) // 상대 금액의 차이
         
@@ -230,14 +239,14 @@ extension DutchManager {
             rawResult[targetIdx] = targetAmt - remaining
         }
         
-//        print("relative flag, dutchUnit info: ")
-//        for personDetail in dutchUnit.personDetails {
-//            print("name: \(personDetail.person!.name), isAttended: \(personDetail.isAttended), spentAmt: \(personDetail.spentAmount)")
-//        }
-//        print("relative flag, result: \(rawResult)")
-//
-//
-//        print("getRelativeTobePaidAmount result: \(rawResult)\n\n")
+        print("relative flag, dutchUnit info: ")
+        for personDetail in dutchUnit.personDetails {
+            print("name: \(personDetail.person!.name), isAttended: \(personDetail.isAttended), spentAmt: \(personDetail.spentAmount)")
+        }
+        print("relative flag, result: \(rawResult)")
+
+
+        print("getRelativeTobePaidAmount result: \(rawResult)\n\n")
         return rawResult
     }
     
