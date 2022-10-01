@@ -50,7 +50,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
         print("flag darkMode: \(isDarkMode)")
         print("userdefault: \(userDefaultSetup.darkModeOn)")
-        
+        // 이거 없으면 초기화 안됨. 작동 원리가 뭐지?
         self.delegate = self
     }
     
@@ -152,11 +152,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        //        tabBar.isHidden = true // use this to hide tabBar from
-        //        tabBar.frame.size.height = 200
-        //        tabBar.frame.origin.y = view.frame.height - 200
-        
-        
+
     }
     
     
@@ -235,6 +231,7 @@ print("tab flag 1")
         return true
     }
     
+    // Tab 바꿀 때 호출됨.
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         print("tab flag 2")
         let tabBarIndex = tabBarController.selectedIndex
@@ -243,9 +240,10 @@ print("tab flag 1")
       
         print(#line, "didSelect in MainTabController triggered")
         
-        if tabBarIndex == 0 {
-            self.viewDidLoad()
-        }
+        //
+//        if tabBarIndex == 0 {
+//            self.viewDidLoad()
+//        }
         
         hideSideController()
     }
