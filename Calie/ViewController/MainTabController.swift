@@ -103,13 +103,14 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         
 
         
-#if DEBUG
+//#if DEBUG
 //        viewControllers = [calculator, dutch, settings]
-        viewControllers = [dutch, calculator, settings]
+//        viewControllers = [dutch, calculator, settings]
+        viewControllers = [calculator, dutch, settings]
 //        viewControllers = [dutchNav, calculator, settings]
-#else
-        viewControllers = [calculator, settings]
-#endif
+//#else
+//        viewControllers = [calculator, settings]
+//#endif
         
         
         //        viewControllers = [calculator, dutch, settings]
@@ -248,7 +249,7 @@ print("tab flag 1")
         hideSideController()
     }
     
-//    tabbarcontr
+
 }
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
 

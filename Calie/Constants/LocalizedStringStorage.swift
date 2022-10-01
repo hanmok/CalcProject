@@ -107,15 +107,13 @@ struct ASD {
     static let element = "element"
     
     static let addingPersonMsg = "addingPersonMsg"
-//    static let at
     
     static func convertDutchResultMsg(from: String, to: String, amt: Double) -> String {
-//        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: UserDefaultSetup().isKorean)
+
         let convertedAmt = amt.applyDecimalFormatWithCurrency()
         
         var ret: String
         
-
         if ASD.currencyShort.localized == "원" {
             let postPosition = ASD.getCorrectPostPosition(from: from)
             
