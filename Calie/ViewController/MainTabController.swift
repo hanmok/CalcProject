@@ -246,11 +246,11 @@ print("tab flag 1")
         if tabBarIndex == 0 {
             self.viewDidLoad()
         }
+        
         hideSideController()
     }
-    
-
 }
+
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
 
 
