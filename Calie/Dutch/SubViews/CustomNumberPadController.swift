@@ -110,6 +110,8 @@ class CustomNumberPadController: UIViewController {
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         
+        
+        
         deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
 
         deleteBtn.addTarget(self, action: #selector(applyTappedView(_:)), for: .touchDown)

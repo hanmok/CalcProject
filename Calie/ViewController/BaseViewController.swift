@@ -368,8 +368,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             case 10 ... 20 :
                 sender.backgroundColor =  colorList.bgColorForOperatorsDM
             case 21 ... 30 :
-//                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-                sender.backgroundColor = colorList.bgColorForExtrasDM
+                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
+//                sender.backgroundColor = colorList.bgColorForExtrasDM
+//                sender.backgroundColor = .magenta
                 basicCalc.invalidateAllTimers()
             default :
 //                sender.backgroundColor = .magenta
@@ -383,8 +384,9 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForOperatorsLM
 
             case 21 ... 30 :
-//                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-                sender.backgroundColor = colorList.bgColorForExtrasLM
+                sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
+//                sender.backgroundColor = colorList.bgColorForExtrasLM
+//                sender.backgroundColor = .magenta
                 basicCalc.invalidateAllTimers()
             default :
 //                sender.backgroundColor = .magenta
@@ -404,11 +406,11 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     @objc func handleDeletePressedDown(sender : UIButton){
 
         if userDefaultSetup.darkModeOn{
-//            sender.backgroundColor =  colorList.bgColorForExtrasDM
-            sender.backgroundColor = colorList.bgColorForOperatorsDM
+            sender.backgroundColor =  colorList.bgColorForExtrasDM
+//            sender.backgroundColor = colorList.bgColorForOperatorsDM
         }else{
-//            sender.backgroundColor =  colorList.bgColorForExtrasLM
-            sender.backgroundColor = colorList.bgColorForOperatorsLM
+            sender.backgroundColor =  colorList.bgColorForExtrasLM
+//            sender.backgroundColor = colorList.bgColorForOperatorsLM
         }
         basicCalc.didPressedDownDelete()
     }
@@ -945,12 +947,14 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         closeParenthesis.addTarget(self, action: #selector( handlePerenthesisTapped), for: .touchUpInside)
         
         
+
+        deleteButton.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
         
         deleteButton.addTarget(self, action: #selector(handleDeletePressedDown), for: .touchDown)
-        deleteButton.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
+
         deleteButton.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
-        deleteButton.addTarget(self, action: #selector( turnIntoOriginalColor), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         
         
