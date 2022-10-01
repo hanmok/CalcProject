@@ -138,9 +138,7 @@ class DutchUnitController: NeedingController {
                 sum += value2.value
             }
             let diff = spentAmount - sum
-//            let diffString = "남은 금액: " +  diff.addComma() + "원"
-            
-//            let dic: [AnyHashable: Any] = ["remainingPrice": diffString]
+
             let dic: [AnyHashable: Any] = ["remainingPrice": diff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             

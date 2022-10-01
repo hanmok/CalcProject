@@ -29,8 +29,8 @@ extension DutchTableCellViewModel {
     private func convertSpentAmount(amt: Double) -> String {
         return {
             print("currency flag 1, input amt: \(amt)")
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
+//            let numberFormatter = NumberFormatter()
+//            numberFormatter.numberStyle = .decimal
             
             if let intValue = amt.convertToInt() {
                 let double = Double(intValue)

@@ -9,18 +9,18 @@
 import Foundation
 
 extension Double {
-    func convertIntoStr() -> String {
-        //        return String(self)
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        
-    
-        if let intValue = self.convertToInt() {
-            return String(intValue)
-        } else {
-            return String(self)
-        }
-    }
+//    func convertIntoStr() -> String {
+//        //        return String(self)
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//
+//
+//        if let intValue = self.convertToInt() {
+//            return String(intValue)
+//        } else {
+//            return String(self)
+//        }
+//    }
 }
 
 extension Double {
@@ -45,27 +45,47 @@ extension Double {
         return initialStr + " " + ASD.currency.localized
     }
     
-    func convertIntoCurrencyUnit(isKorean: Bool, isUsingFloatingPoint: Bool = false) -> String {
+    public func applyDecimalFormat() -> String {
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//
+//
+//        print("currency flag 3, formatted Str: \(numberFormatter.string(from: NSNumber(value:self)))")
+//        return numberFormatter.string(from: NSNumber(value: self))! + " 원"
+
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        numberFormatter.string(from: NSNumber(value:self))
-        var result = numberFormatter.string(from: NSNumber(value: self))!
+
+        numberFormatter.decimalSeparator = "-"
+
+        var initialStr = numberFormatter.string(from: self as NSNumber)!
+        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
+        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
         
-        if result == "-0" { return isKorean ? "0원" : "$0"}
-        
-        if isUsingFloatingPoint == false {
-            if result.contains(".0") {
-                result.removeLast()
-                result.removeLast()
-            }
-        }
-//        return result + isKorean ? "원" :
-        if isKorean {
-            return result + "원"
-        } else {
-            return "$" + result
-        }
+        return initialStr
     }
+    
+//    func convertIntoCurrencyUnit(isKorean: Bool, isUsingFloatingPoint: Bool = false) -> String {
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//        numberFormatter.string(from: NSNumber(value:self))
+//        var result = numberFormatter.string(from: NSNumber(value: self))!
+//
+//        if result == "-0" { return isKorean ? "0원" : "$0"}
+//
+//        if isUsingFloatingPoint == false {
+//            if result.contains(".0") {
+//                result.removeLast()
+//                result.removeLast()
+//            }
+//        }
+////        return result + isKorean ? "원" :
+//        if isKorean {
+//            return result + "원"
+//        } else {
+//            return "$" + result
+//        }
+//    }
     
     func getStrWithoutDots() -> String {
         let numberFormatter = NumberFormatter()

@@ -101,7 +101,7 @@ struct ASD {
     static let gathering = "Gathering";
     
     static let currency = "Currency"
-    
+    static let currencyShort = "currencyShort"
     static let confirm = "Confirm"
     
     static let element = "element"

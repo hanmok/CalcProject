@@ -82,9 +82,16 @@ class PersonDetailHeader: UICollectionReusableView {
             gradientLayer?.removeFromSuperlayer()
             
             gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 1).cgColor,
-                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 1).cgColor
+//                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 1).cgColor,
+//                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 1).cgColor
+                UIColor.systemBlue.cgColor,
+                UIColor.systemBlue.cgColor
+//                UIColor(red: 0, green: 0, blue: 200).cgColor,
+//                UIColor(red: 0, green: 0, blue: ).cgColor
+//                UIColor(red: 0.3, green: 0.3, blue: 0.7, alpha: 0.9).cgColor,
+//                UIColor(red: 0.3, green: 0.3, blue: 0.7, alpha: 0.9).cgColor
             ], type: .axial)
+            
             guard let gradientLayer = gradientLayer else { return }
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
@@ -100,7 +107,8 @@ class PersonDetailHeader: UICollectionReusableView {
 
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+//            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+            remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
         }
     }
     
@@ -142,7 +150,8 @@ class PersonDetailHeader: UICollectionReusableView {
         
         remainder = remainderInfo
         
-        let remainderString = remainderInfo.addComma() + "원 "
+//        let remainderString = remainderInfo.addComma() + "원 "
+        let remainderString = remainderInfo.addComma() + "\(ASD.currencyShort.localized) "
         
         self.remainderBtn.setTitle(remainderString, for: .normal)
         
@@ -158,11 +167,13 @@ class PersonDetailHeader: UICollectionReusableView {
         } else {
 //            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
 //            self.remainderBtn.backgroundColor = .brown
-            self.remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+//            self.remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+            self.remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
             
         }
         
-        remainderBtn.setTitleColor(.black, for: .normal)
+//        remainderBtn.setTitleColor(.black, for: .normal)
+        remainderBtn.setTitleColor(.white, for: .normal)
         
         self.layoutSubviews()
     }
@@ -197,7 +208,7 @@ class PersonDetailHeader: UICollectionReusableView {
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
         
-        let remainingStr =  viewModel.remainder.addComma() + "원 "
+        let remainingStr =  viewModel.remainder.addComma() + "\(ASD.currencyShort.localized) "
 
         remainderBtn.setTitle(remainingStr, for: .normal)
         
@@ -277,7 +288,8 @@ class PersonDetailHeader: UICollectionReusableView {
             print("updateRemainingPrice noti called ")
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
             remainderBtnTapped = false
-            remainderBtn.setTitleColor(.black, for: .normal)
+//            remainderBtn.setTitleColor(.black, for: .normal)
+            remainderBtn.setTitleColor(.white, for: .normal)
         } else {
             NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
             remainderBtnTapped = true
@@ -292,7 +304,8 @@ class PersonDetailHeader: UICollectionReusableView {
 
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+//            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+            remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
         }
     }
     

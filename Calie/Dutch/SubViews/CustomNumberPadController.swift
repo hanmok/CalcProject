@@ -36,7 +36,6 @@ class CustomNumberPadController: UIViewController {
     let deletionPausedAt = 2.35
     let deletionTimeForInitialState = 2.5
     
-//    deletionForFasterTrigger =
     var deletionForFasterTrigger = Timer()
     var deletionTimerForPause = Timer()
     var deletionTimerForInitialSetup = Timer()
@@ -257,6 +256,11 @@ class CustomNumberPadController: UIViewController {
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
         numberText += sender.wrapperString
+//        if numberText
+        // FIXME: Test..
+        numberText = numberText.replacingOccurrences(of: ".", with: ",")
+        print("numberText:\(numberText)")
+        
         numberPadDelegate?.numberPadView(updateWith: numberText)
         // update textFields belong to Controllers which conforms NumberPadDelegate
     }

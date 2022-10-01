@@ -54,7 +54,8 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private let currencyLabel = UILabel().then {
-        $0.text = "원"
+        $0.text = ASD.currencyShort.localized
+        $0.adjustsFontSizeToFitWidth = true
     }
     
     public let attendingBtn = AttendingButton()

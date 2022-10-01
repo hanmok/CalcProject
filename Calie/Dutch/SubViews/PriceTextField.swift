@@ -26,7 +26,8 @@ class PriceTextField: UITextField {
     public var isTotalPrice = false
     let id = UUID()
     
-    private let currencyLabel = UILabel().then { $0.text = "원"}
+    private let currencyLabel = UILabel().then {
+        $0.text = ASD.currency.localized}
     
     override weak var delegate: UITextFieldDelegate? {
         didSet{
