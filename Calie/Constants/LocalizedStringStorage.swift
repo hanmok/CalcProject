@@ -115,10 +115,11 @@ struct ASD {
         
         var ret: String
         
-        if UserDefaultSetup().isKorean {
+
+        if ASD.currencyShort.localized == "원" {
             let postPosition = ASD.getCorrectPostPosition(from: from)
             
-            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
+            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요."
         } else {
             ret = from + " should send " + convertedAmt + " to " + to
         }

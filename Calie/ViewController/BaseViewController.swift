@@ -955,6 +955,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         deleteButton.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchUpInside)
+        
         deleteButton.addTarget(self, action: #selector(turnIntoOriginalColor), for: .touchDragExit)
         
         

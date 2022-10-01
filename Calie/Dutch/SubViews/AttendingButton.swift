@@ -25,7 +25,9 @@ class AttendingButton: UIButton {
         print("markAttended")
         let image = condition ? UIImage(systemName: "checkmark.rectangle.fill") : UIImage(systemName: "rectangle")
    
-        let color: UIColor = condition ? .systemBlue : UIColor(white: 0.8, alpha: 1)
+//        let color: UIColor = condition ? .systemBlue : UIColor(white: 0.8, alpha: 1)
+//        let color: UIColor = condition ? ColorList().bgColorForExtrasDM : UIColor(white: 0.8, alpha: 1)
+        let color: UIColor = condition ? ColorList().bgColorForExtrasMiddle : UIColor(white: 0.8, alpha: 1)
         DispatchQueue.main.async {
             self.innerImageView.image = image
             self.innerImageView.tintColor = color

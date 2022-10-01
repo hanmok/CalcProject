@@ -34,7 +34,10 @@ class PersonDetailFooter: UICollectionReusableView {
         let titleColor = UIColor(white: 0.2, alpha: 1)
         $0.setTitleColor(titleColor, for: .normal)
         $0.layer.cornerRadius = 8
-        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
+//        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
+//        $0.layer.borderWidth = 3
+//        $0.layer.borderColor = ColorList().bgColorForExtrasMiddle.cgColor
+        $0.backgroundColor = ColorList().bgColorForExtrasLM
     }
     
     @objc func addPersonTapped(_ sender: UIButton) {

@@ -39,7 +39,8 @@ class CalculatedResultTableCell: UITableViewCell {
         let userDefault = UserDefaultSetup()
         
         
-        if userDefault.isKorean {
+//        if userDefault.isKorean {
+        if ASD.currency.localized == "원" { // korean
 //            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
@@ -53,7 +54,6 @@ class CalculatedResultTableCell: UITableViewCell {
             
             attributedStr.append(NSAttributedString(string: "에게", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-//            attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.systemFont(ofSize: 22)]))
             attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
             
             attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))

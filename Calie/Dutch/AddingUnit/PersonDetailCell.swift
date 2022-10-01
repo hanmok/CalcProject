@@ -103,11 +103,11 @@ class PersonDetailCell: UICollectionViewCell {
         }
         
 //        if viewModel.isAttended {
-        if isAttended {
+        
             delegate?.fullPriceAction(idx: sender.tag)
             // Post notify to hide fullPrices
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
-        }
+        
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {

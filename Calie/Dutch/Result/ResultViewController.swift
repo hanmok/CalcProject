@@ -352,25 +352,10 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func convertExchangeInfoIntoString(exchangeInfo: ResultTupleWithName) -> String {
-//        print("current Language: \(userDefaultSetup.isKorean)")
-        
+
         let (from, to, amt) = exchangeInfo
         
-//        let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
-        
-//        let postPosition = getCorrectPostPosition(from: from)
-        
-//        var ret: String
-        
-//        if userDefaultSetup.isKorean {
-//            ret = from + postPosition + " " + to + "에게 " + convertedAmt + "을 보내주세요.\n\n"
-//        } else {
-//            ret = from + " should send " + convertedAmt + " to " + to
-//        }
-        
         return ASD.convertDutchResultMsg(from: from, to: to, amt: amt)
-        
-//        return ret
     }
     
     func getCorrectPostPosition(from name: String) -> String {
@@ -562,7 +547,6 @@ extension ResultViewController {
             self.updateWithAnimation()
         }
 
-        
         return image
     }
     

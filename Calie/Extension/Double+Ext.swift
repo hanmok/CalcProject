@@ -42,7 +42,14 @@ extension Double {
         initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
         initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
         
-        return initialStr + " " + ASD.currency.localized
+
+        //        이게 되는구나?!
+        if ASD.currencyShort.localized == "$" {
+            return ASD.currencyShort.localized + initialStr
+        } else {
+            return initialStr + ASD.currencyShort.localized
+        }
+//        return initialStr + " " + ASD.currency.localized
     }
     
     public func applyDecimalFormat() -> String {

@@ -153,7 +153,8 @@ class PersonDetailHeader: UICollectionReusableView {
 //        let remainderString = remainderInfo.addComma() + "원 "
         let remainderString = remainderInfo.addComma() + "\(ASD.currencyShort.localized) "
         
-        self.remainderBtn.setTitle(remainderString, for: .normal)
+//        self.remainderBtn.setTitle(remainderString, for: .normal)
+        remainderBtn.setTitle("  " + remainderString, for: .normal)
         
         
         self.remainderBtn.isUserInteractionEnabled = remainderInfo != 0
@@ -177,6 +178,7 @@ class PersonDetailHeader: UICollectionReusableView {
         
         self.layoutSubviews()
     }
+    
     
     
     @objc func changeStateToActive(_ notification: Notification) {
@@ -210,7 +212,8 @@ class PersonDetailHeader: UICollectionReusableView {
         
         let remainingStr =  viewModel.remainder.addComma() + "\(ASD.currencyShort.localized) "
 
-        remainderBtn.setTitle(remainingStr, for: .normal)
+//        remainderBtn.setTitle(remainingStr, for: .normal)
+        remainderBtn.setTitle("  " + remainingStr, for: .normal)
         
         if viewModel.remainder >= 0.009 { // != 0 for Double
             self.remainderBtn.isUserInteractionEnabled = true
@@ -323,8 +326,8 @@ class PersonDetailHeader: UICollectionReusableView {
         $0.layer.cornerRadius = 8
         $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
         $0.layer.masksToBounds = true
-        $0.contentHorizontalAlignment = .right
-        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+//        $0.contentHorizontalAlignment = .right
+//        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         
     }
     
@@ -339,6 +342,10 @@ class PersonDetailHeader: UICollectionReusableView {
         $0.text = "남은 금액"
     }
     
+    private let bottomLine = UIView().then {
+        $0.backgroundColor = ColorList().bgColorForExtrasLM
+    }
+    
     private func setupLayout() {
         
         [
@@ -348,7 +355,8 @@ class PersonDetailHeader: UICollectionReusableView {
             spentDateLabel,
             spentDatePicker,
             divider,
-            remainderTextLabel ,remainderBtn, attendedLabel
+            remainderTextLabel ,remainderBtn, attendedLabel,
+            bottomLine
         ].forEach { v in
             self.addSubview(v)
         }
@@ -421,7 +429,8 @@ class PersonDetailHeader: UICollectionReusableView {
             make.trailing.equalToSuperview()
             make.width.equalTo(90)
             make.top.equalTo(divider.snp.bottom).offset(10)
-            make.bottom.equalToSuperview()
+//            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
         }
 
         remainderTextLabel.snp.makeConstraints { make in
@@ -438,6 +447,11 @@ class PersonDetailHeader: UICollectionReusableView {
             make.height.equalTo(30)
         }
         
+        bottomLine.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-10)
+            make.leading.trailing.equalToSuperview().inset(5)
+            make.height.equalTo(1)
+        }
         
 //        remainderBtn.layer.shadowOffset = CGSize(width: 5, height: 5)
 //        remainderBtn.layer.shouldRasterize = true

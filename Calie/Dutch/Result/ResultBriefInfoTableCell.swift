@@ -66,11 +66,13 @@ class ResultBriefInfoTableCell: UITableViewCell {
     private let toPayLabel = UILabel().then {
         $0.textAlignment = .right
         $0.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        $0.adjustsFontSizeToFitWidth = true
     }
     
     private let toPayInfoLabel = UILabel().then {
         $0.textAlignment = .center
         $0.font = UIFont.systemFont(ofSize: 20)
+        $0.adjustsFontSizeToFitWidth = true
     }
     
     
@@ -100,31 +102,19 @@ class ResultBriefInfoTableCell: UITableViewCell {
         
         nameLabel.attributedText = NSAttributedString(string: personCostInfo.name, attributes: [.font: UIFont.systemFont(ofSize: 22, weight: .light)])
         
-//        nameLabel.sizeToFit()
-//        nameLabel.tofit
-        
-//        nameLabel.text = personCostInfo.name
-
-
-//        let spentAmtStr = personCostInfo.paidAmt.getStrWithoutDots()
-//        let spentAmtStr = personCostInfo.paidAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
-        
         let spentAmtStr = personCostInfo.paidAmt.applyDecimalFormatWithCurrency()
 
         spentAmountLabel.text = spentAmtStr
 
         let toPayAmt = personCostInfo.toGet
-//        let toPayAmtStr = toPayAmt.getStrWithoutDots()
+
         let unsignedAmt = toPayAmt > 0 ? toPayAmt : -toPayAmt
         
-//        let toPayAmtStr = unsignedAmt.convertIntoCurrencyUnit(isKorean: userDefaultSetup.isKorean)
         let toPayAmtStr = unsignedAmt.applyDecimalFormatWithCurrency()
         
         if unsignedAmt != 0 {
             toPayLabel.text = toPayAmtStr
         }
-        
-
         
         switch toPayAmt {
         case _ where toPayAmt < 0:

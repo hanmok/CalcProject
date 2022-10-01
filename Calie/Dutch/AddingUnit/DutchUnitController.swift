@@ -321,7 +321,10 @@ class DutchUnitController: NeedingController {
         print("setConditionBtnState to \(isActive)!!")
         DispatchQueue.main.async {
             self.confirmBtn.setTitleColor(isActive ? .black : UIColor(white: 0.2, alpha: 1), for: .normal)
-            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.45, alpha: 0.9)
+//            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.45, alpha: 0.9)
+            self.confirmBtn.backgroundColor = isActive ? ColorList().bgColorForExtrasLM : UIColor(white: 0.45, alpha: 0.9)
+//            self.confirmBtn.layer.borderWidth = isActive ? 2 : 0
+//            self.confirmBtn.layer.borderColor = isActive ? ColorList().bgColorForExtrasDM.cgColor : UIColor.clear.cgColor
         }
     }
     
@@ -806,7 +809,8 @@ extension DutchUnitController {
     // Header Size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 //        return CGSize(width: view.frame.width, height: 360)
-        return CGSize(width: view.frame.width, height: 390)
+//        return CGSize(width: view.frame.width, height: 390)
+        return CGSize(width: view.frame.width, height: 400)
     }
     
     // Footer Size
