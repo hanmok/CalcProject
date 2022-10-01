@@ -1149,9 +1149,9 @@ class BasicCalculator {
     @objc public func didReceiveDelete() { // deleteExecute(), deleteFaster 에 사용
 //        print(#file, #function)
 //        playSound()
-        
+
         caseframe : if process != ""{ // caseframe is not appropriate name..
-            
+            AudioServicesPlaySystemSound(1104)
             if process[process.index(before: process.endIndex)] == "\n"{
                 process.removeLast()
             }
@@ -1420,7 +1420,9 @@ class BasicCalculator {
     public func didPressedDownDelete() {
         if deletionTerm == 0.5 {
             didReceiveDelete()
+            
         }
+        
         // after 0.5s, make deleteSpeed 0.1 (5times faster)
         deletionForFasterTrigger = Timer.scheduledTimer(timeInterval: deletionTerm, target: self, selector: #selector(deleteFaster), userInfo: nil, repeats: false)
         // pauseDelete
@@ -1429,6 +1431,7 @@ class BasicCalculator {
         deletionTimerForInitialSetup = Timer.scheduledTimer(timeInterval: deletionTimeForInitialState, target: self, selector: #selector(didPressedDeleteLong), userInfo: nil, repeats: false)
         
     }
+    
     /// change delete delay to 0.1s, and delete each digit every 0.1s
     @objc func deleteFaster() {
         deletionTerm = 0.1

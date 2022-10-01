@@ -36,11 +36,11 @@ extension Double {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 
-        numberFormatter.decimalSeparator = "-"
+//        numberFormatter.decimalSeparator = "-"
 
         var initialStr = numberFormatter.string(from: self as NSNumber)!
-        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
-        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
+//        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
+//        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
         
 
         //        이게 되는구나?!
@@ -63,11 +63,11 @@ extension Double {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 
-        numberFormatter.decimalSeparator = "-"
+//        numberFormatter.decimalSeparator = "-"
 
         var initialStr = numberFormatter.string(from: self as NSNumber)!
-        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
-        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
+//        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
+//        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
         
         return initialStr
     }
