@@ -280,7 +280,7 @@ class CustomNumberPadController: UIViewController {
         numberText += sender.wrapperString
 //        if numberText
         // FIXME: Test..
-//        numberText = numberText.replacingOccurrences(of: ".", with: ",")
+        numberText = numberText.replacingOccurrences(of: ".", with: ",")
         print("numberText:\(numberText)")
         
         numberPadDelegate?.numberPadView(updateWith: numberText)
