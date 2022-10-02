@@ -18,11 +18,11 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     
     var description: String {
         switch self {
-//        case .Mode: return "Mode"
-//        case .General: return "General"
-        case .Mode: return LocalizedStringStorage.init().mode
-        case .General: return LocalizedStringStorage.init().general
-        
+//        case .Mode: return LocalizedStringStorage.init().mode
+//        case .General: return LocalizedStringStorage.init().general
+            
+        case .Mode: return LocalizedStringStorage().mode
+        case .General: return LocalizedStringStorage().general
         }
     }
 }
@@ -31,7 +31,7 @@ enum ModeOptions: Int, CaseIterable, SectionType {
     case darkMode
     case sound
     case notification
-//    case changingOrientation
+
     
     var containsSwitch: Bool {
         return true

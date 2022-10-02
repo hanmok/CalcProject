@@ -82,9 +82,6 @@ class SettingsTableCell: UITableViewCell {
         if hasLoaded { // make animations
             UIView.transition(with: self.contentView, duration: 0.5, options: .transitionCrossDissolve) {
                 
-//                self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
-                // changed .. why ? i don't know.
-                
                 self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
                 print("line 86, isDarkMode: \(self.isDarkMode)")
                 self.textLabel?.textColor = self.isDarkMode ? .white : .black
@@ -100,22 +97,7 @@ class SettingsTableCell: UITableViewCell {
     }
     
     // MARK: - Selectors
-//
     @objc func handleSwitchAction(_ sender: UISwitch) {
-        print("switch has pressed. tag: \(sender.tag)")
-        
-        print("tag: \(sender.tag)")
-        print("isOn: \(sender.isOn)")
-        
-//        switch tag {
-//        case 0: userDefaultSetup.setIsDarkModeOn(isDarkModeOn: sender.isOn)
-//        case 1:userDefaultSetup.setIsSoundOn(isSoundOn: sender.isOn)
-//        case 2: userDefaultSetup.setIsNotificationOn(isNotificationOn: sender.isOn)
-//        default:
-//            print("nothing happened")
-//        }
-            
-        
         
         
         delegate?.handleSwitchChanged(sender.tag, changedTo: sender.isOn)
