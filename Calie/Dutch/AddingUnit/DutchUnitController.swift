@@ -137,9 +137,13 @@ class DutchUnitController: NeedingController {
             for (_, value2) in newValue.enumerated() {
                 sum += value2.value
             }
+            
             let diff = spentAmount - sum
 
-            let dic: [AnyHashable: Any] = ["remainingPrice": diff]
+            let cutDiff = (diff * 100).rounded() / 100
+            
+            print("remainder flag 1, cutDiff: \(cutDiff)")
+            let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
             sumOfIndividual = sum
@@ -158,7 +162,11 @@ class DutchUnitController: NeedingController {
             updateConditionState(condition)
             
             let diff = newValue - sumOfIndividual
-            let dic: [AnyHashable: Any] = ["remainingPrice": diff]
+
+            let cutDiff = (diff * 100).rounded() / 100
+            print("remainder flag 2, cutDiff: \(cutDiff)")
+            let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
+            
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
             print("condition flag 4, spentAmount updated \(newValue), sumOfIndividual: \(sumOfIndividual)")
@@ -253,7 +261,7 @@ class DutchUnitController: NeedingController {
             } else {
                 guard let numOfElements = newDutchUnitIndex else { return }
                 self.spentPlace = "\(ASD.element.localized) \(numOfElements)"
-                print("slef.spentPlace, numOfElements: \(numOfElements)")
+                print("self.spentPlace, numOfElements: \(numOfElements)")
                 
             }
         }
@@ -321,10 +329,8 @@ class DutchUnitController: NeedingController {
         print("setConditionBtnState to \(isActive)!!")
         DispatchQueue.main.async {
             self.confirmBtn.setTitleColor(isActive ? .black : UIColor(white: 0.2, alpha: 1), for: .normal)
-//            self.confirmBtn.backgroundColor = isActive ? ColorList().confirmBtnColor : UIColor(white: 0.45, alpha: 0.9)
+
             self.confirmBtn.backgroundColor = isActive ? ColorList().bgColorForExtrasLM : UIColor(white: 0.45, alpha: 0.9)
-//            self.confirmBtn.layer.borderWidth = isActive ? 2 : 0
-//            self.confirmBtn.layer.borderColor = isActive ? ColorList().bgColorForExtrasDM.cgColor : UIColor.clear.cgColor
         }
     }
     
@@ -347,8 +353,7 @@ class DutchUnitController: NeedingController {
         
         print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
         
-//        DispatchQueue.asyncAfter(DispatchQueue()
-        
+    
         if spentPlaceTFJustTapped == false {
             
             dismissKeyboard()
@@ -366,36 +371,27 @@ class DutchUnitController: NeedingController {
                 
                 let selectedRow = validSelectedPriceTF.tag
                 personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
-                
-                print("selected flag 1, updated row: \(selectedRow)")
             } else {
                 
-                
-                print("selected flag 2")
             }
-            print("selected flag 3")
         }
     }
     
     
 
     func updateDictionary(tag: Int, currentText: String) {
-        print("dismissing flag::  tag: \(tag), currentText: \(currentText)")
         
         // header.spentAmt
         if tag == -1 {
             
             spentAmount = currentText.convertToDouble()
             viewModel.updateSpentAmount(to: spentAmount)
-            print("dismissing flag 6, spentAmount: \(spentAmount)")
             
             updateHeaderSpentAmt(input: spentAmount)
     
         } else {
             detailPriceDic[tag] = currentText.convertToDouble()
         }
-        
-        print("after updating dictionary, spentAmount: \(spentAmount), dic: \(detailPriceDic), currentText: \(currentText)")
     }
     
     var updateConditionState: (Bool) -> Void = { _ in }
@@ -473,18 +469,15 @@ class DutchUnitController: NeedingController {
                 self.personDetailCollectionView.snp.remakeConstraints { make in
                     make.leading.trailing.equalToSuperview()
                     make.top.equalToSuperview()
-
                     make.height.equalToSuperview()
                 }
-
-
             }
         }
     }
     
     
     @objc func confirmTapped() {
-    // 여기에 Header 고려해서 업데이트 해주면 좋겠는데...
+
         viewModel.updateDutchUnit(spentPlace: self.spentPlace,
                                   spentAmount: self.spentAmount,
                                   spentDate: self.spentDate,
@@ -511,17 +504,6 @@ class DutchUnitController: NeedingController {
     
     func dismissKeyboardOnly() {
         view.endEditing(true)
-    }
-    
-    
-    @objc func textDidBegin(_ textField: UITextField) {
-        
-        if let tf = textField as? PriceTextField {
-            print("tag: \(tf.tag)")
-            print("it's pricetextfield!, textDidBegin")
-        } else {
-            print("it's not priceTextField!")
-        }
     }
     
     
@@ -567,12 +549,9 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.delegate = self
         personDetailCollectionView.dataSource = self
         
-        
         personDetailCollectionView.register(PersonDetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonDetailHeader.headerIdentifier)
         
         personDetailCollectionView.register(PersonDetailFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: PersonDetailFooter.footerIdentifier)
-        
-        
         
         relocateCollectionView()
     }
@@ -590,8 +569,6 @@ class DutchUnitController: NeedingController {
         view.addSubview(bottomContainerView)
         bottomContainerView.addSubview(gradientView)
         bottomContainerView.addSubview(remainingView)
-//        spentPlaceTF.delegate = self
-//        spentAmountTF.delegate = self
         
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -654,10 +631,7 @@ class DutchUnitController: NeedingController {
     private let confirmBtn = UIButton().then {
 
         $0.setTitle(ASD.confirm.localized, for: .normal)
-//        $0.setTitleColor(.black, for: .normal)
-//        $0.backgroundColor = UIColor(white: 0.85, alpha: 0.9)
         $0.backgroundColor = UIColor(white: 0.65, alpha: 0.9)
-//        $0.backgroundColor = UIColor(white: 0.45, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
@@ -690,11 +664,8 @@ class DutchUnitController: NeedingController {
     
     // MARK: - NeedingController Delegate
     override func updateNumber(with numberText: String) {
-        print("hi, \(numberText)")
         
-        guard let selectedPriceTF = selectedPriceTF else {
-            return
-        }
+        guard let selectedPriceTF = selectedPriceTF else { return }
         
         selectedPriceTF.text = numberText
     }
@@ -728,7 +699,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
         // 이 값을 쓰는 이유는 ? 업데이트가 계속 될 때, View 에서 가장 최신 값 받아오기. (나중에 수정이 필요할 수도 있음)
         // ummm... 왜 변환이 안되지 ?? ;;
-       var text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString()
+//       var text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString()
+        var text = (detailPriceDic[indexPath.row] ?? 0.0).applyCustomNumberFormatter()
         
         text.applyNumberFormatter()
         

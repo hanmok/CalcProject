@@ -27,7 +27,10 @@ extension String {
             }
         }
         
-        if let intoDouble = Double(self) {
+        if var intoDouble = Double(self) {
+            
+            intoDouble = (intoDouble * 100).rounded() / 100
+            
             let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 2
             

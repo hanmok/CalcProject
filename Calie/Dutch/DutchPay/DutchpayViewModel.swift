@@ -217,10 +217,8 @@ extension DutchpayViewModel {
             
             if let intValue = amt.convertToInt() {
                 let double = Double(intValue)
-//                return convertIntoKoreanPrice(number: Double(intValue))
                 return double.applyDecimalFormatWithCurrency()
             } else {
-//                return convertIntoKoreanPrice(number: amt)
                 return amt.applyDecimalFormatWithCurrency()
             }
         }()

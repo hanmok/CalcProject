@@ -79,4 +79,10 @@ extension Double {
     }
     
     static let minimumValue = 0.009
+    
+    static func cutTails(_ input: Double) -> Double {
+        var num = input
+        num = (num * 100).rounded() / 100
+        return num
+    }
 }

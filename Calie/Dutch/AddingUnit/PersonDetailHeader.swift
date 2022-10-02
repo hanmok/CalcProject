@@ -86,10 +86,7 @@ class PersonDetailHeader: UICollectionReusableView {
 //                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 1).cgColor
                 UIColor.systemBlue.cgColor,
                 UIColor.systemBlue.cgColor
-//                UIColor(red: 0, green: 0, blue: 200).cgColor,
-//                UIColor(red: 0, green: 0, blue: ).cgColor
-//                UIColor(red: 0.3, green: 0.3, blue: 0.7, alpha: 0.9).cgColor,
-//                UIColor(red: 0.3, green: 0.3, blue: 0.7, alpha: 0.9).cgColor
+
             ], type: .axial)
             
             guard let gradientLayer = gradientLayer else { return }
@@ -107,7 +104,6 @@ class PersonDetailHeader: UICollectionReusableView {
 
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-//            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
             remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
         }
     }
@@ -213,14 +209,12 @@ class PersonDetailHeader: UICollectionReusableView {
         
         let remainingStr =  viewModel.remainder.applyCustomNumberFormatter() + "\(ASD.currencyShort.localized) "
 
-//        remainderBtn.setTitle(remainingStr, for: .normal)
+
         remainderBtn.setTitle("  " + remainingStr, for: .normal)
         
         if viewModel.remainder >= 0.009 { // != 0 for Double
             self.remainderBtn.isUserInteractionEnabled = true
-//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
-//            self.remainderBtn.backgroundColor = .magenta
-            
+
             gradientLayer?.removeFromSuperlayer()
 
             gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
@@ -235,10 +229,6 @@ class PersonDetailHeader: UICollectionReusableView {
             self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
         } else {
             self.remainderBtn.isUserInteractionEnabled = false
-
-//            self.remainderBtn.backgroundColor = UIColor(white: 0.4, alpha: 0.5)
-//            self.remainderBtn.backgroundColor = UIColor(white: 1.0, alpha: 1)
-//            self.remainderBtn.backgroundColor = .white
             
             gradientLayer?.removeFromSuperlayer()
 
@@ -251,11 +241,7 @@ class PersonDetailHeader: UICollectionReusableView {
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
             
-//            self.remainderBtn.backgroundColor = .cyan
         }
-        
-//        self.remainderTextLabel
-//        self.layoutSubviews()
     }
     
     private func setupAddTargets() {
@@ -292,7 +278,6 @@ class PersonDetailHeader: UICollectionReusableView {
             print("updateRemainingPrice noti called ")
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
             remainderBtnTapped = false
-//            remainderBtn.setTitleColor(.black, for: .normal)
             remainderBtn.setTitleColor(.white, for: .normal)
         } else {
             NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
@@ -308,7 +293,7 @@ class PersonDetailHeader: UICollectionReusableView {
 
             gradientLayer.frame = remainderBtn.bounds
             remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-//            remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+
             remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
         }
     }

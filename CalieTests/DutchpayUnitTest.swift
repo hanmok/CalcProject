@@ -1042,5 +1042,4 @@ extension DutchpayUnitTest {
         
         return dividedResult
     }
-    
 }

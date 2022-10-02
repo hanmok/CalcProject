@@ -203,6 +203,7 @@ extension DutchManager {
         // TODO: fetch from UserDefault
 //        let digitToCut = 0 // 일의 자리까지만 표시. (소숫점 버림)
         let digitToCut = ASD.currencyShort.localized == "원" ? 0 : -2
+        // 한국어 Logic .. 음.. 여행객이면? 이거는 결국 preference 로 해야함..
         
         var totalAmount: Double
         
@@ -259,11 +260,11 @@ extension DutchManager {
         // multipledAmt: 12345
         // digitLocationToCut: 1
         // multipliedDigit: 100
-        let multipliedAmt = Double(Int(amt * 100))
-//        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+
+        let multipliedAmt = Double(Int(amt * 100)) // 버림!
+
         let multipliedDigit = power(base: 10, exponent: digitLocationToCut) * 100
-//        let multipliedDigit = pow
-       print("multipliedDigit: \(multipliedDigit)")
+
         // 120
         let cutAmt = (Double(Int(multipliedAmt / multipliedDigit))) * multipliedDigit //
         let dividedResult = Double(cutAmt) / Double(100)
