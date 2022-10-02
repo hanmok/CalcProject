@@ -51,20 +51,14 @@ class CustomNumberPadController: UIViewController {
         setupLayout()
         setupAddTargets()
         view.backgroundColor = .blue
-        
-//        if ASD.currencyShort.localized == "원" {
-//            num000 = NumberButton(".")
-//        }
-        
     }
-    
-    
     
     
     private let num0 = NumberButton("0")
     private let num00 = NumberButton("00")
 //    private var num000 = NumberButton("000")
-    private var num000 = NumberButton(".")
+//    private var num000 = NumberButton(".")
+    private var num000 = NumberButton(tripleZeroOrDot: true)
     private let num1 = NumberButton("1")
     private let num2 = NumberButton("2")
     private let num3 = NumberButton("3")
@@ -94,7 +88,8 @@ class CustomNumberPadController: UIViewController {
     }
     
     private let completeLabel = UILabel().then {
-        $0.text = "완료"
+//        $0.text = "완료"
+        $0.text = ASD.confirm.localized
         $0.textAlignment = .center
         $0.textColor = UIColor.black
     }
@@ -123,7 +118,6 @@ class CustomNumberPadController: UIViewController {
         
         completeBtn.addTarget(self, action: #selector(completeTapped(_:)), for: .touchUpInside)
         
-//        deleteBtn.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(deleteTapAction), for: .touchUpInside)
 
         deleteBtn.addTarget(self, action: #selector(applyTappedView(_:)), for: .touchDown)
@@ -135,7 +129,6 @@ class CustomNumberPadController: UIViewController {
         // Detail Delete action
         deleteBtn.addTarget(self, action: #selector(handleDeletePressedDown), for: .touchDown)
         
-//        deleteBtn.addTarget(self, action: #selector(handleDeleteTapped), for: .touchUpInside)
         deleteBtn.addTarget(self, action: #selector(handleDeleteDragOutAction), for: .touchDragExit)
         
         
@@ -277,7 +270,20 @@ class CustomNumberPadController: UIViewController {
     
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
-        numberText += sender.wrapperString
+//        if sender.wrapperString != "." &&
+        if sender.wrapperString == "." && numberText.contains(".") {
+            // 여기서.. 막아주면 좋을 것 같은데..
+//            if numberText
+        } else {
+            if numberText.count >= 3 && numberText[numberText.index(numberText.endIndex, offsetBy: -3)] == "." {
+                
+            } else {
+            
+            numberText += sender.wrapperString
+                
+            }
+        }
+        
 //        if numberText
         // FIXME: Test..
 //        numberText = numberText.replacingOccurrences(of: ".", with: ",")

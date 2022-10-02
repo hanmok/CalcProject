@@ -17,7 +17,8 @@ extension String {
         self = self.replacingOccurrences(of: "-", with: "")
         self = self.replacingOccurrences(of: ",", with: "")
         print("formatter flag 1, input: \(self)")
-//        let hasDot = self.contains(".")
+
+        
         
         var isLastDot = false
         if let lastChar = self.last {

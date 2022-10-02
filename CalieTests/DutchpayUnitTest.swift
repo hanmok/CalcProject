@@ -1001,7 +1001,15 @@ extension DutchpayUnitTest {
 extension DutchpayUnitTest {
     func test_StringTest() {
         let str = "abcd"
-        let startIdx = str.startIndex 
+        let startIdx = str.startIndex
         XCTAssertEqual(str[startIdx], "a")
+        
+        
+//        let testNum = "1234.56"
+        let testNum = "123"
+        let endIdx = testNum.endIndex
+
+        let dotOffset = testNum.index(endIdx, offsetBy: -3)
+        XCTAssertEqual(testNum[dotOffset], ".")
     }
 }
