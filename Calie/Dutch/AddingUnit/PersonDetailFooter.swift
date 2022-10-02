@@ -42,8 +42,6 @@ class PersonDetailFooter: UICollectionReusableView {
     
     @objc func addPersonTapped(_ sender: UIButton) {
         footerDelgate?.addPersonAction()
-        print("addPersonTapped!!")
-    
     }
     
     private func setupAddtargets() {

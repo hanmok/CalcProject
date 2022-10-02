@@ -48,7 +48,6 @@ class SideViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         view.backgroundColor = .white
-        print("viewDidLoad in SideViewController called")
                 
         registerTableView()
 
@@ -108,7 +107,7 @@ class SideViewController: UIViewController {
     
     
     @objc func addGathering() {
-        print("addGathering called")
+
     
         viewModel.addGathering { newGathering in
             
@@ -266,7 +265,7 @@ extension SideViewController {
                 completion(.failure(.cancelAskingName))
                 fatalError("Name must have at least one character")
             }
-            print("gatheringName flag 2, newName: \(newGroupName)")
+         
             
             completion(.success(newGroupName))
         }

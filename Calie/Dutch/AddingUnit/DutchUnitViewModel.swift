@@ -38,7 +38,7 @@ class DutchUnitViewModel {
 
     private var isConditionSatisfied = false {
         willSet {
-            print("condition flag 1, \(newValue)")
+        
             changeableConditionState(newValue)
         }
     }
@@ -47,7 +47,7 @@ class DutchUnitViewModel {
     private var spentAmount: Double = 0 {
         willSet {
             let condition = (newValue == sumOfIndividual) && (newValue != 0)
-            print("condition flag 2, \(condition)")
+    
             isConditionSatisfied = condition
         }
     }
@@ -63,7 +63,7 @@ class DutchUnitViewModel {
             let condition = (newValue == spentAmount) && (newValue != 0)
             
             isConditionSatisfied = condition
-            print("condition flag 3, sumOfIndividual: \(newValue), spentAmount: \(spentAmount), condition: \(condition)")
+     
 
         }
     }
@@ -76,7 +76,7 @@ class DutchUnitViewModel {
             }
             sumOfIndividual = sum
             updateCollectionView()
-            print("persoNDetail willSet ended")
+ 
         }
     }
     
@@ -138,12 +138,11 @@ class DutchUnitViewModel {
     }
     
     public func initializePersonDetails(gathering: Gathering, dutchUnit: DutchUnit?) {
-        print("initializing personDetails flag 1")
-        print("dutchUnit: \(dutchUnit)")
+
         
         if let dutchUnit = dutchUnit {
             personDetails = dutchUnit.personDetails.sorted()
-            print("personDetail flag 1: \(personDetails)")
+        
             spentAmount = dutchUnit.spentAmount
             spentPlace = dutchUnit.placeName
             spentDate = dutchUnit.spentDate
@@ -152,10 +151,6 @@ class DutchUnitViewModel {
         }
     
 
-        
-        
-        print("initializing personDetails flag 2")
-        print("numOfPersonDetails: \(personDetails.count)")
     }
     
     public func addPerson(name: String, completion: @escaping (Result<String, DutchUnitError>) -> Void) {
@@ -177,8 +172,7 @@ class DutchUnitViewModel {
                 return
                 
             case .failure(let e):
-                print(e.localizedDescription)
-                print("duplicate flag 2")
+  
                 completion(.failure(.duplicateName))
                 return
             }

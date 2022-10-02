@@ -74,27 +74,15 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     @objc func fullPriceBtnTapped(_ sender: UIButton) {
-        print("fullPrice Tapped!")
-//        if viewModel?.isAttended {
-        guard let viewModel = viewModel else {
-            return
-        }
         
-//        if viewModel.isAttended {
-        
-            delegate?.fullPriceAction(idx: sender.tag)
-            // Post notify to hide fullPrices
-            NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+        delegate?.fullPriceAction(idx: sender.tag)
+        // Post notify to hide fullPrices
+        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
         
     }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
 
-        guard var viewModel = viewModel else {
-            return
-        }
-                
-        print("Attended Btn Tapped!")
         // UI update
         attendingBtn.isAttending.toggle()
         // DutchUnitController 의 '값' 만 업데이트.
@@ -104,7 +92,6 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func loadView() {
-        print("load View triggered")
         guard let viewModel = viewModel else { return }
 
         isAttended = viewModel.isAttended

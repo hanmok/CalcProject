@@ -48,13 +48,9 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
     
     func spentAmtTapped() {
         self.needingDelegate?.initializeNumberText()
-        print("spentAmtTapped!")
-
     }
     
     func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool) {
-        print("selectAllText called")
-        
         if isSpentAmountTF {
 
             NotificationCenter.default.post(name: .changePriceStateIntoActive, object: nil)
@@ -69,7 +65,6 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
             spentPlaceTFJustTapped = true
             
             Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
-                print("spentPlaceTFJustTapped changed to false")
                 self.spentPlaceTFJustTapped = false
             }
         }
@@ -89,7 +84,6 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
 
 extension DutchUnitController: PersonDetailFooterDelegate {
     func addPersonAction() {
-        print("presentAddingPeopleAlert called")
         self.presentAddingPeopleAlert()
     }
 }
@@ -108,11 +102,7 @@ class DutchUnitController: NeedingController {
     
     var hasLoadedFirst = true
     
-    var isShowingKeyboard = false {
-        willSet {
-            print("dismissing flag 4: isShowingKeyboard: \(newValue)")
-        }
-    }
+    var isShowingKeyboard = false
     
     var viewModel: DutchUnitViewModel
     
@@ -142,15 +132,10 @@ class DutchUnitController: NeedingController {
 
             let cutDiff = (diff * 100).rounded() / 100
             
-            print("remainder flag 1, cutDiff: \(cutDiff)")
             let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
             
             sumOfIndividual = sum
-            print("detailPriceDic updated \(newValue), \nspentAmount: \(spentAmount), \nsumOfIndividual:\(sumOfIndividual)")
-        }
-        didSet {
-            print("umm")
         }
     }
     
@@ -164,12 +149,9 @@ class DutchUnitController: NeedingController {
             let diff = newValue - sumOfIndividual
 
             let cutDiff = (diff * 100).rounded() / 100
-            print("remainder flag 2, cutDiff: \(cutDiff)")
             let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
             
             NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
-            
-            print("condition flag 4, spentAmount updated \(newValue), sumOfIndividual: \(sumOfIndividual)")
         }
     }
     
@@ -180,7 +162,6 @@ class DutchUnitController: NeedingController {
         willSet {
         let condition = (newValue == spentAmount) && (newValue != 0)
             updateConditionState(condition)
-            print("condition flag 5, sumOfIndividual updated to \(newValue), spentAmount: \(spentAmount)")
         }
     }
     
@@ -195,7 +176,6 @@ class DutchUnitController: NeedingController {
         if let initialDutchUnit = initialDutchUnit {
             self.spentAmount = initialDutchUnit.spentAmount
         }
-        print("initializing personDetails flag 0, dutchUnit: \(initialDutchUnit)")
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -213,9 +193,6 @@ class DutchUnitController: NeedingController {
     }
     
     @objc func updateWithHeaderInfo(_ notification: Notification) {
-        print("changeStateToActive called!!")
-        
-//        guard let amtInput = notification.userInfo?["spentAmt"] as? Double else {return }
         guard let spentPlace = notification.userInfo?["spentPlace"] as? String,
               let spentAmt = notification.userInfo?["spentAmt"] as? String,
               let spentDate = notification.userInfo?["spentDate"] as? Date else { return }
@@ -236,16 +213,11 @@ class DutchUnitController: NeedingController {
         
         navigationController?.navigationBar.isHidden = true
         
-        print("initializing personDetails flag 3")
-        print("current personDetails: ")
-        
         view.backgroundColor = .white
         
         setupBindings()
         
         viewModel.initializePersonDetails(gathering: gathering, dutchUnit: dutchUnit)
-        
-        print("flag 5, currentPersonDetails: \(viewModel.personDetails.count)")
         
         setupDictionary()
         
@@ -261,8 +233,6 @@ class DutchUnitController: NeedingController {
             } else {
                 guard let numOfElements = newDutchUnitIndex else { return }
                 self.spentPlace = "\(ASD.element.localized) \(numOfElements)"
-                print("self.spentPlace, numOfElements: \(numOfElements)")
-                
             }
         }
         
@@ -279,7 +249,6 @@ class DutchUnitController: NeedingController {
         }
         
         updateConditionState = { [weak self] condition in
-            print("current condition: \(condition)")
             guard let self = self else { return }
             self.setConfirmBtnState(isActive: condition)
         }
@@ -288,7 +257,6 @@ class DutchUnitController: NeedingController {
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(otherViewTapped))
         
         view.addGestureRecognizer(tap2)
-        print("flag, dutchUnit: \(dutchUnit)")
         
         if dutchUnit != nil {
             setConfirmBtnState(isActive: true)
@@ -326,7 +294,6 @@ class DutchUnitController: NeedingController {
     
     private func setConfirmBtnState(isActive: Bool) {
         confirmBtn.isUserInteractionEnabled = isActive
-        print("setConditionBtnState to \(isActive)!!")
         DispatchQueue.main.async {
             self.confirmBtn.setTitleColor(isActive ? .black : UIColor(white: 0.2, alpha: 1), for: .normal)
 
@@ -351,9 +318,6 @@ class DutchUnitController: NeedingController {
         
         NotificationCenter.default.post(name: .notifyOtherViewTapped, object: nil)
         
-        print("otherViewTapped called!!, spentPlaceTFJustTapped: \(spentPlaceTFJustTapped)")
-        
-    
         if spentPlaceTFJustTapped == false {
             
             dismissKeyboard()
@@ -363,8 +327,6 @@ class DutchUnitController: NeedingController {
             let currentText = validSelectedPriceTF.text!
             
             updateDictionary(tag: validSelectedPriceTF.tag, currentText: currentText)
-            
-            print("otherView Tapped!!")
             
             // meaningless..
             if validSelectedPriceTF.tag != -1 {
@@ -401,14 +363,13 @@ class DutchUnitController: NeedingController {
         viewModel.updateCollectionView = { [weak self] in
             guard let self = self else { return }
             self.relocateCollectionView()
-            print("initializing personDetails flag 4")
-            print("numOfDetails: \(self.viewModel.personDetails.count)")
+
         }
         
         viewModel.changeableConditionState = {[weak self] bool in
             guard let self = self else { return }
             self.setConfirmBtnState(isActive: bool)
-            print("changeableConditionState changed to \(bool)")
+
         }
     }
     
@@ -423,13 +384,11 @@ class DutchUnitController: NeedingController {
     
     // 좀.. 이상한데 ??
     @objc func selectAllText(_ sender: UITextField) {
-        print("selectAllText called")
         sender.selectAll(nil)
         
         spentPlaceTFJustTapped = true
         
         Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
-            print("spentPlaceTFJustTapped changed to false")
             self.spentPlaceTFJustTapped = false
         }
     }
@@ -526,7 +485,6 @@ class DutchUnitController: NeedingController {
                 self.updateWithAnimation()
                 
             case .failure(let errorMsg):
-                print("duplicate flag 3")
                 self.showToast(message: errorMsg.localizedDescription, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
             }
         }
@@ -539,8 +497,6 @@ class DutchUnitController: NeedingController {
             
             self.moveDownCollectionView()
         }
-        
-        print("relocate collectionView called, count: \(viewModel.personDetails.count)")
     }
     
     
@@ -658,7 +614,6 @@ class DutchUnitController: NeedingController {
     }
     
     override func completeAction3() {
-        print("complete recognized from dutchunitController")
         otherViewTapped()
     }
     
@@ -677,8 +632,6 @@ class DutchUnitController: NeedingController {
 extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("numberOfItemsInSection: \(viewModel.personDetails.count)")
-        
         return viewModel.personDetails.count
     }
     
@@ -707,8 +660,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.delegate = self
         
         cell.spentAmountTF.text = text
-        
-        print("newText: \(cell.spentAmountTF.text!)")
 
         // MARK: - 색상 원상태로 변경
         cell.spentAmountTF.textColor = .black
@@ -740,7 +691,6 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
 
 extension DutchUnitController {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print("kind: \(kind)")
         
         if kind == "UICollectionElementKindSectionHeader" {
             
@@ -796,24 +746,13 @@ extension DutchUnitController {
 extension DutchUnitController: PersonDetailCellDelegate {
     
     func fullPriceAction(idx: Int) {
-        print("fullPriceAction in dutchUnitController called")
-        print("current idx: \(idx), spentAmout: \(spentAmount)")
         
-        for (tag, amount) in detailPriceDic {
-            print("tag: \(tag), amount: \(amount)")
-        }
 
-        // 여기 두줄이 문제.. 본인 값을 잘못 반영하고있음.
-        // umm..
+
         let prev = detailPriceDic[idx] ?? 0
-        
-        // TODO: update sumOfIndividual
-        // 음.. 입력을 하다가 이걸 누르는 경우는 고려하지 않은 상태. ;
-        // TextField 를 연속해서 (Custom NumberPad 를 dismiss 시키지 않은 채) 입력하면 값이 반영되지 않음. 어떻게 해결하지??
-        
+                
         let remaining = spentAmount - sumOfIndividual + prev
 
-        
         if remaining != 0 {
             detailPriceDic[idx] = remaining
 
@@ -833,7 +772,7 @@ extension DutchUnitController: PersonDetailCellDelegate {
     }
     
     func cell(_ cell: PersonDetailCell, isAttending: Bool) {
-        print("didTapAttended triggered")
+        
     }
     
     func updateAttendingState(with tag: Int, to isAttending: Bool) {
@@ -853,13 +792,11 @@ extension DutchUnitController: PersonDetailCellDelegate {
 
 extension DutchUnitController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("textField returned")
         // adding people succeessively, tag 100: Alert Controller
         
         // header.spentPlaceTF
         if textField.tag == 1 {
             self.spentPlace = textField.text!
-            print("text input: \(textField.text!)")
             self.dismissKeyboardOnly()
             spentPlaceTFJustTapped = true
         }
@@ -882,7 +819,7 @@ extension DutchUnitController: UITextFieldDelegate {
         if let tf = textField as? PriceTextField {
             
             if tf.tag == -1 {
-                print("header spentAmt tapped!")
+                
             } else {
                 moveUpCollectionView()
             }
@@ -917,9 +854,6 @@ extension DutchUnitController: UITextFieldDelegate {
             selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
             selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
             
-            print("tag : \(textField.tag)")
-            print("textField: \(textField)")
-            
             return false
             
         } else {
@@ -932,7 +866,6 @@ extension DutchUnitController: UITextFieldDelegate {
             
             isShowingKeyboard = false
             
-            print("tag : \(textField.tag)")
             return true
         }
     }

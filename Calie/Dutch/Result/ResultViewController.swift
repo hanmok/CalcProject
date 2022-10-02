@@ -246,7 +246,6 @@ class ResultViewController: UIViewController {
     }
     
     @objc func copyBtnTapped(_ sender: UIButton) {
-        print("copy Btn Tapped")
         
         UIPasteboard.general.string = textToCopy
         // FIXME: TEXT 크기가 너무 작음;; 나중에 수정하자아
@@ -254,8 +253,6 @@ class ResultViewController: UIViewController {
     }
     
     @objc func captureBtnTapped(_ sender: UIButton) {
-        print("capture Btn Tapped")
-//        indicator.startAnimating()
         saveScrollViewImage()
     }
     
@@ -342,7 +339,6 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
             cell.isUserInteractionEnabled = false
             
             cell.exchangeInfo = viewModel.calculatedResultTuples[indexPath.row]
-            print("cell.exchangeInfo: \(cell.exchangeInfo)")
             let correspondingText = convertExchangeInfoIntoString(exchangeInfo: viewModel.calculatedResultTuples[indexPath.row])
             textToCopy += correspondingText + "\n"
             return cell
@@ -359,7 +355,7 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func getCorrectPostPosition(from name: String) -> String {
-    print("josa Testing started ")
+    
         
 //    let text = "소방관"
         let text = name
@@ -435,8 +431,8 @@ extension ResultViewController {
                         self.present(activityController, animated: true, completion: nil)
                     }
                     
-                } catch let error {
-                    print("error saving file \(error.localizedDescription)")
+                } catch {
+                    
                 }
             }
         }

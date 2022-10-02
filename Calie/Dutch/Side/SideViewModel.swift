@@ -48,21 +48,19 @@ class SideViewModel {
     }
     
     func addGathering(completion: @escaping (Gathering) -> Void) {
-        print("sideViewModel addGathering called")
+        
         dutchService.createGathering { gathering in
-            print("side flag 2")
+          
             self.allGatherings.append(gathering)
             completion(gathering)
         }
     }
     
     func changeGatheringNameAction(newName: String, target: Gathering, completion: @escaping () -> Void ) {
-        print("gatheringName flag 6")
+
         dutchService.changeGatheringName(to: newName, target: target) {
             completion()
         }
-//        dutchService.changeGatheringName(to: newName) { gathering in
-//            self.gathering = gathering
-        print("gatheringName has changed to \(newName)")
+
         }
 }

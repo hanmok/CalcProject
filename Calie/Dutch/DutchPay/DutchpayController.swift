@@ -52,11 +52,7 @@ class DutchpayController: UIViewController {
     
     var isAdding = false
     
-    var isShowingParticipants = false {
-        didSet {
-            print("isShowingParticipants changed to \(oldValue)")
-        }
-    }
+    var isShowingParticipants = false
     
     private var participantsNavController: UINavigationController?
     
@@ -80,9 +76,7 @@ class DutchpayController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.portrait)
-        print("viewWillAppear in DutchpayController called")
         viewModel.viewDidLoadAction()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -124,7 +118,7 @@ class DutchpayController: UIViewController {
         
         viewModel.updateGatheringHandler = { [weak self] gatheringInfo in
             guard let self = self else { return }
-            print("gathering flag 3")
+            
             self.updateGatheringName(with: gatheringInfo.title)
             self.updateSpentTotalPrice(to: gatheringInfo.totalPrice)
             // TODO: update TableView
@@ -133,25 +127,11 @@ class DutchpayController: UIViewController {
             DispatchQueue.main.async {
                 self.dutchTableView.reloadData()
             }
-            
-            print("Gathering has updated, current dutchUnit number: \(self.viewModel.dutchUnits)")
         }
-        
-        
-        
-        //        viewModel.createGathering = { [weak self ] in
-        //            guard let self = self else { return }
-        //            // TODO: don't ask Gathering name. Set it to Gatherig n
-        
-        
-        
-        
     }
     
     
     private func setupAddTargets() {
-        print("setupAddTargets Called !")
-        
         historyBtn.addTarget(self, action: #selector(historyBtnAction), for: .touchUpInside)
         
         resetGatheringBtn.addTarget(self, action: #selector(resetGatheringBtnAction), for: .touchUpInside)
@@ -206,10 +186,7 @@ class DutchpayController: UIViewController {
         
         if !(currentGathering.title == "" && currentGathering.dutchUnits.count == 0 && currentGathering.people.count == 0) {
             self.presentResetAlert()
-        } else {
-            print("no info to reset")
         }
-        
     }
     
     
@@ -222,11 +199,6 @@ class DutchpayController: UIViewController {
     
     @objc func calculateBtnAction() {
         
-        // MARK: - Original Code
-        
-//        viewModel.calculateAction(needGathering: true)
-        print("calculateBtn Tapped !!")
-        
         guard let gathering = viewModel.gathering else { fatalError() }
         
         let resultVC = ResultViewController(gathering: gathering)
@@ -234,10 +206,6 @@ class DutchpayController: UIViewController {
 
         navigationController?.pushViewController(resultVC, animated: true)
         dutchToMainTapDelegate?.shouldHideMainTab(true)
-        
-        
-        print("current Gathering: \(viewModel.gathering)")
-        print("current participants: \(viewModel.gathering?.people)")
         
     }
     
@@ -251,24 +219,17 @@ class DutchpayController: UIViewController {
     }
     
     @objc func historyBtnAction() {
-        // TODO: Handle
-        
-        //        dutchToMainTapDelegate?.shouldHideMainTab(true)
-        //        dutchToMainTapDelegate?.shouldShowSideView(true)
         showSideController()
-        print("historyBtnTapped")
     }
     
     
     @objc private func changeGatheringNameAction() {
         
         self.presentAskingGatheringName { [weak self] result in
-            print("gathering name flag 1, result: \(result)")
             guard let self = self else { return }
             switch result {
                 
             case .success(let newName):
-                
                 self.viewModel.changeGatheringNameAction(newName: newName)
                 
             case .failure(let e):
@@ -327,13 +288,11 @@ class DutchpayController: UIViewController {
         dutchTableView.dataSource = self
         
         dutchTableView.rowHeight = 70
-        
-//        dutchTableView.tableHeaderView = headerContainer
     }
     
     
     private func updateGatheringName(with title: String) {
-        print("gathering flag 5")
+
         let styleCenter = NSMutableParagraphStyle()
         styleCenter.alignment = NSTextAlignment.center
         
@@ -399,7 +358,6 @@ class DutchpayController: UIViewController {
         } completion: { done in
             if done {
                 self.isShowingSideController = true
-                print("isShowingSideController : \(self.isShowingSideController)")
             }
         }
     }
@@ -581,7 +539,6 @@ class DutchpayController: UIViewController {
     }
     
     private func setupLayout() {
-        print("setupLayout triggered")
         let allViews = view.subviews
         
         allViews.forEach {
@@ -732,15 +689,12 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         totalPriceLabel.isHidden = (viewModel.dutchUnits.count == 0)
-        print("bug flag 1, count: \(viewModel.dutchUnits.count)")
         return viewModel.dutchUnits.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DutchTableCell.identifier, for: indexPath) as! DutchTableCell
-        print("dutchpay cell has appeared")
-        print("bug flag 2, indexPath.row: \(indexPath.row)")
         
         // FIXME: Fatal Error! index out of range!
         let dutchUnit = viewModel.dutchUnits[indexPath.row]
@@ -775,8 +729,6 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         guard let gathering = viewModel.gathering else { fatalError() }
         let selectedUnit = gathering.dutchUnits.sorted()[selectedIndex]
         presentDutchUnitController(selectedUnit: selectedUnit)
-//        print("selectedUnitInfo: ")
-//        print("personDetails: \(selectedUnit.personDetails.sorted())")
     }
     
     // Header Height
@@ -825,11 +777,8 @@ extension DutchpayController: DutchUnitDelegate {
 extension DutchpayController: AddingUnitControllerDelegate {
     
     func dismissChildVC() {
-        print("dismissChildVC 1")
-        
         navigationController?.popViewController(animated: true)
         
-        //        delegate?.dutchpayController(shouldHideMainTab: false)
         dutchToMainTapDelegate?.shouldHideMainTab(false)
     }
 }
@@ -857,7 +806,6 @@ extension DutchpayController {
                 completion(.failure(.cancelAskingName))
                 fatalError("Name must have at least one character")
             }
-            print("gatheringName flag 2, newName: \(newGroupName)")
             
             completion(.success(newGroupName))
         }
@@ -924,7 +872,6 @@ extension DutchpayController: MainTabToDutchDelegate {
     }
     
     func updateGatheringFromMainTab(with newGathering: Gathering) {
-        print("dutchpayController gathering changed")
         self.viewModel.gathering = newGathering
     }
 }

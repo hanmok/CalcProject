@@ -49,12 +49,7 @@ class ParticipantsController: UIViewController{
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("current People in ParticipantsController: \(viewModel.gathering.people.count)")
-        for eachPerson in viewModel.gathering.people {
-            print(eachPerson.name)
-        }
-        
-//        view.backgroundColor = UIColor(white: 0.93, alpha: 1)
+   
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
         
@@ -488,7 +483,7 @@ extension ParticipantsController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField.tag == 100 {
-            print("hi")
+        
             addPerson(newName: textField.text!)
             textField.text = ""
         }

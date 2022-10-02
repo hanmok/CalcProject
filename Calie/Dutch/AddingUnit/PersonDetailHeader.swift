@@ -37,7 +37,6 @@ class PersonDetailHeader: UICollectionReusableView {
     
     var viewModel: PersonHeaderViewModel? {
         didSet {
-            print("personDetailHeader viewModel changed") // not called!
             configureLayout()
         }
     }
@@ -73,11 +72,8 @@ class PersonDetailHeader: UICollectionReusableView {
 //    override viewd
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
-        
-        print("layoutSublayers called")
 
         if remainder >= Double.minimumValue {
-            print("layout flag 1")
             
             gradientLayer?.removeFromSuperlayer()
             
@@ -129,7 +125,7 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
-        print("changeStateToActive called!!")
+
 //        spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
 //        spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
         
@@ -178,20 +174,17 @@ class PersonDetailHeader: UICollectionReusableView {
     
     
     @objc func changeStateToActive(_ notification: Notification) {
-        print("changeStateToActive called!!")
         spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
         spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
     }
     
     // TODO: Add Animation
     @objc func changeStateToInactive(_ notification: Notification) {
-        print("changeStateToActive called!!")
         spentAmountTF.textColor = .black
         spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
     }
     
     @objc func updateSpentAmt(_ notification: Notification) {
-        print("changeStateToActive called!!")
         guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
 //        spentAmountTF.text = amtInput.addComma()
@@ -200,7 +193,6 @@ class PersonDetailHeader: UICollectionReusableView {
     
     
     private func configureLayout() {
-        print("configureLayout called")
         guard let viewModel = viewModel else { return }
         
         spentAmountTF.text = viewModel.spentAmt
@@ -262,7 +254,6 @@ class PersonDetailHeader: UICollectionReusableView {
     
     // not called ;;
     @objc func textFieldTapped(_ sender: UITextField) {
-        print("spentPlace Tapped!")
         
         headerDelegate?.textFieldTapAction(sender: sender, isSpentAmountTF: sender == spentAmountTF)
     }
@@ -272,10 +263,8 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     @objc func remainingPriceTapped(_ sender: UIButton) {
-        print("remainingPriceTapped! state: \(remainderBtnTapped)")
         
         if remainderBtnTapped {
-            print("updateRemainingPrice noti called ")
             NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
             remainderBtnTapped = false
             remainderBtn.setTitleColor(.white, for: .normal)

@@ -76,10 +76,8 @@ class SettingsCollectionCell: UICollectionViewCell {
     }
     
     @objc func handleBtnPressed(_ sender: UIButton) {
-        print("btn pressed!")
     }
     
     @objc func handleFullButtonPressed(_ sender: UIButton) {
-        print("handleFullButtonPressed")
     }
 }
