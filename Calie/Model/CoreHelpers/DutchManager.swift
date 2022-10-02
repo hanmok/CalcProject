@@ -201,7 +201,8 @@ extension DutchManager {
         }
         
         // TODO: fetch from UserDefault
-        let digitToCut = 0 // 일의 자리까지만 표시. (소숫점 버림)
+//        let digitToCut = 0 // 일의 자리까지만 표시. (소숫점 버림)
+        let digitToCut = ASD.currencyShort.localized == "원" ? 0 : -2
         
         var totalAmount: Double
         
@@ -258,11 +259,13 @@ extension DutchManager {
         // multipledAmt: 12345
         // digitLocationToCut: 1
         // multipliedDigit: 100
-        let multipliedAmt = Int(amt * 100)
-        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
-       
+        let multipliedAmt = Double(Int(amt * 100))
+//        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+        let multipliedDigit = power(base: 10, exponent: digitLocationToCut) * 100
+//        let multipliedDigit = pow
+       print("multipliedDigit: \(multipliedDigit)")
         // 120
-        let cutAmt = (multipliedAmt / multipliedDigit) * multipliedDigit //
+        let cutAmt = (Double(Int(multipliedAmt / multipliedDigit))) * multipliedDigit //
         let dividedResult = Double(cutAmt) / Double(100)
         
         return dividedResult

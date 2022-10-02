@@ -97,6 +97,12 @@ func poweredInt(base: Int = 2, exponent: Int) -> Int {
     return Int(pow(Double(base), Double(exponent)))
 }
 
+func power(base: Int = 2, exponent: Int) -> Double {
+//    return pow(base: base, exponent: exponent)
+    return pow(Double(base), Double(exponent))
+}
+
+
 
 func getIndicesSet(from bin: Int) -> Set<Int> {
     let binInStr = String(bin, radix: 2)

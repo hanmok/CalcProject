@@ -270,23 +270,17 @@ class CustomNumberPadController: UIViewController {
     
     @objc func appendToNumberText(_ sender: NumberButton) {
         print("tapped Btn wrapper: \(sender.wrapperString)")
-//        if sender.wrapperString != "." &&
+
         if sender.wrapperString == "." && numberText.contains(".") {
-            // 여기서.. 막아주면 좋을 것 같은데..
-//            if numberText
+            return
         } else {
             if numberText.count >= 3 && numberText[numberText.index(numberText.endIndex, offsetBy: -3)] == "." {
-                
+                return
             } else {
-            
-            numberText += sender.wrapperString
-                
+                numberText += sender.wrapperString
             }
         }
         
-//        if numberText
-        // FIXME: Test..
-//        numberText = numberText.replacingOccurrences(of: ".", with: ",")
         print("numberText:\(numberText)")
         
         numberPadDelegate?.numberPadView(updateWith: numberText)

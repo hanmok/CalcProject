@@ -8,6 +8,8 @@
 
 import XCTest
 import CoreData
+import Darwin
+
 @testable import Calie
 
 class DutchpayUnitTest: XCTestCase {
@@ -1005,11 +1007,40 @@ extension DutchpayUnitTest {
         XCTAssertEqual(str[startIdx], "a")
         
         
-//        let testNum = "1234.56"
-        let testNum = "123"
+        let testNum = "1234.56"
+//        let testNum = "123"
         let endIdx = testNum.endIndex
 
         let dotOffset = testNum.index(endIdx, offsetBy: -3)
         XCTAssertEqual(testNum[dotOffset], ".")
     }
+    
+    
+    func test_dropDigits() {
+        let ret = dropDigits(amt: 1.3, digitLocationToCut: 0)
+        XCTAssertEqual(ret, 1.0)
+        
+        let ret2 = dropDigits(amt: 1.38946, digitLocationToCut: -2)
+        XCTAssertEqual(ret2, 1.38)
+    }
+    
+    func dropDigits(amt: Double, digitLocationToCut: Int) -> Double {
+        // if digitLocationToCut == 1 (일의 자리 버림)
+        // 123.45 -> 12345 -> (12345 / 1000) * 1000 -> 12000 -> 120
+        // amt: 123.45
+        // multipledAmt: 12345
+        // digitLocationToCut: 1
+        // multipliedDigit: 100
+        let multipliedAmt = Double(Int(amt * 100))
+//        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+        let multipliedDigit = power(base: 10, exponent: digitLocationToCut) * 100
+//        let multipliedDigit = pow
+       print("multipliedDigit: \(multipliedDigit)")
+        // 120
+        let cutAmt = (Double(Int(multipliedAmt / multipliedDigit))) * multipliedDigit //
+        let dividedResult = Double(cutAmt) / Double(100)
+        
+        return dividedResult
+    }
+    
 }
