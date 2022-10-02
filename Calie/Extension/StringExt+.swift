@@ -16,9 +16,30 @@ extension String {
         
         self = self.replacingOccurrences(of: "-", with: "")
         self = self.replacingOccurrences(of: ",", with: "")
+        print("formatter flag 1, input: \(self)")
+//        let hasDot = self.contains(".")
         
+        var isLastDot = false
+        if let lastChar = self.last {
+            if String(lastChar) == "." {
+                isLastDot = true
+            }
+        }
+        
+        if let intoDouble = Double(self) {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.maximumFractionDigits = 2
+            
+            self = numberFormatter.string(from: intoDouble as NSNumber)!
+        }
+        
+        // 끝에 . 이 있어야 할 때도 있음..
         if let number = Double(self) {
-            self = number.applyCustomNumberFormatter()
+            if isLastDot {
+                self = number.applyCustomNumberFormatter() + "."
+            } else {
+                self = number.applyCustomNumberFormatter()
+            }
         }
     }
     

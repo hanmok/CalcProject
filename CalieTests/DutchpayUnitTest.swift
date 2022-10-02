@@ -996,3 +996,12 @@ extension DutchpayUnitTest {
         }
     }
 }
+
+
+extension DutchpayUnitTest {
+    func test_StringTest() {
+        let str = "abcd"
+        let startIdx = str.startIndex 
+        XCTAssertEqual(str[startIdx], "a")
+    }
+}
