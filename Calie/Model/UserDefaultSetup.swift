@@ -30,6 +30,7 @@ struct UserDefaultSetup{
         case deviceSize
         case deviceVersion
         case isKorean
+        case initialViewIdx
 //        case workingGatheringId
     }
     
@@ -43,6 +44,14 @@ struct UserDefaultSetup{
 //        }
 //    }
     
+    public var initialViewIdx: Int {
+        get {
+            defaults.integer(forKey: UserDefaultKey.initialViewIdx.rawValue)
+        }
+        set {
+            defaults.set(newValue, forKey: UserDefaultKey.initialViewIdx.rawValue)
+        }
+    }
     
     public var isKorean: Bool {
         get {

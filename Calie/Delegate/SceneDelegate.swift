@@ -22,18 +22,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate{
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
     
-        var rootVC = MainTabController()
+        let rootVC = MainTabController()
 //        rootVC.delegate = self
 //        let rootVC = AddingUnitController(participants: [Person2(name: "hello"), Person2(name: "world")])
         
 //        let rootVC = CollectionTestViewController()
         
+
         
         window?.rootViewController = rootVC
 //        window
 //        window?.rootViewController = CustomNumberPadController()
 //                window?.rootViewController = HistoryViewController()
         window?.makeKeyAndVisible()
+
+        let tabBar: UITabBarController = self.window?.rootViewController as! UITabBarController
+        
+        tabBar.selectedIndex = UserDefaultSetup().initialViewIdx
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

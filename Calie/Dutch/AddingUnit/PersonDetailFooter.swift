@@ -22,9 +22,6 @@ class PersonDetailFooter: UICollectionReusableView {
     static let footerIdentifier = "FooterIdentifier"
     
     private let emptyView = UIView()
-//        .then {
-//        $0.backgroundColor = .cyan
-//    }
     
     weak var footerDelgate: PersonDetailFooterDelegate?
     
@@ -34,9 +31,7 @@ class PersonDetailFooter: UICollectionReusableView {
         let titleColor = UIColor(white: 0.2, alpha: 1)
         $0.setTitleColor(titleColor, for: .normal)
         $0.layer.cornerRadius = 8
-//        $0.backgroundColor = UIColor(white: 0.92, alpha: 1)
-//        $0.layer.borderWidth = 3
-//        $0.layer.borderColor = ColorList().bgColorForExtrasMiddle.cgColor
+
         $0.backgroundColor = ColorList().bgColorForExtrasLM
     }
     

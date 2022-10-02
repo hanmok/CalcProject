@@ -48,49 +48,6 @@ extension UIViewController{
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
-        print("self.view.frame.size.width : \(self.view.frame.size.width)")
-        print("defaultWidSize: \(defaultWidthSize)")
-        print("widthValue: \(self.view.frame.size.width*CGFloat(0.5) - defaultWidthSize * CGFloat(widthRatio/2))")
-    }
-    
-//    func showToast2(message : String , with numOfLines : Int, for sec : Double,defaultWidthSize : CGFloat, defaultHeightSize : CGFloat, widthRatio : Float,heightRatio : Float, fontsize : CGFloat) {
-//        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width*CGFloat(0.5) - defaultWidthSize * CGFloat(widthRatio/2), y: self.view.frame.size.height*0.1, width: defaultWidthSize * CGFloat(widthRatio), height: defaultHeightSize * CGFloat(heightRatio)))
-//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-//        toastLabel.textColor = UIColor.white
-//        toastLabel.font = UIFont.systemFont(ofSize: fontsize)
-//        toastLabel.textAlignment = .center
-//        toastLabel.text = message
-//        toastLabel.alpha = 1.0
-//        toastLabel.numberOfLines = numOfLines
-//        toastLabel.layer.cornerRadius = 10;
-//        toastLabel.clipsToBounds = true
-//        toastLabel.numberOfLines = 0
-//        self.view.addSubview(toastLabel)
-//        UIView.animate(withDuration: sec, delay: 0.1, options: .curveEaseIn, animations: {
-//            toastLabel.alpha = 0.0
-//        }, completion: {(isCompleted) in
-//            toastLabel.removeFromSuperview()
-//        })
-//    }
-    
-    func oshowToast(message : String , with numOfLines : Int, for sec : Double,defaultWidthSize : CGFloat, defaultHeightSize : CGFloat, widthRatio : Float,heightRatio : Float, fontsize : CGFloat) {
-        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width*CGFloat(0.5) - defaultWidthSize * CGFloat(widthRatio/2), y: self.view.frame.size.height*0.1, width: defaultWidthSize * CGFloat(widthRatio), height: defaultHeightSize * CGFloat(heightRatio)))
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-        toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont.systemFont(ofSize: fontsize)
-        toastLabel.textAlignment = .center
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.numberOfLines = numOfLines
-        toastLabel.layer.cornerRadius = 10;
-        toastLabel.clipsToBounds = true
-        toastLabel.numberOfLines = 0
-        self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: sec, delay: 0.1, options: .curveEaseIn, animations: {
-            toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
     }
 }
 

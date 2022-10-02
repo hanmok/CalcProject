@@ -44,14 +44,14 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         configureViewControllers()
 
         print("viewDidLoad in MainTabController called")
-        
+        print("initialTapScreen: \(userDefaultSetup.initialViewIdx)")
         createObservers()
         configureColors()
         
-        print("flag darkMode: \(isDarkMode)")
-        print("userdefault: \(userDefaultSetup.darkModeOn)")
-        // 이거 없으면 초기화 안됨. 작동 원리가 뭐지?
+
+        
         self.delegate = self
+        
     }
     
     func createObservers() {
@@ -75,21 +75,16 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             unselectedImage: UIImage(systemName: "plus.slash.minus")!,
             selectedImage: UIImage(systemName: "plus.slash.minus")!,
             rootViewController: BaseViewController())
-
-//        let dutchController = DutchpayController(persistenceManager: PersistenceController.shared, mainTabController: self)
         
         let dutchController = DutchpayController(mainTabController: self)
         
         dutchController.dutchToMainTapDelegate = self
         
-        
         let dutch = templateNavigationController(
             unselectedImage: UIImage(systemName: "divide.circle")!,
             selectedImage: UIImage(systemName: "divide.circle")!,
             rootViewController: dutchController)
-//            rootViewController: uiNav)
-        
-//        let dutchNav = UINavigationController(rootViewController: dutch)
+
         
         let settingsVC = SettingsViewController()
         settingsVC.settingsDelegate = self
@@ -99,24 +94,13 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "gear")!,
             rootViewController: settingsVC)
         
-                settings.delegate = self
+        settings.delegate = self
         
 
-        
-//#if DEBUG
-//        viewControllers = [calculator, dutch, settings]
-//        viewControllers = [dutch, calculator, settings]
+
         viewControllers = [calculator, dutch, settings]
-//        viewControllers = [dutchNav, calculator, settings]
-//#else
-//        viewControllers = [calculator, settings]
-//#endif
-        
-        
-        //        viewControllers = [calculator, dutch, settings]
-        
-        
     }
+
     func configureColors() {
         
         if isDarkMode {
@@ -210,7 +194,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 extension MainTabController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-print("tab flag 1")
+        print("tab flag 1")
         
         let index = viewControllers?.firstIndex(of: viewController)
         
@@ -235,18 +219,16 @@ print("tab flag 1")
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         print("tab flag 2")
         let tabBarIndex = tabBarController.selectedIndex
-        
+
+        userDefaultSetup.initialViewIdx = tabBarIndex
             print("selected tabBarIndex: \(tabBarIndex)")
       
         print(#line, "didSelect in MainTabController triggered")
-        
-        //
-//        if tabBarIndex == 0 {
-//            self.viewDidLoad()
-//        }
-        
+    
         hideSideController()
     }
+    
+    
 }
 
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
@@ -283,7 +265,6 @@ extension MainTabController: SideControllerDelegate {
    
     
     func dismissSideVC(with gathering: Gathering?) {
-        
         
         mainToDutchDelegate?.clearifyBlurredView()
         
