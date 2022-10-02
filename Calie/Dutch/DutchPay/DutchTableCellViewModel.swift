@@ -28,20 +28,13 @@ struct DutchTableCellViewModel {
 extension DutchTableCellViewModel {
     private func convertSpentAmount(amt: Double) -> String {
         return {
-            print("currency flag 1, input amt: \(amt)")
-//            let numberFormatter = NumberFormatter()
-//            numberFormatter.numberStyle = .decimal
             
             if let intValue = amt.convertToInt() {
                 let double = Double(intValue)
-                print("currency flag 2a, double: \(double)")
-//                return double.convertIntoKoreanPrice()
-//                return numberFormatter.string(from: double as NSNumber)!
+
                 return double.applyDecimalFormatWithCurrency()
-//                return convertIntoKoreanPrice(number: Double(intValue))
+
             } else {
-                print("currency flag 2b, double: \(amt)")
-//                return convertIntoKoreanPrice(number: amt)
                 return amt.applyDecimalFormatWithCurrency()
             }
         }()

@@ -918,8 +918,81 @@ extension DutchpayUnitTest {
         initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
         initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
         
-        
         XCTAssertEqual("10,000.5", initialStr)
+    }
+    
+    func test_customNumberFormatter() {
         
+        let ret = customNumberFormatter(10000.02)
+        XCTAssertEqual(ret, "10,000.02") // return "1.02"
+        
+//        let ret = customNumberFormatter(1.02)
+//        XCTAssertEqual(ret, "1.02") // return "1.02"
+        
+//        let ret = customNumberFormatter(1.1)
+//        XCTAssertEqual(ret, "1.1") // return "1.1"
+        
+//        let ret = customNumberFormatter(1.0)
+//        XCTAssertEqual(ret, "1.0") // return "1"
+        
+        let ret2 = customNumberFormatter(1234.0)
+        XCTAssertEqual("1,234", ret2)
+        
+        let ret3 = customNumberFormatter(878)
+        XCTAssertEqual("878", ret3)
+        
+        XCTAssertEqual(1.34.rounded(), 1.0)
+    }
+    
+    func customNumberFormatter(_ num: Double) -> String {
+        
+        var ret = ""
+        
+        var isInt = false
+        
+        if Double(Int(num)) == num {
+            isInt = true
+        }
+    
+        if num < 1000 {
+            if isInt {
+                var ret = String(num)
+                ret.removeLast(2) // remove .0
+                return ret
+            } else {
+                return String(num)
+            }
+        } else {
+            
+            var str = "\(num)"
+            
+            var commaStack = 0
+            for _ in 0 ..< str.count {
+                
+                if commaStack == 3 {
+                    ret = "," + ret
+                    commaStack = 0
+                }
+                
+                if let last = str.last {
+                    let lastStr = String(last)
+                    
+                    ret = String(str.removeLast()) + ret
+                    
+                    if lastStr.contains(".") {
+                        commaStack = 0
+                    } else {
+                        commaStack += 1
+                    }
+                }
+            }
+            
+            if isInt {
+                ret.removeLast(2)
+                return ret
+            } else {
+                return ret
+            }
+        }
     }
 }

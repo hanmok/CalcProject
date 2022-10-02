@@ -8,27 +8,8 @@
 
 import Foundation
 
-
-extension Int {
-    func addCommas() -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter.string(from: NSNumber(value:self))!
-    }
-}
-
-extension Double {
-    func addComma() -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter.string(from: NSNumber(value:self))!
-    }
-}
-
 extension String {
-//    func removeComma(from strValue: String) -> String {
-//
-//    }
+
     func convertNumStrToDouble() -> Double {
         print("input : \(self)")
         if self == "" { return 0 }

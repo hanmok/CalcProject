@@ -8,105 +8,74 @@
 
 import Foundation
 
-extension Double {
-//    func convertIntoStr() -> String {
-//        //        return String(self)
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//
-//
-//        if let intValue = self.convertToInt() {
-//            return String(intValue)
-//        } else {
-//            return String(self)
-//        }
-//    }
-}
 
 extension Double {
     
     public func applyDecimalFormatWithCurrency() -> String {
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//
-//
-//        print("currency flag 3, formatted Str: \(numberFormatter.string(from: NSNumber(value:self)))")
-//        return numberFormatter.string(from: NSNumber(value: self))! + " 원"
 
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-
-//        numberFormatter.decimalSeparator = "-"
-
-        var initialStr = numberFormatter.string(from: self as NSNumber)!
-        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
-        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
+        let initialStr = self.applyCustomNumberFormatter()
         
-
-        //        이게 되는구나?!
         if ASD.currencyShort.localized == "$" {
             return ASD.currencyShort.localized + initialStr
         } else {
             return initialStr + ASD.currencyShort.localized
         }
-//        return initialStr + " " + ASD.currency.localized
     }
     
-    public func applyDecimalFormat() -> String {
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//
-//
-//        print("currency flag 3, formatted Str: \(numberFormatter.string(from: NSNumber(value:self)))")
-//        return numberFormatter.string(from: NSNumber(value: self))! + " 원"
-
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-
-//        numberFormatter.decimalSeparator = "-"
-
-        var initialStr = numberFormatter.string(from: self as NSNumber)!
-        initialStr = initialStr.replacingOccurrences(of: ".", with: ",")
-        initialStr = initialStr.replacingOccurrences(of: "-", with: ".")
-        
-        return initialStr
+    static var maxNum: Double {
+        return Double(1_000_000_000_000_000)
     }
     
-//    func convertIntoCurrencyUnit(isKorean: Bool, isUsingFloatingPoint: Bool = false) -> String {
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//        numberFormatter.string(from: NSNumber(value:self))
-//        var result = numberFormatter.string(from: NSNumber(value: self))!
-//
-//        if result == "-0" { return isKorean ? "0원" : "$0"}
-//
-//        if isUsingFloatingPoint == false {
-//            if result.contains(".0") {
-//                result.removeLast()
-//                result.removeLast()
-//            }
-//        }
-////        return result + isKorean ? "원" :
-//        if isKorean {
-//            return result + "원"
-//        } else {
-//            return "$" + result
-//        }
-//    }
-    
-    func getStrWithoutDots() -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.string(from: NSNumber(value:self))
-        var result = numberFormatter.string(from: NSNumber(value: self))!
-         if result == "-0" { return "0"}
+    func applyCustomNumberFormatter() -> String {
         
-            if result.contains(".0") {
-                result.removeLast()
-                result.removeLast()
+        var ret = ""
+        
+        var isInt = false
+        
+        if Double(Int(self)) == self {
+            isInt = true
+        }
+    
+        if self < 1000 {
+            if isInt {
+                var ret = String(self)
+                ret.removeLast(2) // remove .0
+                return ret
+            } else {
+                return String(self)
             }
-
-        return result
+        } else {
+            
+            var str = "\(self)"
+            
+            var commaStack = 0
+            for _ in 0 ..< str.count {
+                
+                if commaStack == 3 {
+                    ret = "," + ret
+                    commaStack = 0
+                }
+                
+                if let last = str.last {
+                    let lastStr = String(last)
+                    
+                    ret = String(str.removeLast()) + ret
+                    
+                    if lastStr.contains(".") {
+                        commaStack = 0
+                    } else {
+                        commaStack += 1
+                    }
+                }
+            }
+            
+            if isInt {
+                ret.removeLast(2)
+                return ret
+            } else {
+                return ret
+            }
+        }
     }
     
     static let minimumValue = 0.009

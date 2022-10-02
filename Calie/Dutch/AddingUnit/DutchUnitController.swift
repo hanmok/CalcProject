@@ -792,7 +792,7 @@ extension DutchUnitController {
                 
             } else {
                 
-                let amtString = spentAmount.addComma()
+                let amtString = spentAmount.applyCustomNumberFormatter()
                 header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remainder: 0)
             }
             

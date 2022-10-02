@@ -14,36 +14,12 @@ extension String {
     /// apply Formatter to self, add comma to number
     public mutating func applyNumberFormatter() {
         
-        if self.hasSuffix(".0") {
-            self.removeLast()
-            self.removeLast()
-        }
-        
-         let numberFormatter = NumberFormatter()
-        
-        numberFormatter.numberStyle = .decimal
-
+        self = self.replacingOccurrences(of: "-", with: "")
         self = self.replacingOccurrences(of: ",", with: "")
         
-        guard self != "" else { return }
-        
-//        guard let int = Int(self),
-//              let result = numberFormatter.string(for: int) else {
-//            print("self: \(self)")
-//
-//            //            return 2100000000
-//            fatalError("fail to convert str to Int! ", file: #function, line: #line)
-//
-//        }
-       
-//        self = result
-        
-        if let int = Int(self), let result = numberFormatter.string(for: int) {
-            self = result
-        } else {
-            self = Int.maxNum.addCommas()
+        if let number = Double(self) {
+            self = number.applyCustomNumberFormatter()
         }
-        
     }
     
     /// Convert formatted String To Double
@@ -110,11 +86,6 @@ extension String {
 
 
 
-extension Double {
-    static var maxNum: Double {
-        return Double(1_000_000_000_000_000)
-    }
-}
 
 extension Int {
     static var maxNum: Int {

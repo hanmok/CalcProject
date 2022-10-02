@@ -151,7 +151,7 @@ class PersonDetailHeader: UICollectionReusableView {
         remainder = remainderInfo
         
 //        let remainderString = remainderInfo.addComma() + "원 "
-        let remainderString = remainderInfo.addComma() + "\(ASD.currencyShort.localized) "
+        let remainderString = remainderInfo.applyCustomNumberFormatter() + "\(ASD.currencyShort.localized) "
         
 //        self.remainderBtn.setTitle(remainderString, for: .normal)
         remainderBtn.setTitle("  " + remainderString, for: .normal)
@@ -198,7 +198,8 @@ class PersonDetailHeader: UICollectionReusableView {
         print("changeStateToActive called!!")
         guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
-        spentAmountTF.text = amtInput.addComma()
+//        spentAmountTF.text = amtInput.addComma()
+        spentAmountTF.text = amtInput.applyCustomNumberFormatter()
     }
     
     
@@ -210,7 +211,7 @@ class PersonDetailHeader: UICollectionReusableView {
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
         
-        let remainingStr =  viewModel.remainder.addComma() + "\(ASD.currencyShort.localized) "
+        let remainingStr =  viewModel.remainder.applyCustomNumberFormatter() + "\(ASD.currencyShort.localized) "
 
 //        remainderBtn.setTitle(remainingStr, for: .normal)
         remainderBtn.setTitle("  " + remainingStr, for: .normal)

@@ -1535,8 +1535,9 @@ class BasicCalculator {
             let dummyStr = String(format : "%.0f", tempNum)
             if num2 == dummyStr + ".0"{ // 여기구나! .0 하면 없어지는 이유..!!
                 isDot0Removed = true
-                num2.removeLast()
-                num2.removeLast()
+//                num2.removeLast()
+//                num2.removeLast()
+                num2.removeLast(2)
             }
             
             if (tempNum >= 1000) || (tempNum <= -1000){

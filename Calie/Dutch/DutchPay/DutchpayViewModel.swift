@@ -214,8 +214,6 @@ extension DutchpayViewModel {
     
     private func convertSpentAmount(amt: Double) -> String {
         return {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
             
             if let intValue = amt.convertToInt() {
                 let double = Double(intValue)
