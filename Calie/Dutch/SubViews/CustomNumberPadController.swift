@@ -96,12 +96,6 @@ class CustomNumberPadController: UIViewController {
     
     private func setupAddTargets() {
         
-//        if ASD.currencyShort.localized == "원" {
-//            print("floating flag 1")
-//            num000 = NumberButton(".")
-//        }
-//        print("floating flag 2")
-        
         [num7, num8, num9,
          num4, num5, num6,
         num1, num2, num3,

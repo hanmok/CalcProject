@@ -44,8 +44,15 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private let currencyLabel = UILabel().then {
-        $0.text = ASD.currencyShort.localized
+//        $0.text = ASD.currencyShort.localized
+        
         $0.adjustsFontSizeToFitWidth = true
+        
+        if UserDefaultSetup().currencyUnit != "₩" {
+            $0.text = "(\(UserDefaultSetup().currencyUnit))"
+        } else {
+            $0.text = "원"
+        }
     }
     
     public let attendingBtn = AttendingButton()
@@ -152,9 +159,11 @@ class PersonDetailCell: UICollectionViewCell {
         }
         
         currencyLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
+//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-15)
+//            make.trailing.equalTo(attendingBtn.snp.leading)
             make.top.bottom.equalToSuperview()
-            make.width.equalTo(15)
+            make.width.equalTo(24)
         }
         
         spentAmountTF.snp.makeConstraints { make in

@@ -15,11 +15,18 @@ extension Double {
 
         let initialStr = self.applyCustomNumberFormatter()
         
-        if ASD.currencyShort.localized == "$" {
-            return ASD.currencyShort.localized + initialStr
+//        if ASD.currencyShort.localized == "$" {
+//            return ASD.currencyShort.localized + initialStr
+//        } else {
+//            return initialStr + ASD.currencyShort.localized
+//        }
+        
+        if UserDefaultSetup().currencyUnit == "₩" {
+            return initialStr + "원"
         } else {
-            return initialStr + ASD.currencyShort.localized
+            return UserDefaultSetup().currencyUnit + initialStr
         }
+        
     }
     
     static var maxNum: Double {

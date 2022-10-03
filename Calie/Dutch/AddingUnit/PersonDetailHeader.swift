@@ -143,9 +143,14 @@ class PersonDetailHeader: UICollectionReusableView {
         remainder = remainderInfo
         
 //        let remainderString = remainderInfo.addComma() + "원 "
-        let remainderString = remainderInfo.applyCustomNumberFormatter() + "\(ASD.currencyShort.localized) "
         
-//        self.remainderBtn.setTitle(remainderString, for: .normal)
+        var remainderString: String
+        if UserDefaultSetup().currencyUnit == "₩" {
+             remainderString = remainderInfo.applyCustomNumberFormatter() + "원 "
+        } else {
+            remainderString = UserDefaultSetup().currencyUnit + remainderInfo.applyCustomNumberFormatter()
+        }
+        
         remainderBtn.setTitle("  " + remainderString, for: .normal)
         
         
@@ -290,15 +295,9 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     private let remainderBtn = UIButton().then {
-//    private let remainderBtn = UIView().then {
-//        $0.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
-//        $0.backgroundColor = .magenta
         $0.layer.cornerRadius = 8
         $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
         $0.layer.masksToBounds = true
-//        $0.contentHorizontalAlignment = .right
-//        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        
     }
     
     private let remainderBG = UIView().then {
@@ -324,6 +323,7 @@ class PersonDetailHeader: UICollectionReusableView {
             spentAmountLabel, spentAmountTF, currenyLabel,
             spentDateLabel,
             spentDatePicker,
+//            currencyIndicatorLabel,
             divider,
             remainderTextLabel ,remainderBtn, attendedLabel,
             bottomLine
@@ -461,7 +461,14 @@ class PersonDetailHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let currenyLabel = UILabel().then { $0.text = ASD.currency.localized }
+    private let currenyLabel = UILabel().then {
+
+        if UserDefaultSetup().currencyUnit != "₩" {
+            $0.text = "(\(UserDefaultSetup().currencyUnit))"
+        } else {
+            $0.text = "원"
+        }
+    }
     
     private let spentPlaceLabel = UILabel().then { $0.text = ASD.spentFor.localized }
     
@@ -503,6 +510,15 @@ class PersonDetailHeader: UICollectionReusableView {
         picker.sizeThatFits(CGSize(width: 150, height: 40))
         return picker
     }()
+    
+//    private let currencyIndicatorLabel = UILabel().then {
+//        $0.textColor = .black
+//        if UserDefaultSetup().currencyUnit == "₩" {
+//            $0.isHidden = true
+//        } else {
+//            $0.text = "(Currency: \(UserDefaultSetup().currencyUnit))"
+//        }
+//    }
     
     private let dismissBtn: UIButton = {
         let btn = UIButton()

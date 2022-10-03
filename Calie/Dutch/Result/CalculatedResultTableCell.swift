@@ -40,7 +40,8 @@ class CalculatedResultTableCell: UITableViewCell {
         
         
 //        if userDefault.isKorean {
-        if ASD.currency.localized == "원" { // korean
+//        if ASD.currency.localized == "원" { // korean
+        if userDefault.currencyUnit == "₩" {
 //            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
