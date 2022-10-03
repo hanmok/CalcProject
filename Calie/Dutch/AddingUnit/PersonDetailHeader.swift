@@ -152,15 +152,10 @@ class PersonDetailHeader: UICollectionReusableView {
         self.remainderBtn.isUserInteractionEnabled = remainderInfo != 0
         
         if remainderInfo >= 0.009 {
-            // enabled // 디자인이 좀 별로임.
-//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 0.5)
-//            self.remainderBtn.backgroundColor = .orange
-//            self.remainderBtn.layer.borderWidth = 1
+
             self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
         } else {
-//            self.remainderBtn.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-//            self.remainderBtn.backgroundColor = .brown
-//            self.remainderBtn.setTitleColor(UIColor(white: 0.3, alpha: 0.5), for: .normal)
+
             self.remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
             
         }

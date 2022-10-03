@@ -19,7 +19,9 @@ protocol SettingsTableCellDelegate: AnyObject {
 class SettingsTableCell: UITableViewCell {
     
     lazy var isDarkMode = userDefaultSetup.darkModeOn
+    
     let colorList = ColorList()
+    
     static let identifier = "SettingsTableCell"
     // MARK: - Properties
     
@@ -49,12 +51,11 @@ class SettingsTableCell: UITableViewCell {
     
     lazy var triggerBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("hello", for: .normal)
-//        btn.setTitle("hellansldkiawubiawjnliawjniAsdo", for: .normal)
-        btn.setTitleColor(.white, for: .normal)
+
+        btn.setTitleColor(.gray, for: .normal)
         
         btn.addTarget(self, action: #selector(btnTapped), for: .touchUpInside)
-        btn.backgroundColor = .magenta
+
         return btn
     }()
     

@@ -26,13 +26,13 @@ class SettingsViewController: UIViewController {
 //    if userdefaul
 //    userdefaultSetup()
     
-    var droppingDigitCases: [Int] = []
+    var droppingDigitCases: [String] = []
     var userDefaultSetup = UserDefaultSetup()
     
 //    if userDefaultSetup.usingFloatingPoint {
    
     
-    let currencyUnitCases = ["a", "b", "c"]
+    let currencyUnitCases = CurrencySymbol.allSymbols
     
     // MARK: - Properties
     
@@ -44,6 +44,8 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    var selectedIdx: Int?
+    
     let colorList = ColorList()
 
     weak var delegate: SettingsViewControllerDelegate?
@@ -52,21 +54,33 @@ class SettingsViewController: UIViewController {
 
 //    var userDefaultSetup = UserDefaultSetup()
     
-    let tableView = UITableView()
+    let settingTableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if userDefaultSetup.usingFloatingPoint == true { // ????
-            droppingDigitCases = [-2, -1, 0, 1, 2, 3, 4, 5]
+//            droppingDigitCases = [-2, -1, 0, 1, 2, 3, 4, 5]
+            droppingDigitCases = ["만의 자리까지",
+                                  "천의 자리까지",
+                                  "백의 자리까지",
+                                  "십의 자리까지",
+                                  "일의 자리까지",
+                                  "소숫점 첫째자리까지",
+                                  "모두"]
         } else {
-            droppingDigitCases = [0, 1, 2, 3, 4, 5]
+//            droppingDigitCases = [0, 1, 2, 3, 4, 5]
+            droppingDigitCases = ["만의 자리까지",
+                                  "천의 자리까지",
+                                  "백의 자리까지",
+                                  "십의 자리까지",
+                                  "모두"]
         }
         
         
         configureUI()
         
-        tableView.backgroundColor = userDefaultSetup.darkModeOn
+        settingTableView.backgroundColor = userDefaultSetup.darkModeOn
         ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
         
         if userDefaultSetup.darkModeOn {
@@ -89,15 +103,15 @@ class SettingsViewController: UIViewController {
     func configureTableView() {
         print("configureTableView triggered!")
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = 60
+        settingTableView.delegate = self
+        settingTableView.dataSource = self
+        settingTableView.rowHeight = 60
          
-        tableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
+        settingTableView.register(SettingsTableCell.self, forCellReuseIdentifier: SettingsTableCell.identifier)
         
-        view.addSubview(tableView)
+        view.addSubview(settingTableView)
         
-        tableView.snp.makeConstraints { make in
+        settingTableView.snp.makeConstraints { make in
             make.top.left.right.equalTo(view)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -144,8 +158,7 @@ class SettingsViewController: UIViewController {
         cancelBtn.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
     }
     
-    @objc func confirmTapped() {
-        print("confirm tapped")
+    private func hidePicker() {
         pickerContainerView.snp.updateConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(240)
@@ -153,23 +166,47 @@ class SettingsViewController: UIViewController {
         }
         updateWithAnimation()
 
-        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
+        Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { _ in
             self.delegate?.showTabbar()
         }
     }
     
-    @objc func cancelTapped() {
-        print("cancel tapped")
+    private func showPicker() {
         pickerContainerView.snp.updateConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(240)
+            make.bottom.equalToSuperview()
             make.height.equalTo(240)
         }
         updateWithAnimation()
-        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
-            self.delegate?.showTabbar()
-        }
 
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
+            self.delegate?.hideTabbar()
+        }
+    }
+    
+    @objc func confirmTapped() {
+        hidePicker()
+        if let selectedIdx = selectedIdx, let selectedPicker = selectedPicker {
+
+            if selectedPicker == .droppingDigit {
+                userDefaultSetup.droppingDigitIdx = 4 - selectedIdx
+                DispatchQueue.main.async {
+                    self.settingTableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .automatic)
+                }
+                
+            
+            } else {
+                userDefaultSetup.currencyUnit = currencyUnitCases[selectedIdx]
+                DispatchQueue.main.async {
+                    self.settingTableView.reloadRows(at: [IndexPath(row: 2, section: 1)], with: .automatic)
+                }
+            }
+        }
+    }
+    
+    
+    @objc func cancelTapped() {
+        hidePicker()
     }
     
     private func updateWithAnimation() {
@@ -197,8 +234,6 @@ class SettingsViewController: UIViewController {
     private let droppingDigitPicker = UIPickerView().then{ $0.isHidden = true }
     private let currencyUnitPicker = UIPickerView().then {
         $0.isHidden = true
-//        $0.backgroundColor = .magenta
-//        $0.tintColor = .cyan
     }
 //    .then {
 
@@ -232,7 +267,7 @@ class SettingsViewController: UIViewController {
         
         NotificationCenter.default.post(name: name, object: nil, userInfo: userDefaultInfo as [AnyHashable : Any])
         
-        tableView.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
+        settingTableView.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForEmptyAndNumbersDM : UIColor(white: 242 / 255, alpha: 1)
         
         }
 }
@@ -349,9 +384,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.triggerBtn.tag = Int.droppingDigitTag
                 cell.delegate = self
                 
+                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
+                
+                cell.triggerBtn.setTitle(title, for: .normal)
+                
             case .currencyUnit:
                 cell.triggerBtn.tag = Int.currencyUnitTag
                 cell.delegate = self
+                cell.triggerBtn.setTitle(userDefaultSetup.currencyUnit, for: .normal)
                 
             case .none:
                 print("none")
@@ -426,15 +466,7 @@ extension SettingsViewController: SettingsTableCellDelegate {
             print("currencyUnitPicker is visible!")
         }
         
-        delegate?.hideTabbar()
-        
-        pickerContainerView.snp.updateConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(240)
-        }
-
-        updateWithAnimation()
+        showPicker()
     }
     
     func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool) {
@@ -443,7 +475,7 @@ extension SettingsViewController: SettingsTableCellDelegate {
             userDefaultSetup.darkModeOn = isOn
            
             hasLoaded = true
-            self.tableView.reloadData()
+            self.settingTableView.reloadData()
             
             if userDefaultSetup.darkModeOn {
                 view.backgroundColor = colorList.bgColorForExtrasDM
@@ -457,11 +489,18 @@ extension SettingsViewController: SettingsTableCellDelegate {
         case 2:
             userDefaultSetup.notificationOn = isOn
             
+        case Int.floatingPointTag:
+            userDefaultSetup.usingFloatingPoint = isOn
+            
         default:
+            
             print("wrong tag has pressed")
         }
+        
         delegate?.updateUserdefault()
         sendUpdatingUserDefault() // broadcast update !
+        
+        hidePicker()
     }
 }
 
@@ -476,32 +515,28 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         
         if pickerView == currencyUnitPicker {
             return currencyUnitCases[row]
+
         } else {
             return String(droppingDigitCases[row])
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+
+        selectedPicker = pickerView == currencyUnitPicker ? .currenyUnit : .droppingDigit
+        selectedIdx = row
         
-        if pickerView == currencyUnitPicker {
-            userDefaultSetup.currencyUnit = currencyUnitCases[row]
-        } else {
-            userDefaultSetup.droppingDigitIdx = droppingDigitCases[row]
-        }
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     
         if pickerView == droppingDigitPicker {
-//            return 8
-            if userDefaultSetup.usingFloatingPoint {
-                return 8
-            } else {
-                return 6
-            }
+
+            return droppingDigitCases.count
         } else {
             print("picker flag 1, pickerView: currency, return 3")
-            return 3
+//            return 3
+            return currencyUnitCases.count
         }
     }
 }
@@ -510,4 +545,75 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 enum PickerType {
     case droppingDigit
     case currenyUnit
+}
+
+
+enum CurrencySymbol {
+    case none
+    
+   static let allSymbols = [
+    "₩", // 한국에서만 쓰임.
+    "$",
+    "£",
+    "¥",
+    "€",
+    "ƒ",
+    "₼",
+    "P",
+    "៛",
+    "₡",
+    "₽",
+    "฿",
+    "₺",
+    "₴",
+    "₫",
+    "₨",
+    "₮",
+    "₱",
+    "¢",
+    "₹",
+    "₪",
+    "₭",
+    "₦",
+    "؋",
+    "﷼",
+    "S",
+    "R",
+    "Q",
+    "L",
+    
+    "Br",
+    "Bs",
+    "KM",
+    "Ft",
+    "Gs",
+    "MT",
+    "Rp",
+    "RM",
+    "R$",
+    "kn",
+    "kr",
+    
+    "$b",
+    "лв",
+    "zł",
+    "$U",
+    "Kč",
+    "J$",
+    "Z$",
+    "C$",
+    
+    "Lek",
+    "BZ$",
+    "RD$",
+    "ден",
+    "B/.",
+    "S/.",
+    "lei",
+    "Дин.",
+    "CHF",
+    "NT$",
+    "TT$",
+    " د.إ",
+                      ]
 }

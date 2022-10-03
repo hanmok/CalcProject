@@ -1023,7 +1023,7 @@ extension DutchpayUnitTest {
         let ret2 = dropDigits(amt: 1.38946, digitLocationToCut: -2)
         XCTAssertEqual(ret2, 1.38)
     }
-    
+    // 0 -> 소숫점 첫째 버림.
     func dropDigits(amt: Double, digitLocationToCut: Int) -> Double {
         // if digitLocationToCut == 1 (일의 자리 버림)
         // 123.45 -> 12345 -> (12345 / 1000) * 1000 -> 12000 -> 120
@@ -1031,11 +1031,11 @@ extension DutchpayUnitTest {
         // multipledAmt: 12345
         // digitLocationToCut: 1
         // multipliedDigit: 100
-        let multipliedAmt = Double(Int(amt * 100))
-//        let multipliedDigit = poweredInt(base: 10, exponent: digitLocationToCut) * 100
+
+        let multipliedAmt = Double(Int(amt * 100)) // 버림!
+
         let multipliedDigit = power(base: 10, exponent: digitLocationToCut) * 100
-//        let multipliedDigit = pow
-       print("multipliedDigit: \(multipliedDigit)")
+
         // 120
         let cutAmt = (Double(Int(multipliedAmt / multipliedDigit))) * multipliedDigit //
         let dividedResult = Double(cutAmt) / Double(100)

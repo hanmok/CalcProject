@@ -369,11 +369,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
                 sender.backgroundColor =  colorList.bgColorForOperatorsDM
             case 21 ... 30 :
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersDM
-//                sender.backgroundColor = colorList.bgColorForExtrasDM
-//                sender.backgroundColor = .magenta
+
                 basicCalc.invalidateAllTimers()
             default :
-//                sender.backgroundColor = .magenta
+
                 break
             }
         }else{
@@ -385,11 +384,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
 
             case 21 ... 30 :
                 sender.backgroundColor =  colorList.bgColorForEmptyAndNumbersLM
-//                sender.backgroundColor = colorList.bgColorForExtrasLM
-//                sender.backgroundColor = .magenta
+
                 basicCalc.invalidateAllTimers()
             default :
-//                sender.backgroundColor = .magenta
+
                 break
             }
         }

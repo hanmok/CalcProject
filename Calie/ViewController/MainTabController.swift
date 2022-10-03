@@ -94,7 +94,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             selectedImage: UIImage(systemName: "gear")!,
             rootViewController: settingsVC)
         
-//        settings.delegate = self
+        settings.delegate = self
         
         viewControllers = [calculator, dutch, settings]
     }
