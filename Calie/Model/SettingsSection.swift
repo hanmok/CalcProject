@@ -10,24 +10,30 @@ import Foundation
 
 protocol SectionType: CustomStringConvertible {
     var containsSwitch: Bool { get }
+    var containsButton: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Mode
+    case Dutchpay
     case General
+    
     
     var description: String {
         switch self {
-//        case .Mode: return LocalizedStringStorage.init().mode
-//        case .General: return LocalizedStringStorage.init().general
             
         case .Mode: return LocalizedStringStorage().mode
+        case .Dutchpay: return ASD.dutchpay.localized
         case .General: return LocalizedStringStorage().general
         }
     }
 }
 
 enum ModeOptions: Int, CaseIterable, SectionType {
+    var containsButton: Bool {
+        return false
+    }
+    
     case darkMode
     case sound
     case notification
@@ -39,19 +45,57 @@ enum ModeOptions: Int, CaseIterable, SectionType {
     
     var description: String {
         switch self {
-        case .darkMode: return LocalizedStringStorage.init().darkMode
-//        case .darkMode: return LocalizedString
-//        case .sound: return "SoundMode"
-        case .sound: return LocalizedStringStorage.init().soundMode
-//        case .notification: return "Notification"
-        case .notification: return LocalizedStringStorage.init().notificationMode
-//        case .changingOrientation: return "changingOrientation"
+        case .darkMode: return LocalizedStringStorage().darkMode
+
+        case .sound: return LocalizedStringStorage().soundMode
+
+        case .notification: return LocalizedStringStorage().notificationMode
+        }
+    }
+}
+
+enum DutchOptions: Int, CaseIterable, SectionType {
+    var containsButton: Bool {
+        switch self {
+        case .useFloatingPoint:
+            return false
+        case .droppingDigit:
+            return true
+        case .currencyUnit:
+            return true
+        }
+    }
+    
+    var description: String {
+        switch self {
+            
+        case .useFloatingPoint:
+            return "소숫점 사용"
+        case .droppingDigit:
+            return "정산 시 반올림할 자릿수"
+        case .currencyUnit:
+            return "통화 단위"
+        }
+    }
+    
+    case useFloatingPoint
+    case droppingDigit
+    case currencyUnit
+    
+    var containsSwitch: Bool {
+        switch self {
+        case .useFloatingPoint: return true
+        default: return false
         }
     }
 }
 
 
 enum GeneralOptions: Int, CaseIterable, SectionType {
+    var containsButton: Bool {
+        return false
+    }
+    
     case rate
     case review
     
@@ -65,11 +109,19 @@ enum GeneralOptions: Int, CaseIterable, SectionType {
     
     var description: String {
         switch self {
-//        case .rate: return "Rate"
+
         case .rate: return LocalizedStringStorage.init().rate
-//        case .review: return "Review"
+
         case .review: return LocalizedStringStorage.init().review
         
         }
     }
+}
+
+
+extension Int {
+    static let droppingDigitTag = 100
+    static let currencyUnitTag = 200
+    
+    static let floatingPointTag = 100
 }

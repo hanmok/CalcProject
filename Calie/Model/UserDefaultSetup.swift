@@ -31,18 +31,20 @@ struct UserDefaultSetup{
         case deviceVersion
         case isKorean
         case initialViewIdx
-//        case workingGatheringId
+        case usingFloatingPoint
+        case droppingDigitIdx
+        case currencyUnit
     }
     
-    
-//    public var workingGatheringId: String {
-//        get {
-//            return defaults.string(forKey: UserDefaultKey.workingGatheringId.rawValue) ?? "\(UUID().uuidString)"
-//        }
-//        set {
-//            defaults.set(newValue, forKey: UserDefaultKey.workingGatheringId.rawValue)
-//        }
-//    }
+
+    public var droppingDigitIdx: Int {
+        get {
+            defaults.integer(forKey: UserDefaultKey.droppingDigitIdx.rawValue)
+        }
+        set {
+            defaults.set(newValue, forKey: UserDefaultKey.droppingDigitIdx.rawValue)
+        }
+    }
     
     public var initialViewIdx: Int {
         get {
@@ -52,6 +54,16 @@ struct UserDefaultSetup{
             defaults.set(newValue, forKey: UserDefaultKey.initialViewIdx.rawValue)
         }
     }
+    
+    public var usingFloatingPoint: Bool {
+        get {
+            defaults.bool(forKey: UserDefaultKey.usingFloatingPoint.rawValue)
+        }
+        set {
+            defaults.set(newValue ,forKey: UserDefaultKey.usingFloatingPoint.rawValue)
+        }
+    }
+    
     
     public var isKorean: Bool {
         get {
@@ -87,6 +99,16 @@ struct UserDefaultSetup{
         }
         set {
             defaults.set(newValue,forKey: UserDefaultKey.notificationOn.rawValue)
+        }
+    }
+    
+    
+    public var currencyUnit: String {
+        get {
+            return defaults.string(forKey: UserDefaultKey.currencyUnit.rawValue) ?? "$"
+        }
+        set {
+            defaults.set(newValue, forKey: UserDefaultKey.currencyUnit.rawValue)
         }
     }
     

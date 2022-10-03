@@ -53,7 +53,6 @@
 		9A4FD3BF26A7A86300593358 /* ButtonTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3BE26A7A86300593358 /* ButtonTag.swift */; };
 		9A4FD3C126A7AD9800593358 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FD3C026A7AD9800593358 /* Extensions.swift */; };
 		9A5FFE5A24DF101500681717 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5FFE5924DF101500681717 /* ReviewService.swift */; };
-		9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */; };
 		9A7F1878271ACA0D00F71785 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */; };
 		9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */; };
 		9AA150EB2870D15700DC4CED /* GitInfo in Resources */ = {isa = PBXBuildFile; fileRef = 9AA150EA2870D15700DC4CED /* GitInfo */; };
@@ -193,7 +192,6 @@
 		9A4FD3BE26A7A86300593358 /* ButtonTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTag.swift; sourceTree = "<group>"; };
 		9A4FD3C026A7AD9800593358 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9A5FFE5924DF101500681717 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
-		9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionCell.swift; sourceTree = "<group>"; };
 		9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToFix_Dutchpay; sourceTree = "<group>"; };
 		9AA150EA2870D15700DC4CED /* GitInfo */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitInfo; sourceTree = "<group>"; };
@@ -582,7 +580,6 @@
 			children = (
 				9A083FDC24CCDC3B001057D2 /* HistoryRecordCell.swift */,
 				9AA5C431271701190021975C /* SettingsTableCell.swift */,
-				9A7F1875271AC4EC00F71785 /* SettingsCollectionCell.swift */,
 				9A7F1877271ACA0D00F71785 /* SettingsViewModel.swift */,
 			);
 			path = Views;
@@ -841,7 +838,6 @@
 				9A2DBC03282069AC00CF4E86 /* PersonDetailCellViewModel.swift in Sources */,
 				9AD2FB30284FD8D70075551B /* NeedingController.swift in Sources */,
 				9AA5C42E2716FDB20021975C /* MainTabController.swift in Sources */,
-				9A7F1876271AC4EC00F71785 /* SettingsCollectionCell.swift in Sources */,
 				9AD2FB55285787770075551B /* DutchTableCell.swift in Sources */,
 				9A2DBC2F2826DBB400CF4E86 /* PersonDetailTestCell.swift in Sources */,
 				9AF62EEC26FF668A00E183AB /* TagConstants.swift in Sources */,

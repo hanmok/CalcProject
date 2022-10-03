@@ -106,6 +106,8 @@ struct ASD {
     
     static let element = "element"
     
+    static let dutchpay = "Dutchpay"
+    
     static let addingPersonMsg = "addingPersonMsg"
     
     static func convertDutchResultMsg(from: String, to: String, amt: Double) -> String {

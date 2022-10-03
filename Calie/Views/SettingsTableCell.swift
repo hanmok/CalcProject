@@ -12,6 +12,7 @@ import UIKit
 
 protocol SettingsTableCellDelegate: AnyObject {
     func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool)
+    func btnTapped(_ tag: Int)
 }
 
 
@@ -33,37 +34,49 @@ class SettingsTableCell: UITableViewCell {
             guard let sectionType = sectionType else { return }
             textLabel?.text = sectionType.description
             switchControl.isHidden = !sectionType.containsSwitch
+            triggerBtn.isHidden = !sectionType.containsButton
         }
     }
     
     lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
-//        switchControl.isOn = true
-//        switchControl.onTintColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
+
         switchControl.onTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.2, alpha: 1)
         switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         
         return switchControl
     }()
     
+    lazy var triggerBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("hello", for: .normal)
+//        btn.setTitle("hellansldkiawubiawjnliawjniAsdo", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        
+        btn.addTarget(self, action: #selector(btnTapped), for: .touchUpInside)
+        btn.backgroundColor = .magenta
+        return btn
+    }()
+    
+    @objc func btnTapped() {
+        delegate?.btnTapped(triggerBtn.tag)
+        print("tapped tag: \(triggerBtn.tag)")
+    }
+    
     // MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        print(#function)
-//        print(#function)
-        
+
         contentView.addSubview(switchControl)
-        
+        contentView.addSubview(triggerBtn)
         contentView.clipsToBounds = true
         
         accessoryType = .none
-         // this function has not been called ..
-        
-        print("override init called")
     }
     
     func configureCellColor(hasLoaded: Bool) {
+        
     }
     
     required init?(coder: NSCoder) {
@@ -76,14 +89,17 @@ class SettingsTableCell: UITableViewCell {
         
         isDarkMode = userDefaultSetup.darkModeOn
         
-                switchControl.anchor(right: rightAnchor, paddingRight: 12)
-                switchControl.centerY(inView: self)
+        switchControl.anchor(right: rightAnchor, paddingRight: 12)
+        switchControl.centerY(inView: self)
+        
+        triggerBtn.anchor(right: rightAnchor, paddingRight: 12)
+        triggerBtn.centerY(inView: self)
         
         if hasLoaded { // make animations
             UIView.transition(with: self.contentView, duration: 0.5, options: .transitionCrossDissolve) {
                 
                 self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
-                print("line 86, isDarkMode: \(self.isDarkMode)")
+
                 self.textLabel?.textColor = self.isDarkMode ? .white : .black
             }
         } else {
@@ -91,8 +107,6 @@ class SettingsTableCell: UITableViewCell {
             self.contentView.backgroundColor = self.isDarkMode ? UIColor(white: 33 / 255, alpha: 1) : .white
             
             textLabel?.textColor = isDarkMode ? .white : .black
-            
-            print("hasLoaded: false")
         }
     }
     

@@ -87,17 +87,15 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         
         let settingsVC = SettingsViewController()
-        settingsVC.settingsDelegate = self
-        
+//        settingsVC.settingsDelegate = self
+        settingsVC.delegate = self
         let settings = templateNavigationController(
             unselectedImage: UIImage(systemName: "gear")!,
             selectedImage: UIImage(systemName: "gear")!,
             rootViewController: settingsVC)
         
-        settings.delegate = self
+//        settings.delegate = self
         
-
-
         viewControllers = [calculator, dutch, settings]
     }
 
@@ -238,6 +236,16 @@ extension MainTabController: UITabBarControllerDelegate {
 
 
 extension MainTabController: SettingsViewControllerDelegate {
+    func hideTabbar() {
+        print("tabbar flag, is hidden!")
+        tabBar.isHidden = true
+        
+    }
+    
+    func showTabbar() {
+        tabBar.isHidden = false
+    }
+    
     func updateUserdefault() {
         print("updateUserDefaultTriggered in MainTabController")
         print("vcs: \(String(describing: viewControllers))")
