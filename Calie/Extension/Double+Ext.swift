@@ -21,11 +21,13 @@ extension Double {
 //            return initialStr + ASD.currencyShort.localized
 //        }
         
-        if UserDefaultSetup().currencyUnit == "₩" {
-            return initialStr + "원"
-        } else {
-            return UserDefaultSetup().currencyUnit + initialStr
-        }
+//        if UserDefaultSetup().currencyUnit == "₩" {
+//            return initialStr + "원"
+//        } else {
+//            return UserDefaultSetup().currencyUnit + initialStr
+//        }
+        
+        return UserDefaultSetup.appendProperUnit(to: initialStr)
         
     }
     

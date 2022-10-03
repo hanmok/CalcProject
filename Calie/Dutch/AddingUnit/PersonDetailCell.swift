@@ -43,17 +43,18 @@ class PersonDetailCell: UICollectionViewCell {
         $0.layer.cornerRadius = 5
     }
     
-    private let currencyLabel = UILabel().then {
-//        $0.text = ASD.currencyShort.localized
-        
-        $0.adjustsFontSizeToFitWidth = true
-        
-        if UserDefaultSetup().currencyUnit != "₩" {
-            $0.text = "(\(UserDefaultSetup().currencyUnit))"
-        } else {
-            $0.text = "원"
-        }
-    }
+//    private let currencyLabel = UILabel().then {
+////        $0.text = ASD.currencyShort.localized
+//
+//        $0.adjustsFontSizeToFitWidth = true
+//
+//        if UserDefaultSetup().currencyUnit != "₩" {
+//            $0.text = "(\(UserDefaultSetup().currencyUnit))"
+//        } else {
+//            $0.text = "원"
+//        }
+//
+//    }
     
     public let attendingBtn = AttendingButton()
     
@@ -108,7 +109,13 @@ class PersonDetailCell: UICollectionViewCell {
         attendingBtn.markAttendedState(using: isAttended)
         
 //        spentAmountTF.text = viewModel.spentAmount
-        spentAmountTF.text = UserDefaultSetup().currencyUnit + viewModel.spentAmount
+//        if UserDefaultSetup().currencyUnit != "₩" {
+//            spentAmountTF.text = UserDefaultSetup().currencyUnit + viewModel.spentAmount
+//        } else {
+//            spentAmountTF.text = viewModel.spentAmount + "원"
+//        }
+        
+        spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmount)
     }
     
     override init(frame: CGRect) {
@@ -141,7 +148,8 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        [nameLabel, spentAmountTF, currencyLabel,
+        [nameLabel, spentAmountTF,
+//         currencyLabel,
          fullPriceBtn,
          attendingBtn].forEach { v in
             addSubview(v)
@@ -159,23 +167,25 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
-        currencyLabel.snp.makeConstraints { make in
-//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
-            make.trailing.equalTo(attendingBtn.snp.leading).offset(-15)
-//            make.trailing.equalTo(attendingBtn.snp.leading)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(24)
-        }
+//        currencyLabel.snp.makeConstraints { make in
+////            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
+//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-15)
+////            make.trailing.equalTo(attendingBtn.snp.leading)
+//            make.top.bottom.equalToSuperview()
+//            make.width.equalTo(24)
+//        }
         
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
+//            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
+            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
             make.top.bottom.equalToSuperview()
         }
         
         fullPriceBtn.snp.makeConstraints { make in
             make.leading.equalTo(spentAmountTF.snp.leading)
-            make.trailing.equalTo(currencyLabel.snp.trailing)
+//            make.trailing.equalTo(currencyLabel.snp.trailing)
+            make.trailing.equalTo(spentAmountTF.snp.trailing)
             make.top.bottom.equalToSuperview()
         }
         

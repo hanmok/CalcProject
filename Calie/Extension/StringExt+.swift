@@ -52,6 +52,10 @@ extension String {
         var str = self
         guard str != "" else { return 0 }
         str = str.replacingOccurrences(of: ",", with: "")
+        str = str.replacingOccurrences(of: UserDefaultSetup().currencyUnit, with: "")
+        str = str.replacingOccurrences(of: "원", with: "")
+        str = str.replacingOccurrences(of: " ", with: "")
+        
         guard let double = Double(str) else {
             fatalError("fail to convert Str to Double", file: #file, line: #line)
         }

@@ -139,7 +139,13 @@ struct UserDefaultSetup{
         }
     }
     
-    
+    static func appendProperUnit(to str: String) -> String {
+        if UserDefaultSetup().currencyUnit == "₩" {
+            return str + " 원"
+        } else {
+            return UserDefaultSetup().currencyUnit + str
+        }
+    }
     
     
     // MARK: - Set

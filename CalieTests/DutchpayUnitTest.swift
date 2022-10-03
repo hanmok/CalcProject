@@ -1023,6 +1023,7 @@ extension DutchpayUnitTest {
         let ret2 = dropDigits(amt: 1.38946, digitLocationToCut: -2)
         XCTAssertEqual(ret2, 1.38)
     }
+    
     // 0 -> 소숫점 첫째 버림.
     func dropDigits(amt: Double, digitLocationToCut: Int) -> Double {
         // if digitLocationToCut == 1 (일의 자리 버림)
