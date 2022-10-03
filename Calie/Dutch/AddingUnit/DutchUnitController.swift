@@ -661,7 +661,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.delegate = self
         
-        cell.spentAmountTF.text = text
+//        cell.spentAmountTF.text = text
+        cell.spentAmountTF.text = UserDefaultSetup().currencyUnit + text
 
         // MARK: - 색상 원상태로 변경
         cell.spentAmountTF.textColor = .black

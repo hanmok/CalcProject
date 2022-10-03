@@ -188,14 +188,17 @@ class PersonDetailHeader: UICollectionReusableView {
         guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
 //        spentAmountTF.text = amtInput.addComma()
-        spentAmountTF.text = amtInput.applyCustomNumberFormatter()
+//        spentAmountTF.text = amtInput.applyCustomNumberFormatter()
+        spentAmountTF.text = UserDefaultSetup().currencyUnit + amtInput.applyCustomNumberFormatter()
     }
     
     
     private func configureLayout() {
         guard let viewModel = viewModel else { return }
         
-        spentAmountTF.text = viewModel.spentAmt
+//        spentAmountTF.text = viewModel.spentAmt
+        spentAmountTF.text = UserDefaultSetup().currencyUnit + viewModel.spentAmt
+        
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
         
@@ -511,14 +514,6 @@ class PersonDetailHeader: UICollectionReusableView {
         return picker
     }()
     
-//    private let currencyIndicatorLabel = UILabel().then {
-//        $0.textColor = .black
-//        if UserDefaultSetup().currencyUnit == "₩" {
-//            $0.isHidden = true
-//        } else {
-//            $0.text = "(Currency: \(UserDefaultSetup().currencyUnit))"
-//        }
-//    }
     
     private let dismissBtn: UIButton = {
         let btn = UIButton()

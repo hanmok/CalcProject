@@ -107,7 +107,8 @@ class PersonDetailCell: UICollectionViewCell {
         attendingBtn.isAttending = isAttended
         attendingBtn.markAttendedState(using: isAttended)
         
-        spentAmountTF.text = viewModel.spentAmount
+//        spentAmountTF.text = viewModel.spentAmount
+        spentAmountTF.text = UserDefaultSetup().currencyUnit + viewModel.spentAmount
     }
     
     override init(frame: CGRect) {
