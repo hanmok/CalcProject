@@ -61,20 +61,24 @@ class SettingsViewController: UIViewController {
         
         if userDefaultSetup.usingFloatingPoint == true { // ????
 //            droppingDigitCases = [-2, -1, 0, 1, 2, 3, 4, 5]
-            droppingDigitCases = ["만의 자리까지",
-                                  "천의 자리까지",
-                                  "백의 자리까지",
-                                  "십의 자리까지",
-                                  "일의 자리까지",
-                                  "소숫점 첫째자리까지",
-                                  "모두"]
+//            droppingDigitCases = ["만의 자리까지",
+//                                  "천의 자리까지",
+//                                  "백의 자리까지",
+//                                  "십의 자리까지",
+//                                  "일의 자리까지",
+//                                  "소숫점 첫째자리까지",
+//                                  "모두"]
+            
+            droppingDigitCases = ASD.precisions
         } else {
-//            droppingDigitCases = [0, 1, 2, 3, 4, 5]
-            droppingDigitCases = ["만의 자리까지",
-                                  "천의 자리까지",
-                                  "백의 자리까지",
-                                  "십의 자리까지",
-                                  "모두"]
+
+            droppingDigitCases = [
+                ASD.precisions[2], // ones place
+                ASD.precisions[3], // ten place
+                ASD.precisions[4],
+                ASD.precisions[5],
+                ASD.precisions[6]
+            ]
         }
         
         
@@ -189,7 +193,12 @@ class SettingsViewController: UIViewController {
         if let selectedIdx = selectedIdx, let selectedPicker = selectedPicker {
 
             if selectedPicker == .droppingDigit {
-                userDefaultSetup.droppingDigitIdx = 4 - selectedIdx
+
+                if droppingDigitCases.count == 5 {
+                    userDefaultSetup.droppingDigitIdx = selectedIdx
+                } else {
+                    userDefaultSetup.droppingDigitIdx = selectedIdx - 2
+                }
                 DispatchQueue.main.async {
                     self.settingTableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .automatic)
                 }
@@ -384,7 +393,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.triggerBtn.tag = Int.droppingDigitTag
                 cell.delegate = self
                 
-                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
+//                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
+                let title = droppingDigitCases[userDefaultSetup.droppingDigitIdx].localized
                 
                 cell.triggerBtn.setTitle(title, for: .normal)
                 
@@ -517,7 +527,8 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return currencyUnitCases[row]
 
         } else {
-            return String(droppingDigitCases[row])
+//            return String(droppingDigitCases[row])
+            return droppingDigitCases[row].localized
         }
     }
     

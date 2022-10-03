@@ -70,12 +70,12 @@ enum DutchOptions: Int, CaseIterable, SectionType {
         switch self {
             
         case .useFloatingPoint:
-            return "소숫점 사용"
+            return ASD.usingDecimalPoint.localized
         case .droppingDigit:
 //            return "정산 시 반올림할 자릿수"
-            return "정산할 자릿수"
+            return ASD.calculatingPrecision.localized
         case .currencyUnit:
-            return "통화 단위"
+            return ASD.currencyUnit.localized
         }
     }
     

@@ -103,4 +103,18 @@
 "edit" = "Edit";
 "emptyNameAlert" = "Name must have at least one character";
 
-"deletingPersonFailMsg" = "failed! \n current person has paid somewhere. \n "
+"deletingPersonFailMsg" = "failed! \n current person has paid somewhere. \n";
+
+"usingDecimalPoint" = "Using Decimal Point";
+
+"currencyUnit" = "Currency Unit";
+
+"calculatingPrecision" = "Calculating Precision";
+
+"onePlace" = "upto ones place";
+"tenPlace" = "upto tens place";
+"hundredPlace" = "upto hundreds place";
+"thousandsPlace" = "upto thousands place";
+"tenThousandsPlace" = "upto ten thousands place";
+"firstDecimalPlace" = "upto first decimal place";
+"twoDecimalPlace" = "most precise";

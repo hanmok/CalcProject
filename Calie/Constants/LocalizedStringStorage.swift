@@ -130,6 +130,24 @@ struct ASD {
     static let emptyNameAlert = "emptyNameAlert"
     
     static let deletingPersonFailMsg = "deletingPersonFailMsg"
+    
+    static let usingDecimalPoint = "usingDecimalPoint"
+    
+    static let currencyUnit = "currencyUnit"
+    
+    static let calculatingPrecision = "calculatingPrecision"
+    
+    static let precisions = [
+        "twoDecimalPlace",
+        "firstDecimalPlace",
+        "onePlace",
+        "tenPlace",
+        "hundredPlace",
+        "thousandsPlace",
+        "tenThousandsPlace"
+    ]
+    
+    
     static func convertDutchResultMsg(from: String, to: String, amt: Double) -> String {
 
         let convertedAmt = amt.applyDecimalFormatWithCurrency()

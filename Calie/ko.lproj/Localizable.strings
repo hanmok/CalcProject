@@ -110,3 +110,16 @@
 "emptyNameAlert" = "이름은 최소 하나의 문자를 포함해야합니다.";
 
 "deletingPersonFailMsg" = "삭제에 실패하였습니다.\n선택한 사람이 어딘가에 비용을 지불하였습니다.";
+
+"usingDecimalPoint" = "소숫점 사용";
+"currencyUnit" = "통화 단위";
+"calculatingPrecision" = "정산할 자릿수";
+
+
+"onePlace" = "일의 자리까지";
+"tenPlace" = "십의 자리까지";
+"hundredPlace" = "백의 자리까지";
+"thousandsPlace" = "천의 자리까지";
+"tenThousandsPlace" = "만의 자리까지";
+"firstDecimalPlace" = "소숫점 첫째자리까지";
+"twoDecimalPlace" = "모두";
