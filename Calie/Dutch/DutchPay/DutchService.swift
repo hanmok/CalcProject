@@ -406,7 +406,8 @@ extension DutchService {
             guard let sender = people.filter({ $0.order == resultTuple.from }).first,
             let receiver = people.filter({ $0.order == resultTuple.to}).first else { fatalError() }
         
-            let amt = Double(resultTuple.amount / 100) // / 100 으로 다시 Double 로 변환.
+//            let amt = Double(resultTuple.amount / 100) // / 100 으로 다시 Double 로 변환.
+            let amt = Double(resultTuple.amount) / 100
             
             return ResultTupleWithId(from: sender.id, to: receiver.id, amount: amt )
         }

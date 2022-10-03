@@ -63,7 +63,6 @@ class ResultViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
-//        scrollView.backgroundColor = .magenta
         scrollView.backgroundColor = .white
         return scrollView
     }()
@@ -80,8 +79,6 @@ class ResultViewController: UIViewController {
             make.width.equalToSuperview()
             make.height.equalToSuperview()
         }
-        
-        
     }
     
     private let takingCaptureBtn = UIButton().then {
@@ -89,8 +86,6 @@ class ResultViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .black
         $0.addSubview(imageView)
-        
-//        $0.backgroundColor = .magenta
         
         imageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -100,13 +95,10 @@ class ResultViewController: UIViewController {
     }
     
     private let copyBtn = UIButton().then {
-//        let imageView = UIImageView(image: UIImage(systemName: "doc.on.doc.fill")!)
         let imageView = UIImageView(image: UIImage(systemName: "doc.on.clipboard")!)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .black
         $0.addSubview(imageView)
-        
-//        $0.backgroundColor = .cyan
         
         imageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -339,6 +331,7 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
             cell.isUserInteractionEnabled = false
             
             cell.exchangeInfo = viewModel.calculatedResultTuples[indexPath.row]
+            
             let correspondingText = convertExchangeInfoIntoString(exchangeInfo: viewModel.calculatedResultTuples[indexPath.row])
             textToCopy += correspondingText + "\n"
             return cell

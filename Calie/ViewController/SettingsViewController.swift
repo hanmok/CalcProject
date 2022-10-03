@@ -199,6 +199,7 @@ class SettingsViewController: UIViewController {
                 } else {
                     userDefaultSetup.droppingDigitIdx = selectedIdx - 2
                 }
+                print("droppingDigitIdx: \(userDefaultSetup.droppingDigitIdx)")
                 DispatchQueue.main.async {
                     self.settingTableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .automatic)
                 }
@@ -394,9 +395,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.delegate = self
                 
 //                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
-                let title = droppingDigitCases[userDefaultSetup.droppingDigitIdx].localized
+                let idx = droppingDigitCases.count == 5 ? userDefaultSetup.droppingDigitIdx : userDefaultSetup.droppingDigitIdx + 2
+                
+                let title = droppingDigitCases[idx].localized
                 
                 cell.triggerBtn.setTitle(title, for: .normal)
+                
                 
             case .currencyUnit:
                 cell.triggerBtn.tag = Int.currencyUnitTag

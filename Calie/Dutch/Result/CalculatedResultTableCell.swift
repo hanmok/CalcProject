@@ -30,8 +30,7 @@ class CalculatedResultTableCell: UITableViewCell {
         guard let exchangeInfo = exchangeInfo else {
             return
         }
-//        let userdefault = UserDefaultSetup()
-//        userdefault
+
         let isKorean = true
         
         let (from, to, amt) = exchangeInfo
@@ -39,10 +38,8 @@ class CalculatedResultTableCell: UITableViewCell {
         let userDefault = UserDefaultSetup()
         
         
-//        if userDefault.isKorean {
-//        if ASD.currency.localized == "원" { // korean
         if userDefault.currencyUnit == "₩" {
-//            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: true)
+
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
             let attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
@@ -62,7 +59,7 @@ class CalculatedResultTableCell: UITableViewCell {
             exchangeTextLabel.attributedText = attributedStr
             
         } else {
-//            let convertedAmt = amt.convertIntoCurrencyUnit(isKorean: false)
+
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
             var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
