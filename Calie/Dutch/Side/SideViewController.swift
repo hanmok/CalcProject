@@ -250,27 +250,27 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
 
 extension SideViewController {
     private func presentAskingGatheringName( completion: @escaping (NewNameAction)) {
-        let alertController = UIAlertController(title: "Edit Gathering Name", message: "새로운 모임 이름을 입력해주세요", preferredStyle: .alert)
+        let alertController = UIAlertController(title: ASD.editGatheringName.localized, message: ASD.editGatheringNameMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "Gathering Name"
+            textField.placeholder = ASD.gatheringName.localized
         }
         
-        let saveAction = UIAlertAction(title: "Done", style: .default) { alert -> Void in
+        let saveAction = UIAlertAction(title: ASD.done.localized, style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
             let newGroupName = textFieldInput.text!
             
             guard newGroupName.count != 0 else {
                 completion(.failure(.cancelAskingName))
-                fatalError("Name must have at least one character")
+                fatalError(ASD.emptyNameAlert.localized)
             }
          
             
             completion(.success(newGroupName))
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+        let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in
             completion(.failure(.cancelAskingName))
         })

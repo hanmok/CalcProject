@@ -85,3 +85,22 @@
 
 "addingPersonMsg" = "Enter name to add";
 "Dutchpay" = "Go Dutch";
+"resetGathering" = "Reset Gathering";
+
+"resetGatheringMsg" = "Are you sure to reset current gathering?";
+"reset" = "Reset";
+"cancel" = "Cancel";
+
+"editGatheringNameTitle" = "Edit Gathering Name";
+"editGatheringNameMsg" = "Enter new gathering name";
+"gatheringName" = "Gathering Name";
+"done" = "Done";
+
+"addPeople" = "Add People";
+
+"add" = "Add";
+"name" = "Name";
+"edit" = "Edit";
+"emptyNameAlert" = "Name must have at least one character";
+
+"deletingPersonFailMsg" = "failed! \n current person has paid somewhere. \n "

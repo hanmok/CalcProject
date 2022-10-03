@@ -396,15 +396,15 @@ class DutchUnitController: NeedingController {
     
 
     @objc private func presentAddingPeopleAlert() {
-        let alertController = UIAlertController(title: "Add People", message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
+        let alertController = UIAlertController(title: ASD.addingPeople.localized, message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "Name"
+            textField.placeholder = ASD.name.localized
             textField.tag = 100
             textField.delegate = self
         }
         
-        let saveAction = UIAlertAction(title: "Add", style: .default) { [self] alert -> Void in
+        let saveAction = UIAlertAction(title: ASD.add.localized, style: .default) { [self] alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
         
             let newPersonName = textFieldInput.text!
@@ -412,7 +412,7 @@ class DutchUnitController: NeedingController {
             addPersonAction(with: newPersonName)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+        let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
         
         alertController.addAction(cancelAction)
@@ -534,7 +534,11 @@ class DutchUnitController: NeedingController {
   
         bottomContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            if UIDevice.hasNotch {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-70)
+            } else {
+                make.bottom.equalToSuperview().offset(20)
+            }
             make.height.equalTo(110)
         }
         
@@ -552,6 +556,7 @@ class DutchUnitController: NeedingController {
         
         bottomContainerView.addSubview(confirmBtn)
         confirmBtn.snp.makeConstraints { make in
+            
             make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalToSuperview().inset(20)
             make.height.equalTo(50)
@@ -580,6 +585,7 @@ class DutchUnitController: NeedingController {
         cv.dataSource = self
         cv.isScrollEnabled = true
         cv.showsVerticalScrollIndicator = true
+        cv.backgroundColor = .white
         return cv
     }()
     

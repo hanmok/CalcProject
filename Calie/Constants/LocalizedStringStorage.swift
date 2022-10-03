@@ -110,6 +110,26 @@ struct ASD {
     
     static let addingPersonMsg = "addingPersonMsg"
     
+    static let resetGatheringTitle = "ResetGathering"
+    static let resetGatheringMsg = "resetGatheringMsg"
+    static let reset = "reset"
+    static let cancel = "cancel"
+    
+    static let editGatheringName = "editGatheringNameTitle"
+    
+    static let editGatheringNameMsg = "editGatheringNameMsg"
+    static let gatheringName = "gatheringName"
+    static let done = "done"
+    
+    static let addingPeople = "addPeople"
+    
+    static let add = "add"
+    static let name = "name"
+    static let edit = "edit"
+    
+    static let emptyNameAlert = "emptyNameAlert"
+    
+    static let deletingPersonFailMsg = "deletingPersonFailMsg"
     static func convertDutchResultMsg(from: String, to: String, amt: Double) -> String {
 
         let convertedAmt = amt.applyDecimalFormatWithCurrency()

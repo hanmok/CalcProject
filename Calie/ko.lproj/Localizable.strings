@@ -83,3 +83,30 @@
 
 "addingPersonMsg" = "추가할 사람의 이름을 입력해주세요.";
 "Dutchpay" = "더치페이";
+
+
+// Alert, toast
+"resetGathering" = "모임 초기화";
+"resetGatheringMsg" = "현재 모임을 초기화할까요?";
+"reset" = "초기화";
+"cancel" = "취소";
+
+
+"editGatheringNameTitle" = "모임 이름 편집";
+"editGatheringNameMsg" = "새로운 모임 이름을 입력해주세요.";
+
+"gatheringName" = "모임 이름";
+
+"done" = "완료";
+
+"addPeople" = "인원 추가";
+
+"add" = "추가하기";
+
+"name" = "이름";
+
+"edit" = "편집";
+
+"emptyNameAlert" = "이름은 최소 하나의 문자를 포함해야합니다.";
+
+"deletingPersonFailMsg" = "삭제에 실패하였습니다.\n선택한 사람이 어딘가에 비용을 지불하였습니다.";

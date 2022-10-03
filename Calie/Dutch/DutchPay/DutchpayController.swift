@@ -156,13 +156,13 @@ class DutchpayController: UIViewController {
     
     
     private func presentResetAlert() {
-        let alertController = UIAlertController(title: "Reset Gathering", message: "Are you sure to reset current gathering infos?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: ASD.resetGatheringTitle.localized, message: ASD.resetGatheringMsg.localized, preferredStyle: .alert)
         
-        let confirmAction = UIAlertAction(title: "Reset", style: .destructive) { _ in
+        let confirmAction = UIAlertAction(title: ASD.reset.localized, style: .destructive) { _ in
             self.resetAction()
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: .cancel)
         
         alertController.addAction(cancelAction)
         alertController.addAction(confirmAction)
@@ -513,7 +513,9 @@ class DutchpayController: UIViewController {
     
     
     
-    private let dutchTableView = UITableView()
+    private let dutchTableView = UITableView().then {
+        $0.backgroundColor = .white
+    }
     
     private let tableViewBottomBorder = UIView().then {
         $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
@@ -531,9 +533,10 @@ class DutchpayController: UIViewController {
     
     private let calculateBtn = UIButton().then {
         
-        let attr = NSMutableAttributedString(string: ASD.calculate.localized, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold)])
+        let attr = NSMutableAttributedString(string: ASD.calculate.localized, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold), .foregroundColor: UIColor.black])
         $0.setAttributedTitle(attr, for: .normal)
         $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
+    
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
     }
@@ -791,26 +794,32 @@ extension DutchpayController {
     
     // Done!
     private func presentAskingGatheringName( completion: @escaping (NewNameAction)) {
-        let alertController = UIAlertController(title: "Edit Gathering Name", message: "새로운 모임 이름을 입력해주세요", preferredStyle: .alert)
+        let alertController = UIAlertController(title: ASD.editGatheringName.localized, message: ASD.editGatheringNameMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "Gathering Name"
+            textField.placeholder = ASD.gatheringName.localized
         }
         
-        let saveAction = UIAlertAction(title: "Done", style: .default) { alert -> Void in
+        let saveAction = UIAlertAction(title: ASD.done.localized, style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
             let newGroupName = textFieldInput.text!
             
-            guard newGroupName.count != 0 else {
+            if newGroupName.count != 0 {
+                completion(.success(newGroupName))
+            } else {
                 completion(.failure(.cancelAskingName))
-                fatalError("Name must have at least one character")
             }
             
-            completion(.success(newGroupName))
+//            guard newGroupName.count != 0 else {
+//                completion(.failure(.cancelAskingName))
+////                fatalError(ASD.emptyNameAlert.localized)
+//            }
+//
+//            completion(.success(newGroupName))
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+        let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in
             completion(.failure(.cancelAskingName))
         })

@@ -46,7 +46,11 @@ class CustomNumberPadController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if UIDevice.hasNotch {
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: 370)
+        } else {
+            view.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: 280)
+        }
         
         setupLayout()
         setupAddTargets()
@@ -56,8 +60,6 @@ class CustomNumberPadController: UIViewController {
     
     private let num0 = NumberButton("0")
     private let num00 = NumberButton("00")
-//    private var num000 = NumberButton("000")
-//    private var num000 = NumberButton(".")
     private var num000 = NumberButton(tripleZeroOrDot: true)
     private let num1 = NumberButton("1")
     private let num2 = NumberButton("2")
@@ -286,7 +288,11 @@ class CustomNumberPadController: UIViewController {
         view.addSubview(inputBar)
         inputBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
+            if UIDevice.hasNotch {
+                make.height.equalTo(50)
+            } else {
+                make.height.equalTo(35)
+            }
             make.top.equalToSuperview()
         }
         
@@ -303,8 +309,13 @@ class CustomNumberPadController: UIViewController {
         deleteBtn.addSubview(deleteImageView)
         deleteImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            if UIDevice.hasNotch {
             make.width.equalToSuperview().dividedBy(1.7)
             make.height.equalToSuperview().dividedBy(1.7)
+            } else {
+                make.width.equalToSuperview().dividedBy(1.4)
+                make.height.equalToSuperview().dividedBy(1.4)
+            }
         }
         
         let hor3Stack = UIStackView(arrangedSubviews: [num7, num8, num9])
@@ -318,7 +329,11 @@ class CustomNumberPadController: UIViewController {
             $0.spacing = 0
             $0.snp.makeConstraints { make in
                 make.leading.trailing.equalToSuperview()
-                make.height.equalTo(60)
+                if UIDevice.hasNotch {
+                    make.height.equalTo(60)
+                } else {
+                    make.height.equalTo(50)
+                }
             }
         }
         
@@ -344,7 +359,11 @@ class CustomNumberPadController: UIViewController {
         completeBtn.snp.makeConstraints { make in
             make.top.equalTo(hor0Stack.snp.bottom)
             make.leading.trailing.equalToSuperview()
+            if UIDevice.hasNotch {
             make.height.equalTo(70)
+            } else {
+                make.height.equalTo(50)
+            }
         }
         
         completeBtn.addSubview(completeLabel)
@@ -352,7 +371,11 @@ class CustomNumberPadController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview()
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(40)
+            if UIDevice.hasNotch {
+                make.height.equalTo(40)
+            } else {
+                make.height.equalTo(30)
+            }
         }
     }
     
@@ -377,7 +400,11 @@ class CustomNumberPadController: UIViewController {
         completeBtn.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(70)
+            if UIDevice.hasNotch {
+                make.height.equalTo(70)
+            } else {
+                make.height.equalTo(50)
+            }
         }
         
         

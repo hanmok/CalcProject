@@ -143,7 +143,7 @@ class ParticipantsController: UIViewController{
             
         } else {
             // turn on Editing Mode
-            editingBtn.setTitle("Done", for: .normal)
+            editingBtn.setTitle(ASD.done.localized, for: .normal)
             
             // hide !
             
@@ -155,10 +155,6 @@ class ParticipantsController: UIViewController{
             }
             
             addPeopleBtn.snp.remakeConstraints { make in
-//                make.bottom.equalToSuperview().offset(50)
-//                make.centerX.equalToSuperview()
-//                make.width.equalTo(40)
-//                make.height.equalTo(55)
                 make.centerX.equalToSuperview()
                 make.width.equalTo(55)
                 make.top.equalToSuperview().offset(100)
@@ -178,15 +174,15 @@ class ParticipantsController: UIViewController{
     }
     
     private func presentAddingPeopleAlert() {
-        let alertController = UIAlertController(title: "Add People", message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
+        let alertController = UIAlertController(title: ASD.addingPeople.localized, message: ASD.addingPersonMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
-            textField.placeholder = "Name"
+            textField.placeholder = ASD.name.localized
             textField.tag = 100
             textField.delegate = self
         }
         
-        let saveAction = UIAlertAction(title: "Add", style: .default) { alert -> Void in
+        let saveAction = UIAlertAction(title: ASD.add.localized, style: .default) { alert -> Void in
             let textFieldInput = alertController.textFields![0] as UITextField
             
             let newName = textFieldInput.text!
@@ -194,7 +190,7 @@ class ParticipantsController: UIViewController{
             self.addPerson(newName: newName)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.destructive, handler: {
+        let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: UIAlertAction.Style.destructive, handler: {
             (action : UIAlertAction!) -> Void in })
         
         alertController.addAction(cancelAction)
@@ -204,7 +200,10 @@ class ParticipantsController: UIViewController{
     }
     
     private func addPerson(newName: String) {
-        guard newName.count != 0 else { fatalError("Name must have at least one character") }
+        guard newName.count != 0 else {
+//            fatalError("Name must have at least one character")
+            return
+        }
         
         // TODO: Dupliccate check
         //        if self.names.contains(newName) {
@@ -270,34 +269,13 @@ class ParticipantsController: UIViewController{
     
     private let editingBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("EDIT", for: .normal)
+        btn.setTitle(ASD.edit.localized, for: .normal)
         btn.setTitleColor(.black, for: .normal)
         return btn
     }()
     
-//    private let cancelBtn = UIButton().then {
-//        $0.setTitle("Cancel", for: .normal)
-//        $0.backgroundColor = .white
-//        $0.setTitleColor(.red, for: .normal)
-//        $0.layer.borderWidth = 1
-//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-//        $0.layer.cornerRadius = 10
-//    }
-    
-//    private let confirmBtn = UIButton().then {
-//        $0.setTitle("Confirm", for: .normal)
-//        $0.backgroundColor = .white
-//        $0.setTitleColor(.black, for: .normal)
-//        $0.layer.borderWidth = 1
-//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-//        $0.layer.cornerRadius = 10
-//    }
-    
-    
     private let participantsTableView = UITableView().then {
-//        $0.layer.borderColor = UIColor(white: 0.8, alpha: 0.7).cgColor
         $0.layer.borderColor = UIColor.clear.cgColor
-//        $0.layer.borderWidth = 1
     }
     
     private let addPeopleBtn = UIButton().then {
@@ -443,7 +421,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
                     completionHandler(true)
                 } else {
                     // TODO: Show failure toast
-                    self.showToast(message: "failed! \n current person has paid somewhere. \n ", defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.1, fontsize: 16)
+                    self.showToast(message: ASD.deletingPersonFailMsg.localized, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.1, fontsize: 16)
                     DispatchQueue.main.async {
                         self.participantsTableView.reloadRows(at: [indexPath], with: .none)
                     }
