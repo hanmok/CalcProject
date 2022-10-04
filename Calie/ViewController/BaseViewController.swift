@@ -310,7 +310,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         
         
 //        view.backgroundColor = colorList.testColors2[23].color
-//        view.backgroundColor = isDarkMode ? colorList.newMainForDarkMode : colorList.newMainForLightMode
+
         view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     

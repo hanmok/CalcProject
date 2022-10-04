@@ -82,10 +82,20 @@ class DutchpayController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AppUtility.lockOrientation(.all)
+    
+        if userDefaultSetup.darkModeOn {
+            view.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
+            
+        }
     }
     
     private let topView = UIView().then {
-        $0.backgroundColor = .white
+
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
     }
     
     override func viewDidLoad() {
@@ -298,7 +308,8 @@ class DutchpayController: UIViewController {
         
         let attrTitle = NSAttributedString(string: title, attributes: [
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
-            .paragraphStyle: styleCenter
+            .paragraphStyle: styleCenter,
+            .foregroundColor: userDefaultSetup.darkModeOn ? UIColor.semiResultTextDM : UIColor.semiResultTextLM
         ])
         
         DispatchQueue.main.async {
@@ -371,7 +382,13 @@ class DutchpayController: UIViewController {
     
     private let wholeContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
 //        $0.backgroundColor = UIColor(white: 0.8, alpha: 1)
-        $0.backgroundColor = .white
+//        $0.backgroundColor = .white
+//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
     }
     
     private let blurredView = UIButton().then {
@@ -380,7 +397,14 @@ class DutchpayController: UIViewController {
     }
     
     private let totalPriceContainerView = UIView().then {
-        $0.backgroundColor = .white
+//        $0.backgroundColor = .white
+//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
+        
         $0.layer.borderColor = UIColor(white: 1, alpha: 1).cgColor
         $0.layer.cornerRadius = 8
         $0.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -410,14 +434,8 @@ class DutchpayController: UIViewController {
     
     let resetGatheringBtn: UIButton = {
         let btn = UIButton()
-//        let circle = UIImageView(image: UIImage(systemName: "circle.fill")!)
-        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
-//        innerImage
 
-//        innerImage.tintColor = .black
-//        innerImage.tintColor = .orange
-        
-//        innerImage.tintColor = UIColor(red: 0.95, green: 0, blue: 0)
+        let innerImage = UIImageView(image: UIImage(systemName: "multiply")!)
         
         innerImage.tintColor = UIColor(red: 0.95, green: 0, blue: 0, alpha: 1)
 
@@ -429,7 +447,8 @@ class DutchpayController: UIViewController {
             make.height.equalToSuperview().dividedBy(2)
         }
         
-        btn.backgroundColor = UIColor(white: 0.90, alpha: 1)
+        btn.backgroundColor = UserDefaultSetup().darkModeOn ? UIColor.operatorsBGDark : UIColor.extrasBGMiddle
+        
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 8
         
@@ -442,59 +461,48 @@ class DutchpayController: UIViewController {
         let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
         innerImage.contentMode = .scaleAspectFit
         
-        innerImage.tintColor = .black
+//        innerImage.tintColor = .black
+        innerImage.tintColor = UserDefaultSetup().darkModeOn ? UIColor.resultTextDM : UIColor.resultTextLM
+        
         $0.addSubview(innerImage)
         innerImage.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
     }
     
-    private let mainContainer = UIView()
+    private let mainContainer = UIView().then {
+//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
+    }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
 
-        $0.backgroundColor = .white
+//        $0.backgroundColor = .white
+//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
+        
         $0.addBorders(edges: .bottom, color: UIColor(white: 0.8, alpha: 0.9))
     }
-    
-//    private let
-    
-//    private let groupBtn = UIButton().then {
-//
-//        let innerImage = UIImageView(image: UIImage(systemName: "person.3.fill")!)
-//        innerImage.contentMode = .scaleAspectFit
-//
-//        innerImage.tintColor = .black
-//        $0.addSubview(innerImage)
-//        innerImage.snp.makeConstraints { make in
-//            make.top.leading.bottom.trailing.equalToSuperview()
-//        }
-//        $0.isHidden = true
-//    }
-    
-//    private let gatheringPlusBtn: UIButton = {
-//        let btn = UIButton()
-//
-//        let inner = UIImageView(image: UIImage(systemName: "plus.circle"))
-//
-//        btn.addSubview(inner)
-//        inner.snp.makeConstraints { make in
-//            make.center.equalTo(btn)
-//            make.width.equalTo(btn)
-//            make.height.equalTo(btn)
-//        }
-//
-//        return btn
-//    }()
     
     private let dutchUnitPlusBtn: UIButton = {
         let btn = UIButton()
         
         let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-        plusImage.tintColor = ColorList().bgColorForExtrasMiddle
+//        plusImage.tintColor = ColorList().bgColorForExtrasMiddle
+        plusImage.tintColor = UIColor.extrasBGMiddle
         
         let removingLineView = UIView()
-        removingLineView.backgroundColor = .white
+//        removingLineView.backgroundColor = .white
+//        removingLineView.backgroundColor = .clear
+        removingLineView.backgroundColor = UserDefaultSetup().darkModeOn ? UIColor.emptyAndNumbersBGDark : .emptyAndNumbersBGLight
         
         btn.addSubview(removingLineView)
         removingLineView.snp.makeConstraints { make in
@@ -514,29 +522,50 @@ class DutchpayController: UIViewController {
     
     
     private let dutchTableView = UITableView().then {
-        $0.backgroundColor = .white
+//        $0.backgroundColor = .white
+//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
     }
     
     private let tableViewBottomBorder = UIView().then {
-        $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
+//        $0.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+        } else{
+            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+        }
     }
     
     private let totalPriceLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .center
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.resultTextDM : UIColor.resultTextLM
     }
     
     private let totalPriceValueLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 32)
         $0.textAlignment = .right
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.resultTextDM : UIColor.resultTextLM
     }
     
     private let calculateBtn = UIButton().then {
         
-        let attr = NSMutableAttributedString(string: ASD.calculate.localized, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold), .foregroundColor: UIColor.black])
+        let attr = NSMutableAttributedString(string: ASD.calculate.localized, attributes: [
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
+            .foregroundColor: UserDefaultSetup().darkModeOn ? UIColor.white : UIColor.black
+        ]
+        )
+        
         $0.setAttributedTitle(attr, for: .normal)
-        $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        
+//        $0.backgroundColor = UIColor(white: 0.9, alpha: 1)
     
+        $0.backgroundColor = UserDefaultSetup().darkModeOn ? UIColor.extrasBGDark : UIColor.extrasBGLight
+        
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
     }
@@ -647,7 +676,6 @@ class DutchpayController: UIViewController {
             make.height.equalTo(24)
             make.width.equalToSuperview().dividedBy(2)
         }
-        
         
         groupBtnInHeader.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

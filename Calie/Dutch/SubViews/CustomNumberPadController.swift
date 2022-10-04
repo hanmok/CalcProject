@@ -82,11 +82,11 @@ class CustomNumberPadController: UIViewController {
     
     
     private let inputBar = UIView().then {
-        $0.backgroundColor = UIColor.bgColorForExtrasMiddle
+        $0.backgroundColor = UIColor.extrasBGMiddle
     }
     
     private let completeBtn = UIButton().then {
-        $0.backgroundColor = .bgColorForExtrasLM
+        $0.backgroundColor = .extrasBGLight
     }
     
     private let completeLabel = UILabel().then {

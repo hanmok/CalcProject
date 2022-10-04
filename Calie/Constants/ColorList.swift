@@ -53,8 +53,8 @@ struct ColorList{
     let textColorForDateLM = UIColor(white: 0.4, alpha: 1) //
     
     
-    let newMainForDarkMode = UIColor(rgb: 0x9CCC65) // LightGreen 400
-    let newMainForLightMode = UIColor(rgb: 0x7CB342) // Light Green 600
+//    let newMainForDarkMode = UIColor(rgb: 0x9CCC65) // LightGreen 400
+//    let newMainForLightMode = UIColor(rgb: 0x7CB342) // Light Green 600
     
     
     /*

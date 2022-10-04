@@ -40,18 +40,21 @@ class DutchTableCell: UITableViewCell {
         $0.textColor = .black
         $0.textAlignment = .center
         $0.adjustsFontSizeToFitWidth = true
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.numAndOpersTextDM : UIColor.numAndOpersTextLM
     }
 
     private let priceLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20)
         $0.textColor = .black
         $0.textAlignment = .right
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.resultTextDM : UIColor.resultTextLM
     }
 
     private let peopleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 10)
         $0.textColor = .black
         $0.textAlignment = .right
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.numAndOpersTextDM : UIColor.numAndOpersTextLM
     }
     
     private let dateLabel = UILabel().then {
@@ -59,12 +62,18 @@ class DutchTableCell: UITableViewCell {
 //        $0.textColor = .black
         $0.textColor = UIColor(white: 0, alpha: 0.7)
         $0.textAlignment = .left
+        $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.dateTextDM : UIColor.dateTextLM
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         setupLayout()
+        if UserDefaultSetup().darkModeOn {
+            self.backgroundColor = UIColor.emptyAndNumbersBGDark
+        } else{
+            self.backgroundColor = UIColor.emptyAndNumbersBGLight
+        }
     }
 
     required init?(coder: NSCoder) {
