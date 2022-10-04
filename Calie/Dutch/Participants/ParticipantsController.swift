@@ -50,7 +50,8 @@ class ParticipantsController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
    
-        view.backgroundColor = .white
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        
         navigationController?.navigationBar.isHidden = true
         
         setupBindings()
@@ -233,8 +234,9 @@ class ParticipantsController: UIViewController{
     
     // MARK: - UI Properties
     private let containerView = UIView().then {
-//        $0.backgroundColor = UIColor(white: 0.93, alpha: 1)
-        $0.backgroundColor = .white
+
+//        $0.backgroundColor = .white
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor.emptyAndNumbersBGDark, onLight: UIColor.emptyAndNumbersBGLight)
     }
     
     private let titleLabel = UILabel().then {
@@ -243,7 +245,8 @@ class ParticipantsController: UIViewController{
 //        ])
         
         let attrTitle = NSAttributedString(string: ASD.attendances.localized, attributes: [
-            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
+            .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
         ])
         
         $0.attributedText = attrTitle
@@ -254,7 +257,8 @@ class ParticipantsController: UIViewController{
             let btn = UIButton()
             let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
             imageView.contentMode = .scaleAspectFit
-            imageView.tintColor = .black
+
+            imageView.tintColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
     
             btn.addSubview(imageView)
             imageView.snp.makeConstraints { make in
@@ -270,12 +274,15 @@ class ParticipantsController: UIViewController{
     private let editingBtn: UIButton = {
         let btn = UIButton()
         btn.setTitle(ASD.edit.localized, for: .normal)
-        btn.setTitleColor(.black, for: .normal)
+//        btn.setTitleColor(.black, for: .normal)
+        btn.setTitleColor(UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1)), for: .normal)
         return btn
     }()
     
     private let participantsTableView = UITableView().then {
         $0.layer.borderColor = UIColor.clear.cgColor
+        
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     private let addPeopleBtn = UIButton().then {
@@ -295,7 +302,8 @@ class ParticipantsController: UIViewController{
     }
     
     private let bottomView = UIView().then {
-        $0.backgroundColor = .clear
+//        $0.backgroundColor = .clear
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     private let showBtn = UIButton().then {
@@ -311,7 +319,9 @@ class ParticipantsController: UIViewController{
     }
     
     private let bottomContainerView = UIView().then {
-        $0.backgroundColor = .white
+
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        
         $0.layer.borderColor = UIColor.clear.cgColor
     }
     
@@ -407,7 +417,10 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         
         let participant = viewModel.participants[indexPath.row]
         // MARK: - Not Using Custom Cell yet.
-        cell.textLabel?.text = participant.name
+//        cell.textLabel?.text = participant.name
+//        cell.namela
+        cell.name = participant.name
+//        cell.textLabel?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
         
         return cell
     }

@@ -12,11 +12,19 @@ class ParticipantTableViewCell: UITableViewCell {
     
     static let identifier = "ParticipantTableViewCell"
     
+    public var name: String? {
+        didSet {
+            self.loadView()
+        }
+    }
+    
     var isAttended = true
     
-    private let nameLabel: UILabel = {
+    public let nameLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+//        label.textAlignment = .right
+        label.textAlignment = .left
+        label.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
         return label
     }()
     
@@ -27,6 +35,8 @@ class ParticipantTableViewCell: UITableViewCell {
     }
     
     private func setupLayout() {
+        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        
         self.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
@@ -35,12 +45,8 @@ class ParticipantTableViewCell: UITableViewCell {
     }
     
     private func loadView() {
-
-//        guard let viewModel = viewModel else {
-//            return
-//        }
-        
-//        nameLabel.text = viewModel.personName
+//        nameLabel.textColor = na
+        nameLabel.text = name
     }
     
     required init?(coder: NSCoder) {

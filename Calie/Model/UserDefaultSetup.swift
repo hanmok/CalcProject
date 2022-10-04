@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 
@@ -36,6 +37,9 @@ struct UserDefaultSetup{
         case currencyUnit
     }
     
+    static func applyColor(onDark: UIColor, onLight: UIColor) -> UIColor {
+        return UserDefaultSetup().darkModeOn ? onDark : onLight
+    }
 
     public var droppingDigitIdx: Int {
         get {
