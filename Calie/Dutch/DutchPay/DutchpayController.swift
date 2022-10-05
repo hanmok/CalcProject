@@ -27,6 +27,8 @@ class DutchpayController: UIViewController {
     
     var viewModel: DutchpayViewModel
     
+    let updateUserDefaultNotification = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
+    
     var mainTabController: MainTabController
 //    var sideViewController: SideViewController?
     
@@ -114,7 +116,27 @@ class DutchpayController: UIViewController {
         
         // FIXME: Test Code
 //        userDefaultSetup.isKorean = false
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(DutchpayController.updateModes(notification:)), name: updateUserDefaultNotification, object: nil)
     }
+    
+//    @objc func updateModes(notification: NSNotification) {
+//        guard let darkModeInfo = notification.userInfo?["isDarkOn"] as? Bool else {
+//            print("something is wrong with isDarkOn in BaseViewController")
+//            return
+//        }
+//        guard let soundModeInfo = notification.userInfo?["isSoundOn"] as? Bool else {
+//            print("something is wrong with soundMode in BaseViewController")
+//            return
+//        }
+//        guard let notificationModeInfo = notification.userInfo?["isNotificationOn"] as? Bool else {
+//            print("something is wrong with soundMode in BaseViewController")
+//            return
+//        }
+//
+//
+//
+//    }
     
     
     private func setupBindings() {
@@ -309,7 +331,7 @@ class DutchpayController: UIViewController {
         let attrTitle = NSAttributedString(string: title, attributes: [
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
             .paragraphStyle: styleCenter,
-            .foregroundColor: userDefaultSetup.darkModeOn ? UIColor.semiResultTextDM : UIColor.semiResultTextLM
+            .foregroundColor: userDefaultSetup.darkModeOn ? UIColor.semiResultTextDM : .black
         ])
         
         DispatchQueue.main.async {

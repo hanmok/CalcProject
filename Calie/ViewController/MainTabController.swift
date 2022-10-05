@@ -105,9 +105,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
             UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
             }
-            
         } else {
-            
             UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
                 self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
             }
@@ -126,7 +124,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem.image = unselectedImage
         nav.tabBarItem.selectedImage = selectedImage
-        nav.navigationBar.tintColor = .black
+//        nav.navigationBar.tintColor = .black
+        nav.navigationBar.tintColor = .magenta
         return nav
     }
     

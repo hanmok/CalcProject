@@ -33,9 +33,12 @@ class PersonDetailCell: UICollectionViewCell {
     
     private let nameLabel = UILabel().then {
 //        $0.textColor = .black
-        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .black)
         $0.adjustsFontSizeToFitWidth = true
-        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = .emptyAndNumbersBGDark
+        }
+//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     public let spentAmountTF = PriceTextField().then {
@@ -44,7 +47,11 @@ class PersonDetailCell: UICollectionViewCell {
         $0.layer.cornerRadius = 5
         
 //        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
-        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+        
+        if UserDefaultSetup().darkModeOn {
+            $0.backgroundColor = UIColor(white: 0.5, alpha: 1)
+        }
         
     }
     

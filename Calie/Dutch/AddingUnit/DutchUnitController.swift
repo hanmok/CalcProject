@@ -212,7 +212,7 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.contentInsetAdjustmentBehavior = .never
         
         navigationController?.navigationBar.isHidden = true
-        
+         
 
         view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
@@ -686,12 +686,12 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         // MARK: - 색상 원상태로 변경
 //        cell.spentAmountTF.textColor = .black
         
-        cell.spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        cell.spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
         
 //        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
 //        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
         
-        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
         
         // update Dictionary
         
@@ -885,9 +885,9 @@ extension DutchUnitController: UITextFieldDelegate {
         
 //            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.9, alpha: 1), onLight: UIColor(white: 0.1, alpha: 1))
             
-            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(white: 0.15, alpha: 1))
+            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
             
-            selectedPriceTF?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.85, alpha: 1))
+            selectedPriceTF?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.7, alpha: 1))
             
             return false
             

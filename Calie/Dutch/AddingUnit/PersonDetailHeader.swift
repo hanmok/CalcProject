@@ -168,17 +168,17 @@ class PersonDetailHeader: UICollectionReusableView {
     @objc func changeStateToActive(_ notification: Notification) {
 //        spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
 //        spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
-        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(white: 0.15, alpha: 1))
+        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
         
-        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.85, alpha: 1))
+        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.7, alpha: 1))
     }
     
     // TODO: Add Animation
     @objc func changeStateToInactive(_ notification: Notification) {
 //        spentAmountTF.textColor = .black
-        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
 //        spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
-        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
     }
     
     @objc func updateSpentAmt(_ notification: Notification) {
@@ -373,12 +373,6 @@ class PersonDetailHeader: UICollectionReusableView {
             make.height.equalTo(30)
         }
         
-//        currenyLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(spentAmountTF.snp.trailing).offset(5)
-//            make.height.equalTo(spentAmountTF.snp.height)
-//            make.centerY.equalTo(spentAmountTF.snp.centerY)
-//            make.width.equalTo(100)
-//        }
         
         spentDateLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
@@ -428,13 +422,6 @@ class PersonDetailHeader: UICollectionReusableView {
             make.height.equalTo(1)
         }
         
-//        remainderBtn.layer.shadowOffset = CGSize(width: 5, height: 5)
-//        remainderBtn.layer.shouldRasterize = true
-//        remainderBtn.layer.shadowOpacity = 0.5
-        
-        
-        
-        
     }
     
     public func blinkSpentAmount() {
@@ -466,18 +453,13 @@ class PersonDetailHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    private let currenyLabel = UILabel().then {
-//
-//        if UserDefaultSetup().currencyUnit != "₩" {
-//            $0.text = "(\(UserDefaultSetup().currencyUnit))"
-//        } else {
-//            $0.text = "원"
-//        }
-//    }
     
     private let spentPlaceLabel = UILabel().then {
         $0.text = ASD.spentFor.localized
-        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
     }
     
     
@@ -489,9 +471,10 @@ class PersonDetailHeader: UICollectionReusableView {
 //        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
 //        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.35, alpha: 1), onLight: UIColor(white: 0.65, alpha: 1))
 
-        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
         
-        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
         $0.tag = 1
         $0.layer.cornerRadius = 5
         $0.autocorrectionType = .no
@@ -505,14 +488,17 @@ class PersonDetailHeader: UICollectionReusableView {
     
     private let spentAmountLabel = UILabel().then {
         $0.text = ASD.SpentAmt.localized
-        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
     }
     
 
     public let spentAmountTF = PriceTextField().then {
 //        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
 //        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .dateTextDM, onLight: .dateTextLM)
-        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: UIColor(rgb: 0xE7E7E7))
         $0.tag = -1
         $0.isTotalPrice = true
         $0.layer.cornerRadius = 5
@@ -521,7 +507,10 @@ class PersonDetailHeader: UICollectionReusableView {
     
     private let spentDateLabel = UILabel().then {
         $0.text = ASD.SpentDate.localized
-        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
     }
     
     private let spentDatePicker: UIDatePicker = {
@@ -531,7 +520,12 @@ class PersonDetailHeader: UICollectionReusableView {
         picker.contentMode = .left
         picker.sizeThatFits(CGSize(width: 150, height: 40))
     
-        picker.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+//        picker.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+//        picker.backgroundColor = UserDefaultSetup().darkModeOn
+        
+        if UserDefaultSetup().darkModeOn {
+            picker.backgroundColor = .gray
+        }
         picker.layer.cornerRadius = 8
         picker.clipsToBounds = true
         return picker
