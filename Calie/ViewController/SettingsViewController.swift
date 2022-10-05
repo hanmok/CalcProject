@@ -373,7 +373,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 
             case .notification:
                 cell.switchControl.isOn = userDefaultSetup.notificationOn
-                
                 cell.switchControl.tag = indexPath.row
             
             case .none:
@@ -387,7 +386,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
               
             case .useFloatingPoint:
                 cell.switchControl.isOn = userDefaultSetup.usingFloatingPoint
-//                cell.switchControl.tag = indexPath.row
                 cell.switchControl.tag = Int.floatingPointTag
 
             case .droppingDigit:
@@ -395,8 +393,17 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.delegate = self
                 
 //                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
-                let idx = droppingDigitCases.count == 5 ? userDefaultSetup.droppingDigitIdx : userDefaultSetup.droppingDigitIdx + 2
+                var idx = droppingDigitCases.count == 5 ? userDefaultSetup.droppingDigitIdx : userDefaultSetup.droppingDigitIdx + 2
                 
+                idx = max(idx, 0)
+                
+                // toggling 하면 어떻게 되는거야 ? userDefaultSetup.droppingDigitIdx 도 바뀌어야해.
+                
+                // droppingDigitCases == 5, droppingDigitIdx: -2
+                
+                // FIXME: FatalError: index out of range
+                print("current droppingDigitIdx: \(userDefaultSetup.droppingDigitIdx)")
+                print("idx: \(idx), droppingDigitCases: \(droppingDigitCases)")
                 let title = droppingDigitCases[idx].localized
                 
                 cell.triggerBtn.setTitle(title, for: .normal)
@@ -500,11 +507,21 @@ extension SettingsViewController: SettingsTableCellDelegate {
             
         case 1:
             userDefaultSetup.soundOn = isOn
+            
         case 2:
             userDefaultSetup.notificationOn = isOn
             
         case Int.floatingPointTag:
+            
             userDefaultSetup.usingFloatingPoint = isOn
+            
+            //            userDefaultSetup.droppingDigitIdx // 이 값도 바뀌어야함.
+//            if userDefaultSetup.using
+            
+//            if isOn { // is Using FloatingNumber ?
+                userDefaultSetup.droppingDigitIdx = max(userDefaultSetup.droppingDigitIdx, 0)
+//            }
+            
             
         default:
             
