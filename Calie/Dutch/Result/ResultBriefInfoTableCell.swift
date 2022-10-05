@@ -40,19 +40,19 @@ class ResultBriefInfoTableCell: UITableViewCell {
     }
     
     private let nameLabel = UILabel().then {
-//        $0.sizeToFit()
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: UIColor(white: 0.1, alpha: 1))
         $0.adjustsFontSizeToFitWidth = true
     }
-//        .then {
-//        $0.font = UIFont.systemFont(ofSize: 24)
-//    $0.attributedText = NSAttributedString(string: <#T##String#>, attributes: <#T##[NSAttributedString.Key : Any]?#>)
-//    }
+
     
     private let pricesContainer = UIView()
     
     private let spentAmountLabel = UILabel().then {
         $0.textAlignment = .right
         $0.font = UIFont.systemFont(ofSize: 16, weight: .regular) // 18
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: UIColor(white: 0.1, alpha: 1))
     }
     
     private let spentAmountInfoLabel = UILabel().then {
@@ -60,6 +60,7 @@ class ResultBriefInfoTableCell: UITableViewCell {
         $0.text = ASD.expenses.localized
 //        $0.sizeToFit()
         $0.adjustsFontSizeToFitWidth = true
+        $0.textColor = .gray
     }
     
 
@@ -67,24 +68,17 @@ class ResultBriefInfoTableCell: UITableViewCell {
         $0.textAlignment = .right
         $0.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         $0.adjustsFontSizeToFitWidth = true
+        $0.textColor = UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
     }
     
     private let toPayInfoLabel = UILabel().then {
+        $0.textColor = .gray
         $0.textAlignment = .center
         $0.font = UIFont.systemFont(ofSize: 20)
         $0.adjustsFontSizeToFitWidth = true
     }
     
     
-//    private let summaryLabel = UILabel().then {
-//        $0.textAlignment = .right
-////        $0.backgroundColor = .orange
-//    }
-    
-//    private let attendedPlacesLabel = UILabel().then {
-//        $0.textAlignment = .center
-//        $0.sizeToFit()
-//    }
     
     
     
@@ -127,11 +121,15 @@ class ResultBriefInfoTableCell: UITableViewCell {
             break
         }
         
-        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
+        let blue = UserDefaultSetup.applyColor(onDark: UIColor(red: 0.7, green: 0.7, blue: 1, alpha: 1), onLight: .blue)
+        let red = UIColor(red: 246, green: 101, blue: 101)
+//        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
+//        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
+        toPayInfoLabel.textColor = toPayAmt > 0 ? blue : red
     }
     
     private func setupLayout() {
-        
+        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
         [nameLabel,
          pricesContainer

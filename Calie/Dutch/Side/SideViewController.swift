@@ -47,7 +47,7 @@ class SideViewController: UIViewController {
         view.insetsLayoutMarginsFromSafeArea = false
         navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = .white
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
                 
         registerTableView()
 
@@ -83,10 +83,9 @@ class SideViewController: UIViewController {
     }
     
     private let gatheringTableView = UITableView().then {
-        $0.backgroundColor = UIColor(white: 0.96, alpha: 1)
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .operatorsBGDark, onLight: .operatorsBGLight)
         $0.separatorStyle = .none
     }
-    
     
     
     private func registerTableView() {
@@ -138,7 +137,8 @@ class SideViewController: UIViewController {
         gatheringTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(sideLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -180,7 +180,8 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
         let targetGathering = viewModel.allGatherings[indexPath.row]
         
         cell.textLabel?.text = targetGathering.title
-        cell.backgroundColor = UIColor(white: 0.96, alpha: 1)
+//        cell.backgroundColor = UIColor(white: 0.96, alpha: 1)
+        cell.backgroundColor = UserDefaultSetup.applyColor(onDark: .operatorsBGDark, onLight: .operatorsBGLight)
         
         return cell
     }

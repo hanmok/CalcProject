@@ -116,8 +116,6 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         if isDarkMode {
             self.tabBar.tintColor = .black
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.4, alpha: 1)
-            
-            
         } else {
             self.tabBar.tintColor = .black
             self.tabBar.unselectedItemTintColor = UIColor(white: 0.6, alpha: 1)
@@ -142,22 +140,15 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
 //    private func showSideController(dutchManager: DutchManager) {
     private func showSideController() {
-//        let sidevc = SideViewController(dutchManager: dutchManager)
-        
-        
-        
+
         let sideVC = SideViewController()
         sideVC.sideDelegate = self
-//        sideViewController = SideViewController(dutchManager: dutchManager)
         
         let sideInNavController = UINavigationController(rootViewController: sideVC)
         sideViewController = sideInNavController
         guard let sideViewController = sideViewController else {
             return
         }
-        
-//        let sideInNavController = UINavigationController(rootViewController: sideVC)
-        
         
        self.addChild(sideViewController)
        self.view.addSubview(sideViewController.view)

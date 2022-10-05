@@ -472,11 +472,13 @@ class DutchpayController: UIViewController {
     
     private let mainContainer = UIView().then {
 //        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
-        if UserDefaultSetup().darkModeOn {
-            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
-        } else{
-            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
-        }
+//        if UserDefaultSetup().darkModeOn {
+//            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
+//        } else{
+//            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
+//        }
+        
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     private let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: 60)).then {
@@ -838,13 +840,6 @@ extension DutchpayController {
             } else {
                 completion(.failure(.cancelAskingName))
             }
-            
-//            guard newGroupName.count != 0 else {
-//                completion(.failure(.cancelAskingName))
-////                fatalError(ASD.emptyNameAlert.localized)
-//            }
-//
-//            completion(.success(newGroupName))
         }
         
         let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: UIAlertAction.Style.destructive, handler: {

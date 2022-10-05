@@ -32,35 +32,26 @@ class PersonDetailCell: UICollectionViewCell {
     weak var delegate: PersonDetailCellDelegate?
     
     private let nameLabel = UILabel().then {
-        $0.textColor = .black
-        $0.backgroundColor = .white
+//        $0.textColor = .black
+        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
         $0.adjustsFontSizeToFitWidth = true
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
     
         $0.layer.cornerRadius = 5
+        
+//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
+        
     }
     
-//    private let currencyLabel = UILabel().then {
-////        $0.text = ASD.currencyShort.localized
-//
-//        $0.adjustsFontSizeToFitWidth = true
-//
-//        if UserDefaultSetup().currencyUnit != "₩" {
-//            $0.text = "(\(UserDefaultSetup().currencyUnit))"
-//        } else {
-//            $0.text = "원"
-//        }
-//
-//    }
     
     public let attendingBtn = AttendingButton()
     
     public let fullPriceBtn = UIButton().then {
-        
-
         $0.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
         $0.isHidden = true
         $0.layer.borderWidth = 1
@@ -107,13 +98,6 @@ class PersonDetailCell: UICollectionViewCell {
         
         attendingBtn.isAttending = isAttended
         attendingBtn.markAttendedState(using: isAttended)
-        
-//        spentAmountTF.text = viewModel.spentAmount
-//        if UserDefaultSetup().currencyUnit != "₩" {
-//            spentAmountTF.text = UserDefaultSetup().currencyUnit + viewModel.spentAmount
-//        } else {
-//            spentAmountTF.text = viewModel.spentAmount + "원"
-//        }
         
         spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmount)
     }

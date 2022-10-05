@@ -180,13 +180,13 @@ class DutchUnitController: NeedingController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
+//    override func viewSafeAreaInsetsDidChange() {
+//        super.viewSafeAreaInsetsDidChange()
         
-        var insets = view.safeAreaInsets
-        insets.top = 0
-        personDetailCollectionView.contentInset = insets
-    }
+//        var insets = view.safeAreaInsets
+//        insets.top = 0
+//        personDetailCollectionView.contentInset = insets
+//    }
     
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateWithHeaderInfo(_:)), name: .sendHeaderInfoBack, object: nil)
@@ -213,7 +213,8 @@ class DutchUnitController: NeedingController {
         
         navigationController?.navigationBar.isHidden = true
         
-        view.backgroundColor = .white
+
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
         setupBindings()
         
@@ -265,6 +266,8 @@ class DutchUnitController: NeedingController {
         }
         
         setupNotification()
+        
+        view.insetsLayoutMarginsFromSafeArea = false
     }
     
 //    @objc func headerAmtChanged(_ textField: UITextField) {
@@ -585,7 +588,7 @@ class DutchUnitController: NeedingController {
         cv.dataSource = self
         cv.isScrollEnabled = true
         cv.showsVerticalScrollIndicator = true
-        cv.backgroundColor = .white
+        cv.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         return cv
     }()
     
@@ -593,28 +596,39 @@ class DutchUnitController: NeedingController {
     
     
     private let confirmBtn = UIButton().then {
-
         $0.setTitle(ASD.confirm.localized, for: .normal)
         $0.backgroundColor = UIColor(white: 0.65, alpha: 0.9)
         $0.layer.cornerRadius = 10
         $0.isUserInteractionEnabled = false
     }
     
-    private let bottomContainerView = UIView()
+    private let bottomContainerView = UIView().then {
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+    }
     
     private let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 20)).then {
-        let colorTop =  UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.0).cgColor
-        let colorBottom = UIColor(red: 255.0/255.0, green: 255.5/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        
+        var colorTop: CGColor
+        var colorBottom: CGColor
+        
+        if UserDefaultSetup().darkModeOn {
+            colorTop =  UIColor(red: 0.247, green: 0.247, blue: 0.247, alpha: 0.0).cgColor
+            colorBottom = UIColor(red: 0.247, green: 0.247, blue: 0.247, alpha: 1.0).cgColor
+        } else {
+            colorTop =  UIColor(red: 0.988, green: 0.988, blue: 0.988, alpha: 0.0).cgColor
+            colorBottom = UIColor(red: 0.988, green: 0.988, blue: 0.988, alpha: 1.0).cgColor
+        }
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [colorTop, colorBottom]
         gradientLayer.frame = $0.frame
         
+        
         $0.layer.addSublayer(gradientLayer)
     }
     
     private let remainingView = UIView().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     required init?(coder: NSCoder) {
@@ -666,17 +680,21 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         text.applyNumberFormatter()
         
         cell.delegate = self
-        
-//        cell.spentAmountTF.text = text
-//        cell.spentAmountTF.text = UserDefaultSetup().currencyUnit + text
-        
+                
         cell.spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: text)
 
         // MARK: - 색상 원상태로 변경
-        cell.spentAmountTF.textColor = .black
-        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+//        cell.spentAmountTF.textColor = .black
+        
+        cell.spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        
+//        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+//        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
+        
+        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
         
         // update Dictionary
+        
         let currentIdx = indexPath.row
         if detailPriceDic[currentIdx] == nil {
             detailPriceDic[currentIdx] = 0
@@ -862,8 +880,14 @@ extension DutchUnitController: UITextFieldDelegate {
             selectedPriceTF = tf
             
             // MARK: - 입력할 때 색상 변경
-            selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
-            selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
+//            selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
+//            selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
+        
+//            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.9, alpha: 1), onLight: UIColor(white: 0.1, alpha: 1))
+            
+            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(white: 0.15, alpha: 1))
+            
+            selectedPriceTF?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.85, alpha: 1))
             
             return false
             
@@ -883,8 +907,8 @@ extension DutchUnitController: UITextFieldDelegate {
 }
 
 func setGradientBackground() {
-    let colorTop =  UIColor(red: 255.0/255.0, green: 149.0/255.0, blue: 0.0/255.0, alpha: 1.0).cgColor
-    let colorBottom = UIColor(red: 255.0/255.0, green: 94.0/255.0, blue: 58.0/255.0, alpha: 1.0).cgColor
+    let colorTop =  UIColor(red: 1.0, green: 149.0/255.0, blue: 0.0/255.0, alpha: 1.0).cgColor
+    let colorBottom = UIColor(red: 1.0, green: 94.0/255.0, blue: 58.0/255.0, alpha: 1.0).cgColor
                 
     let gradientLayer = CAGradientLayer()
     gradientLayer.colors = [colorTop, colorBottom]

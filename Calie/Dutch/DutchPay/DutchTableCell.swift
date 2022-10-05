@@ -37,7 +37,6 @@ class DutchTableCell: UITableViewCell {
 
     private let placeNameLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20)
-        $0.textColor = .black
         $0.textAlignment = .center
         $0.adjustsFontSizeToFitWidth = true
         $0.textColor = UserDefaultSetup().darkModeOn ? UIColor.numAndOpersTextDM : UIColor.numAndOpersTextLM

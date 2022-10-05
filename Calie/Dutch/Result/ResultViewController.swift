@@ -55,7 +55,8 @@ class ResultViewController: UIViewController {
         setupLayout()
         setupAddTargets()
         
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     lazy var scrollView: UIScrollView = {
@@ -63,7 +64,8 @@ class ResultViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .white
+//        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         return scrollView
     }()
     
@@ -71,7 +73,11 @@ class ResultViewController: UIViewController {
         
         let imageView = UIImageView(image: UIImage(systemName: "chevron.left")!)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGLight, onLight: .emptyAndNumbersBGDark)
+        
+        imageView.tintColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        
         $0.addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
@@ -84,7 +90,11 @@ class ResultViewController: UIViewController {
     private let takingCaptureBtn = UIButton().then {
         let imageView = UIImageView(image: UIImage(systemName: "camera.viewfinder")!)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
+//        imageView.tintColor = .black
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGLight, onLight: .emptyAndNumbersBGDark)
+        imageView.tintColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        
         $0.addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
@@ -97,7 +107,12 @@ class ResultViewController: UIViewController {
     private let copyBtn = UIButton().then {
         let imageView = UIImageView(image: UIImage(systemName: "doc.on.clipboard")!)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
+//        imageView.tintColor = .black
+        
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGLight, onLight: .emptyAndNumbersBGDark)
+        imageView.tintColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        
         $0.addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
@@ -110,7 +125,11 @@ class ResultViewController: UIViewController {
     private let briefHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width - 16, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: ASD.personalResult.localized, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: ASD.personalResult.localized, attributes: [
+                .font: UIFont.systemFont(ofSize: 26, weight: .regular),
+//                .foregroundColor: UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
+                .foregroundColor: UIColor.gray
+            ])
         }
         
         $0.addSubview(infoLabel)
@@ -120,7 +139,8 @@ class ResultViewController: UIViewController {
         }
         
         let bottomLineView = UIView().then {
-            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
+//            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
+            $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.75, alpha: 0.9), onLight: UIColor(white: 0.25, alpha: 0.9))
             $0.layer.cornerRadius = 2
             $0.clipsToBounds = true
         }
@@ -136,7 +156,11 @@ class ResultViewController: UIViewController {
     private let calculatedResultHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.width - 100, height: 50)).then {
         
         let infoLabel = UILabel().then {
-            $0.attributedText = NSAttributedString(string: ASD.overallResult.localized, attributes: [.font: UIFont.systemFont(ofSize: 26, weight: .regular)])
+            $0.attributedText = NSAttributedString(string: ASD.overallResult.localized, attributes: [
+                .font: UIFont.systemFont(ofSize: 26, weight: .regular),
+//                .foregroundColor: UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
+                .foregroundColor: UIColor.gray
+                                                                                                    ])
         }
         
         $0.addSubview(infoLabel)
@@ -147,10 +171,12 @@ class ResultViewController: UIViewController {
         
         
         let bottomLineView = UIView().then {
-            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
+//            $0.backgroundColor = UIColor(white: 0.25, alpha: 0.9)
             $0.layer.cornerRadius = 2
             $0.clipsToBounds = true
+            $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.75, alpha: 0.9), onLight: UIColor(white: 0.25, alpha: 0.9))
         }
+        
         
         infoLabel.addSubview(bottomLineView)
         bottomLineView.snp.makeConstraints { make in
@@ -276,9 +302,12 @@ class ResultViewController: UIViewController {
     
     private let briefInfoTableView = UITableView().then {
         $0.isScrollEnabled = false
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
     private let calculatedInfoTableView = UITableView().then {
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        
         $0.isScrollEnabled = false
     }
     

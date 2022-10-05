@@ -102,7 +102,7 @@ class SettingsViewController: UIViewController {
         setupAddTargets()
     }
     
-    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
+//    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     func configureTableView() {
         print("configureTableView triggered!")

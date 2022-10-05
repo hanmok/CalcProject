@@ -28,11 +28,15 @@ class PersonDetailFooter: UICollectionReusableView {
     private let addPersonBtn = UIButton().then {
         $0.setTitle(ASD.AddPerson.localized, for: .normal)
 
-        let titleColor = UIColor(white: 0.2, alpha: 1)
-        $0.setTitleColor(titleColor, for: .normal)
+//        let titleColor = UIColor(white: 0.2, alpha: 1)
+//        $0.setTitleColor(titleColor, for: .normal)
+//        $0.setTitleColor(UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1)), for: .normal)
+        $0.setTitleColor(.black, for: .normal)
         $0.layer.cornerRadius = 8
 
-        $0.backgroundColor = ColorList().bgColorForExtrasLM
+//        $0.backgroundColor = ColorList().bgColorForExtrasLM
+//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGMiddle, onLight: <#T##UIColor#>)
+        $0.backgroundColor = UIColor.extrasBGMiddle
     }
     
     @objc func addPersonTapped(_ sender: UIButton) {

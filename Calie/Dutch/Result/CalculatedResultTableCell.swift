@@ -42,17 +42,31 @@ class CalculatedResultTableCell: UITableViewCell {
 
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
-            let attributedStr = NSMutableAttributedString(string: from + " ", attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
+            let attributedStr = NSMutableAttributedString(string: from + " ", attributes: [
+                .font: UIFont.boldSystemFont(ofSize: 18),
+//                .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+            ])
             
             let postPosition = getCorrectPostPosition(from: from)
             
             attributedStr.append(NSAttributedString(string: postPosition, attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-            attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            attributedStr.append(NSAttributedString(string: " " + to + " ", attributes: [
+                .font:UIFont.boldSystemFont(ofSize: 18),
+//                    .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+                
+            ]))
             
             attributedStr.append(NSAttributedString(string: "에게", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-            attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            attributedStr.append(NSAttributedString(string: " " + convertedAmt, attributes: [
+                .font:UIFont.boldSystemFont(ofSize: 18),
+//                .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+                                                                                             
+                                                                                            ]))
             
             attributedStr.append(NSAttributedString(string: "을 보내주세요.", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
@@ -62,21 +76,35 @@ class CalculatedResultTableCell: UITableViewCell {
 
             let convertedAmt = amt.applyDecimalFormatWithCurrency()
             
-            var attributedStr = NSMutableAttributedString(string: from , attributes: [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black])
+            var attributedStr = NSMutableAttributedString(string: from , attributes: [
+                .font: UIFont.boldSystemFont(ofSize: 18),
+//                    .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+            ])
             
             attributedStr.append(NSAttributedString(string: " should send ", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-            attributedStr.append(NSAttributedString(string: convertedAmt , attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            attributedStr.append(NSAttributedString(string: convertedAmt , attributes: [
+                .font:UIFont.boldSystemFont(ofSize: 18),
+//                    .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+            ]))
             
             attributedStr.append(NSAttributedString(string: " to ", attributes: [.font:UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor(white: 0.5, alpha: 1)]))
             
-            attributedStr.append(NSAttributedString(string: to, attributes: [.font:UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]))
+            attributedStr.append(NSAttributedString(string: to, attributes: [
+                .font:UIFont.boldSystemFont(ofSize: 18),
+//                .foregroundColor: UIColor.black
+                .foregroundColor: UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+            ]))
 
             exchangeTextLabel.attributedText = attributedStr
         }
     }
     
     private func setupLayout() {
+        
+        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
         addSubview(exchangeTextLabel)
         exchangeTextLabel.snp.makeConstraints { make in
