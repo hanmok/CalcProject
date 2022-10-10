@@ -322,7 +322,7 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     private func setupLayout() {
-        
+//        backgroundColor = .magenta
         [
             dismissBtn,
             spentPlaceLabel, spentPlaceTF,

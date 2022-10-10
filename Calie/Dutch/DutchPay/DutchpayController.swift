@@ -280,7 +280,6 @@ class DutchpayController: UIViewController {
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
         // MARK: - 이미 하나는 어디선가 가지고 있어야함.
-//        viewModel.createIfNeeded()
         
         guard let gathering = viewModel.gathering else { fatalError() }
         

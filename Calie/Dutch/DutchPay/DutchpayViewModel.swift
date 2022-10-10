@@ -86,7 +86,7 @@ class DutchpayViewModel {
     
     func addDutchUnit(needGathering: Bool) {
         if needGathering && gathering == nil {
-//            createGathering()
+
             createGathering { gathering in
                 self.gathering = gathering
             }

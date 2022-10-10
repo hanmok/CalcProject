@@ -50,14 +50,17 @@ class NumberLayerController : UIViewController {
     }
     
     private func setupLayout() {
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
         view.addSubview(presentingChildVC.view)
         
         presentingChildVC.view.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
+//            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
     }
     
