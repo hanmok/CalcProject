@@ -303,14 +303,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
 
                 if self.userDefaultSetup.darkModeOn {
-//                    headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+                    headerView.backgroundColor = self.colorList.bgColorForExtrasDM
                 } else {
                     headerView.backgroundColor = self.colorList.bgColorForExtrasLM
                 }
             }
         } else {
             if self.userDefaultSetup.darkModeOn {
-//                headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+                headerView.backgroundColor = self.colorList.bgColorForExtrasDM
             } else {
                 headerView.backgroundColor = self.colorList.bgColorForExtrasLM
             }
