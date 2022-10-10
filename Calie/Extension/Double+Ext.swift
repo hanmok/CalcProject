@@ -15,17 +15,6 @@ extension Double {
 
         let initialStr = self.applyCustomNumberFormatter()
         
-//        if ASD.currencyShort.localized == "$" {
-//            return ASD.currencyShort.localized + initialStr
-//        } else {
-//            return initialStr + ASD.currencyShort.localized
-//        }
-        
-//        if UserDefaultSetup().currencyUnit == "₩" {
-//            return initialStr + "원"
-//        } else {
-//            return UserDefaultSetup().currencyUnit + initialStr
-//        }
         
         return UserDefaultSetup.appendProperUnit(to: initialStr)
         
@@ -37,6 +26,10 @@ extension Double {
     
     func applyCustomNumberFormatter() -> String {
         
+        if self > -0.001 && self < 0.001 {
+            return "0"
+        }
+        
         var ret = ""
         
         var isInt = false
@@ -45,17 +38,26 @@ extension Double {
             isInt = true
         }
     
-        if self < 1000 {
+        // FIXME: - 에 대한 고려가 안됨.
+        var currentNumber = self
+//        currentNumber = ma
+        var isMinus = currentNumber < 0
+        currentNumber = max(currentNumber, -currentNumber)
+        
+        
+        if currentNumber < 1000 {
             if isInt {
-                var ret = String(self)
+//                var ret = String(currentNumber)
+                ret = String(currentNumber)
                 ret.removeLast(2) // remove .0
-                return ret
+//                return ret
             } else {
-                return String(self)
+//                return String(currentNumber)
+                ret = String(currentNumber)
             }
         } else {
             
-            var str = "\(self)"
+            var str = "\(currentNumber)"
             
             var commaStack = 0
             for _ in 0 ..< str.count {
@@ -80,11 +82,18 @@ extension Double {
             
             if isInt {
                 ret.removeLast(2)
-                return ret
+//                return ret
             } else {
-                return ret
+//                return ret
             }
         }
+        
+        if isMinus {
+            return "-" + ret
+        } else {
+            return ret
+        }
+        
     }
     
     static let minimumValue = 0.009

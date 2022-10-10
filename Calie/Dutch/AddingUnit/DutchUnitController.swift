@@ -53,7 +53,7 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
     func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool) {
         if isSpentAmountTF {
 
-            NotificationCenter.default.post(name: .changePriceStateIntoActive, object: nil)
+            NotificationCenter.default.post(name: .changeSpentAmtHeaderStateIntoActive, object: nil)
 
             dismissKeyboardOnly()
             self.needingDelegate?.presentNumberPad()

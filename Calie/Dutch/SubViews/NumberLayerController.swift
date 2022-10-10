@@ -59,8 +59,8 @@ class NumberLayerController : UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
 //            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+//            make.bottom.equalToSuperview()
         }
     }
     

@@ -105,7 +105,7 @@ class PersonDetailHeader: UICollectionReusableView {
     }
     
     private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(changeStateToActive(_:)), name: .changePriceStateIntoActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeStateToActive(_:)), name: .changeSpentAmtHeaderStateIntoActive, object: nil)
         
         self.layoutSubviews()
         
@@ -133,10 +133,9 @@ class PersonDetailHeader: UICollectionReusableView {
     
     @objc func remainingPriceChanged(_ notification: Notification) {
         
-//        let remainingInfoDic: [AnyHashable: Any] = ["remainingPrice": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
         
         guard let remainderInfo = notification.userInfo?["remainingPrice"] as? Double else { return }
-        
+print("current remainingPrice: \(remainderInfo)")
         remainder = remainderInfo
         
         var remainderString: String
@@ -151,13 +150,14 @@ class PersonDetailHeader: UICollectionReusableView {
         if remainderInfo >= 0.009 {
 
             self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+            self.remainderBtn.isUserInteractionEnabled = true
         } else {
 
             self.remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
+            self.remainderBtn.isUserInteractionEnabled = false
             
         }
         
-//        remainderBtn.setTitleColor(.black, for: .normal)
         remainderBtn.setTitleColor(.white, for: .normal)
         
         self.layoutSubviews()
@@ -166,8 +166,7 @@ class PersonDetailHeader: UICollectionReusableView {
     
     
     @objc func changeStateToActive(_ notification: Notification) {
-//        spentAmountTF.backgroundColor = UIColor(rgb: 0xF2F2F2)
-//        spentAmountTF.textColor = UIColor(white: 0.7, alpha: 1)
+
         spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
         
         spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.7, alpha: 1))
@@ -175,20 +174,15 @@ class PersonDetailHeader: UICollectionReusableView {
     
     // TODO: Add Animation
     @objc func changeStateToInactive(_ notification: Notification) {
-//        spentAmountTF.textColor = .black
+
         spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
-//        spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
+
         spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
     }
     
     @objc func updateSpentAmt(_ notification: Notification) {
         guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
-//        spentAmountTF.text = amtInput.addComma()
-//        spentAmountTF.text = amtInput.applyCustomNumberFormatter()
-//        if UserDefaultSetup.
-//        spentAmountTF.text = UserDefaultSetup().currencyUnit + amtInput.applyCustomNumberFormatter()
-        
         spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: amtInput.applyCustomNumberFormatter())
     }
     
@@ -222,6 +216,7 @@ class PersonDetailHeader: UICollectionReusableView {
 
             self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
         } else {
+            
             self.remainderBtn.isUserInteractionEnabled = false
             
             gradientLayer?.removeFromSuperlayer()
@@ -526,6 +521,8 @@ class PersonDetailHeader: UICollectionReusableView {
         if UserDefaultSetup().darkModeOn {
             picker.backgroundColor = .gray
         }
+    
+        
         picker.layer.cornerRadius = 8
         picker.clipsToBounds = true
         return picker
@@ -584,7 +581,7 @@ public enum NotificationKeys {
 
 extension Notification.Name {
 
-    static let changePriceStateIntoActive = NotificationKeys.changePriceStateIntoActive
+    static let changeSpentAmtHeaderStateIntoActive = NotificationKeys.changePriceStateIntoActive
 
     static let changePriceStateIntoInactive = NotificationKeys.changePriceStateIntoInactive
     
