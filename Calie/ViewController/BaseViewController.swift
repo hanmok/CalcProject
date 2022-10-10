@@ -299,18 +299,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             return
         }
         
-        
-        // both of these updates each time
-//        isDarkMode = darkModeInfo
-//        userDefaultSetup
-//        isSoundOn = soundModeInfo
-//        isNotificationOn = notificationModeInfo
-        
         setupColorAndImage()
         
-        
-//        view.backgroundColor = colorList.testColors2[23].color
-
         view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
     }
     
@@ -405,10 +395,10 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
 
         if userDefaultSetup.darkModeOn{
             sender.backgroundColor =  colorList.bgColorForExtrasDM
-//            sender.backgroundColor = colorList.bgColorForOperatorsDM
+
         }else{
             sender.backgroundColor =  colorList.bgColorForExtrasLM
-//            sender.backgroundColor = colorList.bgColorForOperatorsLM
+
         }
         basicCalc.didPressedDownDelete()
     }
@@ -428,6 +418,8 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
      /// when button tapped 'down', change colors
     @objc func handleColorChangeAction(sender: UIButton) {
         sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
+        
+//        sender.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : .red
     }
     
     /// triggerd when historyButton Tapped
@@ -864,53 +856,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         view.backgroundColor = userDefaultSetup.darkModeOn ? colorList.bgColorForExtrasDM : colorList.bgColorForExtrasLM
         
         
-        
-        /*       color Testing Code
-        frameView.addSubview(upButton)
-        frameView.addSubview(colorIndexLabel)
-        frameView.addSubview(downButton)
-
-        frameView.addSubview(colorDescLabel)
-        frameView.addSubview(testToggleButton)
-
-        downButton.snp.makeConstraints { make in
-            make.top.equalTo(historyClickButton.snp.bottom)
-            make.left.equalTo(view).offset(20)
-            make.width.height.equalTo(30)
-        }
-
-
-        upButton.snp.makeConstraints { make in
-            make.top.equalTo(downButton)
-            make.left.equalTo(downButton.snp.right).offset(20)
-            make.width.height.equalTo(30)
-        }
-
-        colorDescLabel.snp.makeConstraints { make in
-            make.top.equalTo(downButton)
-            make.left.equalTo(upButton.snp.right).offset(20)
-            make.width.equalTo(180)
-            make.height.equalTo(30)
-        }
-
-        colorIndexLabel.snp.makeConstraints { make in
-            make.top.equalTo(downButton)
-            make.left.equalTo(colorDescLabel.snp.right)
-//            make.width.height.equalTo(30)
-            make.height.equalTo(30)
-            make.width.equalTo(30)
-        }
-
-        testToggleButton.snp.makeConstraints { make in
-            make.bottom.equalTo(deleteButton.snp.top)
-            make.left.equalTo(colorIndexLabel.snp.right)
-            make.width.equalTo(50)
-//            make.height.equalTo(30)
-            make.height.equalTo(200)
-        }
-        
-        view.backgroundColor = colorList.testColors2[colorIndex].color
-         */
     }
     
     func setupAddTargets(){
@@ -920,7 +865,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         let otherButtons = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
         
         for aButton in numButtons {
-            aButton.addTarget(self, action: #selector( handleNumberTapped), for: .touchUpInside)
+            aButton.addTarget(self, action: #selector(handleNumberTapped), for: .touchUpInside)
 //            aButton.addTarget(self, action: #selector(numberPressedDown), for: .touchDown)
             aButton.addTarget(self, action: #selector(handleSoundAction), for: .touchDown)
             aButton.addTarget(self, action: #selector(handleColorChangeAction), for: .touchDown)
@@ -1185,10 +1130,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
     
     func setupColorAndImage(){
         
-//        var ratio = 1.3
-//        ratio = 1.3 * 1.15 * 0.7
-//        let ratio = 1.0465
-        
         let numsAndOpers = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num00,numberDot,clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply, operationButtonPlus,operationButtonMinus,equalButton]
         
         var modifiedWidth = [Double]()
@@ -1196,9 +1137,7 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
         for widthElement in widths{
             modifiedWidth.append(widthElement * ratio)
         }
-
-
-//        let numButtons = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot,progressView,resultTextView,emptySpace]
+        
         let numBtns = [num0,num1,num2,num3,num4,num5,num6,num7,num8,num9,num0,num00,numberDot]
         
         let operatorBtns = [clearButton,openParenthesis,closeParenthesis,operationButtonDivide,operationButtonMultiply,operationButtonPlus,operationButtonMinus,equalButton]
@@ -1236,7 +1175,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             
             subHistory.fillSuperview()
             
-//            setupButtonPositionAndSize(&modifiedWidth)
             setupButtonPositionAndSize(modifiedWidth)
 
             
@@ -1255,7 +1193,6 @@ class BaseViewController: UIViewController, FromTableToBaseVC {
             }
             
             for other in backgrounds {
-//                other.backgroundColor = colorList.bgColorForExtrasLM
                 other.backgroundColor = colorList.bgColorForEmptyAndNumbersLM
             }
             

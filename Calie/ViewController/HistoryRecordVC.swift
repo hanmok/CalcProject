@@ -386,6 +386,7 @@ extension HistoryRecordVC : UITableViewDataSource{
         
         cell.configure(with: historyRecord, orientationPortrait : portraitMode, willbasicVCdisappear : basicVCWillDisappear)
         cell.setupColor(isDarkModeOn: darkModeOn)
+        
         return cell
     }
     

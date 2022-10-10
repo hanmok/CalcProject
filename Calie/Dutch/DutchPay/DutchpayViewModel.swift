@@ -189,15 +189,7 @@ class DutchpayViewModel {
             }
         }
     }
-    
-//    func fetchLastUsedGathering() {
-        
-//        let lastUsedId = userDefaultSetup.workingGatheringId
-//        dutchService.fetchLastUsedGathering(lastUsedGatheringId: lastUsedId) { gathering in
-//            self.gathering = gathering
-//        }
-//    }
-    
+
     func fetchLatestGathering() {
         
         dutchService.fetchLatestGathering { gathering in

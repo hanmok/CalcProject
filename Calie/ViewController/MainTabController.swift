@@ -13,8 +13,6 @@ import UIKit
 import SnapKit
 import Then
 
-
-
 protocol MainTabToDutchDelegate: AnyObject {
     func updateGatheringFromMainTab(with newGathering: Gathering)
     func clearifyBlurredView()
@@ -32,10 +30,10 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     let updateUserDefaultNotification = Notification.Name(rawValue: NotificationKey.sendUpdatingUserDefaultNotification.rawValue)
     
     var userDefaultSetup = UserDefaultSetup()
+    
     let colorList = ColorList()
     
     var sideViewController: UINavigationController?
-    
     
     lazy var isDarkMode = userDefaultSetup.darkModeOn
     
@@ -45,13 +43,11 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
 
         print("viewDidLoad in MainTabController called")
         print("initialTapScreen: \(userDefaultSetup.initialViewIdx)")
+        
         createObservers()
         configureColors()
         
-
-        
         self.delegate = self
-        
     }
     
     func createObservers() {
@@ -65,8 +61,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         }
         
         isDarkMode = darkModeInfo
-        configureColors() // horrible cause all the views has setup to initial state!!
-        
+        configureColors()
     }
     
     func configureViewControllers() {
@@ -97,19 +92,26 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         settings.delegate = self
         
         viewControllers = [calculator, dutch, settings]
+        
     }
 
+// 대체 뭐하는 코드일까?
     func configureColors() {
+        print("configureColors called")
         
-        if isDarkMode {
-            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
-                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
-            }
-        } else {
-            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
-                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
-            }
-        }
+        // 필요 없는 코드 같은데 ?
+//        if isDarkMode {
+//            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
+////                self.tabBar.barTintColor = self.colorList.bgColorForExtrasDM
+//                self.tabBar.barTintColor = .magenta
+//            }
+//        } else {
+//            UIView.transition(with: self.tabBar, duration: 0.4, options: .transitionCrossDissolve) {
+//
+//
+////                self.tabBar.barTintColor =
+//            }
+//        }
         
         if isDarkMode {
             self.tabBar.tintColor = .black
@@ -131,13 +133,8 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-
     }
     
-    
-    
-    
-//    private func showSideController(dutchManager: DutchManager) {
     private func showSideController() {
 
         let sideVC = SideViewController()
@@ -154,7 +151,6 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
        sideViewController.didMove(toParent: self)
        
         sideViewController.view.frame = CGRect(x: -screenWidth / 1.5, y: 0, width: screenWidth / 1.5 , height: screenHeight)
-        
         
         UIView.animate(withDuration: 0.3) {
             
@@ -215,8 +211,6 @@ extension MainTabController: UITabBarControllerDelegate {
     
         hideSideController()
     }
-    
-    
 }
 
 //Thread 1: "-[UITabBarController setSelectedViewController:] only a view controller in the tab bar controller's list of view controllers can be selected."
@@ -261,7 +255,6 @@ extension MainTabController: DutchpayControllerDelegate {
 
 extension MainTabController: SideControllerDelegate {
    
-    
     func dismissSideVC(with gathering: Gathering?) {
         
         mainToDutchDelegate?.clearifyBlurredView()

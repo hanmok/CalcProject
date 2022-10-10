@@ -117,6 +117,7 @@
 		E53B76F42823C8AA001C0CCE /* UIScreenExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */; };
 		E53B7716282790AB001C0CCE /* StringExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7715282790AB001C0CCE /* StringExt+.swift */; };
 		E53B7718282790B7001C0CCE /* IntExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B7717282790B7001C0CCE /* IntExt+.swift */; };
+		E5631B2028F4139C0046986F /* TestCode in Resources */ = {isa = PBXBuildFile; fileRef = E5631B1F28F4139C0046986F /* TestCode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +262,7 @@
 		E53B76F32823C8AA001C0CCE /* UIScreenExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreenExt+.swift"; sourceTree = "<group>"; };
 		E53B7715282790AB001C0CCE /* StringExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringExt+.swift"; sourceTree = "<group>"; };
 		E53B7717282790B7001C0CCE /* IntExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntExt+.swift"; sourceTree = "<group>"; };
+		E5631B1F28F4139C0046986F /* TestCode */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestCode; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				9A1C84F52814E39F001020EF /* ColorMemo */,
+				E5631B1F28F4139C0046986F /* TestCode */,
 				9A1C84F62814E3A6001020EF /* DutchpayMemo */,
 				9AA150E8286A2C0B00DC4CED /* ToFix_Dutchpay */,
 				9AA150EA2870D15700DC4CED /* GitInfo */,
@@ -693,6 +696,7 @@
 				9A4C173D28EA318500137C48 /* Memo2022.10 in Resources */,
 				9A1C84F72814E3A6001020EF /* DutchpayMemo in Resources */,
 				9AA150E9286A2C0B00DC4CED /* ToFix_Dutchpay in Resources */,
+				E5631B2028F4139C0046986F /* TestCode in Resources */,
 				9AA150EB2870D15700DC4CED /* GitInfo in Resources */,
 				9A083FB524CCD55E001057D2 /* LaunchScreen.storyboard in Resources */,
 				9AABC59028C1248100EB3A04 /* DutchResults in Resources */,

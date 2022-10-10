@@ -85,10 +85,11 @@ class DutchpayController: UIViewController {
         super.viewWillDisappear(animated)
         AppUtility.lockOrientation(.all)
     
-        if userDefaultSetup.darkModeOn {
-            view.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
-            
-        }
+//        if userDefaultSetup.darkModeOn {
+//            view.backgroundColor = colorList.bgColorForEmptyAndNumbersDM
+//        } else {
+//            view.backgroundColor =
+//        }
     }
     
     private let topView = UIView().then {
@@ -104,8 +105,14 @@ class DutchpayController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = colorList.bgColorForExtrasLM
-                
+        
+        if userDefaultSetup.darkModeOn {
+            view.backgroundColor = colorList.bgColorForExtrasDM
+        } else {
+
+            view.backgroundColor = colorList.bgColorForExtrasLM
+        }
+        
         registerTableView()
         setupLayout()
         setupAddTargets()
@@ -525,6 +532,7 @@ class DutchpayController: UIViewController {
         let removingLineView = UIView()
 //        removingLineView.backgroundColor = .white
 //        removingLineView.backgroundColor = .clear
+        
         removingLineView.backgroundColor = UserDefaultSetup().darkModeOn ? UIColor.emptyAndNumbersBGDark : .emptyAndNumbersBGLight
         
         btn.addSubview(removingLineView)
@@ -613,8 +621,8 @@ class DutchpayController: UIViewController {
         // safeArea on the bottom
         
         wholeContainerView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalToSuperview()
+//            make.right.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }

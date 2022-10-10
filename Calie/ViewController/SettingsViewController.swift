@@ -70,6 +70,7 @@ class SettingsViewController: UIViewController {
 //                                  "모두"]
             
             droppingDigitCases = ASD.precisions
+            
         } else {
 
             droppingDigitCases = [
@@ -88,7 +89,6 @@ class SettingsViewController: UIViewController {
         ? colorList.bgColorForEmptyAndNumbersDM : colorList.bgColorForEmptyAndNumbersLM
         
         if userDefaultSetup.darkModeOn {
-
             view.backgroundColor = colorList.bgColorForExtrasDM
         } else {
             view.backgroundColor = colorList.bgColorForExtrasLM
@@ -101,8 +101,6 @@ class SettingsViewController: UIViewController {
         currencyUnitPicker.dataSource = self
         setupAddTargets()
     }
-    
-//    lazy var tabbarheight = tabBarController?.tabBar.bounds.size.height ?? 83
     
     func configureTableView() {
         print("configureTableView triggered!")
@@ -126,7 +124,6 @@ class SettingsViewController: UIViewController {
 
         pickerContainerView.addSubview(confirmBtn)
         pickerContainerView.addSubview(cancelBtn)
-        
         
         pickerContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -203,8 +200,6 @@ class SettingsViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.settingTableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .automatic)
                 }
-                
-            
             } else {
                 userDefaultSetup.currencyUnit = currencyUnitCases[selectedIdx]
                 DispatchQueue.main.async {
@@ -213,7 +208,6 @@ class SettingsViewController: UIViewController {
             }
         }
     }
-    
     
     @objc func cancelTapped() {
         hidePicker()
@@ -245,9 +239,6 @@ class SettingsViewController: UIViewController {
     private let currencyUnitPicker = UIPickerView().then {
         $0.isHidden = true
     }
-//    .then {
-
-//    }
     
     func configureUI() {
         configureTableView()
@@ -312,14 +303,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             UIView.transition(with: self.view, duration: 0.5, options: .transitionCrossDissolve) {
 
                 if self.userDefaultSetup.darkModeOn {
-                    headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+//                    headerView.backgroundColor = self.colorList.bgColorForExtrasDM
                 } else {
                     headerView.backgroundColor = self.colorList.bgColorForExtrasLM
                 }
             }
         } else {
             if self.userDefaultSetup.darkModeOn {
-                headerView.backgroundColor = self.colorList.bgColorForExtrasDM
+//                headerView.backgroundColor = self.colorList.bgColorForExtrasDM
             } else {
                 headerView.backgroundColor = self.colorList.bgColorForExtrasLM
             }
@@ -392,7 +383,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.triggerBtn.tag = Int.droppingDigitTag
                 cell.delegate = self
                 
-//                let title = droppingDigitCases[4 - userDefaultSetup.droppingDigitIdx]
                 var idx = droppingDigitCases.count == 5 ? userDefaultSetup.droppingDigitIdx : userDefaultSetup.droppingDigitIdx + 2
                 
                 idx = max(idx, 0)
@@ -491,6 +481,7 @@ extension SettingsViewController: SettingsTableCellDelegate {
     }
     
     func handleSwitchChanged(_ tag: Int, changedTo isOn: Bool) {
+        
         switch tag {
         case 0:
             userDefaultSetup.darkModeOn = isOn
@@ -499,10 +490,11 @@ extension SettingsViewController: SettingsTableCellDelegate {
             self.settingTableView.reloadData()
             
             if userDefaultSetup.darkModeOn {
-                view.backgroundColor = colorList.bgColorForExtrasDM
+//                view.backgroundColor = colorList.bgColorForExtrasDM
 
             } else {
                 view.backgroundColor = colorList.bgColorForExtrasLM
+                
             }
             
         case 1:
