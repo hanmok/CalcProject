@@ -121,4 +121,4 @@
 
 "EditPersonAlertTitle" = "Edit Person Name";
 "EditPersonAlertMessage" = "Please enter new name for the selected participant";
-
+"EditPersonSuccessMsg" = "Person name has been changed!";

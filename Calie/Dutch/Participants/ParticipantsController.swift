@@ -450,7 +450,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
         let editName = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
             
             // TODO: show Alert
-            let alertController = UIAlertController(title: ASD.editPersonAlertTitle, message: ASD.editPersonAlertMsg, preferredStyle: .alert)
+            let alertController = UIAlertController(title: ASD.editPersonAlertTitle.localized, message: ASD.editPersonAlertMsg.localized, preferredStyle: .alert)
             
             alertController.addTextField { (textField: UITextField!) -> Void in
 
@@ -473,6 +473,7 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
                         DispatchQueue.main.async {
                             self.participantsTableView.reloadRows(at: [indexPath], with: .automatic)
                         }
+                        self.showToast(message: ASD.editPersonSuccessMsg.localized, defaultWidthSize: self.screenWidth , defaultHeightSize: self.screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
                     }
                 }
             }

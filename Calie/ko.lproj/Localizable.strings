@@ -126,3 +126,4 @@
 
 "EditPersonAlertTitle" = "참가자 이름 편집";
 "EditPersonAlertMessage" = "선택된 참가자의 새로운 이름을 입력해주세요.";
+"EditPersonSuccessMsg" = "이름이 변경되었습니다.";
