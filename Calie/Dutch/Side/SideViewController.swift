@@ -161,7 +161,9 @@ class SideViewController: UIViewController {
     private let sideLabel = UILabel().then {
         $0.text = ASD.gatheringRecord.localized
         $0.font = UIFont.systemFont(ofSize: 18)
-        $0.textColor = .black
+//        $0.textColor = .black
+//        $0.textColor = UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
+        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.95, alpha: 1), onLight: UIColor(white: 0.05, alpha: 1))
         $0.textAlignment = .left
         $0.adjustsFontSizeToFitWidth = true
     }
@@ -182,6 +184,8 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = targetGathering.title
 //        cell.backgroundColor = UIColor(white: 0.96, alpha: 1)
         cell.backgroundColor = UserDefaultSetup.applyColor(onDark: .operatorsBGDark, onLight: .operatorsBGLight)
+//        cell.textLabel?.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        cell.textLabel?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(white: 0.25, alpha: 1))
         
         return cell
     }
@@ -250,7 +254,8 @@ extension SideViewController : UITableViewDelegate, UITableViewDataSource {
 
 
 extension SideViewController {
-    private func presentAskingGatheringName( completion: @escaping (NewNameAction)) {
+    private func presentAskingGatheringName(completion: @escaping (NewNameAction)) {
+        
         let alertController = UIAlertController(title: ASD.editGatheringName.localized, message: ASD.editGatheringNameMsg.localized, preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in

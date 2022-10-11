@@ -327,7 +327,9 @@ class ParticipantsController: UIViewController{
     
     
     private func registerTableView() {
-        participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
+//        participantsTableView.register(ParticipantTableViewCell.self, forCellReuseIdentifier: ParticipantTableViewCell.identifier)
+        
+        participantsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
         
         participantsTableView.delegate = self
         participantsTableView.dataSource = self
@@ -413,15 +415,18 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: ParticipantTableViewCell.identifier, for: indexPath) as! ParticipantTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
         
         let participant = viewModel.participants[indexPath.row]
-        // MARK: - Not Using Custom Cell yet.
-//        cell.textLabel?.text = participant.name
-//        cell.namela
-        cell.name = participant.name
-//        cell.textLabel?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
         
+        cell.textLabel?.text = participant.name
+        cell.textLabel?.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
+        cell.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGDark, onLight: .extrasBGLight)
+        cell.selectedBackgroundView = bgColorView
+
         return cell
     }
     
@@ -442,10 +447,57 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
+        let editName = UIContextualAction(style: .normal, title: "") { action, view, completionHandler in
+            
+            // TODO: show Alert
+            let alertController = UIAlertController(title: ASD.editPersonAlertTitle, message: ASD.editPersonAlertMsg, preferredStyle: .alert)
+            
+            alertController.addTextField { (textField: UITextField!) -> Void in
+
+                let prevName = self.viewModel.participants[indexPath.row].name
+                textField.placeholder = prevName
+                textField.tag = 200 // not used
+                textField.delegate = self
+            }
+            
+            let saveAction = UIAlertAction(title: ASD.done.localized, style: .default) { alert -> Void in
+                let textFieldInput = alertController.textFields![0] as UITextField
+                
+                let editedName = textFieldInput.text!
+                print("input name: \(editedName)")
+                // TODO: handle Editing Name
+                let targetPerson = self.viewModel.participants[indexPath.row]
+                completionHandler(true)
+                self.viewModel.editPersonName(target: targetPerson, newName: editedName) { success in
+                    if success {
+                        DispatchQueue.main.async {
+                            self.participantsTableView.reloadRows(at: [indexPath], with: .automatic)
+                        }
+                    }
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: ASD.cancel.localized, style: .destructive) { (action: UIAlertAction) -> Void in
+                completionHandler(false)
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(saveAction)
+            
+            self.present(alertController, animated: true)
+            
+            DispatchQueue.main.async {
+                self.participantsTableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+        
+        editName.image = UIImage(systemName: "pencil")
+        editName.backgroundColor = UIColor(white: 0.4, alpha: 1)
+        
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = .red
         
-        let rightSwipe = UISwipeActionsConfiguration(actions: [delete])
+        let rightSwipe = UISwipeActionsConfiguration(actions: [delete, editName])
         
         return rightSwipe
     }

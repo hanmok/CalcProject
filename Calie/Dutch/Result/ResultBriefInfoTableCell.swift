@@ -121,12 +121,10 @@ class ResultBriefInfoTableCell: UITableViewCell {
             break
         }
         
-//        let blue = UserDefaultSetup.applyColor(onDark: UIColor(red: 0.7, green: 0.7, blue: 1, alpha: 1), onLight: .blue)
         let blueInDarkMode = UIColor(red: 100, green: 190, blue: 255)
         let blue = UserDefaultSetup.applyColor(onDark: blueInDarkMode, onLight: .blue)
         let red = UIColor(red: 246, green: 101, blue: 101)
-//        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
-//        toPayInfoLabel.textColor = toPayAmt > 0 ? .blue : UIColor(red: 246, green: 101, blue: 101)
+
         toPayInfoLabel.textColor = toPayAmt > 0 ? blue : red
     }
     

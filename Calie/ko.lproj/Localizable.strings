@@ -123,3 +123,6 @@
 "tenThousandsPlace" = "만의 자리까지";
 "firstDecimalPlace" = "소숫점 첫째자리까지";
 "twoDecimalPlace" = "모두";
+
+"EditPersonAlertTitle" = "참가자 이름 편집";
+"EditPersonAlertMessage" = "선택된 참가자의 새로운 이름을 입력해주세요.";

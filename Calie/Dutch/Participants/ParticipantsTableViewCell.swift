@@ -45,7 +45,7 @@ class ParticipantTableViewCell: UITableViewCell {
     }
     
     private func loadView() {
-//        nameLabel.textColor = na
+
         nameLabel.text = name
     }
     

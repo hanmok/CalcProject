@@ -147,6 +147,10 @@ struct ASD {
         "tenThousandsPlace"
     ]
     
+    static let editPersonAlertTitle = "EditPersonAlertTitle"
+    static let editPersonAlertMsg = "EditPersonAlertMessage"
+    
+    
     
     static func convertDutchResultMsg(from: String, to: String, amt: Double) -> String {
 

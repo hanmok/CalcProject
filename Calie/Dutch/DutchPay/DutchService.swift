@@ -102,6 +102,12 @@ class DutchService {
         completion(gathering)
     }
     
+    func changePersonName(target: Person, newName: String, completion: (Bool) -> Void) {
+        target.name = newName
+        self.dutchManager.update()
+        completion(true)
+    }
+    
     func changeGatheringName(to newName: String, target: Gathering, completion: @escaping () -> Void) {
 //        guard let gathering = currentGathering else { return }
 //        let gathering =

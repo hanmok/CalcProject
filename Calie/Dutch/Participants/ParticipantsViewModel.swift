@@ -75,4 +75,15 @@ class ParticipantsViewModel {
             }
         }
     }
+    
+    public func editPersonName(target: Person, newName: String, completion: @escaping (Bool) -> Void) {
+        if newName == "" {
+            completion(false)
+        } else {
+            dutchService.changePersonName(target: target, newName: newName) { success in
+                self.participants = gathering.sortedPeople
+                completion(success)
+            }
+        }
+    }
 }

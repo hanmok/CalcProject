@@ -118,3 +118,7 @@
 "tenThousandsPlace" = "upto ten thousands place";
 "firstDecimalPlace" = "upto first decimal place";
 "twoDecimalPlace" = "most precise";
+
+"EditPersonAlertTitle" = "Edit Person Name";
+"EditPersonAlertMessage" = "Please enter new name for the selected participant";
+

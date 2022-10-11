@@ -763,6 +763,10 @@ extension DutchpayController: UITableViewDelegate, UITableViewDataSource {
         
         cell.viewModel = DutchTableCellViewModel(dutchUnit: dutchUnit)
         
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGDark, onLight: .extrasBGLight)
+        cell.selectedBackgroundView = bgColorView
+        
         return cell
     }
     
