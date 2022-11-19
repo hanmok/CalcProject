@@ -251,7 +251,7 @@ class DutchpayController: UIViewController {
         
 //        self.showToast(message: "hello", defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
         
-        testCode2()
+//        testCode2()
         
     }
     

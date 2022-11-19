@@ -248,7 +248,8 @@ class ResultViewController: UIViewController {
         
         UIPasteboard.general.string = textToCopy
         // FIXME: TEXT 크기가 너무 작음;; 나중에 수정하자아
-        self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.5, hRatio: 0.06)
+//        self.toastHelper(msg: self.localizedStrings.copyComplete, wRatio: 0.5, hRatio: 0.06)
+        self.showNewToast(msg: self.localizedStrings.copyComplete)
     }
     
     @objc func captureBtnTapped(_ sender: UIButton) {
@@ -578,11 +579,11 @@ extension ResultViewController {
 
 
 extension ResultViewController {
-    func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
-        showToast(message: msg,
-                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
-                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
-                  widthRatio: wRatio, heightRatio: hRatio,
-                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
-    }
+//    func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
+//        showToast(message: msg,
+//                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
+//                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
+//                  widthRatio: wRatio, heightRatio: hRatio,
+//                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
+//    }
 }

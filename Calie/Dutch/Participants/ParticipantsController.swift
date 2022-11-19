@@ -214,10 +214,12 @@ class ParticipantsController: UIViewController{
             switch result {
                 
             case .success():
-                self.showToast(message: "\(newName) has added", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+//                self.showToast(message: "\(newName) has added", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+                    self.showNewToast(msg: "\(newName) has added")
                 
             case .failure(_):
-                self.showToast(message: "person with name: \(newName) already exist!", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+//                self.showToast(message: "person with name: \(newName) already exist!", defaultWidthSize: screenWidth , defaultHeightSize: screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+                    self.showNewToast(msg: "person with name: \(newName) already exist!")
             }
         })
     }
@@ -439,7 +441,8 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
                     completionHandler(true)
                 } else {
                     // TODO: Show failure toast
-                    self.showToast(message: ASD.deletingPersonFailMsg.localized, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.1, fontsize: 16)
+//                    self.showToast(message: ASD.deletingPersonFailMsg.localized, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.1, fontsize: 16)
+                    self.showNewToast(msg: ASD.deletingPersonFailMsg.localized)
                     DispatchQueue.main.async {
                         self.participantsTableView.reloadRows(at: [indexPath], with: .none)
                     }
@@ -473,7 +476,8 @@ extension ParticipantsController: UITableViewDelegate, UITableViewDataSource {
                         DispatchQueue.main.async {
                             self.participantsTableView.reloadRows(at: [indexPath], with: .automatic)
                         }
-                        self.showToast(message: ASD.editPersonSuccessMsg.localized, defaultWidthSize: self.screenWidth , defaultHeightSize: self.screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+//                        self.showToast(message: ASD.editPersonSuccessMsg.localized, defaultWidthSize: self.screenWidth , defaultHeightSize: self.screenHeight, widthRatio: 0.8, heightRatio: 0.05, fontsize: 16)
+                        self.showNewToast(msg: ASD.editPersonSuccessMsg.localized)
                     }
                 }
             }

@@ -335,11 +335,12 @@ class HistoryRecordVC: UIViewController {
     }
     
     func toastHelper(msg: String, wRatio: Float, hRatio: Float) {
-        showToast(message: msg,
-                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
-                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
-                  widthRatio: wRatio, heightRatio: hRatio,
-                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
+//        showToast(message: msg,
+//                  defaultWidthSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
+//                  defaultHeightSize: self.frameSize.showToastHeightSize[self.userDefaultSetup.deviceSize] ?? 667,
+//                  widthRatio: wRatio, heightRatio: hRatio,
+//                  fontsize: self.fontSize.showToastTextSize[self.userDefaultSetup.deviceSize] ?? 13)
+        showNewToast(msg: msg)
     }
     
     let infoView = UIView()

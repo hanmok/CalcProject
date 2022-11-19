@@ -468,7 +468,8 @@ class DutchUnitController: NeedingController {
                 
             case .success(let msg):
                 
-                self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
+//                self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
+                    self.showNewToast(msg: msg)
                 
                 DispatchQueue.main.async {
                     self.personDetailCollectionView.reloadItems(inSection: 0)
@@ -478,7 +479,8 @@ class DutchUnitController: NeedingController {
                 self.updateWithAnimation()
                 
             case .failure(let errorMsg):
-                self.showToast(message: errorMsg.localizedDescription, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
+//                self.showToast(message: errorMsg.localizedDescription, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
+                    self.showNewToast(msg: errorMsg.localizedDescription)
             }
         }
     }

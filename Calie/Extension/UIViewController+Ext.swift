@@ -33,7 +33,7 @@ extension UIViewController {
     
     
 //    func testCode2() {
-    func showToast(msg: String, numOfLines: Int = 1) {
+    func showNewToast(msg: String, numOfLines: Int = 1) {
         let toastLabel = UILabel()
         toastLabel.sizeToFit()
 //        toastL
@@ -137,85 +137,85 @@ extension UIViewController {
     }
     
     
-    func showToast(message : String ,defaultWidthSize : CGFloat, defaultHeightSize : CGFloat, widthRatio : Float, heightRatio : Float, fontsize : CGFloat) {
-        
-//        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width*CGFloat(0.5) - defaultWidthSize * CGFloat(widthRatio/2), y: self.view.frame.size.height*0.1, width: defaultWidthSize * CGFloat(widthRatio), height: defaultHeightSize * CGFloat(heightRatio)))
-        let toastLabel = UILabel()
-//        toastLabel.sizeToFit()
-//        toastLabel.resiz
-//        toastLabel.alignmentRectInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-//        toastLabel.bounds = toastLabel.frame.insetBy(dx: 10, dy: 10)
-        
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-        toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont.systemFont(ofSize: fontsize)
-        toastLabel.textAlignment = .center
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-
-        toastLabel.numberOfLines = 1
-        toastLabel.layer.cornerRadius = 10;
-        toastLabel.clipsToBounds = true
-        toastLabel.numberOfLines = 0
-        
-        self.view.addSubview(toastLabel)
-        toastLabel.translatesAutoresizingMaskIntoConstraints = false
-
-//        toastLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.width.equalTo(defaultWidthSize * CGFloat(widthRatio))
-////            make.bottom.equalTo(self.view.snp.top)
-//            make.bottom.equalTo(self.view.snp.top).offset(50)
-//            make.height.equalTo(30)
-//        }
+//    func showToast(message : String ,defaultWidthSize : CGFloat, defaultHeightSize : CGFloat, widthRatio : Float, heightRatio : Float, fontsize : CGFloat) {
 //
-//        UIView.animate(withDuration: 2.0, delay: 2.0) {
-//            print("animation started!")
-//            // locate on the center
-//            toastLabel.snp.updateConstraints { make in
-//                make.bottom.equalTo(self.view.snp.top).offset(self.view.frame.size.height * 0.2)
-//            }
-//            toastLabel.alpha = 1.0
-//            self.updateWithAnimation(duration: 0.3)
+////        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width*CGFloat(0.5) - defaultWidthSize * CGFloat(widthRatio/2), y: self.view.frame.size.height*0.1, width: defaultWidthSize * CGFloat(widthRatio), height: defaultHeightSize * CGFloat(heightRatio)))
+//        let toastLabel = UILabel()
+////        toastLabel.sizeToFit()
+////        toastLabel.resiz
+////        toastLabel.alignmentRectInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+////        toastLabel.bounds = toastLabel.frame.insetBy(dx: 10, dy: 10)
 //
-//        } completion: { completed in
+//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+//        toastLabel.textColor = UIColor.white
+//        toastLabel.font = UIFont.systemFont(ofSize: fontsize)
+//        toastLabel.textAlignment = .center
+//        toastLabel.text = message
+//        toastLabel.alpha = 1.0
 //
-//            if completed {
-//                print("animation completed!")
-//                UIView.animate(withDuration: 0.3, delay: 2.0) {
-//                    // TODO: move to the top
-//                    toastLabel.snp.updateConstraints { make in
-//                        make.bottom.equalTo(self.view.snp.top)
-//                    }
-//                    self.updateWithAnimation(duration: 0.3)
-//                    //                toastLabel.alpha = 0.0
-//                } completion: { completed2 in
-//                    print("animation completed 2")
-//                    // TODO: remove from superView
-//                    if completed2 {
-////                        toastLabel.removeFromSuperview()
-//                    }
-//                }
-//            }
-//        }
-        
-        
-        
-        
-        let titleLabel = UILabel()
-        let bodyLabel = UILabel()
-        
-        titleLabel.backgroundColor = .red
-        bodyLabel.backgroundColor = .green
-        
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, bodyLabel])
-        stackView.axis = .vertical
-        
-        stackView.frame = CGRect(x: 0, y: 0, width: 200, height: 400)
-        view.addSubview(stackView)
-        
-
-    }
+//        toastLabel.numberOfLines = 1
+//        toastLabel.layer.cornerRadius = 10;
+//        toastLabel.clipsToBounds = true
+//        toastLabel.numberOfLines = 0
+//
+//        self.view.addSubview(toastLabel)
+//        toastLabel.translatesAutoresizingMaskIntoConstraints = false
+//
+////        toastLabel.snp.makeConstraints { make in
+////            make.centerX.equalToSuperview()
+////            make.width.equalTo(defaultWidthSize * CGFloat(widthRatio))
+//////            make.bottom.equalTo(self.view.snp.top)
+////            make.bottom.equalTo(self.view.snp.top).offset(50)
+////            make.height.equalTo(30)
+////        }
+////
+////        UIView.animate(withDuration: 2.0, delay: 2.0) {
+////            print("animation started!")
+////            // locate on the center
+////            toastLabel.snp.updateConstraints { make in
+////                make.bottom.equalTo(self.view.snp.top).offset(self.view.frame.size.height * 0.2)
+////            }
+////            toastLabel.alpha = 1.0
+////            self.updateWithAnimation(duration: 0.3)
+////
+////        } completion: { completed in
+////
+////            if completed {
+////                print("animation completed!")
+////                UIView.animate(withDuration: 0.3, delay: 2.0) {
+////                    // TODO: move to the top
+////                    toastLabel.snp.updateConstraints { make in
+////                        make.bottom.equalTo(self.view.snp.top)
+////                    }
+////                    self.updateWithAnimation(duration: 0.3)
+////                    //                toastLabel.alpha = 0.0
+////                } completion: { completed2 in
+////                    print("animation completed 2")
+////                    // TODO: remove from superView
+////                    if completed2 {
+//////                        toastLabel.removeFromSuperview()
+////                    }
+////                }
+////            }
+////        }
+//
+//
+//
+//
+//        let titleLabel = UILabel()
+//        let bodyLabel = UILabel()
+//
+//        titleLabel.backgroundColor = .red
+//        bodyLabel.backgroundColor = .green
+//
+//        let stackView = UIStackView(arrangedSubviews: [titleLabel, bodyLabel])
+//        stackView.axis = .vertical
+//
+//        stackView.frame = CGRect(x: 0, y: 0, width: 200, height: 400)
+//        view.addSubview(stackView)
+//
+//
+//    }
     
     func updateWithAnimation(duration: CGFloat) {
         UIView.animate(withDuration: duration) {
