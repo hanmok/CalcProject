@@ -127,7 +127,7 @@ class MainTabController: UITabBarController, UINavigationControllerDelegate {
         nav.tabBarItem.image = unselectedImage
         nav.tabBarItem.selectedImage = selectedImage
 //        nav.navigationBar.tintColor = .black
-        nav.navigationBar.tintColor = .magenta
+//        nav.navigationBar.tintColor = .magenta
         return nav
     }
     

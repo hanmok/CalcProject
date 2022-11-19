@@ -32,22 +32,19 @@ class PersonDetailCell: UICollectionViewCell {
     weak var delegate: PersonDetailCellDelegate?
     
     private let nameLabel = UILabel().then {
-//        $0.textColor = .black
+        
         $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .black)
         $0.adjustsFontSizeToFitWidth = true
         if UserDefaultSetup().darkModeOn {
             $0.backgroundColor = .emptyAndNumbersBGDark
         }
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//        $0.backgroundColor = .brown
     }
     
     public let spentAmountTF = PriceTextField().then {
         $0.textAlignment = .right
     
         $0.layer.cornerRadius = 5
-        
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
         
         if UserDefaultSetup().darkModeOn {
             $0.backgroundColor = UIColor(white: 0.5, alpha: 1)
@@ -57,6 +54,9 @@ class PersonDetailCell: UICollectionViewCell {
     
     
     public let attendingBtn = AttendingButton()
+//        .then {
+//        $0.backgroundColor = .magenta
+//    }
     
     public let fullPriceBtn = UIButton().then {
         $0.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
@@ -158,24 +158,14 @@ class PersonDetailCell: UICollectionViewCell {
             make.top.bottom.equalToSuperview()
         }
         
-//        currencyLabel.snp.makeConstraints { make in
-////            make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
-//            make.trailing.equalTo(attendingBtn.snp.leading).offset(-15)
-////            make.trailing.equalTo(attendingBtn.snp.leading)
-//            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(24)
-//        }
-        
         spentAmountTF.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
-//            make.trailing.equalTo(currencyLabel.snp.leading).offset(-5)
             make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
             make.top.bottom.equalToSuperview()
         }
         
         fullPriceBtn.snp.makeConstraints { make in
             make.leading.equalTo(spentAmountTF.snp.leading)
-//            make.trailing.equalTo(currencyLabel.snp.trailing)
             make.trailing.equalTo(spentAmountTF.snp.trailing)
             make.top.bottom.equalToSuperview()
         }

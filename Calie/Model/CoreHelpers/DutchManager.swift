@@ -46,6 +46,7 @@ extension DutchManager {
         gathering.isOnWorking = true
         gathering.title = title
         gathering.createdAt = Date()
+        
         do {
             try mainContext.save()
             return gathering

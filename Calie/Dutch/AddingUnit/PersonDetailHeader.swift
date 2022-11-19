@@ -13,14 +13,11 @@ import UIKit
 import Then
 
 protocol PersonDetailHeaderDelegate: AnyObject {
-    func dismissAcion()
-    func spentAmtTapped()
+//    func dismissAction()
+//    func spentAmtTapped()
     func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool)
     func valueUpdated(spentAmount: Double, spentPlace: String)
-    func remainingBtnTapped()
-//    func updateSpentPlace() {
-//
-//    }
+//    func remainingBtnTapped()
     
 }
 
@@ -29,11 +26,12 @@ struct PersonHeaderViewModel {
     var spentAmt: String
     var spentPlace: String
     var spentDate: Date
-//    var remainder: String
+
     var remainder: Double
 }
 
-class PersonDetailHeader: UICollectionReusableView {
+//class PersonDetailHeader: UICollectionReusableView {
+class PersonDetailHeader: UIViewController {
     
     var viewModel: PersonHeaderViewModel? {
         didSet {
@@ -43,11 +41,11 @@ class PersonDetailHeader: UICollectionReusableView {
     
     var gradientLayer: CAGradientLayer?
     
-    var remainder = 0.0 {
-        didSet {
-            self.layoutSubviews()
-        }
-    }
+//    var remainder = 0.0 {
+//        didSet {
+//            self.layoutSubviews()
+//        }
+//    }
     
     static let headerIdentifier = "HeaderIdentifier"
     
@@ -55,59 +53,66 @@ class PersonDetailHeader: UICollectionReusableView {
     
     private let smallPadding: CGFloat = 10
     
-    private let emptyView = UIView().then {
-        $0.backgroundColor = .yellow
-    }
+    private let emptyView = UIView()
+//        .then {
+//        $0.backgroundColor = .yellow
+//    }
     
     var remainderBtnTapped: Bool = false
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+//        setupLayout()
+//        setupAddTargets()
+//        setupNotification()
+//    }
+    
+    override func viewDidLoad() {
+//        backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+        view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         setupLayout()
         setupAddTargets()
         setupNotification()
     }
     
-//    override viewd
-    override func layoutSublayers(of layer: CALayer) {
-        super.layoutSublayers(of: layer)
-
-        if remainder >= Double.minimumValue {
-            
-            gradientLayer?.removeFromSuperlayer()
-            
-            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-//                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 1).cgColor,
-//                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 1).cgColor
-                UIColor.systemBlue.cgColor,
-                UIColor.systemBlue.cgColor
-
-            ], type: .axial)
-            
-            guard let gradientLayer = gradientLayer else { return }
-            gradientLayer.frame = remainderBtn.bounds
-            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-            
-        } else {
-            gradientLayer?.removeFromSuperlayer()
-
-            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-                UIColor(white: 0.4, alpha: 0.5).cgColor,
-                UIColor(white: 0.4, alpha: 0.5).cgColor
-            ], type: .axial)
-            guard let gradientLayer = gradientLayer else { return }
-
-            gradientLayer.frame = remainderBtn.bounds
-            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-            remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
-        }
-    }
+//    override func layoutSublayers(of layer: CALayer) {
+//        super.layoutSublayers(of: layer)
+//
+//        if remainder >= Double.minimumValue {
+//
+//            gradientLayer?.removeFromSuperlayer()
+//
+//            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+//
+//                UIColor.systemBlue.cgColor,
+//                UIColor.systemBlue.cgColor
+//
+//            ], type: .axial)
+//
+//            guard let gradientLayer = gradientLayer else { return }
+//            gradientLayer.frame = remainderBtn.bounds
+//            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+//
+//        } else {
+//            gradientLayer?.removeFromSuperlayer()
+//
+//            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+//                UIColor(white: 0.4, alpha: 0.5).cgColor,
+//                UIColor(white: 0.4, alpha: 0.5).cgColor
+//            ], type: .axial)
+//            guard let gradientLayer = gradientLayer else { return }
+//
+//            gradientLayer.frame = remainderBtn.bounds
+//            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+//            remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
+//        }
+//    }
     
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(changeStateToActive(_:)), name: .changeSpentAmtHeaderStateIntoActive, object: nil)
         
-        self.layoutSubviews()
+//        self.layoutSubviews()
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeStateToInactive(_:)), name: .changePriceStateIntoInactive, object: nil)
         
@@ -115,7 +120,7 @@ class PersonDetailHeader: UICollectionReusableView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(notifiedOtherViewTapped(_:)), name: .notifyOtherViewTapped, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(remainingPriceChanged), name: .remainingPriceChanged, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(remainingPriceChanged), name: .remainingPriceChanged, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(toggleRemainingBtnTapped), name: .hideRemainingPriceSelectors, object: nil)
     }
@@ -126,222 +131,161 @@ class PersonDetailHeader: UICollectionReusableView {
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
         
-        let headerInfoDic: [AnyHashable: Any] = ["spentPlace": spentPlaceTF.text!, "spentAmt": spentAmountTF.text!, "spentDate": spentDatePicker.date]
+//        let headerInfoDic: [AnyHashable: Any] = ["spentPlace": spentPlaceTF.text!, "spentAmt": spentAmountLabel.text!, "spentDate": spentDatePicker.date]
         
-        NotificationCenter.default.post(name: .sendHeaderInfoBack, object: nil, userInfo: headerInfoDic)
+//        NotificationCenter.default.post(name: .sendHeaderInfoBack, object: nil, userInfo: headerInfoDic)
     }
     
-    @objc func remainingPriceChanged(_ notification: Notification) {
-        
-        
-        guard let remainderInfo = notification.userInfo?["remainingPrice"] as? Double else { return }
-print("current remainingPrice: \(remainderInfo)")
-        remainder = remainderInfo
-        
-        var remainderString: String
-        
-        remainderString = UserDefaultSetup.appendProperUnit(to: remainderInfo.applyCustomNumberFormatter())
-        
-        remainderBtn.setTitle("  " + remainderString, for: .normal)
-        
-        
-        self.remainderBtn.isUserInteractionEnabled = remainderInfo != 0
-        
-        if remainderInfo >= 0.009 {
-
-            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
-            self.remainderBtn.isUserInteractionEnabled = true
-        } else {
-
-            self.remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
-            self.remainderBtn.isUserInteractionEnabled = false
-            
-        }
-        
-        remainderBtn.setTitleColor(.white, for: .normal)
-        
-        self.layoutSubviews()
-    }
+//    @objc func remainingPriceChanged(_ notification: Notification) {
+//
+//
+//        guard let remainderInfo = notification.userInfo?["remainingPrice"] as? Double else { return }
+//
+//        remainder = remainderInfo
+//
+//        var remainderString: String
+//
+//        remainderString = UserDefaultSetup.appendProperUnit(to: remainderInfo.applyCustomNumberFormatter())
+//
+//        remainderBtn.setTitle("  " + remainderString, for: .normal)
+//
+//
+//        self.remainderBtn.isUserInteractionEnabled = remainderInfo != 0
+//
+//        if remainderInfo >= 0.009 {
+//
+//            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+//            self.remainderBtn.isUserInteractionEnabled = true
+//        } else {
+//
+//            self.remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
+//            self.remainderBtn.isUserInteractionEnabled = false
+//
+//        }
+//
+//        remainderBtn.setTitleColor(.white, for: .normal)
+//
+//        self.layoutSubviews()
+//    }
     
     
     
     @objc func changeStateToActive(_ notification: Notification) {
 
-        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
+        spentAmountLabel.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
         
-        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.7, alpha: 1))
+        spentAmountLabel.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.15, alpha: 1), onLight: UIColor(white: 0.7, alpha: 1))
     }
     
     // TODO: Add Animation
     @objc func changeStateToInactive(_ notification: Notification) {
 
-        spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
+        spentAmountLabel.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
 
-        spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
+        spentAmountLabel.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
     }
     
     @objc func updateSpentAmt(_ notification: Notification) {
         guard let amtInput = notification.userInfo?["spentAmt"] as? Double else { return }
                 
-        spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: amtInput.applyCustomNumberFormatter())
+        spentAmountLabel.text = UserDefaultSetup.appendProperUnit(to: amtInput.applyCustomNumberFormatter())
     }
     
     
     private func configureLayout() {
         guard let viewModel = viewModel else { return }
         
-        spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmt)
+        spentAmountLabel.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmt)
         
         spentDatePicker.date = viewModel.spentDate
         spentPlaceTF.text = viewModel.spentPlace
 
         let remainingStr = UserDefaultSetup.appendProperUnit(to: viewModel.remainder.applyCustomNumberFormatter())
 
-        remainderBtn.setTitle("  " + remainingStr, for: .normal)
+//        remainderBtn.setTitle("  " + remainingStr, for: .normal)
         
-        if viewModel.remainder >= 0.009 { // != 0 for Double
-            self.remainderBtn.isUserInteractionEnabled = true
-
-            gradientLayer?.removeFromSuperlayer()
-
-            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-                UIColor(white: 0.8, alpha: 0.7).cgColor,
-                UIColor(white: 0.8, alpha: 0.7).cgColor
-            ], type: .axial)
-            
-            guard let gradientLayer = gradientLayer else { return }
-
-            gradientLayer.frame = remainderBtn.bounds
-            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-
-            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
-        } else {
-            
-            self.remainderBtn.isUserInteractionEnabled = false
-            
-            gradientLayer?.removeFromSuperlayer()
-
-            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-                UIColor(white: 0.8, alpha: 0.7).cgColor,
-                UIColor(white: 0.8, alpha: 0.7).cgColor
-            ], type: .axial)
-            guard let gradientLayer = gradientLayer else { return }
-
-            gradientLayer.frame = remainderBtn.bounds
-            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-            
-        }
+//        if viewModel.remainder >= 0.009 { // != 0 for Double
+//            self.remainderBtn.isUserInteractionEnabled = true
+//
+//            gradientLayer?.removeFromSuperlayer()
+//
+//            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+//                UIColor(white: 0.8, alpha: 0.7).cgColor,
+//                UIColor(white: 0.8, alpha: 0.7).cgColor
+//            ], type: .axial)
+//
+//            guard let gradientLayer = gradientLayer else { return }
+//
+//            gradientLayer.frame = remainderBtn.bounds
+//            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+//
+//            self.remainderBtn.layer.borderColor = UIColor(white: 0.7, alpha: 0.5).cgColor
+//        } else {
+//
+//            self.remainderBtn.isUserInteractionEnabled = false
+//
+//            gradientLayer?.removeFromSuperlayer()
+//
+//            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
+//                UIColor(white: 0.8, alpha: 0.7).cgColor,
+//                UIColor(white: 0.8, alpha: 0.7).cgColor
+//            ], type: .axial)
+//            guard let gradientLayer = gradientLayer else { return }
+//
+//            gradientLayer.frame = remainderBtn.bounds
+//            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
+//
+//        }
     }
     
     private func setupAddTargets() {
-        dismissBtn.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        
-        // not working ;;
-//        spentPlaceTF.addTarget(self, action: #selector(spentPlaceTapped(_:)), for: .touchDown)
+//        dismissBtn.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
         
         spentPlaceTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
         
-        spentAmountTF.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
+//        spentAmountLabel.addTarget(self, action: #selector(textFieldTapped(_:)), for: .editingDidBegin)
         
-        remainderBtn.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
+//        remainderBtn.addTarget(self, action: #selector(remainingPriceTapped), for: .touchUpInside)
         
         spentPlaceTF.delegate = self
-        spentAmountTF.delegate = self
+//        spentAmountLabel.delegate = self
     }
     
     // not called ;;
     @objc func textFieldTapped(_ sender: UITextField) {
         
-        headerDelegate?.textFieldTapAction(sender: sender, isSpentAmountTF: sender == spentAmountTF)
+        headerDelegate?.textFieldTapAction(sender: sender, isSpentAmountTF: sender == spentAmountLabel)
     }
-    
-    @objc func dismissTapped(_ sender: UIButton) {
-        headerDelegate?.dismissAcion()
-    }
-    
-    @objc func remainingPriceTapped(_ sender: UIButton) {
-        
-        if remainderBtnTapped {
-            NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
-            remainderBtnTapped = false
-            remainderBtn.setTitleColor(.white, for: .normal)
-        } else {
-            NotificationCenter.default.post(name: .showRemainingPriceSelectors, object: nil)
-            remainderBtnTapped = true
-            
-            gradientLayer?.removeFromSuperlayer()
-
-            gradientLayer = CAGradientLayer(start: .topLeft, end: .bottomRight, colors: [
-                UIColor(red: 0.864, green: 0.872, blue: 0.762, alpha: 0.3).cgColor,
-                UIColor(red: 0.662, green: 0.666, blue: 0.579, alpha: 0.3).cgColor
-            ], type: .axial)
-            guard let gradientLayer = gradientLayer else { return }
-
-            gradientLayer.frame = remainderBtn.bounds
-            remainderBtn.layer.insertSublayer(gradientLayer, at: 0)
-
-            remainderBtn.setTitleColor(UIColor(white: 0.8, alpha: 0.5), for: .normal)
-        }
-    }
-    
     
     private let attendedLabel = UILabel().then {
         $0.text = ASD.attended.localized
-//        $0.textColor = UIColor(white: 0.28, alpha: 1)
+
         $0.textColor = UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
         $0.textAlignment = .center
     }
     
-    private let remainderBtn = UIButton().then {
-        $0.layer.cornerRadius = 8
-        $0.setTitleColor(UIColor(white: 0.2, alpha: 1), for: .normal)
-        $0.layer.masksToBounds = true
-    }
-    
-    private let remainderBG = UIView().then {
-        $0.layer.cornerRadius = 8
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.clear.cgColor
-    }
-    
-    /// 남은 금액
-    private let remainderTextLabel = UILabel().then {
-//        $0.text = "남은 금액"
-        $0.text = ASD.remainder.localized
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: ., onLight: <#T##UIColor#>)
-        $0.textColor = UserDefaultSetup.applyColor(onDark: .resultTextDM, onLight: .resultTextLM)
-    }
-    
-    private let bottomLine = UIView().then {
-        $0.backgroundColor = ColorList().bgColorForExtrasLM
-    }
     
     private func setupLayout() {
 //        backgroundColor = .magenta
         [
-            dismissBtn,
+//            dismissBtn,
             spentPlaceLabel, spentPlaceTF,
-            spentAmountLabel, spentAmountTF,
+            spentAmountLabel, spentAmountLabel,
             spentDateLabel,
             spentDatePicker,
             divider,
-            remainderTextLabel ,remainderBtn, attendedLabel,
-            bottomLine
+//            remainderTextLabel ,remainderBtn, attendedLabel,
+//            bottomLine
         ].forEach { v in
-            self.addSubview(v)
+//            self.addSubview(v)
+            self.view.addSubview(v)
         }
         
-        dismissBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.top.equalToSuperview().offset(10)
-            
-            make.height.equalTo(30)
-            make.width.equalTo(30)
-        }
+       
         
         spentPlaceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
+//            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
             make.width.equalTo(150)
             make.height.equalTo(20)
         }
@@ -361,7 +305,7 @@ print("current remainingPrice: \(remainderInfo)")
             make.height.equalTo(30)
         }
         
-        spentAmountTF.snp.makeConstraints { make in
+        spentAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.top.equalTo(spentAmountLabel.snp.bottom).offset(5)
             make.width.equalTo(170)
@@ -371,7 +315,7 @@ print("current remainingPrice: \(remainderInfo)")
         
         spentDateLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(smallPadding * 2)
-            make.top.equalTo(spentAmountTF.snp.bottom).offset(20)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(20)
             make.width.equalTo(150)
             make.height.equalTo(30)
         }
@@ -384,71 +328,19 @@ print("current remainingPrice: \(remainderInfo)")
         
         divider.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(5)
-            make.width.equalTo(self.snp.width).offset(-10)
+//            make.width.equalTo(self.snp.width).offset(-10)
+            make.width.equalToSuperview().offset(-10)
             make.height.equalTo(1)
             make.top.equalTo(spentDatePicker.snp.bottom).offset(15)
         }
-        
-        attendedLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.width.equalTo(90)
-            make.top.equalTo(divider.snp.bottom).offset(10)
-//            make.bottom.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-10)
-        }
-
-        remainderTextLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(15)
-            make.centerY.equalTo(attendedLabel.snp.centerY)
-            make.width.equalTo(70)
-            make.height.equalTo(30)
-        }
-        
-        remainderBtn.snp.makeConstraints { make in
-            make.leading.equalTo(remainderTextLabel.snp.trailing).offset(10)
-            make.centerY.equalTo(attendedLabel.snp.centerY)
-            make.trailing.equalTo(attendedLabel.snp.leading).offset(-5)
-            make.height.equalTo(30)
-        }
-        
-        bottomLine.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-10)
-            make.leading.trailing.equalToSuperview().inset(5)
-            make.height.equalTo(1)
-        }
-        
     }
     
-    public func blinkSpentAmount() {
-        
-        UIView.animate(withDuration: 0.2) {
-            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
-        } completion: { bool in
-            if bool {
-                UIView.animate(withDuration: 0.2) {
-                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                } completion: { bool in
-                    if bool {
-                        UIView.animate(withDuration: 0.2) {
-                            self.spentAmountTF.backgroundColor = UIColor(white: 0.8, alpha: 1)
-                        } completion: { bool in
-                            if bool {
-                                UIView.animate(withDuration: 0.2) {
-                                    self.spentAmountTF.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    /// 지출 항목
     private let spentPlaceLabel = UILabel().then {
         $0.text = ASD.spentFor.localized
 //        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
@@ -458,17 +350,14 @@ print("current remainingPrice: \(remainderInfo)")
     }
     
     
-//    private let spentPlaceTF =
+
+    /// 지출 항목 TextField
     public let spentPlaceTF =
     UITextField(withPadding: true).then {
         $0.textAlignment = .right
-//        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.35, alpha: 1), onLight: UIColor(white: 0.65, alpha: 1))
 
         $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
         
-//        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: UIColor(white: 0.2, alpha: 1))
         $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
         $0.tag = 1
         $0.layer.cornerRadius = 5
@@ -480,29 +369,26 @@ print("current remainingPrice: \(remainderInfo)")
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
     }
-    
-    private let spentAmountLabel = UILabel().then {
-        $0.text = ASD.SpentAmt.localized
-//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+    /// 지출 금액
+    private let spentAmountGuideLabel = UILabel().then {
+        $0.text = ASD.spentAmt.localized
+
         if UserDefaultSetup().darkModeOn {
             $0.textColor = .semiResultTextDM
         }
     }
     
+/// 지출 금액 TF
+    public let spentAmountLabel = PriceTextField().then {
 
-    public let spentAmountTF = PriceTextField().then {
-//        $0.backgroundColor = UIColor(rgb: 0xE7E7E7)
-//        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .dateTextDM, onLight: .dateTextLM)
         $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: UIColor(rgb: 0xE7E7E7))
         $0.tag = -1
         $0.isTotalPrice = true
         $0.layer.cornerRadius = 5
-//        $0.font = UIFont.boldSystemFont(ofSize: $0.font?.pointSize ?? 14)
     }
     
     private let spentDateLabel = UILabel().then {
-        $0.text = ASD.SpentDate.localized
-//        $0.textColor = UserDefaultSetup.applyColor(onDark: .semiResultTextDM, onLight: .semiResultTextLM)
+        $0.text = ASD.spentDate.localized
         if UserDefaultSetup().darkModeOn {
             $0.textColor = .semiResultTextDM
         }
@@ -514,14 +400,10 @@ print("current remainingPrice: \(remainderInfo)")
         picker.preferredDatePickerStyle = .automatic
         picker.contentMode = .left
         picker.sizeThatFits(CGSize(width: 150, height: 40))
-    
-//        picker.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(white: 0.5, alpha: 1))
-//        picker.backgroundColor = UserDefaultSetup().darkModeOn
         
         if UserDefaultSetup().darkModeOn {
             picker.backgroundColor = .gray
         }
-    
         
         picker.layer.cornerRadius = 8
         picker.clipsToBounds = true
@@ -529,22 +411,6 @@ print("current remainingPrice: \(remainderInfo)")
     }()
     
     
-    private let dismissBtn: UIButton = {
-        let btn = UIButton()
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
-        imageView.contentMode = .scaleAspectFit
-
-        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGLight, onLight: .emptyAndNumbersBGDark)
-
-        btn.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-
-        return btn
-    }()
 }
 
 
@@ -606,3 +472,7 @@ extension Notification.Name {
 //updated value: 524
 //printed from needingController: 524
 //hi, 524
+
+//class SummaryBoxController {
+//
+//}

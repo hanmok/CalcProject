@@ -29,11 +29,6 @@ protocol DutchUnitDelegate: AnyObject {
 }
 
 extension DutchUnitController: PersonDetailHeaderDelegate {
-    func dismissAcion() {
-        addingDelegate?.dismissChildVC()
-
-        self.navigationController?.popViewController(animated: true)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -44,7 +39,6 @@ extension DutchUnitController: PersonDetailHeaderDelegate {
         super.viewWillDisappear(animated)
         AppUtility.lockOrientation(.all)
     }
-    
     
     func spentAmtTapped() {
         self.needingDelegate?.initializeNumberText()
@@ -89,8 +83,6 @@ extension DutchUnitController: PersonDetailFooterDelegate {
 }
 
 class DutchUnitController: NeedingController {
-    
-    
     
     // MARK: - Properties
     /// 10
@@ -180,14 +172,6 @@ class DutchUnitController: NeedingController {
         super.init(nibName: nil, bundle: nil)
     }
     
-//    override func viewSafeAreaInsetsDidChange() {
-//        super.viewSafeAreaInsetsDidChange()
-        
-//        var insets = view.safeAreaInsets
-//        insets.top = 0
-//        personDetailCollectionView.contentInset = insets
-//    }
-    
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateWithHeaderInfo(_:)), name: .sendHeaderInfoBack, object: nil)
     }
@@ -213,7 +197,6 @@ class DutchUnitController: NeedingController {
         
         navigationController?.navigationBar.isHidden = true
          
-
         view.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
         
         setupBindings()
@@ -262,7 +245,7 @@ class DutchUnitController: NeedingController {
         if dutchUnit != nil {
             setConfirmBtnState(isActive: true)
         } else {
-            askTotalSpentAmount()
+//            askTotalSpentAmount()
         }
         
         setupNotification()
@@ -291,7 +274,7 @@ class DutchUnitController: NeedingController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             // prev code
 //            self.spentAmountTF.becomeFirstResponder()
-            self.needingDelegate?.presentNumberPad()
+//            self.needingDelegate?.presentNumberPad()
         }
     }
     
@@ -383,6 +366,7 @@ class DutchUnitController: NeedingController {
         // prev code
 //        spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
         
+        dismissBtn.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
     }
     
     // 좀.. 이상한데 ??
@@ -453,6 +437,12 @@ class DutchUnitController: NeedingController {
         }
     }
     
+    @objc func dismissAction() {
+        addingDelegate?.dismissChildVC()
+
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     
     @objc func dismissKeyboard() {
         
@@ -460,7 +450,7 @@ class DutchUnitController: NeedingController {
         
         needingDelegate?.hideNumberPad()
         
-        moveDownCollectionView()
+//        moveDownCollectionView()
         updateWithAnimation()
     }
     
@@ -482,7 +472,7 @@ class DutchUnitController: NeedingController {
                 
                 DispatchQueue.main.async {
                     self.personDetailCollectionView.reloadItems(inSection: 0)
-                    self.moveDownCollectionView()
+//                    self.moveDownCollectionView()
                 }
                 
                 self.updateWithAnimation()
@@ -498,7 +488,7 @@ class DutchUnitController: NeedingController {
             
             self.personDetailCollectionView.reloadItems(inSection: 0)
             
-            self.moveDownCollectionView()
+//            self.moveDownCollectionView()
         }
     }
     
@@ -508,7 +498,7 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.delegate = self
         personDetailCollectionView.dataSource = self
         
-        personDetailCollectionView.register(PersonDetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonDetailHeader.headerIdentifier)
+//        personDetailCollectionView.register(PersonDetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonDetailHeader.headerIdentifier)
         
         personDetailCollectionView.register(PersonDetailFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: PersonDetailFooter.footerIdentifier)
         
@@ -522,18 +512,52 @@ class DutchUnitController: NeedingController {
             subview.removeFromSuperview()
         }
         
+        view.addSubview(dismissBtn)
+        
+        dismissBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.top.equalToSuperview().offset(10)
+            
+            make.height.equalTo(30)
+            make.width.equalTo(30)
+        }
+        
+        
+        [personNameGuideLabel, spentAmtGuideLabel, attendedGuideLabel].forEach { self.view.addSubview($0)}
+        
+        personNameGuideLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(10)
+            make.top.equalTo(dismissBtn.snp.bottom).offset(30)
+            make.height.equalTo(30)
+            make.leading.equalToSuperview().offset(15)
+            make.width.equalTo(70)
+        }
+        
+        attendedGuideLabel.snp.makeConstraints { make in
+            make.top.equalTo(personNameGuideLabel.snp.top)
+            make.height.equalTo(30)
+            make.trailing.equalToSuperview().offset(-15)
+            make.width.equalTo(60)
+        }
+        
+        spentAmtGuideLabel.snp.makeConstraints { make in
+            make.top.equalTo(personNameGuideLabel.snp.top)
+            make.height.equalTo(30)
+            make.leading.equalTo(personNameGuideLabel.snp.trailing).offset(10)
+            make.trailing.equalTo(attendedGuideLabel.snp.leading).offset(-20)
+        }
+        
         view.addSubview(personDetailCollectionView)
         
+        personDetailCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(personNameGuideLabel.snp.bottom).offset(20)
+            make.bottom.equalToSuperview()
+        }
         
         view.addSubview(bottomContainerView)
         bottomContainerView.addSubview(gradientView)
         bottomContainerView.addSubview(remainingView)
-        
-        personDetailCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalToSuperview()
-        }
   
         bottomContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -556,20 +580,54 @@ class DutchUnitController: NeedingController {
             make.bottom.equalToSuperview()
         }
         
-        
         bottomContainerView.addSubview(confirmBtn)
         confirmBtn.snp.makeConstraints { make in
-            
             make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }
+        
+        
     }
     
     
     // MARK: - UI Properties
     
+    private let dismissBtn: UIButton = {
+        let btn = UIButton()
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.left"))
+        imageView.contentMode = .scaleAspectFit
+
+        imageView.tintColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGLight, onLight: .emptyAndNumbersBGDark)
+
+        btn.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+
+        return btn
+    }()
     
+    private let personNameGuideLabel = UILabel().then {
+        $0.text = "이름"
+        $0.textAlignment = .center
+        $0.textColor = .black
+//        $0.backgroundColor = .yellow
+    }
+    private let spentAmtGuideLabel = UILabel().then {
+        $0.text = "지출 금액"
+        $0.textAlignment = .center
+        $0.textColor = .black
+    }
+    
+    private let attendedGuideLabel = UILabel().then {
+        $0.text = "참가"
+        $0.textAlignment = .center
+        $0.textColor = .black
+//        $0.backgroundColor = .cyan
+    }
     
     private let spentDatePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -721,48 +779,49 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
 extension DutchUnitController {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        if kind == "UICollectionElementKindSectionHeader" {
-            
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
-            
-            header.headerDelegate = self
-            header.spentAmountTF.delegate = self
-            header.spentPlaceTF.delegate = self
-            
-                // 처음 생성한 DutchUnit && 처음 화면에 나타날 때
-            if dutchUnit == nil && hasLoadedFirst == true {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.needingDelegate?.presentNumberPad()
-                    header.blinkSpentAmount()
-                    header.spentAmountTF.becomeFirstResponder()
-                }
-                
-                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remainder: 0)
-                
-                hasLoadedFirst = false
-                
-            } else {
-                
-                let amtString = spentAmount.applyCustomNumberFormatter()
-                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remainder: 0)
-            }
-            
-            return header
-        } else {
+//        if kind == "UICollectionElementKindSectionHeader" {
+//
+//            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
+//
+//            header.headerDelegate = self
+//            header.spentAmountTF.delegate = self
+//            header.spentPlaceTF.delegate = self
+//
+//                // 처음 생성한 DutchUnit && 처음 화면에 나타날 때
+//            if dutchUnit == nil && hasLoadedFirst == true {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.needingDelegate?.presentNumberPad()
+//                    header.blinkSpentAmount()
+//                    header.spentAmountTF.becomeFirstResponder()
+//                }
+//
+//                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remainder: 0)
+//
+//                hasLoadedFirst = false
+//
+//            } else {
+//
+//                let amtString = spentAmount.applyCustomNumberFormatter()
+//                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remainder: 0)
+//            }
+//
+//            return header
+//        }
+//        else if kind == "UICollectionElementKindSectionFooter"{
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailFooter.footerIdentifier, for: indexPath) as! PersonDetailFooter
             footer.footerDelgate = self
             return footer
-        }
+//        }
     }
     
 //    invalidate
     
     // Header Size
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 360)
-//        return CGSize(width: view.frame.width, height: 390)
-        return CGSize(width: view.frame.width, height: 400)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+////        return CGSize(width: view.frame.width, height: 360)
+////        return CGSize(width: view.frame.width, height: 390)
+//        return CGSize(width: view.frame.width, height: 400)
+//    }
     
     // Footer Size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
@@ -776,8 +835,6 @@ extension DutchUnitController: PersonDetailCellDelegate {
     
     func fullPriceAction(idx: Int) {
         
-
-
         let prev = detailPriceDic[idx] ?? 0
                 
         let remaining = spentAmount - sumOfIndividual + prev
@@ -850,7 +907,7 @@ extension DutchUnitController: UITextFieldDelegate {
             if tf.tag == -1 {
                 
             } else {
-                moveUpCollectionView()
+//                moveUpCollectionView()
             }
             
             
@@ -895,7 +952,7 @@ extension DutchUnitController: UITextFieldDelegate {
             
             needingDelegate?.hideNumberPad()
             
-            moveDownCollectionView()
+//            moveDownCollectionView()
             
             updateWithAnimation()
             
@@ -948,3 +1005,5 @@ extension UICollectionView {
         })
     }
 }
+
+

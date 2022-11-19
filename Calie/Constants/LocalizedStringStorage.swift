@@ -91,11 +91,12 @@ struct ASD {
     static let calculate = "Calculate"; // 수정할 것.
     static let remainder = "remainder";
     static let spentFor = "Spent for"; // 수정할 것. 아래와 일관성 맞지 않음.
-    static let SpentAmt = "Spent Amt";
+    ///
+    static let spentAmt = "Spent Amt";
 
-    static let SpentDate = "Spent Date";
+    static let spentDate = "Spent Date";
 
-    static let AddPerson = "Add Person";
+    static let addPerson = "Add Person";
     static let attended = "attended";
 
     static let gathering = "Gathering";
