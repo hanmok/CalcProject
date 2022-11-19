@@ -36,10 +36,14 @@ class PersonDetailFooter: UICollectionReusableView {
     
     @objc func addPersonTapped(_ sender: UIButton) {
         footerDelgate?.addPersonAction()
+        
+//        self.showToast(<#T##toast: UIView##UIView#>)
     }
     
     private func setupAddtargets() {
         addPersonBtn.addTarget(self, action: #selector(addPersonTapped), for: .touchUpInside)
+        
+        
     }
     
     override init(frame: CGRect) {

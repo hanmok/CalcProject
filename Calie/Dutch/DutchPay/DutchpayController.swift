@@ -125,6 +125,9 @@ class DutchpayController: UIViewController {
 //        userDefaultSetup.isKorean = false
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(DutchpayController.updateModes(notification:)), name: updateUserDefaultNotification, object: nil)
+        
+//        testCode()
+//        testCode2()
     }
     
 //    @objc func updateModes(notification: NSNotification) {
@@ -238,13 +241,17 @@ class DutchpayController: UIViewController {
     
     @objc func calculateBtnAction() {
         
-        guard let gathering = viewModel.gathering else { fatalError() }
+//        guard let gathering = viewModel.gathering else { fatalError() }
         
-        let resultVC = ResultViewController(gathering: gathering)
-        resultVC.addingDelegate = self
+//        let resultVC = ResultViewController(gathering: gathering)
+//        resultVC.addingDelegate = self
 
-        navigationController?.pushViewController(resultVC, animated: true)
-        dutchToMainTapDelegate?.shouldHideMainTab(true)
+//        navigationController?.pushViewController(resultVC, animated: true)
+//        dutchToMainTapDelegate?.shouldHideMainTab(true)
+        
+//        self.showToast(message: "hello", defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
+        
+        testCode2()
         
     }
     

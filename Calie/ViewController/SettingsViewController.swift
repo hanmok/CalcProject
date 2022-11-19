@@ -100,6 +100,15 @@ class SettingsViewController: UIViewController {
         currencyUnitPicker.delegate = self
         currencyUnitPicker.dataSource = self
         setupAddTargets()
+        
+//        showtoast
+//        Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: <#T##Selector#>, userInfo: <#T##Any?#>, repeats: <#T##Bool#>)
+        
+//        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+//            self.testCode()
+//        }
+        
+//        testCode()
     }
     
     func configureTableView() {

@@ -11,5 +11,6 @@ pod 'RealmSwift', '~> 5.0'
 pod 'SnapKit', '~> 5.6.0'
 pod 'Then'
 pod 'AddThen'
-
+# pod 'Toast-Swift', '~> 5.0.1'
+pod 'Toast-Swift'
 end
