@@ -32,17 +32,19 @@ extension UIViewController {
     }
     
     
-//    func testCode2() {
-    func showNewToast(msg: String, numOfLines: Int = 1) {
+    // MARK: - Need to implement using Queue.
+    func showNewToast(msg: String, numOfLines: Int = 2) {
         let toastLabel = UILabel()
         toastLabel.sizeToFit()
-//        toastL
+
         
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont.systemFont(ofSize: 14)
+
+        toastLabel.font = UIFont.systemFont(ofSize: 16)
         toastLabel.textAlignment = .center
-        toastLabel.text = "hello world mnaklsdnknk asndklanskljn lkasmdklamdkl!"
+
+        toastLabel.text = msg
         toastLabel.alpha = 0.0
         
         toastLabel.layer.cornerRadius = 10;
@@ -56,7 +58,7 @@ extension UIViewController {
         toastLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         toastLabel.bottomAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         toastLabel.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -70).isActive = true
-        toastLabel.heightAnchor.constraint(equalToConstant: CGFloat(numOfLines * 30)).isActive = true
+        toastLabel.heightAnchor.constraint(equalToConstant: CGFloat(numOfLines * 25)).isActive = true
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             

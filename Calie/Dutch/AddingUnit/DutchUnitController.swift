@@ -28,54 +28,6 @@ protocol DutchUnitDelegate: AnyObject {
     func updateDutchUnit(_ dutchUnit: DutchUnit, isNew: Bool)
 }
 
-extension DutchUnitController: PersonDetailHeaderDelegate {
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        AppUtility.lockOrientation(.portrait)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        AppUtility.lockOrientation(.all)
-    }
-    
-    func spentAmtTapped() {
-        self.needingDelegate?.initializeNumberText()
-    }
-    
-    func textFieldTapAction(sender: UITextField, isSpentAmountTF: Bool) {
-        if isSpentAmountTF {
-
-            NotificationCenter.default.post(name: .changeSpentAmtHeaderStateIntoActive, object: nil)
-
-            dismissKeyboardOnly()
-            self.needingDelegate?.presentNumberPad()
-            
-            self.needingDelegate?.initializeNumberText()
-        } else { // spentPlace
-            sender.selectAll(nil)
-            
-            spentPlaceTFJustTapped = true
-            
-            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
-                self.spentPlaceTFJustTapped = false
-            }
-        }
-    }
-    
-    func valueUpdated(spentAmount: Double, spentPlace: String) {
-        self.spentPlace = spentPlace
-        self.spentAmount = spentAmount
-    }
-    
-    
-    func remainingBtnTapped() {
-        // observer: Cell
-//        NotificationCenter.default.post(name: <#T##NSNotification.Name#>, object: <#T##Any?#>)
-    }
-}
-
 extension DutchUnitController: PersonDetailFooterDelegate {
     func addPersonAction() {
         self.presentAddingPeopleAlert()
@@ -115,47 +67,30 @@ class DutchUnitController: NeedingController {
     
     var detailPriceDic: [Int: Double] = [:] {
         willSet {
+
             var sum = 0.0
             for (_, value2) in newValue.enumerated() {
                 sum += value2.value
             }
             
-            let diff = spentAmount - sum
-
-            let cutDiff = (diff * 100).rounded() / 100
-            
-            let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
-            NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
-            
             sumOfIndividual = sum
+            let amt = sumOfIndividual.applyCustomNumberFormatter()
+            let totalAmt =  UserDefaultSetup.appendProperUnit(to: amt)
+            
+            spentAmountLabel.text = totalAmt
+            self.setConfirmBtnState(isActive: sumOfIndividual.isAlmostZero == false )
+
         }
     }
     
     var detailAttendingDic: [Idx: Bool] = [:]
     
-    var spentAmount: Double = 0 {
-        willSet {
-            let condition = (sumOfIndividual == newValue) && (newValue != 0)
-            updateConditionState(condition)
-            
-            let diff = newValue - sumOfIndividual
-
-            let cutDiff = (diff * 100).rounded() / 100
-            let dic: [AnyHashable: Any] = ["remainingPrice": cutDiff]
-            
-            NotificationCenter.default.post(name: .remainingPriceChanged, object: nil, userInfo: dic)
-        }
-    }
+    var spentAmount: Double = 0
     
     var spentPlace: String = ""
     var spentDate: Date = Date()
     
-    var sumOfIndividual: Double = 0 {
-        willSet {
-        let condition = (newValue == spentAmount) && (newValue != 0)
-            updateConditionState(condition)
-        }
-    }
+    var sumOfIndividual: Double = 0
     
     
     init(
@@ -172,22 +107,6 @@ class DutchUnitController: NeedingController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWithHeaderInfo(_:)), name: .sendHeaderInfoBack, object: nil)
-    }
-    
-    @objc func updateWithHeaderInfo(_ notification: Notification) {
-        guard let spentPlace = notification.userInfo?["spentPlace"] as? String,
-              let spentAmt = notification.userInfo?["spentAmt"] as? String,
-              let spentDate = notification.userInfo?["spentDate"] as? Date else { return }
-        
-        self.spentPlace = spentPlace
-        self.spentAmount = spentAmt.convertToDouble()
-        self.spentDate = spentDate
-    }
-    
-        
-        
     // MARK: - Life Cycle
     override func viewDidLoad() {
 
@@ -208,7 +127,6 @@ class DutchUnitController: NeedingController {
         viewModel.setupInitialState { [weak self] initialState, newDutchUnitIndex in
             guard let self = self else { return }
             
-            
             if let initialState = initialState {
                 self.spentPlace = initialState.place
                 self.spentAmount = initialState.amount // Double, String
@@ -220,7 +138,6 @@ class DutchUnitController: NeedingController {
             }
         }
         
-        
         setupLayout()
         setupTargets()
         
@@ -228,9 +145,6 @@ class DutchUnitController: NeedingController {
                 
         // TODO: 이거.. 여기서 하면 안될 것 같은데 ?? 구조가 많이 바뀌었음.
         
-        viewModel.setupInitialCells { [weak self] cells in
-            guard let self = self else { return }
-        }
         
         updateConditionState = { [weak self] condition in
             guard let self = self else { return }
@@ -244,38 +158,11 @@ class DutchUnitController: NeedingController {
         
         if dutchUnit != nil {
             setConfirmBtnState(isActive: true)
-        } else {
-//            askTotalSpentAmount()
         }
-        
-        setupNotification()
         
         view.insetsLayoutMarginsFromSafeArea = false
-    }
-    
-//    @objc func headerAmtChanged(_ textField: UITextField) {
         
-//    }
-    
-    
-    private func updateHeaderSpentAmt(input: Double) {
-//        let amt: Double = 100
-//        let amt = inpu
-    
-//        let spentAmt: [AnyHashable: Any] = ["spentAmt": amt]
-        let spentAmt: [AnyHashable: Any] = ["spentAmt": input]
-        
-        NotificationCenter.default.post(name: .updateSpentAmt, object: nil, userInfo: spentAmt)
-        
-    }
-    
-    private func askTotalSpentAmount() {
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            // prev code
-//            self.spentAmountTF.becomeFirstResponder()
-//            self.needingDelegate?.presentNumberPad()
-        }
+        spentPlaceTF.delegate = self
     }
     
     private func setConfirmBtnState(isActive: Bool) {
@@ -298,8 +185,6 @@ class DutchUnitController: NeedingController {
     
     @objc func otherViewTapped() {
         
-        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
-        
         NotificationCenter.default.post(name: .changePriceStateIntoInactive, object: nil)
         
         NotificationCenter.default.post(name: .notifyOtherViewTapped, object: nil)
@@ -319,8 +204,6 @@ class DutchUnitController: NeedingController {
                 
                 let selectedRow = validSelectedPriceTF.tag
                 personDetailCollectionView.reloadItems(at: [IndexPath(row:selectedRow, section: 0)])
-            } else {
-                
             }
         }
     }
@@ -328,18 +211,7 @@ class DutchUnitController: NeedingController {
     
 
     func updateDictionary(tag: Int, currentText: String) {
-        
-        // header.spentAmt
-        if tag == -1 {
-            
-            spentAmount = currentText.convertToDouble()
-            viewModel.updateSpentAmount(to: spentAmount)
-            
-            updateHeaderSpentAmt(input: spentAmount)
-    
-        } else {
-            detailPriceDic[tag] = currentText.convertToDouble()
-        }
+        detailPriceDic[tag] = currentText.convertToDouble()
     }
     
     var updateConditionState: (Bool) -> Void = { _ in }
@@ -349,22 +221,19 @@ class DutchUnitController: NeedingController {
         viewModel.updateCollectionView = { [weak self] in
             guard let self = self else { return }
             self.relocateCollectionView()
-
         }
         
         viewModel.changeableConditionState = {[weak self] bool in
             guard let self = self else { return }
             self.setConfirmBtnState(isActive: bool)
-
         }
+        
     }
     
     
     private func setupTargets() {
         
         confirmBtn.addTarget(nil, action: #selector(confirmTapped), for: .touchUpInside)
-        // prev code
-//        spentPlaceTF.addTarget(self, action: #selector(selectAllText(_:)), for: .touchDown)
         
         dismissBtn.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
     }
@@ -423,13 +292,17 @@ class DutchUnitController: NeedingController {
     
     
     @objc func confirmTapped() {
-
+        
+        var totalAmt = 0.0
+        for (_, v) in detailPriceDic {
+            totalAmt += v
+        }
+        print("spentPlace: \(self.spentPlace)")
         viewModel.updateDutchUnit(spentPlace: self.spentPlace,
-                                  spentAmount: self.spentAmount,
+                                  spentAmount: totalAmt,
                                   spentDate: self.spentDate,
-                                  
                                   detailPriceDic: detailPriceDic,
-        detailAttendingDic: detailAttendingDic) { [weak self] in
+                                  detailAttendingDic: detailAttendingDic) { [weak self] in
             
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
@@ -450,14 +323,12 @@ class DutchUnitController: NeedingController {
         
         needingDelegate?.hideNumberPad()
         
-//        moveDownCollectionView()
         updateWithAnimation()
     }
     
     func dismissKeyboardOnly() {
         view.endEditing(true)
     }
-    
     
     private func addPersonAction(with newName: String) {
         guard newName.count != 0 else { fatalError("Name must have at least one character") }
@@ -467,19 +338,17 @@ class DutchUnitController: NeedingController {
             switch result {
                 
             case .success(let msg):
-                
-//                self.showToast(message: msg, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
+    
                     self.showNewToast(msg: msg)
                 
                 DispatchQueue.main.async {
                     self.personDetailCollectionView.reloadItems(inSection: 0)
-//                    self.moveDownCollectionView()
+
                 }
                 
                 self.updateWithAnimation()
                 
             case .failure(let errorMsg):
-//                self.showToast(message: errorMsg.localizedDescription, defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.025, fontsize: 16)
                     self.showNewToast(msg: errorMsg.localizedDescription)
             }
         }
@@ -487,10 +356,7 @@ class DutchUnitController: NeedingController {
     
     private func relocateCollectionView() {
         DispatchQueue.main.async {
-            
             self.personDetailCollectionView.reloadItems(inSection: 0)
-            
-//            self.moveDownCollectionView()
         }
     }
     
@@ -499,8 +365,6 @@ class DutchUnitController: NeedingController {
         personDetailCollectionView.register(PersonDetailCell.self, forCellWithReuseIdentifier: cellIdentifier)
         personDetailCollectionView.delegate = self
         personDetailCollectionView.dataSource = self
-        
-//        personDetailCollectionView.register(PersonDetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonDetailHeader.headerIdentifier)
         
         personDetailCollectionView.register(PersonDetailFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: PersonDetailFooter.footerIdentifier)
         
@@ -528,7 +392,6 @@ class DutchUnitController: NeedingController {
         [personNameGuideLabel, spentAmtGuideLabel, attendedGuideLabel].forEach { self.view.addSubview($0)}
         
         personNameGuideLabel.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(10)
             make.top.equalTo(dismissBtn.snp.bottom).offset(30)
             make.height.equalTo(30)
             make.leading.equalToSuperview().offset(15)
@@ -553,43 +416,76 @@ class DutchUnitController: NeedingController {
         
         personDetailCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(personNameGuideLabel.snp.bottom).offset(20)
+            make.top.equalTo(personNameGuideLabel.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
+
+        view.addSubview(overallInfoContainerView)
         
-        view.addSubview(bottomContainerView)
-        bottomContainerView.addSubview(gradientView)
-        bottomContainerView.addSubview(remainingView)
-  
-        bottomContainerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            if UIDevice.hasNotch {
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-70)
-            } else {
-                make.bottom.equalToSuperview().offset(20)
-            }
-            make.height.equalTo(110)
-        }
-        
-        gradientView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(20)
-        }
-        
-        remainingView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(gradientView.snp.bottom)
+        overallInfoContainerView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
-        }
-        
-        bottomContainerView.addSubview(confirmBtn)
-        confirmBtn.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalToSuperview().inset(20)
+            make.height.equalTo(220)
+        }
+        
+        
+        [spentPlaceLabel, spentPlaceTF,
+         spentAmountGuideLabel, spentAmountLabel,
+         spentDateLabel, spentDatePicker,
+         confirmBtn
+        ].forEach {
+            overallInfoContainerView.addSubview($0)
+        }
+        
+        spentPlaceLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(30)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+            make.top.equalToSuperview().offset(20)
+        }
+        
+        spentPlaceTF.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(30)
+            make.leading.equalTo(spentPlaceLabel.snp.trailing).offset(10)
+            make.height.equalTo(30)
+            make.top.equalTo(spentPlaceLabel.snp.top)
+        }
+        
+        
+        spentAmountGuideLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(30)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+            make.top.equalTo(spentPlaceLabel.snp.bottom).offset(10)
+        }
+        
+        spentAmountLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(30)
+            make.leading.equalTo(spentPlaceLabel.snp.trailing).offset(10)
+            make.height.equalTo(30)
+            make.top.equalTo(spentAmountGuideLabel.snp.top)
+        }
+        
+        spentDateLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(30)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+            make.top.equalTo(spentAmountLabel.snp.bottom).offset(10)
+        }
+        
+        spentDatePicker.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(30)
+            make.leading.equalTo(spentPlaceLabel.snp.trailing).offset(10)
+            make.height.equalTo(30)
+            make.top.equalTo(spentDateLabel.snp.top)
+        }
+        
+        
+        confirmBtn.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(30)
+            make.bottom.equalToSuperview().offset(-20)
             make.height.equalTo(50)
         }
-        
-        
     }
     
     
@@ -614,31 +510,22 @@ class DutchUnitController: NeedingController {
     
     private let personNameGuideLabel = UILabel().then {
         $0.text = "이름"
-        $0.textAlignment = .center
-        $0.textColor = .black
-//        $0.backgroundColor = .yellow
+        $0.textAlignment = .left
+        $0.textColor = UIColor(white: 0.3, alpha: 1)
     }
+    
     private let spentAmtGuideLabel = UILabel().then {
         $0.text = "지출 금액"
-        $0.textAlignment = .center
-        $0.textColor = .black
+        $0.textAlignment = .right
+        $0.textColor = UIColor(white: 0.3, alpha: 1)
     }
     
     private let attendedGuideLabel = UILabel().then {
         $0.text = "참가"
         $0.textAlignment = .center
-        $0.textColor = .black
-//        $0.backgroundColor = .cyan
+//        $0.textColor = .black
+        $0.textColor = UIColor(white: 0.3, alpha: 1)
     }
-    
-    private let spentDatePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .dateAndTime
-        picker.preferredDatePickerStyle = .automatic
-        picker.contentMode = .left
-        picker.sizeThatFits(CGSize(width: 150, height: 40))
-        return picker
-    }()
     
     private lazy var personDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -652,8 +539,6 @@ class DutchUnitController: NeedingController {
         return cv
     }()
     
-   
-    
     
     private let confirmBtn = UIButton().then {
         $0.setTitle(ASD.confirm.localized, for: .normal)
@@ -666,30 +551,70 @@ class DutchUnitController: NeedingController {
         $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
-    private let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 20)).then {
-        
-        var colorTop: CGColor
-        var colorBottom: CGColor
-        
-        if UserDefaultSetup().darkModeOn {
-            colorTop =  UIColor(red: 0.247, green: 0.247, blue: 0.247, alpha: 0.0).cgColor
-            colorBottom = UIColor(red: 0.247, green: 0.247, blue: 0.247, alpha: 1.0).cgColor
-        } else {
-            colorTop =  UIColor(red: 0.988, green: 0.988, blue: 0.988, alpha: 0.0).cgColor
-            colorBottom = UIColor(red: 0.988, green: 0.988, blue: 0.988, alpha: 1.0).cgColor
-        }
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [colorTop, colorBottom]
-        gradientLayer.frame = $0.frame
-        
-        
-        $0.layer.addSublayer(gradientLayer)
+    private let overallInfoContainerView = UIView().then {
+        $0.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 1.0, alpha: 0.2)
+        $0.layer.cornerRadius = 16
     }
     
-    private let remainingView = UIView().then {
-        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
+    /// 지출 항목 Guide
+    private let spentPlaceLabel = UILabel().then {
+        $0.text = ASD.spentFor.localized
+
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
     }
+    
+    /// 지출 항목 TextField
+    private let spentPlaceTF = UITextField(withPadding: true).then {
+        $0.textAlignment = .right
+
+        $0.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
+        
+        $0.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
+        $0.tag = 1
+        $0.layer.cornerRadius = 5
+        $0.autocorrectionType = .no
+    }
+    
+    private let spentAmountGuideLabel = UILabel().then {
+        $0.text = ASD.spentAmt.localized
+
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
+    }
+    
+    /// 지출 금액 Label
+    private let spentAmountLabel = UILabel().then {
+
+        $0.textAlignment = .right
+        $0.layer.cornerRadius = 5
+    }
+    
+    private let spentDateLabel = UILabel().then {
+        $0.text = ASD.spentDate.localized
+        if UserDefaultSetup().darkModeOn {
+            $0.textColor = .semiResultTextDM
+        }
+    }
+    
+    private let spentDatePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .dateAndTime
+        picker.preferredDatePickerStyle = .automatic
+        picker.contentMode = .left
+        picker.sizeThatFits(CGSize(width: 150, height: 40))
+        
+        if UserDefaultSetup().darkModeOn {
+            picker.backgroundColor = .gray
+        }
+        
+        picker.layer.cornerRadius = 8
+        picker.clipsToBounds = true
+        return picker
+    }()
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -723,7 +648,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         
         cell.spentAmountTF.tag = indexPath.row
         cell.attendingBtn.tag = indexPath.row
-        cell.fullPriceBtn.tag = indexPath.row
+//        cell.fullPriceBtn.tag = indexPath.row
         
         cell.spentAmountTF.delegate = self
         
@@ -732,9 +657,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         let personDetail = viewModel.personDetails[indexPath.row]
         
         cell.viewModel = PersonDetailCellViewModel(personDetail: personDetail)
-        // 이 값을 쓰는 이유는 ? 업데이트가 계속 될 때, View 에서 가장 최신 값 받아오기. (나중에 수정이 필요할 수도 있음)
-        // ummm... 왜 변환이 안되지 ?? ;;
-//       var text = (detailPriceDic[indexPath.row] ?? 0.0).convertToIntString()
+
         var text = (detailPriceDic[indexPath.row] ?? 0.0).applyCustomNumberFormatter()
         
         text.applyNumberFormatter()
@@ -744,12 +667,8 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: text)
 
         // MARK: - 색상 원상태로 변경
-//        cell.spentAmountTF.textColor = .black
         
         cell.spentAmountTF.textColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.8, alpha: 1), onLight: .black)
-        
-//        cell.spentAmountTF.backgroundColor = UIColor(rgb: 0xE7E7E7)
-//        cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: .extrasBGLight, onLight: .extrasBGDark)
         
         cell.spentAmountTF.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.5, alpha: 1), onLight: UIColor(rgb: 0xE7E7E7))
         
@@ -770,7 +689,7 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return CGSize(width: Int(view.frame.width) - 30, height: 30)
-//        return CGSize(width: Int(view.frame.width) - 30, height: 60)
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -781,49 +700,11 @@ extension DutchUnitController: UICollectionViewDelegate, UICollectionViewDelegat
 extension DutchUnitController {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-//        if kind == "UICollectionElementKindSectionHeader" {
-//
-//            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailHeader.headerIdentifier, for: indexPath) as! PersonDetailHeader
-//
-//            header.headerDelegate = self
-//            header.spentAmountTF.delegate = self
-//            header.spentPlaceTF.delegate = self
-//
-//                // 처음 생성한 DutchUnit && 처음 화면에 나타날 때
-//            if dutchUnit == nil && hasLoadedFirst == true {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                    self.needingDelegate?.presentNumberPad()
-//                    header.blinkSpentAmount()
-//                    header.spentAmountTF.becomeFirstResponder()
-//                }
-//
-//                header.viewModel = PersonHeaderViewModel(spentAmt: "0", spentPlace: spentPlace, spentDate: Date(), remainder: 0)
-//
-//                hasLoadedFirst = false
-//
-//            } else {
-//
-//                let amtString = spentAmount.applyCustomNumberFormatter()
-//                header.viewModel = PersonHeaderViewModel(spentAmt: amtString, spentPlace: spentPlace, spentDate: spentDate, remainder: 0)
-//            }
-//
-//            return header
-//        }
-//        else if kind == "UICollectionElementKindSectionFooter"{
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PersonDetailFooter.footerIdentifier, for: indexPath) as! PersonDetailFooter
             footer.footerDelgate = self
             return footer
-//        }
     }
     
-//    invalidate
-    
-    // Header Size
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-////        return CGSize(width: view.frame.width, height: 360)
-////        return CGSize(width: view.frame.width, height: 390)
-//        return CGSize(width: view.frame.width, height: 400)
-//    }
     
     // Footer Size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
@@ -835,41 +716,8 @@ extension DutchUnitController {
 // MARK: - PersonDetailCell Delegate
 extension DutchUnitController: PersonDetailCellDelegate {
     
-    func fullPriceAction(idx: Int) {
-        
-        let prev = detailPriceDic[idx] ?? 0
-                
-        let remaining = spentAmount - sumOfIndividual + prev
-
-        if remaining != 0 {
-            detailPriceDic[idx] = remaining
-
-            personDetailCollectionView.reloadItems(at: [IndexPath(row: idx, section: 0)])
-        }
-        
-        delegate?.hideNumberPad()
-        
-            self.personDetailCollectionView.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalToSuperview()
-            }
-        
-        updateWithAnimation()
-        
-    }
-    
-    func cell(_ cell: PersonDetailCell, isAttending: Bool) {
-        
-    }
-    
     func updateAttendingState(with tag: Int, to isAttending: Bool) {
         detailAttendingDic[tag] = isAttending
-    }
-    
-    func cell(_ cell: PersonDetailCell, from peopleIndex: Int) {
-        
-                
     }
 }
 
@@ -885,9 +733,11 @@ extension DutchUnitController: UITextFieldDelegate {
         // header.spentPlaceTF
         if textField.tag == 1 {
             self.spentPlace = textField.text!
+            print("spentPlace flag 1, text: \(self.spentPlace)")
             self.dismissKeyboardOnly()
             spentPlaceTFJustTapped = true
         }
+        print("spentPlace flag 2, text: \(self.spentPlace)")
         
         // new person name TF
         if textField.tag == 100 {
@@ -906,13 +756,6 @@ extension DutchUnitController: UITextFieldDelegate {
         // FIXME: dismissKeyboardOnly, dismissKeyboard 두개 구분해서 사용하기.
         if let tf = textField as? PriceTextField {
             
-            if tf.tag == -1 {
-                
-            } else {
-//                moveUpCollectionView()
-            }
-            
-            
             if isShowingKeyboard {
                 //FIXME: Fatal Error !
                 guard let prevSelectedPriceTF = selectedPriceTF else { fatalError() }
@@ -930,8 +773,6 @@ extension DutchUnitController: UITextFieldDelegate {
             
             // TODO: move up collectionview
             
-
-            
             updateWithAnimation()
             
             isShowingKeyboard = true
@@ -939,10 +780,6 @@ extension DutchUnitController: UITextFieldDelegate {
             selectedPriceTF = tf
             
             // MARK: - 입력할 때 색상 변경
-//            selectedPriceTF?.backgroundColor = UIColor(rgb: 0xF2F2F2)
-//            selectedPriceTF?.textColor = UIColor(white: 0.7, alpha: 1)
-        
-//            selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.9, alpha: 1), onLight: UIColor(white: 0.1, alpha: 1))
             
             selectedPriceTF?.backgroundColor = UserDefaultSetup.applyColor(onDark: UIColor(white: 0.85, alpha: 1), onLight: UIColor(rgb: 0xF2F2F2))
             
@@ -1007,5 +844,3 @@ extension UICollectionView {
         })
     }
 }
-
-

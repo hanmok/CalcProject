@@ -58,7 +58,7 @@ class PersonDetailHeader: UIViewController {
 //        $0.backgroundColor = .yellow
 //    }
     
-    var remainderBtnTapped: Bool = false
+//    var remainderBtnTapped: Bool = false
     
 //    override init(frame: CGRect) {
 //        super.init(frame: frame)
@@ -122,12 +122,12 @@ class PersonDetailHeader: UIViewController {
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(remainingPriceChanged), name: .remainingPriceChanged, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(toggleRemainingBtnTapped), name: .hideRemainingPriceSelectors, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(toggleRemainingBtnTapped), name: .hideRemainingPriceSelectors, object: nil)
     }
     
-    @objc func toggleRemainingBtnTapped(_ notification: Notification) {
-        remainderBtnTapped = false
-    }
+//    @objc func toggleRemainingBtnTapped(_ notification: Notification) {
+//        remainderBtnTapped = false
+//    }
     
     @objc func notifiedOtherViewTapped(_ notification: Notification) {
         

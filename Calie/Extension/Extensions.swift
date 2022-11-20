@@ -40,7 +40,7 @@ extension Double {
 }
 
 extension Double {
-    public func convertToIntString() -> String {
+    public func convertToDoubleString() -> String {
         if self == Double(Int(self)) {
             return String(Int(self))
         }

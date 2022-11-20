@@ -13,7 +13,7 @@ import SnapKit
 
 protocol PersonDetailCellDelegate: AnyObject {
 
-    func fullPriceAction(idx: Int)
+//    func fullPriceAction(idx: Int)
     
     func updateAttendingState(with tag: Int, to isAttending: Bool)
 }
@@ -58,15 +58,15 @@ class PersonDetailCell: UICollectionViewCell {
 //        $0.backgroundColor = .magenta
 //    }
     
-    public let fullPriceBtn = UIButton().then {
-        $0.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
-        $0.isHidden = true
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(white: 200.0/255.0, alpha: 1).cgColor
-        $0.layer.cornerRadius = 8
-        
-        let imgView = UIImageView()
-    }
+//    public let fullPriceBtn = UIButton().then {
+//        $0.backgroundColor = UIColor(white: 231.0 / 255.0, alpha: 0.95)
+//        $0.isHidden = true
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor(white: 200.0/255.0, alpha: 1).cgColor
+//        $0.layer.cornerRadius = 8
+//
+//        let imgView = UIImageView()
+//    }
     
     private let checkMark = UIImageView().then {
         $0.image = UIImage(systemName: "checkmark")
@@ -75,17 +75,17 @@ class PersonDetailCell: UICollectionViewCell {
     }
     
     private func setupTargets() {
-        fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
+//        fullPriceBtn.addTarget(self, action: #selector(fullPriceBtnTapped(_:)), for: .touchUpInside)
         attendingBtn.addTarget(self, action: #selector(attendingBtnTapped(_:)), for: .touchUpInside)
     }
     
-    @objc func fullPriceBtnTapped(_ sender: UIButton) {
-        
-        delegate?.fullPriceAction(idx: sender.tag)
-        // Post notify to hide fullPrices
-        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
-        
-    }
+//    @objc func fullPriceBtnTapped(_ sender: UIButton) {
+//
+////        delegate?.fullPriceAction(idx: sender.tag)
+//        // Post notify to hide fullPrices
+//        NotificationCenter.default.post(name: .hideRemainingPriceSelectors, object: nil)
+//
+//    }
     
     @objc func attendingBtnTapped(_ sender: AttendingButton) {
 
@@ -106,7 +106,8 @@ class PersonDetailCell: UICollectionViewCell {
         attendingBtn.isAttending = isAttended
         attendingBtn.markAttendedState(using: isAttended)
         
-        spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmount)
+//        spentAmountTF.text = UserDefaultSetup.appendProperUnit(to: viewModel.spentAmount)
+        spentAmountTF.text = viewModel.spentAmount
     }
     
     override init(frame: CGRect) {
@@ -124,24 +125,17 @@ class PersonDetailCell: UICollectionViewCell {
     
     private func addObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceSelectors, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(showUpFullPriceBtn), name: .showRemainingPriceSelectors, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceSelectors, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(hideFullPriceBtn), name: .hideRemainingPriceSelectors, object: nil)
     }
     
     //MARK: -  ViewModel 을 바꿔주는 주기를 알아야함.. 그렇지 않으면 해당 조건문이 소용이 없다.
-    @objc func hideFullPriceBtn() {
-        fullPriceBtn.isHidden = true
-    }
     
-    @objc func showUpFullPriceBtn() {
-        fullPriceBtn.isHidden = false
-    }
     
     private func setupLayout() {
         [nameLabel, spentAmountTF,
-//         currencyLabel,
-         fullPriceBtn,
+
          attendingBtn].forEach { v in
             addSubview(v)
         }
@@ -162,19 +156,6 @@ class PersonDetailCell: UICollectionViewCell {
             make.leading.equalTo(nameLabel.snp.trailing).offset(10)
             make.trailing.equalTo(attendingBtn.snp.leading).offset(-20)
             make.top.bottom.equalToSuperview()
-        }
-        
-        fullPriceBtn.snp.makeConstraints { make in
-            make.leading.equalTo(spentAmountTF.snp.leading)
-            make.trailing.equalTo(spentAmountTF.snp.trailing)
-            make.top.bottom.equalToSuperview()
-        }
-        
-        fullPriceBtn.addSubview(checkMark)
-        checkMark.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalToSuperview()
-            make.width.equalTo(30)
         }
     }
 }

@@ -241,18 +241,18 @@ class DutchpayController: UIViewController {
     
     @objc func calculateBtnAction() {
         
-//        guard let gathering = viewModel.gathering else { fatalError() }
+        // TODO: not navigate if no dutchUnit exist
+        guard let gathering = viewModel.gathering else { fatalError() }
         
-//        let resultVC = ResultViewController(gathering: gathering)
-//        resultVC.addingDelegate = self
-
-//        navigationController?.pushViewController(resultVC, animated: true)
-//        dutchToMainTapDelegate?.shouldHideMainTab(true)
-        
-//        self.showToast(message: "hello", defaultWidthSize: self.screenWidth, defaultHeightSize: self.screenHeight, widthRatio: 0.9, heightRatio: 0.08, fontsize: 16)
-        
-//        testCode2()
-        
+        if viewModel.gathering?.dutchUnits.count != 0 {
+            let resultVC = ResultViewController(gathering: gathering)
+            resultVC.addingDelegate = self
+            
+            navigationController?.pushViewController(resultVC, animated: true)
+            dutchToMainTapDelegate?.shouldHideMainTab(true)
+        } else {
+            self.showNewToast(msg: "There's nothing to calculate.")
+        }
     }
     
     @objc func editPeopleBtnAction() {
@@ -284,12 +284,19 @@ class DutchpayController: UIViewController {
         }
     }
     
+    
     @objc func handleAddDutchUnit() {
         
-        viewModel.addDutchUnit(needGathering: true)
-        // TODO: Add DutchUnit
-        presentDutchUnitController()
-        
+        if viewModel.gathering?.people.count != 0 {
+            viewModel.addDutchUnit(needGathering: true)
+            
+            presentDutchUnitController()
+        } else {
+            self.showNewToast(msg: "Add Participants first ")
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+                self.editPeopleBtnAction()
+            }
+        }
     }
     
     private func presentDutchUnitController(selectedUnit: DutchUnit? = nil) {
@@ -506,13 +513,6 @@ class DutchpayController: UIViewController {
     }
     
     private let mainContainer = UIView().then {
-//        $0.backgroundColor = UIColor.emptyAndNumbersBGDark
-//        if UserDefaultSetup().darkModeOn {
-//            $0.backgroundColor = UIColor.emptyAndNumbersBGDark
-//        } else{
-//            $0.backgroundColor = UIColor.emptyAndNumbersBGLight
-//        }
-        
         $0.backgroundColor = UserDefaultSetup.applyColor(onDark: .emptyAndNumbersBGDark, onLight: .emptyAndNumbersBGLight)
     }
     
@@ -533,12 +533,10 @@ class DutchpayController: UIViewController {
         let btn = UIButton()
         
         let plusImage = UIImageView(image: UIImage(systemName: "plus.circle"))
-//        plusImage.tintColor = ColorList().bgColorForExtrasMiddle
+
         plusImage.tintColor = UIColor.extrasBGMiddle
         
         let removingLineView = UIView()
-//        removingLineView.backgroundColor = .white
-//        removingLineView.backgroundColor = .clear
         
         removingLineView.backgroundColor = UserDefaultSetup().darkModeOn ? UIColor.emptyAndNumbersBGDark : .emptyAndNumbersBGLight
         

@@ -36,19 +36,20 @@ class DutchUnitViewModel {
     
     // MARK: - Properties To be Observed
 
-    private var isConditionSatisfied = false {
-        willSet {
-        
-            changeableConditionState(newValue)
-        }
-    }
+//    private var isConditionSatisfied = false {
+//        willSet {
+//
+//            changeableConditionState(newValue)
+//        }
+//    }
     
     
     private var spentAmount: Double = 0 {
         willSet {
-            let condition = (newValue == sumOfIndividual) && (newValue != 0)
+//            let condition = (newValue == sumOfIndividual) && (newValue != 0)
     
-            isConditionSatisfied = condition
+//            isConditionSatisfied = condition
+            
         }
     }
     
@@ -60,11 +61,10 @@ class DutchUnitViewModel {
     // personDeails 에 따라 실시간 업데이트, condition 만족 여부를 확인.
     private var sumOfIndividual: Double = 0 {
         willSet {
-            let condition = (newValue == spentAmount) && (newValue != 0)
-            
-            isConditionSatisfied = condition
+//            let condition = (newValue == spentAmount) && (newValue != 0)
+//
+//            isConditionSatisfied = condition
      
-
         }
     }
     
@@ -187,10 +187,6 @@ class DutchUnitViewModel {
         let initialState = InitialState(place: initialDutchUnit.placeName, amount: initialDutchUnit.spentAmount, date: initialDutchUnit.spentDate)
         
         completion(initialState, nil)
-    }
-    
-    public func setupInitialCells(completion: @escaping ([PersonDetail]) -> Void) {
-        
     }
 }
 

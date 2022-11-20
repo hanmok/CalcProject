@@ -103,4 +103,12 @@ extension Double {
         num = (num * 100).rounded() / 100
         return num
     }
+    
+    var isAlmostZero: Bool {
+        return (self > -0.001 && self < 0.001)
+    }
+    
+//    func isAlmostZero() -> Bool {
+//        return (self > -0.001 && self < 0.001)
+//    }
 }

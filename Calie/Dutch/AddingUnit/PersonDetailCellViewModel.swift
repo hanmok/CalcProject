@@ -16,9 +16,12 @@ struct PersonDetailCellViewModel {
     var name: String { return personDetail.person!.name }
     
     var spentAmount: String {
-        return personDetail.spentAmount.convertToIntString()}
+//        return personDetail.spentAmount.convertToDoubleString()
+        let amt = personDetail.spentAmount.convertToDoubleString()
+        return UserDefaultSetup.appendProperUnit(to: amt)
+        
+    }
     
-//    var isAttended: Bool { return personDetail.isAttended }
     var isAttended: Bool {
         get {
             return personDetail.isAttended
